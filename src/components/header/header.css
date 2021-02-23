@@ -1,4 +1,85 @@
 #header-container {
     height: 70px;
     background-color: var(--headerBg);
+    display: inline-block;
+    width: 100%;
+}
+#header-container .w-50 {
+    height: inherit;
+}
+.h-logo {
+    width: 100px;
+    margin-left: 24px;
+    cursor: pointer;
+}
+.h-dd {
+    height: 45px;
+    width: 241.87px;
+    border-radius: 6px;
+    background-color: var(--headerAltBg);
+}
+.h-logged-user-sec {
+    height: 45px;
+    width: 74px;
+    border-radius: 6px;
+    background-color: var(--headerAltBg);
+    cursor: pointer;
+    margin-top: 12px;
+    margin-right: 20px;
+}
+.h-logger-user {
+    height: 40px;
+    width: 40px;
+    margin: 2px;
+    padding: 2px;
+}
+.h-logger-user-options div {
+    color: #1F263E;
+    font-family: "Nunito Sans";
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 19px;
+    list-style: none;
+    padding: 9px;
+    cursor: pointer;
+}
+.h-logger-user-options div:last-child {
+    height: 13px;
+    color: #808A8F;
+    font-family: Roboto;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 0;
+    padding-top: 14px;
+}
+.h-logger-user-options-sec {
+    height: 144px;
+    width: 185px;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.23);
+}
+.h-icons {
+    height: 21px;
+    width: 22px;
+    color: #fff;
+    margin: 24px 32px 24px 0;
+    cursor: pointer;
+}
+.h-links {
+    height: 21px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    line-height: 21px;
+    cursor: pointer;
+    margin: 24px 24px 24px 0;
+}
+#header-container .MuiSelect-icon {
+    color: #fff;
+}
+#header-container .MuiInput-underline:before, #header-container .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border-bottom: none;
 }

@@ -1,5 +1,7 @@
 @import url('./assets/css/roboto-font.css');
 @import url('./assets/css/open-sans-font.css');
+@import url('./assets/css/nunito-font.css');
+
 html, body, html * {
   font-family: 'Roboto', sans-serif;
 }
