@@ -1,0 +1,53 @@
+#side-menu-container {
+    background: var(--sideMenuBg);
+}
+.s-m-major, .s-m-sub {
+    height: inherit;
+}
+.s-m-item {
+    height: 55px;
+    cursor: pointer;
+    padding: 14px 0 20px 26px;
+}
+.s-m-item-lbl {
+    height: 18px;
+    color: #3F4045;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 21px;
+    padding-left: 20px;
+}
+.s-m-item.active {
+    font-weight: bold;
+    background: var(--sideMenuActiveBg);
+}
+.s-m-item-img {
+    width: 21px;
+    cursor: pointer;
+}
+.s-m-sub {
+    background-color: var(--sideMenuSubBg);
+}
+.s-m-sub-h {
+    padding: 14px 20px;
+    color: #3F4045;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+.s-m-sub-tab {
+    color: #5F6165;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 21px;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+.s-m-sub-tab.active {
+    font-weight: bold;
+    color: #3F4045;
+    border-radius: 6px;
+    background-color: #E0E4E6;
+    margin: 10px;
+}

@@ -52,39 +52,19 @@ export function ThemeProvider (props) {
 
 // styles
 const lightTheme = [
-  '--border: rgba(0,0,0,.2)',
-  '--shadow: #000',
-  '--heading: rgba(255,100,0,1)',
-  '--main: #1d8f13',
-  '--text: #000',
-  '--textAlt: #fff',
-  '--inactive: rgba(0,0,0,.3)',
-  '--background: white',
-  '--backgroundAlt: #eeeeee',
+  '--bodyBg: rgb(242 244 245)',
   '--headerBg: #6B9CF3', 
   '--headerAltBg: #4C83E5', 
-  '--headerText: rgb(255, 255, 255)',
-  '--badgeBg: #17a2b8',
-  '--buttonBg: transparent',
-  '--buttonText: #000',
-  '--tableHeaderBg: rgb(0 0 0 / 13%)'
+  '--sideMenuBg: #ffffff',
+  '--sideMenuSubBg: rgb(237 238 240)',
+  '--sideMenuActiveBg: #EDEEF0'
 ];
 
 const darkTheme = [
-  '--border: rgba(255,255,255,.1)',
-  '--shadow: #000',
-  '--heading: rgba(255,255,5,.9)',
-  '--main: #79248f',
-  '--text: rgb(255, 255, 255)',
-  '--textAlt: #fff',
-  '--inactive: rgba(255,255,255,.3)',
-  '--background: #343a40',
-  '--backgroundAlt: #585d65',
+  '--bodyBg: rgb(242 244 245)',
   '--headerBg: #585d65',
-  '--headerAltBg: #4C83E5', 
-  '--headerText: #000',
-  '--badgeBg: #79248f',
-  '--buttonBg: #121212',
-  '--buttonText: #fff',
-  '--tableHeaderBg: #6c757d'
+  '--headerAltBg: #4C83E5',
+  '--sideMenuBg: #ffffff',
+  '--sideMenuSubBg: rgb(237 238 240)',
+  '--sideMenuActiveBg: #EDEEF0'
 ];

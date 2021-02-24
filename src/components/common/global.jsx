@@ -4,6 +4,7 @@ export function ConsoleFn(url) {
 }
 
 export function containerHeightCalcFn(param) {
+    param = param ? param : 70;
     let tempHt = window.innerHeight - param;
     tempHt = tempHt + 'px';
     return tempHt;

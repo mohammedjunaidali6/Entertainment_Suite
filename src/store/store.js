@@ -2,6 +2,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import HeaderReducer from '../reducers/header/headerReducer';
 import DashboardReducer from '../reducers/dashboard/dashboardReducer';
+import POCReducer from '../reducers/poc/pocReducer';
 
 function saveToSessionStorage(state) {
   try {
@@ -25,7 +26,8 @@ function loadFromSessionStorage(state) {
 
 const reducer = combineReducers({
   HeaderReducer: HeaderReducer,
-  DashboardReducer: DashboardReducer
+  DashboardReducer: DashboardReducer,
+  POCReducer: POCReducer
 });
 
 // To persist your Store use sessionStorage after hard reoad
