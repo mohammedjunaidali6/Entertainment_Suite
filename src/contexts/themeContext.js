@@ -57,7 +57,10 @@ const lightTheme = [
   '--headerAltBg: #4C83E5', 
   '--sideMenuBg: #ffffff',
   '--sideMenuSubBg: rgb(237 238 240)',
-  '--sideMenuActiveBg: #EDEEF0'
+  '--sideMenuActiveBg: #EDEEF0',
+  '--buttonBg: #6B9CF3',
+  '--buttonTextActive: #fff',
+  '--buttonTextInactive: #3F4045'
 ];
 
 const darkTheme = [
@@ -66,5 +69,8 @@ const darkTheme = [
   '--headerAltBg: #4C83E5',
   '--sideMenuBg: #ffffff',
   '--sideMenuSubBg: rgb(237 238 240)',
-  '--sideMenuActiveBg: #EDEEF0'
+  '--sideMenuActiveBg: #EDEEF0',
+  '--buttonBg: #6B9CF3',
+  '--buttonTextActive: #fff',
+  '--buttonTextInactive: #3F4045'
 ];

@@ -5,6 +5,13 @@ import { ThemeProvider } from '../contexts/themeContext';
 import Home from '../components/home/home';
 import DashboardContatiner from '../containers/dashboard/dashboardContainer';
 import HeaderContainer from '../containers/header/headerContainer';
+import SettingsContatiner from "../containers/settings/settingsContainer";
+import ManageContatiner from "../containers/manage/manageContainer";
+import EngagementsContatiner from "../containers/engagements/engagementsContainer";
+import LiveViewContatiner from "../containers/liveView/liveViewContainer";
+import AnalyticsContatiner from "../containers/analytics/analyticsContainer";
+import SegmentsContatiner from "../containers/segments/segmentsContainer";
+import AdminContatiner from "../containers/admin/adminContainer";
 import POCContainer from '../containers/poc/pocContainer';
 
 export default function AppRoute(props) {
@@ -16,6 +23,13 @@ export default function AppRoute(props) {
           <Home>
             <Switch>
               <Route exact path="/" component={DashboardContatiner}/>
+              <Route exact path="/engagements/:tabname" component={EngagementsContatiner} />
+              <Route exact path="/liveview" component={LiveViewContatiner} />
+              <Route exact path="/analytics/:tabname" component={AnalyticsContatiner} />
+              <Route exact path="/manage/:tabname" component={ManageContatiner} />
+              <Route exact path="/segments" component={SegmentsContatiner} />
+              <Route exact path="/admin" component={AdminContatiner} />
+              <Route exact path="/settings" component={SettingsContatiner} />
               <Route exact path="/poc" component={POCContainer} />
               <Route path="*" component={NotFound} />
             </Switch>
