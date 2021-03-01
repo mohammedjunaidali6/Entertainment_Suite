@@ -9,7 +9,6 @@ export default function Engagements(props) {
     
     return (
         <div id="engagements-container">
-            <span>Engagements Component</span>
             {history.location.pathname === '/engagements/smart' ? (
                 <EngagementsSmartContatiner />
             ) : null}

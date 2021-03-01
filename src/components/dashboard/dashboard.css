@@ -1,0 +1,19 @@
+.overview-heading {
+    height: 16px;
+    color: #808A8F;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.48px;
+    line-height: 16px;
+}
+.sales-overview-box-outer {
+    padding: 0px 10px 10px 0;
+    text-align: center;
+    cursor: pointer;
+}
+.sales-overview-box {
+    height: 178px;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 6%);
+    border-radius: 12.32px;
+    background-color: #FFFFFF;
+}

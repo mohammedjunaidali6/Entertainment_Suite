@@ -36,8 +36,27 @@ input[type="button"] {
     box-shadow: 0 1px 4px 0 rgb(30 36 39 / 30%);
 }
 .mvp-link { text-decoration: underline; cursor: pointer;}
+.v-a-top {vertical-align: top !important;}
+.v-a-t-top {vertical-align: text-top !important;}
+.v-a-bottom {vertical-align: top !important;}
+.v-a-t-bottom {vertical-align: text-bottom !important;}
 button:disabled,
 button[disabled]{
     opacity: 0.7;
     cursor: not-allowed;
+}
+
+.chart-container {
+    box-sizing: border-box;
+    border: 0.88px solid #EAF0F7;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 9px -9px rgb(0 0 0 / 20%);
+}
+.chart-heading {
+    height: 21px;
+    color: #67758D;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 21px;
 }

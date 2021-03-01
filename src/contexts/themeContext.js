@@ -60,7 +60,13 @@ const lightTheme = [
   '--sideMenuActiveBg: #EDEEF0',
   '--buttonBg: #6B9CF3',
   '--buttonTextActive: #fff',
-  '--buttonTextInactive: #3F4045'
+  '--buttonTextInactive: #3F4045',
+  '--chartBase: #3794FC',
+  '--chartBase2: #9D60FB',
+  '--campaignPaused: #E35D25',
+  '--campaignExpired: #E2BD7B',
+  '--whiteBg: #ffffff',
+  '--campaignLive: #4ACB91'
 ];
 
 const darkTheme = [
@@ -72,5 +78,11 @@ const darkTheme = [
   '--sideMenuActiveBg: #EDEEF0',
   '--buttonBg: #6B9CF3',
   '--buttonTextActive: #fff',
-  '--buttonTextInactive: #3F4045'
+  '--buttonTextInactive: #3F4045',
+  '--chartBase: #3794FC',
+  '--chartBase2: #9D60FB',
+  '--campaignPaused: #E35D25',
+  '--campaignExpired: #E2BD7B',
+  '--whiteBg: #ffffff',
+  '--campaignLive: #4ACB91'
 ];

@@ -94,7 +94,7 @@ export default function Header(props) {
                 >
                     <Typography className={classes.typography}>
                         <div className="h-logger-user-options p-0">
-                            <div onClick={() => settingsRedirectFn('/settings')}>Settings</div>
+                            <div onClick={() => settingsRedirectFn('/settings')}>Pause</div>
                             <div>Help</div>
                             <div style={{borderBottom: "1px solid #DBDDDE"}}>Logout</div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
@@ -109,7 +109,7 @@ export default function Header(props) {
                 </div>
                 <div className="h-links float-right clearfix">
                     <img src={support_src} className="mb-1" />
-                    <sapn className="ml-2">Support Request</sapn>
+                    <span className="ml-2">Support Request</span>
                 </div>
             </div>
         </div>

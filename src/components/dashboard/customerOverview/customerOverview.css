@@ -1,0 +1,53 @@
+.customer-overview-box-outer {
+    padding: 0px 10px 10px 0;
+    margin-right: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+.customer-overview-box {
+    height: 95px;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+    border-radius: 12.32px;
+    background-color: #FFFFFF;
+    padding: 0 20px 20px 20px;
+}
+.customer-overview-heading {
+    height: 16px;
+    color: #808A8F;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.customer-overview-left-count {
+    height: 30px;
+    color: #212145;
+    font-size: 23.11px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 30px;
+}
+.customer-overview-left-desc {
+    height: 13px;
+    color: #9191AF;
+    font-size: 9.24px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 13px;
+}
+.customer-overview-right-count {
+    height: 14px;
+    color: #0FB269;
+    font-size: 10.78px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 14px;
+}
+.customer-overview-right-desc {
+    height: 13px;
+    color: #9191AF;
+    font-size: 9.24px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 13px;
+    text-align: right;
+}

@@ -20,7 +20,7 @@ export default function Home(props) {
             {sideMenuFlag ? (
                 <SideMenu></SideMenu>
             ) : null}
-            <div className={`float-left clearfix ${sideMenuFlag ? `w-80` : `w-100`}`} style={{height: containerHeightCalcFn()}}>
+            <div id="home-content" className={`float-left clearfix p-4 ${sideMenuFlag ? `w-80` : `w-100`}`} style={{height: containerHeightCalcFn()}}>
                 {props.children}    
             </div>
         </div>
