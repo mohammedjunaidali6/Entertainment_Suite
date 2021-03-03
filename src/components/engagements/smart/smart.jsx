@@ -5,8 +5,14 @@ import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import './smart.css';
+
 import { containerHeightCalcFn } from "../../common/global";
+import SetGoals from "./setGoals/setGoals";
+import TargetAudience from "./targetAudience/targetAudience";
+import DefineJourney from "./defineJourney/defineJourney";
+import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
+import Review from "./review/review";
+import './smart.css';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -30,6 +36,7 @@ export default function EngagementsSmart(props) {
     const [createFlag, setCreateFlag] = useState(false);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [step, setStep] = useState('setGoals');
 
     const campaignActionClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -48,6 +55,33 @@ export default function EngagementsSmart(props) {
             setCampaigndata(data);
         } else {
             setCampaigndata(data.filter(e => e.status === val));
+        }
+    }
+    const stepsBackfn = () => {
+        if(step === 'setGoals') {
+            setCreateFlag(false);
+        } else if(step === 'targetAudience') {
+            setStep('setGoals');
+        } else if(step === 'defineJourney') {
+            setStep('targetAudience');
+        } else if(step === 'rewardsAndBudget') {
+            setStep('defineJourney');
+        } else if(step === 'review') {
+            setStep('rewardsAndBudget');
+        }
+    }
+    const stepsNextfn = () => {
+        if(step === 'setGoals') {
+            setStep('targetAudience');
+        } else if(step === 'targetAudience') {
+            setStep('defineJourney');
+        } else if(step === 'defineJourney') {
+            setStep('rewardsAndBudget');
+        } else if(step === 'rewardsAndBudget') {
+            setStep('review');
+        } else if(step === 'review') {
+            setCreateFlag(false);
+            setStep('setGoals');
         }
     }
 
@@ -161,12 +195,20 @@ export default function EngagementsSmart(props) {
 
                         </div>
                         <div className="c-s-content-sec">
-
+                            {step === 'setGoals' ? <SetGoals></SetGoals> : (
+                                step === 'targetAudience' ? <TargetAudience></TargetAudience> : (
+                                    step === 'defineJourney' ? <DefineJourney></DefineJourney> : (
+                                        step === 'rewardsAndBudget' ? <RewardsAndBudget></RewardsAndBudget> : (
+                                            step === 'review' ? <Review></Review> : null
+                                        )
+                                    )
+                                )
+                            )}
                         </div>
                     </div>
                     <div id="c-s-action-sec" className="w-100">
-                        <button type="button" className="c-s-btn-approve ml-3 float-right" >Next</button>
-                        <button type="button" className="c-s-btn-back float-right" onClick={() => setCreateFlag(false)}>Back</button>
+                        <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>{step === 'review' ? 'Approve' : 'Next'}</button>
+                        <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
                     </div>
                 </Fragment>
             )}

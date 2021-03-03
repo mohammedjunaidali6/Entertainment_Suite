@@ -1,0 +1,9 @@
+.c-e-campaign-sec {
+    height: 88px;
+    background-color: #F2F4F5;
+}
+.c-e-campaign-goal-sec {
+    border-radius: 0 0 10px 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+}

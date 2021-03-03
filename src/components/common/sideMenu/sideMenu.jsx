@@ -81,40 +81,43 @@ export default function SideMenu(props) {
         setSelectedSM(7);
         history.push('/admin');
     }
+    function sideLabelFlag() {
+        return selectedSM === 1 || selectedSM === 3 || selectedSM === 5 || selectedSM === 7;
+    }
 
     return (
         <div id="side-menu-container" className="w-20 float-left clearfix" style={{height: containerHeightCalcFn()}}>
-            <div className={`s-m-major float-left clearfix ${selectedSM === 1 || selectedSM === 3 ? `w-100` : `w-25`}`} >
+            <div className={`s-m-major float-left clearfix ${sideLabelFlag() ? `w-100` : `w-25`}`} >
                 <div className={`s-m-item ${selectedSM === 1 ? `active` : ``}`} onClick={() => overviewClick()}>
                     <img src={overview_src} className="s-m-item-img" alt="Overview" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Overview</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Overview</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 2 ? `active` : ``}`} onClick={() => engagementClick(2, 1, 'smart')}>
                     <img src={engagements_src} className="s-m-item-img" alt="Engagements" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Engagements</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Engagements</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 3 ? `active` : ``}`} onClick={() => liveviewClick()}>
                     <img src={liveview_src} className="s-m-item-img" alt="Liveview" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Live view</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Live view</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 4 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')}>
                     <img src={analytics_src} className="s-m-item-img" alt="Analytics" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Analytics</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Analytics</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 5 ? `active` : ``}`} onClick={() => segmentClick()}>
                     <img src={segment_src} className="s-m-item-img" alt="CustomerSegment" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Customer Segment</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Customer Segment</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 6 ? `active` : ``}`} onClick={() => manageClick(6, 1, 'rewards')}>
                     <img src={manage_src} className="s-m-item-img" alt="Manage" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Manage</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Manage</span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 7 ? `active` : ``}`} onClick={() => adminClick()}>
                     <img src={admin_src} className="s-m-item-img" alt="Admin" />
-                    {selectedSM === 1 || selectedSM === 3 ? (<span className="s-m-item-lbl">Admin</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Admin</span>) : null}
                 </div>
             </div>
-            {selectedSM !== 1 || selectedSM !== 3 ? (
+            {selectedSM !== 1 || selectedSM !== 3 || selectedSM !== 5 || selectedSM !== 7 ? (
                 <div className="s-m-sub w-75 float-left clearfix">
                     {selectedSM === 2 ? (
                         <Fragment>
