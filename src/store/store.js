@@ -21,6 +21,9 @@ import AnalyticsTrendsReducer from "../reducers/analytics/trends/trendsReducer";
 import AnalyticsGamePerformanceReducer from "../reducers/analytics/gamePerformance/gamePerformanceReducer";
 import SegmentsReducer from "../reducers/segments/segmentsReducer";
 import AdminReducer from "../reducers/admin/adminReducer";
+import LoginReducer from "../reducers/login/loginReducer";
+import RegisterReducer from "../reducers/register/registerReducer";
+import VerifyReducer from "../reducers/verify/verifyReducer";
 import POCReducer from '../reducers/poc/pocReducer';
 
 function saveToSessionStorage(state) {
@@ -65,6 +68,9 @@ const reducer = combineReducers({
   AnalyticsGamePerformanceReducer: AnalyticsGamePerformanceReducer,
   SegmentsReducer: SegmentsReducer,
   AdminReducer: AdminReducer,
+  LoginReducer: LoginReducer,
+  RegisterReducer: RegisterReducer,
+  VerifyReducer: VerifyReducer,
   POCReducer: POCReducer
 });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useLocation } from "react-router-dom";
 import SideMenu from "../common/sideMenu/sideMenu";
 import './home.css';
@@ -8,8 +8,7 @@ export default function Home(props) {
     const path = useLocation();
     const [sideMenuFlag, setSideMenuFlag] = useState(true);
     useEffect(() => {
-        console.log('path', path);
-        if(path.pathname === '/settings') {
+        if(path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings') {
             setSideMenuFlag(false);
         } else {
             setSideMenuFlag(true);
@@ -17,8 +16,12 @@ export default function Home(props) {
     }, [path.pathname]);
     return (
         <div id="home-container">
-            {sideMenuFlag ? (
-                <SideMenu></SideMenu>
+            {window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
+                <Fragment>
+                    {sideMenuFlag ? (
+                        <SideMenu></SideMenu>
+                    ) : null}
+                </Fragment>
             ) : null}
             <div id="home-content" className={`float-left clearfix p-4 ${sideMenuFlag ? `w-80` : `w-100`}`} style={{height: containerHeightCalcFn()}}>
                 {props.children}    

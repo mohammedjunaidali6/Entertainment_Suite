@@ -12,6 +12,7 @@ import manage_src from "../../../assets/img/Manage.svg";
 import segment_src from "../../../assets/img/Segment.svg";
 
 export default function SideMenu(props) {
+    console.log('Sidemenu JSX')
     let history = useHistory();
     const [selectedSM, setSelectedSM] = useState(1);
     const [engagementSM, setEngagementSM] = useState(1);
@@ -20,7 +21,6 @@ export default function SideMenu(props) {
 
     useEffect(() => {
         if(history && history.location) {
-            console.log('history', history);
             if(history.location.pathname === '') {
                 history.push('/');
             } else if(history.location.pathname === '/engagements/smart') {

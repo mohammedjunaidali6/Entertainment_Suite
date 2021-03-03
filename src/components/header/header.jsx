@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
     let history = useHistory();
-    
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [company, setCompany] = useState('');

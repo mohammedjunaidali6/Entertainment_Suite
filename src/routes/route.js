@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import NotFound from '../components/common/notFound';
 import { ThemeProvider } from '../contexts/themeContext';
 import Home from '../components/home/home';
@@ -12,14 +13,20 @@ import LiveViewContatiner from "../containers/liveView/liveViewContainer";
 import AnalyticsContatiner from "../containers/analytics/analyticsContainer";
 import SegmentsContatiner from "../containers/segments/segmentsContainer";
 import AdminContatiner from "../containers/admin/adminContainer";
+import LoginContatiner from "../containers/login/loginContainer";
+import RegisterContatiner from "../containers/register/registerContainer";
+import VerifyContatiner from "../containers/verify/verifyContainer";
 import POCContainer from '../containers/poc/pocContainer';
 
 export default function AppRoute(props) {
+  let history = useHistory();
   return (
     <ThemeProvider>
       <div id="app-route-container">
         <BrowserRouter>
-          <HeaderContainer />
+          {window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
+            <HeaderContainer />
+          ) : null}
           <Home>
             <Switch>
               <Route exact path="/" component={DashboardContatiner}/>
@@ -30,6 +37,9 @@ export default function AppRoute(props) {
               <Route exact path="/segments" component={SegmentsContatiner} />
               <Route exact path="/admin" component={AdminContatiner} />
               <Route exact path="/settings" component={SettingsContatiner} />
+              <Route exact path="/login" component={LoginContatiner} />
+              <Route exact path="/register" component={RegisterContatiner} />
+              <Route exact path="/verify" component={VerifyContatiner} />
               <Route exact path="/poc" component={POCContainer} />
               <Route path="*" component={NotFound} />
             </Switch>

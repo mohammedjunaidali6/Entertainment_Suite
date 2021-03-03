@@ -140,3 +140,35 @@
 .c-b-campaign-options div:hover {
     background-color: #EDEEF0;
 }
+#c-s-action-sec {
+    height: 74px;
+    border-top: solid 1px var(--borderBg);
+}
+.c-s-btn-approve {
+    height: 38px;
+    width: 89px;
+    border-radius: 4px;
+    background-color: var(--buttonBg);
+    color: #FFFFFF;
+    font-family: "Circular Std";
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 20px;
+    border: none;
+    outline: 0;
+}
+.c-s-btn-back {
+    height: 38px;
+    width: 89px;
+    border-radius: 4px;
+    background-color: var(--buttonAltBg);
+    color: #385B69;
+    font-family: "Circular Std";
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 20px;
+    outline: 0;
+    border: none;
+}
