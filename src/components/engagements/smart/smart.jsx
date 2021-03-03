@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical } from "react-icons/bs";
+import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
@@ -149,7 +149,21 @@ export default function EngagementsSmart(props) {
                 </Fragment>
             ) : (
                 <Fragment>
-                    <div style={{height: containerHeightCalcFn(192)}}></div>
+                    <div style={{height: containerHeightCalcFn(192)}}>
+                        <div id="c-s-breadcrum">
+                            <div className="c-s-breadcrum-back" onClick={() => setCreateFlag(false)}><BsChevronLeft></BsChevronLeft>Back</div>
+                            <div className="c-s-breadcrum-title">
+                                <span className="pl-1 c-pointer" onClick={() => setCreateFlag(false)}>Smart Engagements / </span>
+                                <span className="text-bold">Create Engagement</span>
+                            </div>
+                        </div>
+                        <div className="c-s-step-sec mt-2">
+
+                        </div>
+                        <div className="c-s-content-sec">
+
+                        </div>
+                    </div>
                     <div id="c-s-action-sec" className="w-100">
                         <button type="button" className="c-s-btn-approve ml-3 float-right" >Next</button>
                         <button type="button" className="c-s-btn-back float-right" onClick={() => setCreateFlag(false)}>Back</button>

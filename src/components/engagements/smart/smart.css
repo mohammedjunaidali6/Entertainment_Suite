@@ -172,3 +172,31 @@
     outline: 0;
     border: none;
 }
+.c-s-breadcrum-back {
+    height: 21px;
+    color: #3F4045;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    cursor: pointer;
+}
+.c-s-breadcrum-title {
+    height: 21px;
+    color: #6A6976;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+.c-s-step-sec {
+    height: 75px;
+    border-radius: 10px 10px 0 0;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+}
+.c-s-content-sec {
+    border-radius: 0 0 10px 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+}

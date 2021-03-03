@@ -28,6 +28,8 @@ input[type="button"] {
 .c-pointer {cursor: pointer !important; }
 .disp-flex { display: flex !important; }
 .disp-flex-root { display: flow-root !important; }
+.c-pointer { cursor: pointer; }
+.c-n-allowed { cursor: not-allowed; }
 .m-0-auto { margin: 0 auto !important;}
 .b-r-10 { border-radius: 10px !important; }
 .bg-white { background: white !important;}
