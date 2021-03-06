@@ -4,6 +4,118 @@
 }
 .c-e-campaign-goal-sec {
     border-radius: 0 0 10px 10px;
-    background-color: #FFFFFF;
+    background-color: var(--whiteBg);
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+    padding: 0 42px 42px 42px;
+}
+.c-e-campaign-goal-h {
+    color: #3F4045;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    padding: 30px 0;
+}
+.c-e-campaign-goal-box {
+    box-sizing: border-box;
+    padding: 0 21px 39px 0;
+    border-radius: 4px;
+    background-color: var(--whiteBg);
+    cursor: pointer;
+}
+/* .c-e-campaign-goal-box:nth-child(3n) {
+    padding: 0 0 39px 0;
+} */
+.c-e-campaign-goal-box-inner {
+    height: 192px;
+    border: 1px solid #E3E7ED;
+}
+.setGoalForm-input-sec {
+    padding: 14px 42px 0 42px;
+}
+.c-e-campaign-goal-box-inner-h {
+    height: 19px;
+    color: #3F4045;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+.c-e-campaign-goal-box-inner-desc {
+    height: 45px;
+    color: #808A8F;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 15px;
+    text-align: center;
+    padding: 0 14px;
+}
+.c-e-campaign-goal-box-inner-logo {
+    text-align: center;
+    padding: 30px;
+}
+div.checkmark .checkmark-circle {
+    font-size: 12px;
+    list-style-type: none;
+    margin-bottom: 1em;
+    padding: 0.25em 0 0 2.5em;
+    position: relative;
+    top: 10px;
+}
+div.checkmark .checkmark-circle:before {
+    content: " ";
+    display: block;
+    border: solid 0.8em var(--headerBg);
+    border-radius: .8em;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: 0.5em;
+    top: 40%; 
+    margin-top: -0.5em;
+}
+div.checkmark .checkmark-circle:after {
+    content: " ";
+    display: block;
+    width: 0.3em;
+    height: 0.6em;
+    border: solid white;
+    border-width: 0 0.2em 0.2em 0;
+    position: absolute;
+    left: 14px;
+    top: 40%;
+    margin-top: -0.1em;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+div.checkmark .unmark-circle:before {
+    content: " ";
+    display: block;
+    border: solid 0.8em var(--headerBg);
+    border-radius: .8em;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: 0.5em;
+    top: 6%; 
+    margin-top: -0.5em;
+}
+div.checkmark .unmark-circle:after {
+    content: " ";
+    display: block;
+    width: 0.3em;
+    height: 0.6em;
+    border: solid white;
+    border-width: 0 0.2em 0.2em 0;
+    position: absolute;
+    left: 18px;
+    top: 6%;
+    margin-top: -0.1em;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

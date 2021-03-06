@@ -12,6 +12,7 @@ import TargetAudience from "./targetAudience/targetAudience";
 import DefineJourney from "./defineJourney/defineJourney";
 import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
 import Review from "./review/review";
+import store from "../../../store/store";
 import './smart.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +32,16 @@ const data = [
 ];
 
 export default function EngagementsSmart(props) {
+    console.log('store', store.getState());
     const [active, setActive] = useState('all');
     const [campaigndata, setCampaigndata] = useState(data);
     const [createFlag, setCreateFlag] = useState(false);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [step, setStep] = useState('setGoals');
+    const [goalDataForm, setGoalDataForm] = useState(null);
+    const [goalData, setGoalData] = useState({});
+    const [defineJourney, setDefineJourney] = useState(null);
 
     const campaignActionClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -59,6 +64,7 @@ export default function EngagementsSmart(props) {
     }
     const stepsBackfn = () => {
         if(step === 'setGoals') {
+            createEngagementDataClear();
             setCreateFlag(false);
         } else if(step === 'targetAudience') {
             setStep('setGoals');
@@ -72,17 +78,40 @@ export default function EngagementsSmart(props) {
     }
     const stepsNextfn = () => {
         if(step === 'setGoals') {
-            setStep('targetAudience');
+            if(goalDataForm === 'VALID') {
+                setStep('targetAudience');
+                props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
+            }
         } else if(step === 'targetAudience') {
             setStep('defineJourney');
         } else if(step === 'defineJourney') {
-            setStep('rewardsAndBudget');
+            if(defineJourney) {
+                setStep('rewardsAndBudget');
+                props.engagementsSmartActionHandler.dispatchDefineJourneyData(defineJourney);
+            }
         } else if(step === 'rewardsAndBudget') {
             setStep('review');
         } else if(step === 'review') {
+            createEngagementDataClear();
             setCreateFlag(false);
             setStep('setGoals');
         }
+    }
+
+    const createEngagementDataClear = () => {
+        props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
+        props.engagementsSmartActionHandler.dispatchDefineJourneyData(null);
+    }
+
+    const getSetGoalsFormValues = (val, status) => {
+        console.log('val', val);
+        console.log('status', status);
+        setGoalDataForm(status);
+        setGoalData(val);
+    }
+
+    const getDefineJourney = (data) => {
+        setDefineJourney(data);
     }
 
     return (
@@ -183,7 +212,7 @@ export default function EngagementsSmart(props) {
                 </Fragment>
             ) : (
                 <Fragment>
-                    <div style={{height: containerHeightCalcFn(192)}}>
+                    <div style={{height: containerHeightCalcFn(192), overflowY: "auto"}}>
                         <div id="c-s-breadcrum">
                             <div className="c-s-breadcrum-back" onClick={() => setCreateFlag(false)}><BsChevronLeft></BsChevronLeft>Back</div>
                             <div className="c-s-breadcrum-title">
@@ -195,9 +224,9 @@ export default function EngagementsSmart(props) {
 
                         </div>
                         <div className="c-s-content-sec">
-                            {step === 'setGoals' ? <SetGoals></SetGoals> : (
+                            {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues}></SetGoals> : (
                                 step === 'targetAudience' ? <TargetAudience></TargetAudience> : (
-                                    step === 'defineJourney' ? <DefineJourney></DefineJourney> : (
+                                    step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney}></DefineJourney> : (
                                         step === 'rewardsAndBudget' ? <RewardsAndBudget></RewardsAndBudget> : (
                                             step === 'review' ? <Review></Review> : null
                                         )

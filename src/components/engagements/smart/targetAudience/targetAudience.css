@@ -1,0 +1,89 @@
+.c-e-target-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin: 30px 0 16px 6px;
+}
+.c-e-target-sec {
+    /* border-radius: 0 0 10px 10px; */
+    background-color:var(--whiteBg);
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+    padding: 0 42px 42px 42px;
+}
+.c-e-target-box-h {
+    height: 21px;
+    color: #FFFFFF;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: 21px;
+    text-align: center;
+}
+.c-e-target-c {
+    height: 21px;
+    color: #FFFFFF;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+.c-e-target-per {
+    height: 23px;
+    color: #FFFFFF;
+    font-size: 17px;
+    letter-spacing: 0;
+    line-height: 23px;
+}
+.c-e-target-left-box-con {
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-p-box {
+    height: 255px;
+    background-color: #F690CE;
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-dp-box {
+    height: 125px;
+    background-color: #F077A3;
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-b-box {
+    box-sizing: border-box;
+    height: 127px;
+    background-color: #6B9CF3;
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-pur-box {
+    height: 125px;
+    background-color: #837DF0;
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-l-pur-box {
+    height: 125px;
+    background-color: #B1A2FF;
+    border: 2px solid #FFFFFF;
+    /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+}
+.c-e-target-p-rule {
+    height: 15px;
+    color: #5F6165;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 15px;
+    margin: 30px 0 16px 6px;
+}
+.c-e-target-p-rule-opt .css-yk16xz-control {
+    box-sizing: border-box;
+    height: 30px;
+    border: 1px solid #DBDDDE;
+    border-radius: 15px;
+    background-color: #F2F4F5;
+}

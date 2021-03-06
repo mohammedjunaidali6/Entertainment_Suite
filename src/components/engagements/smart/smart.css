@@ -143,6 +143,9 @@
 #c-s-action-sec {
     height: 74px;
     border-top: solid 1px var(--borderBg);
+    padding: 20px 20px 0 0;
+    background-color: var(--whiteBg);
+    border-radius: 0 0 10px 10px;
 }
 .c-s-btn-approve {
     height: 38px;
@@ -196,7 +199,7 @@
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
 }
 .c-s-content-sec {
-    border-radius: 0 0 10px 10px;
+    /* border-radius: 0 0 10px 10px; */
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
 }

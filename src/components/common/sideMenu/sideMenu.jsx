@@ -125,7 +125,7 @@ export default function SideMenu(props) {
                             <div className={`s-m-sub-tab ${engagementSM === 1 ? `active` : ``}`} onClick={() => engagementClick(2, 1, 'smart')} >
                                 <span>Smart Engagements</span>
                             </div>
-                            <div className={`s-m-sub-tab ${engagementSM === 2 ? `active` : ``}`} onClick={() => engagementClick(2, 1, 'journey')}>
+                            <div className={`s-m-sub-tab ${engagementSM === 2 ? `active` : ``}`} onClick={() => engagementClick(2, 2, 'journey')}>
                                 <span>Journey</span>
                             </div>
                         </Fragment>

@@ -13,5 +13,12 @@ export const TextInput = ({ handler, touched, hasError, meta }) => (
       size="small"
       className={touched && hasError("required") ? 'custom-form-error' : ''}
     />
+    {meta.showError ? (
+      <span className="col-md-12 p-0 pl-2 mt-1 clearfix float-left selection-error">
+        {touched
+        && hasError("required")
+        && `${meta.label} is required`}
+      </span>
+    ) :null}
   </div>  
 );
