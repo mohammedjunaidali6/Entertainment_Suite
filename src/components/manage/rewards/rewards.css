@@ -1,0 +1,313 @@
+
+
+
+
+input:focus,select:focus{
+    outline: #E3E7ED;
+}
+
+
+.reward-options-tab{
+    margin-top: 10px;
+}
+.r-m-tab {
+    height: 18px;
+    color: #5F6165;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.46px;
+    line-height: 18px;
+    padding: 2px 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+.r-m-tab-active {
+    height: 30px;
+    border-radius: 20px;
+    background-color: rgba(107,156,243,0.09);
+    color: var(--buttonBg);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 26px;
+}
+.c-r-search-box{
+    box-sizing: border-box;
+  height: 30px;
+  width: 174px;
+  border: 1px solid #DBDDDE;
+  border-radius: 14.5px;
+  background-color: #FFFFFF;
+}
+
+
+
+
+.disp-inline-block{
+    display: inline-block;
+}
+
+
+.manage-coupons{
+    height: 21px;
+    color: #3F4045;
+    margin-bottom: 25px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+
+.create-new-rewards{
+    /* height: 481px; */
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    padding: 40px;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+}
+
+.add-coupon{
+    height: 21px;
+    color: #6B9CF3;
+    margin-bottom: 25px;
+    font-family: Roboto;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+
+.display-name{
+    height: 62px;
+    /* width: 556px; */
+    display: inline-block;
+    
+}
+.display-name-text{
+    height: 17px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+
+.c-r-display-input-field{
+    box-sizing: border-box;
+    height: 40px;
+    width: 500px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9
+}
+
+.c-r-coupon-code{
+    height: 62px;
+    width: 230px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.c-r-coupon-code-text{
+    height: 17px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.coupon-code-input-field{
+    box-sizing: border-box;
+    height: 40px;
+    /* width: 285px; */
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+
+.c-r-row-2{
+    height: 62px;
+  width: 886px;
+  margin-top: 18px;
+}
+.target-category-text{
+    height: 17px;
+  width: 88px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.c-r-row-3{
+    margin: 17px auto;
+}
+.usage-per-customer,.reward-amount,.amount-selection-box,.expiry-date{
+    margin-right: 18px;
+}
+.usage-per-customer-text{
+    height: 17px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+.usage-per-customer-input-field{
+    box-sizing: border-box;
+    height: 40px;
+    width: 250px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+.rewarded-amount{
+    height: 17px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+
+.prize-types{
+    box-sizing: border-box;
+    height: 40px;
+    width: 100px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+.option-text{
+    height: 17px;
+  width: 87px;
+  color: #5F6165;
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 17px;
+}
+
+
+
+.currency-selector{
+    box-sizing: border-box;
+    height: 40px;
+    width: 45px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+
+.amount-input{
+    box-sizing: border-box;
+  height: 40px;
+  width: 110px;
+  border: 1px solid #E3E7ED;
+  border-radius: 4px;
+  background-color: #F8F9F9;
+}
+
+.expiry-date-text{
+    height: 17px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.expiry-date-input{
+    box-sizing: border-box;
+    height: 40px;
+    width: 160px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+
+.description-box{
+    margin-top: 18px;
+    margin-bottom: 20px;
+}
+.description-text{
+    height: 16px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.description-input{
+    box-sizing: border-box;
+    height: 40px;
+    width: 750px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+}
+
+.description-input:focus{
+    border: 1px solid #E3E7ED;
+}
+
+.c-r-controls{
+    height: 60px;
+}
+.c-r-control-buttons{
+    height: 60px;
+    margin-top: 20px;
+}
+.c-r-cancel-button{
+    height: 38px;
+    width: 89px;
+    border-radius: 4px;
+    
+}
+.c-r-add-button{
+    height: 38px;
+    width: 89px;
+    border-radius: 4px;
+    background-color: #4ACB91;
+}
+
+.cancel-btn-font{
+    height: 20px;
+  width: 49px;
+  padding: 9px 30px;
+  color: #808A8F;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+.add-btn-font{
+    height: 20px;
+  width: 29px;
+  padding: 9px 30px;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 20px;
+}
