@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import classnames from 'classnames';
@@ -99,6 +99,7 @@ export default function EngagementsSmart(props) {
     }
 
     const createEngagementDataClear = () => {
+        console.log('Fridoo');
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
         props.engagementsSmartActionHandler.dispatchDefineJourneyData(null);
     }
@@ -113,6 +114,12 @@ export default function EngagementsSmart(props) {
     const getDefineJourney = (data) => {
         setDefineJourney(data);
     }
+
+    useEffect(() => {
+        return () => {
+            createEngagementDataClear();
+        }
+    }, []);
 
     return (
         <div id="engagements-smart-container">

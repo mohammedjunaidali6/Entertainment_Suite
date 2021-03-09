@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { FormBuilder, FieldGroup, FieldControl, Validators } from "react-reactive-form";
 import { TextInput } from "../../../common/utils/textInput";
 import icon_src from "../../../../assets/img/Engagements.svg";
+import { storeDataFn } from "../../../common/global";
 
 import './setGoals.css';
 
@@ -15,9 +16,9 @@ const tempArray = [
 ];
 
 const setGoalForm = FormBuilder.group({
-    campaignName: ["", Validators.required],
-    displayName: ["", Validators.required],
-    goal: ["", Validators.required]
+    campaignName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['campaignName'] : "", Validators.required],
+    displayName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['displayName'] : "", Validators.required],
+    goal: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['goal'] : "", Validators.required]
 });
 
 export default function SetGoals(props) {
