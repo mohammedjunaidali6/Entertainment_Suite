@@ -9,7 +9,7 @@ export default function Manage(props) {
     
     return (
         <div id="manage-container">
-            <span>Manage Component</span>
+            {/* <span>Manage Component</span> */}
             {history.location.pathname === '/manage/rewards' ? (
                 <ManageRewardsContatiner />
             ) : null}

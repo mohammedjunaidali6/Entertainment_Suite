@@ -1,0 +1,89 @@
+.manage-journey-block{
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+.manage-journey{
+    height: 21px;
+    color: #3F4045;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+
+.manage-journey-text{
+    height: 16px;
+    color: #6A6976;
+    font-family: Roboto;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+
+.journey-table-block{
+    margin: 2px;
+}
+
+.btn-create-journey {
+    height: 38px;
+    width: 200px;
+    border-radius: 4px;
+    background-color: var(--buttonBg);
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-c-j-text {
+    height: 20px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 20px;
+}
+
+.create-new-journey-container{
+    background-color: #FFFFFF;
+    border-radius: 0.5rem;
+    padding-left: 40px;
+    padding-top: 20px;
+    padding-bottom: 120px;
+}
+
+.heading-c-j{
+    height: 21px;
+    color: #3F4045;
+    font-family: Roboto;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 21px;
+} 
+
+.journey-name-c-j{
+    height: 16px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+  padding-bottom: 10px;
+
+}
+
+.input-field-c-j{
+    box-sizing: border-box;
+  height: 40px;
+  width: 441px;
+  border: 1px solid #E3E7ED;
+  border-radius: 4px;
+  background-color: #F8F9F9;
+}
+
+.input-field-c-j:hover{
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+}
