@@ -1,7 +1,4 @@
 
-
-
-
 input:focus,select:focus{
     outline: #E3E7ED;
 }
@@ -60,7 +57,7 @@ input:focus,select:focus{
 }
 
 .create-new-rewards{
-    /* height: 481px; */
+    height: 481px;
     border-radius: 10px;
     background-color: #FFFFFF;
     padding: 40px;
@@ -97,7 +94,6 @@ input:focus,select:focus{
 .c-r-display-input-field{
     box-sizing: border-box;
     height: 40px;
-    width: 500px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9
@@ -105,8 +101,6 @@ input:focus,select:focus{
 
 .c-r-coupon-code{
     height: 62px;
-    width: 230px;
-    margin-left: 10px;
     display: inline-block;
 }
 
@@ -132,7 +126,7 @@ input:focus,select:focus{
 
 .c-r-row-2{
     height: 62px;
-  width: 886px;
+  /* width: 886px; */
   margin-top: 18px;
 }
 .target-category-text{
@@ -185,7 +179,6 @@ input:focus,select:focus{
 .prize-types{
     box-sizing: border-box;
     height: 40px;
-    width: 100px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9;
@@ -206,7 +199,6 @@ input:focus,select:focus{
 .currency-selector{
     box-sizing: border-box;
     height: 40px;
-    width: 45px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9;
@@ -215,7 +207,6 @@ input:focus,select:focus{
 .amount-input{
     box-sizing: border-box;
   height: 40px;
-  width: 110px;
   border: 1px solid #E3E7ED;
   border-radius: 4px;
   background-color: #F8F9F9;
@@ -235,7 +226,6 @@ input:focus,select:focus{
 .expiry-date-input{
     box-sizing: border-box;
     height: 40px;
-    width: 160px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9;
@@ -258,7 +248,6 @@ input:focus,select:focus{
 .description-input{
     box-sizing: border-box;
     height: 40px;
-    width: 750px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9;

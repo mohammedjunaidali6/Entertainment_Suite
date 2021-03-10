@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>simple-remove</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.623529 0 0 0 0 0.627451 0 0 0 0 0.635294 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Dashboard-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Artboard-14" transform="translate(-145.000000, -606.000000)">
+            <g id="Group-20" transform="translate(139.000000, 430.000000)">
+                <g id="simple-remove" transform="translate(7.000000, 175.317881)" filter="url(#filter-1)">
+                    <g transform="translate(7.000000, 8.823223) rotate(45.000000) translate(-7.000000, -8.823223) translate(2.500000, 4.323223)">
+                        <path d="M8.25,0 L0,8.25 M0,0 L8.25,8.25" id="Combined-Shape" stroke="#000000" stroke-width="2"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
