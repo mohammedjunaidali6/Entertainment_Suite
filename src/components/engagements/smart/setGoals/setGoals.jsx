@@ -31,14 +31,20 @@ export default function SetGoals(props) {
         props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
     }
     function goalBoxClick(boxData) {
+        goalBoxes.forEach((obj) => {
+            obj.isActive = false;
+        });
         boxData.isActive = true;
         setGoalForm.patchValue({
             campaignName: setGoalForm.controls.campaignName.value,
             displayName: setGoalForm.controls.displayName.value,
             goal: boxData
         });
-        // console.log('setGoalForm', setGoalForm);
         props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
+        console.log('goalBoxes', goalBoxes);
+    }
+    const sgChange = () => {
+        
     }
 
     return (
@@ -71,6 +77,7 @@ export default function SetGoals(props) {
                                 <div className="c-e-campaign-goal-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => goalBoxClick(obj)}>
                                     <div className="c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark">
                                         {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
+                                        <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive ? true : false} onChange={sgChange}></input>
                                         <div className="c-e-campaign-goal-box-inner-logo">
                                             <img src={icon_src} alt={obj.heading} />
                                         </div>

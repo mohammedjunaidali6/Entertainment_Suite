@@ -1,0 +1,124 @@
+#rewards-budget-container {
+    padding: 36px 42px 0 42px;
+}
+.r-b-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-bottom: 20px;
+}
+.r-b-add-reward {
+    box-sizing: border-box;
+    height: 31px;
+    width: 113px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+.r-b-add-reward-text {
+    height: 15px;
+    color: #5F6165;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 15px;
+}
+.r-b-add-reward-img {
+    color: var(--headerBg);
+    padding: 0 6px;
+}
+.b-d-sec {
+    padding: 36px 42px;
+    height: 158px;
+    border-radius: 0 0 10px 10px;
+    background-color: #F8F9F9;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+    margin-top: 19px;
+}
+.b-d-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-bottom: 21px;
+}
+.b-d-content-h {
+    height: 16px;
+    color: #5F6165;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.r-b-addreward-h {
+    height: 21px;
+    color: #6B9CF3;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-bottom: 20px;
+}
+.r-b-addreward-s {
+    height: 38px;
+    width: 89px;
+    border-radius: 4px;
+    background-color: #4ACB91;
+    color: #FFFFFF;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 38px;
+    text-align: center;
+    cursor: pointer;
+}
+.r-b-addreward-c {
+    height: 20px;
+    width: 50px;
+    color: #808A8F;
+    font-family: Roboto;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 38px;
+    margin: 0 24px;
+    cursor: pointer;
+}
+.r-b-ar-i-h {
+    height: 16px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 16px;
+    margin-bottom: 7px;
+}
+.r-b-ar-i {
+    box-sizing: border-box;
+    height: 40px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+    padding-left: 10px;
+    width: 100%;
+    outline: 0;
+}
+.r-b-ar-link {
+    height: 16px;
+    color: #6B9CF3;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+    text-decoration: underline;
+    text-align: right;
+    cursor: pointer;
+    padding-right: 8px;
+    margin-top: 9px;
+}
+.r-b-addreward-top {
+    margin-bottom: 18px;
+}

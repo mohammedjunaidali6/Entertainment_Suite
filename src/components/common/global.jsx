@@ -17,3 +17,15 @@ export function bodyOverflowHiddenFn() {
 export function storeDataFn(reducerName, objName) {
     return store && store.getState([reducerName]) && store.getState([reducerName][objName]) ? store.getState([reducerName][objName]) : "";
 }
+
+export function getLinearGradientCSS(ratio, leftColor, rightColor) {
+    return [
+      '-webkit-gradient(',
+      'linear, ',
+      'left top, ',
+      'right top, ',
+      'color-stop(' + ratio + ', ' + leftColor + '), ',
+      'color-stop(' + ratio + ', ' + rightColor + ')',
+      ')'
+    ].join('');
+}

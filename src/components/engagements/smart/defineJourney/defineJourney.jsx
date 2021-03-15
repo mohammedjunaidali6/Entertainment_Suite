@@ -22,6 +22,10 @@ export default function DefineJourney(props) {
         console.log('journeyBoxes', journeyBoxes);
     }
 
+    const djChange = () => {
+        
+    }
+
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">
             <div className="c-e-journey-h">Choose User Journey </div>
@@ -32,6 +36,7 @@ export default function DefineJourney(props) {
                             <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
                                 <div className="c-e-journey-box-inner w-100 float-left clearfix checkmark">
                                     {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
+                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive ? true : false} onChange={djChange}></input>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-h">Journey {idx + 1}</div>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-tags">
                                         {obj.tags && obj.tags.length > 0 ? (

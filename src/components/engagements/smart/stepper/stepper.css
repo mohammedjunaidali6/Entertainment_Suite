@@ -1,0 +1,30 @@
+#e-stepper-container {
+    text-align: center;
+}
+.c-s-stepper-h {
+    height: 19px;
+    color: #3F4045;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 19px;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 8px;
+}
+.c-s-stepper-m {
+    text-align: center;
+}
+.c-s-stepper-sub-lbl {
+    height: 40px;
+    color: #808A8F;
+    font-size: 11px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.thumb-hide input[type='range']::-webkit-slider-thumb {
+    display: none;
+}

@@ -23,6 +23,8 @@ input[type="button"] {
 .w-35 {width: 35% !important}
 .w-34 {width: 34% !important}
 .w-33 {width: 33% !important}
+.w-32 {width: 32% !important}
+.w-31 {width: 31% !important}
 .w-30 {width: 30% !important}
 .w-25 {width: 25% !important}
 .w-24 {width: 24% !important}
@@ -35,6 +37,7 @@ input[type="button"] {
 .p-l-10 {padding-left: 10px !important;}
 .text-bold {font-weight: bold !important;}
 .disp-inline { display: inline !important; }
+.disp-inline-b { display: inline-block !important; }
 .c-pointer {cursor: pointer !important; }
 .disp-flex { display: flex !important; }
 .disp-flex-root { display: flow-root !important; }
@@ -79,4 +82,74 @@ button[disabled]{
     color: #ce3e3e;
     font-weight: bold;
     font-size: 12px;;
+}
+.content-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* for custom checkbox */
+input[type=checkbox], input[type=radio] {
+    --active: #275EFE;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, .3);
+    --border: #BBC1E1;
+    --border-hover: #275EFE;
+    --background: #fff;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 17px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid var(--bc, var(--border));
+    background: var(--b, var(--background));
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+    margin: 8px 0 0 10px;
+}
+input[type=checkbox]:not(.switch) {
+    border-radius: 50%;
+}
+input[type=checkbox]:not(.switch), input[type=radio]:not(.switch) {
+    width: 17px;
+}
+input[type=checkbox]:not(.switch):checked {
+    --r: 43deg;
+}
+input[type=checkbox]:not(.switch):checked, input[type=radio]:not(.switch):checked {
+    --o: 1;
+}
+input[type=checkbox]:checked, input[type=radio]:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: .3s;
+    --d-t: .6s;
+    --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+}
+input[type=checkbox]:not(.switch):after {
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 5px;
+    top: 2px;
+    transform: rotate(var(--r, 20deg));
+}
+input[type=checkbox]:not(.switch):after, input[type=radio]:not(.switch):after {
+    opacity: var(--o, 0);
+}
+input[type=checkbox]:after, input[type=radio]:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
 }

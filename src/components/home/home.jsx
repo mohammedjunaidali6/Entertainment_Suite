@@ -23,7 +23,7 @@ export default function Home(props) {
                     ) : null}
                 </Fragment>
             ) : null}
-            <div id="home-content" className={`float-left clearfix p-4 ${sideMenuFlag ? `w-80` : `w-100`}`} style={{height: containerHeightCalcFn()}}>
+            <div id="home-content" className={`float-left clearfix pt-4 pl-4 pb-4 pr-2 ${sideMenuFlag ? `w-80` : `w-100`}`} style={{height: containerHeightCalcFn()}}>
                 {props.children}    
             </div>
         </div>
