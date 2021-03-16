@@ -35,7 +35,7 @@ export default function Table(props){
            {props.data && props.data.length > 0 && props.columns && props.columns.length> 0?
            <Fragment>
                <DataTable
-                    noHeader={true}
+                    noHeader={props.noHeader ? props.noHeader : false}
                     columns = {props.columns}
                     data ={props.data}
                     striped

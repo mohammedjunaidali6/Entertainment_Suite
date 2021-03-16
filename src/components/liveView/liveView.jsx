@@ -29,6 +29,7 @@ export default function LiveView(props) {
                     <div className="l-v-s-o-box"></div>
                 </div>
             </div>
+
             <div className="w-100 float-left clearfix l-v-charts">
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
@@ -49,6 +50,24 @@ export default function LiveView(props) {
                 </div>
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box"></div>
+                </div>
+            </div>
+
+            <div className="w-100 float-left clearfix">
+                <div className="l-v-i-t-h">Instant Targeting</div>
+            </div>
+            <div className="w-100 float-left clearfix l-v-i-t">
+                <div className="w-25 float-left clearfix l-v-i-t-box-outer">
+                    <div className="l-v-i-t-box"></div>
+                </div>
+                <div className="w-25 float-left clearfix l-v-i-t-box-outer">
+                    <div className="l-v-i-t-box"></div>
+                </div>
+                <div className="w-25 float-left clearfix l-v-i-t-box-outer">
+                    <div className="l-v-i-t-box"></div>
+                </div>
+                <div className="w-25 float-left clearfix l-v-i-t-box-outer">
+                    <div className="l-v-i-t-box"></div>
                 </div>
             </div>
         </div>

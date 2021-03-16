@@ -34,3 +34,22 @@
     margin: 0px 10px 10px 0;
     padding: 22px;
 }
+.l-v-i-t-h {
+    height: 15px;
+    color: #9191AF;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 15px;
+    text-transform: uppercase;
+    margin-top: 63px;
+    margin-bottom: 24px;
+}
+.l-v-i-t-box {
+    height: 150px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
+    margin: 0px 10px 10px 0;
+    cursor: pointer;
+}
