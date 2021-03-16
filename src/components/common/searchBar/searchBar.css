@@ -1,6 +1,15 @@
-.searchBar{
+/* .searchBar{
     height: 29px;
     width: 173px;
     border-radius: 5%;
     border-width: 1px ;
+} */
+
+.searchBar{
+    box-sizing: border-box;
+  height: 30px;
+  width: 210px;
+  border: 1px solid #DBDDDE;
+  border-radius: 14.5px;
+  background-color: #FFFFFF;
 }

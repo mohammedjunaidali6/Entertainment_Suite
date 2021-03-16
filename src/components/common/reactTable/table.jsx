@@ -4,7 +4,7 @@ import DataTable from 'react-data-table-component';
 const customStyle ={
     headCells:{
         style:{
-            // height: '50px',
+            height: '50px',
             backgroundColor: '#F0F0F0',
             color: '#191D28' ,
             fontFamily: 'Roboto',
@@ -30,7 +30,7 @@ const customStyle ={
 
 export default function Table(props){
     return(
-        <div>
+        <div style={{ borderRadius: '10px', boxShadow: '0 0 4px 0 rgba(95,100,112,0.38)'}}>
            {props.data && props.data.length > 0 && props.columns && props.columns.length> 0?
            <div>
                <DataTable

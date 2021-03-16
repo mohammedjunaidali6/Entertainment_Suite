@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Table from "../../common/reactTable/table";
 import {journeyColumns, journeyData} from "./tempData";
-import TaskDragDrop from "./dragDrop";
 import './journey.css';
 
 export default function EngagementsJourney(props) {
@@ -38,7 +37,6 @@ export default function EngagementsJourney(props) {
                         <input className='input-field-c-j' type="text" placeholder="First Purchase User's journey"/>
                     </div>
             </div>
-            <TaskDragDrop />
         </Fragment>
     )
         }

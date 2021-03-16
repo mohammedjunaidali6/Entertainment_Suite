@@ -1,0 +1,142 @@
+#team-container{
+    padding: 30px 30px;
+    padding-bottom: 0%;
+    background-color: white;
+    
+}
+
+.t-m-title{
+    height: 15px;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 15px;
+}
+
+.t-m-create-btn{
+    height: 38px;
+    float: right;
+    padding: 8px;
+    padding-left: 12px;
+  width: 123px;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+}
+
+.t-m-create-btn-text{
+    height: 20px;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+.t-m-input-block{
+    margin-top: 35px;
+}
+
+.t-m-input{
+    margin-left: 20px;
+}
+.t-m-input-label{
+    height: 15px;
+    margin-bottom: 8px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+
+.t-m-input-field{
+    box-sizing: border-box;
+  height: 38px;
+  width: 250px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+}
+
+.t-m-input-field::placeholder{
+    height: 19px;
+    margin-left: 15px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+.t-m-message-block{
+    margin-left: 20px;
+    margin-top: 25px;
+}
+.t-m-message-box{
+    box-sizing: border-box;
+   
+  height: 82px;
+  width: 790px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #F8F9F9;
+}
+.t-m-message-box ::placeholder{
+    height: 0px;
+  opacity: 0.7;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+
+.t-m-actions{
+    height: 60px;
+    margin-left:-30px ;
+    margin-top: 150px;
+    width: 883px;
+    background-color: #FFFFFF;
+    box-shadow: 0 -1px 7px 1px rgba(95,100,112,0.11);
+}
+
+.t-m-act-btns{
+  float: right;
+  
+}
+
+.t-m-cancel-btn{
+  height: 38px;
+  width: 89px;
+  text-align: center;
+  margin-right: 10px;
+  border-radius: 4px;
+  background-color: #E3E7ED;
+}
+.t-m-save-btn{
+  height: 38px;
+  width: 89px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+}
+.t-m-cancel-btn-text{
+  height: 20px;
+  margin-top: 3px;
+  color: #385B69;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+.t-m-save-btn-text{
+  height: 20px;
+  margin-top: 6px;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
