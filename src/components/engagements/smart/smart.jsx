@@ -7,6 +7,8 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 
 import { containerHeightCalcFn } from "../../common/global";
+import CampaignBox from "../../common/campaignBox/campaignBox";
+import { CampaignMockData } from "../../../constants/globalMockdata";
 import SetGoals from "./setGoals/setGoals";
 import TargetAudience from "./targetAudience/targetAudience";
 import DefineJourney from "./defineJourney/defineJourney";
@@ -22,20 +24,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const data = [
-    { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live" },
-    { id: 2, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live" },
-    { id: 3, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live" },
-    { id: 4, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused" },
-    { id: 5, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired" },
-    { id: 6, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired" },
-    { id: 7, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "upcoming" },
-];
-
 export default function EngagementsSmart(props) {
-    console.log('store', store.getState());
+    // console.log('store', store.getState());
     const [active, setActive] = useState('all');
-    const [campaigndata, setCampaigndata] = useState(data);
+    const [campaigndata, setCampaigndata] = useState(CampaignMockData);
     const [createFlag, setCreateFlag] = useState(false);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -44,23 +36,15 @@ export default function EngagementsSmart(props) {
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
 
-    const campaignActionClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const campaignActionClose = () => {
-        setAnchorEl(null);
-    };
-    const open = Boolean(anchorEl);
-    const id = open ? 'campaign-action-popover' : undefined;
     const createClick = () => {
         setCreateFlag(true);
     }
     function tabClick(val) {
         setActive(val);
         if(val === 'all') {
-            setCampaigndata(data);
+            setCampaigndata(CampaignMockData);
         } else {
-            setCampaigndata(data.filter(e => e.status === val));
+            setCampaigndata(CampaignMockData.filter(e => e.status === val));
         }
     }
     const stepsBackfn = () => {
@@ -143,77 +127,7 @@ export default function EngagementsSmart(props) {
                         </div>
                         <div className="w-100 float-left clearfix mt-3">
                             {campaigndata && campaigndata.length > 0 ? (
-                                <Fragment>
-                                    {campaigndata.map((obj) => (
-                                        <div key={obj.id} className="campaign-box-outer float-left clearfix mb-3">
-                                            <div className="campaign-box">
-                                                <div className={classnames('c-b-discount pl-3 pt-2', {
-                                                    'c-b-discount-live': obj.status === 'live',
-                                                    'c-b-discount-paused': obj.status === 'paused',
-                                                    'c-b-discount-expired': obj.status === 'expired',
-                                                    'c-b-discount-upcoming': obj.status === 'upcoming'
-                                                })}>
-                                                    <span className={`c-b-offer ${obj.status === 'upcoming' ? `c-b-offer-upcoming` : ``}`}>{obj.offer}</span>
-                                                </div>
-                                                <div className="w-100 float-left clearfix">
-                                                    <div className="w-50 float-left clearfix pl-3 pt-4">
-                                                        <div className="c-b-t-head">{obj.customer}</div>
-                                                        <div className="c-b-t-body">Customer Participated</div>
-                                                    </div>
-                                                    <div className="w-50 float-left clearfix pl-3 pt-4">
-                                                        <div className="c-b-t-head">{obj.sales}</div>
-                                                        <div className="c-b-t-body">Customer Participated</div>
-                                                    </div>
-                                                </div>
-                                                <div className="w-100 float-left clearfix">
-                                                    <div className="w-50 float-left clearfix pl-3 pt-4">
-                                                        <div className="c-b-t-head">{obj.customer}</div>
-                                                        <div className="c-b-t-body">Customer Participated</div>
-                                                    </div>
-                                                    <div className="w-50 float-left clearfix pl-3 pt-4">
-                                                        <div className="c-b-t-head">{obj.sales}</div>
-                                                        <div className="c-b-t-body">Customer Participated</div>
-                                                    </div>
-                                                </div>
-                                                <div className="c-b-dotted"></div>
-                                                <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
-                                                    <BsCalendar></BsCalendar>
-                                                    <span className="pl-2 c-b-lbl-expiry">Expire On : {obj.expiredOn}</span>
-                                                    <BsThreeDotsVertical onClick={campaignActionClick} className="float-right ml-2 mt-1" style={{cursor: "pointer"}}></BsThreeDotsVertical>
-                                                    <Popover
-                                                        id={id}
-                                                        open={open}
-                                                        anchorEl={anchorEl}
-                                                        onClose={campaignActionClose}
-                                                        anchorOrigin={{
-                                                        vertical: 'bottom',
-                                                        horizontal: 'center',
-                                                        }}
-                                                        transformOrigin={{
-                                                        vertical: 'top',
-                                                        horizontal: 'right',
-                                                        }}
-                                                    >
-                                                        <Typography className="">
-                                                            <div className="c-b-campaign-options p-0">
-                                                                <div>Pause</div>
-                                                                <div>Edit</div>
-                                                                <div>View Report</div>
-                                                                <div>Delete</div>
-                                                            </div>
-                                                        </Typography>
-                                                    </Popover>
-                                                    <span className="c-b-status float-right mt-1"><div className={classnames('mr-2', {
-                                                        'logo-live': obj.status === 'live',
-                                                        'logo-paused': obj.status === 'paused',
-                                                        'logo-expired': obj.status === 'expired',
-                                                        'logo-upcoming': obj.status === 'upcoming'
-                                                    })}></div>{obj.status}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </Fragment>
+                                <CampaignBox campaigndata={campaigndata}></CampaignBox>
                             ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
                         </div>
                     </div>

@@ -3,11 +3,13 @@ import { useHistory } from "react-router-dom";
 
 import LineChart from "../common/utils/lineChart";
 import BarChart from "../common/utils/barChart";
-import { lineChartData } from "../../constants/globalMockdata";
+import CampaignBox from "../common/campaignBox/campaignBox";
+import { lineChartData, LiveViewCampaignMockData } from "../../constants/globalMockdata";
 import './liveView.css';
 
 export default function LiveView(props) {
     let history = useHistory();
+    const [campaigndata, setCampaigndata] = useState(LiveViewCampaignMockData);
     
     return (
         <div id="liveview-container">
@@ -69,6 +71,15 @@ export default function LiveView(props) {
                 <div className="w-25 float-left clearfix l-v-i-t-box-outer">
                     <div className="l-v-i-t-box"></div>
                 </div>
+            </div>
+
+            <div className="w-100 float-left clearfix">
+                <div className="l-v-a-c-h">Active Campaigns</div>
+            </div>
+            <div className="w-100 float-left clearfix l-v-a-c">
+                {campaigndata && campaigndata.length > 0 ? (
+                    <CampaignBox campaigndata={campaigndata}></CampaignBox>
+                ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
             </div>
         </div>
     )
