@@ -17,6 +17,29 @@ export const lineChartData = {
     ],
 }
 
+export const doughnutChartData = {
+  labels: ['Scratch', 'Shooting', 'Basketball', 'Card'],
+  datasets: [
+    {
+      label: 'Revenue',
+      data: [7090, 5668, 3677, 4830],
+      fill: false,
+      backgroundColor: [
+        '#2D88EE',
+        '#19C2A7',
+        '#EEB344',
+        '#6BBBF3'
+      ],
+      hoverBackgroundColor: [
+        '#2D88EE',
+        '#19C2A7',
+        '#EEB344',
+        '#6BBBF3'
+      ]
+    }
+  ],
+}
+
 export const CampaignMockData = [
   { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
   { id: 2, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },

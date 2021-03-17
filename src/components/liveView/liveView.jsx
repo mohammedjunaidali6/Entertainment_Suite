@@ -3,8 +3,9 @@ import { useHistory } from "react-router-dom";
 
 import LineChart from "../common/utils/lineChart";
 import BarChart from "../common/utils/barChart";
+import DoughnutChart from '../common/utils/doughnutChart';
 import CampaignBox from "../common/campaignBox/campaignBox";
-import { lineChartData, LiveViewCampaignMockData } from "../../constants/globalMockdata";
+import { lineChartData, LiveViewCampaignMockData, doughnutChartData } from "../../constants/globalMockdata";
 import './liveView.css';
 
 export default function LiveView(props) {
@@ -51,7 +52,11 @@ export default function LiveView(props) {
                     <div className="l-v-chart-box"></div>
                 </div>
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
-                    <div className="l-v-chart-box"></div>
+                    <div className="l-v-chart-box">
+                        <DoughnutChart data={doughnutChartData}
+                                    chartTitle="Top performing Games">
+                        </DoughnutChart>
+                    </div>
                 </div>
             </div>
 
