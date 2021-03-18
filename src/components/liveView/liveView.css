@@ -1,0 +1,36 @@
+#liveview-container {
+    /* padding: 19px 32px; */
+}
+.l-v-h {
+    height: 17px;
+    color: #808A8F;
+    font-size: 12.41px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+    text-transform: uppercase;
+}
+.l-v-f {
+    height: 31.43px;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    box-shadow: 0 8px 50px -4px rgba(0,0,0,0.05);
+}
+.l-v-s-o-box {
+    height: 123.24px;
+    border-radius: 12.32px;
+    background-color: #FFFFFF;
+    margin: 0px 10px 10px 0;
+    cursor: pointer;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 6%);
+}
+.l-v-chart-box {
+    box-sizing: border-box;
+    height: 397.12px;
+    border: 0.88px solid #EAF0F7;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 9px -9px rgba(0,0,0,0.2);
+    margin: 0px 10px 10px 0;
+    padding: 22px;
+}

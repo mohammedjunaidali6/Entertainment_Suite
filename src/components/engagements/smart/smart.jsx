@@ -11,6 +11,7 @@ import SetGoals from "./setGoals/setGoals";
 import TargetAudience from "./targetAudience/targetAudience";
 import DefineJourney from "./defineJourney/defineJourney";
 import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
+import EStepper from "./stepper/stepper";
 import Review from "./review/review";
 import store from "../../../store/store";
 import './smart.css';
@@ -227,10 +228,21 @@ export default function EngagementsSmart(props) {
                                 <span className="text-bold">Create Engagement</span>
                             </div>
                         </div>
-                        <div className="c-s-step-sec mt-2">
-
+                        <div className="c-s-step-sec mt-2 content-c">
+                            {step === 'setGoals' ? (
+                                <EStepper stepName="Set Goals" stepCount={1} thumbHide={true} ></EStepper>
+                            ) : (
+                                step === 'targetAudience' ? <EStepper stepName="Target Audience" stepCount={2} thumbHide={true} ></EStepper> : (
+                                    step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={3} thumbHide={true} ></EStepper> : (
+                                        step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Journey" stepCount={4} thumbHide={true} ></EStepper> : (
+                                            step === 'review' ? <EStepper stepName="Review" stepCount={5} thumbHide={true} ></EStepper> : null
+                                        )
+                                    )
+                                )
+                            )}
+                            
                         </div>
-                        <div className="c-s-content-sec">
+                        <div className="c-s-content-sec w-100 float-left clearfix">
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues}></SetGoals> : (
                                 step === 'targetAudience' ? <TargetAudience></TargetAudience> : (
                                     step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney}></DefineJourney> : (

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import DataTable from 'react-data-table-component';
+import { TABLE_PAGE_COUNT } from "../../../constants/globalConstants";
 
 const customStyle ={
     headCells:{
@@ -30,18 +31,22 @@ const customStyle ={
 
 export default function Table(props){
     return(
-        <div style={{ borderRadius: '10px', boxShadow: '0 0 4px 0 rgba(95,100,112,0.38)'}}>
+        <Fragment>
            {props.data && props.data.length > 0 && props.columns && props.columns.length> 0?
-           <div>
+           <Fragment>
                <DataTable
-                columns = {props.columns}
-                data ={props.data}
-                striped
-                actions ={props.actions}
-                pagination
-                paginationPerPage ={6} 
-                customStyles={customStyle} />
-            </div> :<div>Data Not found</div>} 
-        </div>
+                    noHeader={true}
+                    columns = {props.columns}
+                    data ={props.data}
+                    striped
+                    action ={props.actions}
+                    pagination = {props.pagination ? props.pagination : false}
+                    paginationPerPage ={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT} 
+                    customStyles={customStyle} 
+                    noTableHead = {props.noTableHead ? props.noTableHead : false}
+                    style={{borderRadius: "6px", marginBottom: "12px"}}
+                />
+            </Fragment> :<div>Data Not found</div>} 
+        </Fragment>
     )
 }

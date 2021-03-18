@@ -1,0 +1,24 @@
+#verify-container{
+    display: flex;
+    justify-content: center;
+}
+
+.dont-have-account{
+    height: 19px;
+  width: 196px;
+  position: absolute;
+  right: 40px;
+  float: right;
+  color: #3F4045;
+  font-family: Roboto;
+  font-size: 14px;
+  letter-spacing: -0.12px;
+  line-height: 16px;
+}
+
+.l-page-navigator{
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 2px;
+}

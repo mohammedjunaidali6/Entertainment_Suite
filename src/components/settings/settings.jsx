@@ -72,7 +72,7 @@ export default function Settings(props) {
                         <Content active={active === 1}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                    <PropertySettings />
+                                    Property Settings 
                                 </Tab>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
                                     Accessibility
@@ -80,7 +80,7 @@ export default function Settings(props) {
                             </Tabs>
                             <>
                                 <AppSettingContent appSettingActive={appSettingActive === 0}>
-                                    <h1>Property Settings Content</h1>
+                                    <PropertySettings />
                                 </AppSettingContent>
                                 <AppSettingContent appSettingActive={appSettingActive === 1}>
                                     <h1>Accessibility Content</h1>

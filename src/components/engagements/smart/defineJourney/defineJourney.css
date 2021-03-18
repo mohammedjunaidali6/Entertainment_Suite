@@ -25,6 +25,7 @@
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #FFFFFF;
+    position: relative;
 }
 .c-e-journey-box-inner-h {
     height: 21px;
@@ -51,4 +52,7 @@
     color: #808A8F;
     font-size: 10px;
     letter-spacing: 0;
+}
+.define-journey-chk {
+    position: absolute !important;
 }

@@ -4,16 +4,16 @@ import { Line } from '@reactchartjs/react-chart.js'
 const options = {
   scales: {
     yAxes: [
-        {
-            ticks: {
-            beginAtZero: false,
-            },
+      {
+        ticks: {
+          beginAtZero: false,
         },
-        {
-            gridLines: {
-                color: "rgba(0, 0, 0, 0)",
-            } 
-        }
+      },
+      {
+        gridLines: {
+          color: "rgba(0, 0, 0, 0)",
+        } 
+      }
     ],
   },
 }

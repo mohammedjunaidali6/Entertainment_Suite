@@ -45,12 +45,16 @@
     background-color: #F690CE;
     border: 2px solid #FFFFFF;
     /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+    cursor: pointer;
+    padding-left: 34.5px;
 }
 .c-e-target-dp-box {
     height: 125px;
     background-color: #F077A3;
     border: 2px solid #FFFFFF;
     /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+    cursor: pointer;
+    padding-top: 14px;
 }
 .c-e-target-b-box {
     box-sizing: border-box;
@@ -58,18 +62,24 @@
     background-color: #6B9CF3;
     border: 2px solid #FFFFFF;
     /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+    padding-top: 28px;
+    cursor: pointer;
 }
 .c-e-target-pur-box {
     height: 125px;
     background-color: #837DF0;
     border: 2px solid #FFFFFF;
     /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+    padding-top: 28px;
+    cursor: pointer;
 }
 .c-e-target-l-pur-box {
     height: 125px;
     background-color: #B1A2FF;
     border: 2px solid #FFFFFF;
     /* box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38); */
+    padding-top: 28px;
+    cursor: pointer;
 }
 .c-e-target-p-rule {
     height: 15px;
@@ -86,4 +96,41 @@
     border: 1px solid #DBDDDE;
     border-radius: 15px;
     background-color: #F2F4F5;
+}
+.c-e-target-p-rule-opt {
+    color: #5F6165;
+    font-family: "Nunito Sans";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 15px;
+}
+.c-e-t-box {
+    padding-left: 37px;
+}
+.c-r-t-box-n {
+    height: 21px;
+    color: #FFFFFF;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-bottom: 12px;
+}
+.c-r-t-box-c {
+    height: 21px;
+    color: #FFFFFF;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-right: 7px;
+    display: inline-block;
+}
+.c-r-t-box-per {
+    height: 21px;
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 17px;
+    letter-spacing: 0;
+    line-height: 28px;
 }
