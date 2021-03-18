@@ -1,7 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import './settings.css';
-import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
+import Profile from './profile/profile';
 import Team from "./team/team";
+import Role from "./notification/notification";
+import PropertySettings from "./propertySettings/propertySettings";
+import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
+
 
 export default function Settings(props) {
 
@@ -55,20 +59,20 @@ export default function Settings(props) {
                             </Tabs>
                             <>
                                 <MyAccountContent myAccountActive={myAccountActive === 0}>
-                                    <h1>Profile Content</h1>
+                                    <Profile />
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 1}>
                                     <Team></Team>
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 2}>
-                                    <h1>Notification Content</h1>
+                                    <Role />
                                 </MyAccountContent>
                             </>
                         </Content>
                         <Content active={active === 1}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                    Property Settings
+                                    Property Settings 
                                 </Tab>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
                                     Accessibility
@@ -76,7 +80,7 @@ export default function Settings(props) {
                             </Tabs>
                             <>
                                 <AppSettingContent appSettingActive={appSettingActive === 0}>
-                                    <h1>Property Settings Content</h1>
+                                    <PropertySettings />
                                 </AppSettingContent>
                                 <AppSettingContent appSettingActive={appSettingActive === 1}>
                                     <h1>Accessibility Content</h1>

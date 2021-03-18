@@ -43,7 +43,7 @@ export default function ManageRewards(props) {
                     </div>
                
                 <div className='journey-table-block'>
-                    <Table columns={columns} data={data} actions={<SearchBar className='c-r-search-box' />}/>
+                    <Table columns={columns} data={data} action={<SearchBar className='c-r-search-box' />}/>
                 </div>
             </Fragment>): (
                 <Fragment>

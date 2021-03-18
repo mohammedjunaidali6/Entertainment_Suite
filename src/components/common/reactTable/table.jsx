@@ -5,7 +5,7 @@ import { TABLE_PAGE_COUNT } from "../../../constants/globalConstants";
 const customStyle ={
     headCells:{
         style:{
-            // height: '50px',
+            height: '50px',
             backgroundColor: '#F0F0F0',
             color: '#191D28' ,
             fontFamily: 'Roboto',
@@ -39,7 +39,7 @@ export default function Table(props){
                     columns = {props.columns}
                     data ={props.data}
                     striped
-                    actions ={props.actions}
+                    action ={props.actions}
                     pagination = {props.pagination ? props.pagination : false}
                     paginationPerPage ={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT} 
                     customStyles={customStyle} 

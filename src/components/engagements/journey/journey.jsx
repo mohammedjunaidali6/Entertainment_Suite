@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import Table from "../../common/reactTable/table";
 import Select from 'react-select';
 import {journeyColumns, journeyData} from "./tempData";
-import TaskDragDrop from "./dragDrop";
+
 
 import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';

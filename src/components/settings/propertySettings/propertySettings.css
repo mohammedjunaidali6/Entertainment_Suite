@@ -1,0 +1,84 @@
+#property-settings-container{
+    padding: 40px ;
+    background-color: #ffff;
+}
+
+.p-s-url-input-label{
+    height: 15px;
+  color: #5F6165;
+  margin-bottom: 10px;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+
+.p-s-url-input{
+    box-sizing: border-box;
+  height: 38px;
+  width: 300px;
+  margin-right: 14px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+}
+
+.p-s-url-input ::-webkit-input-placeholder{
+    height: 19px;
+    margin-left: 16px;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 19px;
+}
+
+.verify-ownership-btn{
+    height: 38px;
+  width: 128px;
+  border-radius: 6px;
+  background-color: #63D2A9;
+}
+
+.verify-btn-text{
+    height: 19px;
+  width: 106px;
+  margin: 10px;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 19px;
+}
+
+.p-s-edit-btn{
+    box-sizing: border-box;
+    cursor: pointer;
+  height: 38px;
+  padding: 10px;
+  width: 76px;
+  border: 1px solid #DBDDDE;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  float: right;
+
+}
+
+.p-s-edit-btn-symbol{
+  height: 13px;
+  width: 13px;
+  margin-right: 7px;
+}
+
+.p-s-edit-btn-text{
+    height: 20px;
+  width: 29px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+

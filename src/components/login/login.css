@@ -1,0 +1,119 @@
+#login-container{
+    display: flex;
+    justify-content: center;
+}
+.login-logo{
+  position: absolute;
+  left: 56px;
+  height: 36px;
+  width: 114px;
+}
+.login-outer-container{
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+    margin-top: 153px;
+    margin-bottom: 143px;
+}
+.login-container{
+    height: auto;
+    width: 480px;
+    box-shadow: 0 2px 9px 0 rgba(40,44,51,0.26);
+    padding: 44px;
+}
+
+.login-intro{
+    height: 32px;
+  width: 235px;
+  color: #3F4045;
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  line-height: 16px;
+}
+
+.login-input-field{
+    height: 70px;
+    padding-top: 37px;
+    width: 391.5px;
+    border: none;
+    box-sizing: border-box;
+    border-bottom:  1px solid #DAE1E9;
+}
+
+.l-i-symbol{
+     height: 40px;
+    width: 40px; 
+    /* padding-right: 19px;  */
+} 
+
+
+.login-field{
+   border:none;
+}
+
+.login-field::-webkit-input-placeholder{
+    height: 19px;
+  color: #445870;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.12px;
+  line-height: 16px;
+}
+
+.login-divider{
+    /* box-sizing: border-box;
+  height: 0.5 px;
+  width: 391.5px;
+  border: 1px solid #DAE1E9; */
+}
+
+.l-forget-password{
+    height: 19px;
+  width: 112px;
+  color: #3F4045;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -0.12px;
+  line-height: 16px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  float: right;
+}
+
+.login-btn{
+    height: 50px;
+    
+  width: 391px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  display: flex;
+    justify-content: center;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+}
+
+.l-btn-text{
+    height: 21px;
+  /* width: 75px; */
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -0.13px;
+  line-height: 16px;
+}
+
+.copyright-text{
+    height: 16px;
+  width: 192px;
+  margin-top: 30px;
+  color: #808A8F;
+  font-family: Roboto;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 16px;
+}

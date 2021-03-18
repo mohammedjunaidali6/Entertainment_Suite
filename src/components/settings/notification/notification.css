@@ -1,0 +1,139 @@
+#role-container{
+    background-color: #FFFFFF;
+    padding: 35px 42px;
+    padding-bottom: 0px;
+    
+}
+.role-header{
+    padding-bottom: 35px;
+}
+.role-title{
+    height: 15px;
+  width: 174px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+.add-new-role-btn{
+    height: 38px;
+    margin-top: -10px;
+  width: 143px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+  float: right;
+}
+
+.add-new-role{
+    height: 20px;
+  color: #FFFFFF;
+  margin-top: 8px;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+
+.r-input-field{
+    box-sizing: border-box;
+  height: 38px;
+  width: 555px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+}
+
+.role-description-box{
+  box-sizing: border-box;
+  height: 82px;
+  width: 800px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #F8F9F9;
+}
+.role-permissions{
+  padding-top: 30px;
+  padding-bottom: 25px;
+}
+.r-permissions-list{
+  display: flex;
+  flex-flow: row wrap;
+}
+.r-checkbox{
+  margin-right: 10px;
+}
+.r-p-list-item{
+  box-sizing: border-box;
+  height: 43px;
+  margin: 10px;
+  padding: 10px;
+  padding-left: 20px; 
+  width: 181px;
+  border: 1px solid #E3E7ED;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+}
+
+.r-p-item-text{
+  height: 21px;
+  color: #3F4045;
+  font-family: Roboto;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 21px;
+}
+.role-actions{
+  margin-top: 96px;
+  height: 60px;
+  width: 884px;
+  margin-left: -42px;
+  background-color: #FFFFFF;
+  box-shadow: 0 -1px 7px 1px rgba(95,100,112,0.11);
+}
+
+.role-act-btn{
+  float: right;
+}
+.role-cancel-btn{
+  height: 38px;
+  width: 89px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #E3E7ED;
+}
+
+.role-save-btn{
+  height: 38px;
+  width: 89px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+}
+
+.r-c-btn-text{
+  height: 20px;
+  width: 50px;
+  margin: 8px 16px;
+  color: #385B69;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+.r-s-btn-text{
+  height: 20px;
+  width: 50px;
+  color: #FFFFFF;
+  margin: 8px 16px;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
