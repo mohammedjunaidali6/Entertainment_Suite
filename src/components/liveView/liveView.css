@@ -63,3 +63,120 @@
     margin-bottom: 27px;
     margin-top: 57px;
 }
+
+.l-v-i-t-box-t {
+    height: 50%;
+}
+.l-v-i-t-box-b {
+    height: 50%;
+    border-top: 0.5px dashed var(--dashedBorderColor);
+    opacity: 0.76;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.l-v-i-t-box-b-btn {
+    height: 38px;
+    width: 175px;
+    border-radius: 19px;
+    background-color: var(--buttonBg);
+    color: var(--whiteBg);
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.l-v-i-t-box-t-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.l-v-i-t-box-t-c canvas {
+    width:50px !important;
+    height: 50px !important;
+}
+.l-v-i-t-box-t-h {
+    height: 30px;
+    color: #212145;
+    font-size: 23.11px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 30px;
+}
+.l-v-i-t-box-t-h-c {
+    height: 14px;
+    color: #0FB269;
+    font-size: 10.78px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 14px;
+    padding-left: 9px;
+}
+.l-v-i-t-box-t-desc {
+    height: 13px;
+    color: #808A8F;
+    font-size: 9.24px;
+    letter-spacing: 0;
+    line-height: 13px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.c-orange {
+    color: #E35D25 !important;
+}
+
+.l-v-s-o-box-t {
+    height: 60%;
+    padding: 0 18px;
+}
+.l-v-s-o-box-b {
+    height: 40%;
+}
+.l-v-s-o-box-t-h {
+    height: 14px;
+    color: #9191AF;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 13px;
+}
+.l-v-s-o-box-t-c {
+    height: 31px;
+    color: #212145;
+    font-size: 23.11px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 30px;
+}
+.l-v-s-o-box-t-c-lbl {
+    height: 14px;
+    color: #9191AF;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 13px;
+    text-transform: uppercase;
+}
+.l-v-s-o-box-t-c-per {
+    height: 15px;
+    color: #0FB269;
+    font-size: 10.78px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 14px;
+    text-align: right;
+}
+.l-v-s-o-box-t-c-per-lbl {
+    height: 14px;
+    color: #9191AF;
+    font-size: 9.24px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 13px;
+    text-align: right;
+}
+.l-v-s-o-box-b canvas {
+    height: 42px !important;
+    padding: 0 20px;
+}

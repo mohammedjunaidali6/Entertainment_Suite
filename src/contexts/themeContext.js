@@ -68,7 +68,8 @@ const lightTheme = [
   '--campaignPaused: #E35D25',
   '--campaignExpired: #E2BD7B',
   '--whiteBg: #ffffff',
-  '--campaignLive: #4ACB91'
+  '--campaignLive: #4ACB91',
+  '--dashedBorderColor: #8097B1'
 ];
 
 const darkTheme = [
@@ -88,5 +89,6 @@ const darkTheme = [
   '--campaignPaused: #E35D25',
   '--campaignExpired: #E2BD7B',
   '--whiteBg: #ffffff',
-  '--campaignLive: #4ACB91'
+  '--campaignLive: #4ACB91',
+  '--dashedBorderColor: #8097B1'
 ];

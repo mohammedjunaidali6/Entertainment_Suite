@@ -93,7 +93,7 @@ export default function Header(props) {
                 >
                     <Typography className={classes.typography}>
                         <div className="h-logger-user-options p-0">
-                            <div onClick={() => settingsRedirectFn('/settings')}>Pause</div>
+                            <div onClick={() => settingsRedirectFn('/settings')}>Settings</div>
                             <div>Help</div>
                             <div style={{borderBottom: "1px solid #DBDDDE"}}>Logout</div>
                             <div>Last Login 12th Jan 21, 10:30am</div>

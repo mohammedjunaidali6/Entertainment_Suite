@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="23px" viewBox="0 0 33 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>dots-icon_horizontal</title>
+    <defs>
+        <filter x="-2.4%" y="-6.7%" width="104.8%" height="113.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.372826356   0 0 0 0 0.393562623   0 0 0 0 0.439917965  0 0 0 0.376175247 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="overview" transform="translate(-446.000000, -55.000000)" fill="#7C8BA0">
+            <g id="card" filter="url(#filter-1)" transform="translate(0.000000, 38.838571)">
+                <g id="dots-icon_horizontal" transform="translate(455.677500, 25.324429)">
+                    <circle id="Oval" cx="12.3244286" cy="1.54055357" r="1.54055357"></circle>
+                    <circle id="Oval" cx="6.93249107" cy="1.54055357" r="1.54055357"></circle>
+                    <circle id="Oval" cx="1.54055357" cy="1.54055357" r="1.54055357"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -46,6 +46,8 @@ export default function SideMenu(props) {
             } else if(history.location.pathname === '/manage/gameplay') {
                 setSelectedSM(6);
                 setManageSM(2);
+            } else if(history.location.pathname === '/admin') {
+                setSelectedSM(7);
             }
         }
     }, []);
