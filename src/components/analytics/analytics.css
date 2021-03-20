@@ -1,0 +1,26 @@
+.a-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+.a-h-img {
+    box-sizing: border-box;
+    height: 28px;
+    width: 28px;
+    border: 1px solid #DBDDDE;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    padding: 5px;
+}
+.modal-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    text-align: center;
+}

@@ -1,0 +1,16 @@
+#g-p-o-sec {
+    box-sizing: border-box;
+    border: 0.88px solid #EAF0F7;
+    border-radius: 10px;
+    background-color: var(--whiteBg);
+    box-shadow: 0 4px 9px -9px rgba(0,0,0,0.2);
+    padding: 13px 21px;
+}
+.g-p-o-h {
+    height: 21px;
+    color: #808A8F;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-bottom: 16px;
+}

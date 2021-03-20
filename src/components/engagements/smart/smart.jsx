@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { containerHeightCalcFn } from "../../common/global";
 import CampaignBox from "../../common/campaignBox/campaignBox";
-import { CampaignMockData } from "../../../constants/globalMockdata";
+import Table from "../../common/reactTable/table";
+import { CampaignMockData, CampaignTableColumns } from "../../../constants/globalMockdata";
 import SetGoals from "./setGoals/setGoals";
 import TargetAudience from "./targetAudience/targetAudience";
 import DefineJourney from "./defineJourney/defineJourney";
@@ -29,6 +30,7 @@ export default function EngagementsSmart(props) {
     const [active, setActive] = useState('all');
     const [campaigndata, setCampaigndata] = useState(CampaignMockData);
     const [createFlag, setCreateFlag] = useState(false);
+    const [gridFlag, setGridFlag] = useState(true);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [step, setStep] = useState('setGoals');
@@ -112,9 +114,9 @@ export default function EngagementsSmart(props) {
                 <Fragment>
                     <div className="mb-4">
                         <span className="e-s-heading">Active Campaigns</span>
-                        <span className="float-right">
-                            <AiOutlineMenu></AiOutlineMenu>
-                            <BsGrid3X3GapFill className="ml-3"></BsGrid3X3GapFill>
+                        <span className="float-right mr-3">
+                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)}></AiOutlineMenu>
+                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)}></BsGrid3X3GapFill>
                         </span>
                     </div>
                     <div>
@@ -122,14 +124,20 @@ export default function EngagementsSmart(props) {
                         <div onClick={() => tabClick('live')} className={`e-s-tab ${active === 'live' ? `e-s-tab-active` : ``}`}>Active</div>
                         <div onClick={() => tabClick('paused')} className={`e-s-tab ${active === 'paused' ? `e-s-tab-active` : ``}`}>Paused</div>
                         <div onClick={() => tabClick('upcoming')} className={`e-s-tab ${active === 'upcoming' ? `e-s-tab-active` : ``}`}>Upcoming</div>
-                        <div className="btn-create-engagement float-right text-center pt-2" onClick={createClick}>
+                        <div className="btn-create-engagement float-right text-center pt-2 mr-3" onClick={createClick}>
                             <span className="btn-c-e-text">+ Create Engagements</span>
                         </div>
-                        <div className="w-100 float-left clearfix mt-3">
-                            {campaigndata && campaigndata.length > 0 ? (
-                                <CampaignBox campaigndata={campaigndata}></CampaignBox>
-                            ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
-                        </div>
+                        {gridFlag ? (
+                            <div className="w-100 float-left clearfix mt-3">
+                                {campaigndata && campaigndata.length > 0 ? (
+                                    <CampaignBox campaigndata={campaigndata}></CampaignBox>
+                                ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
+                            </div>
+                        ) : (
+                            <div className="mt-4">
+                                <Table columns={CampaignTableColumns} data={ campaigndata } />
+                            </div>
+                        )}
                     </div>
                 </Fragment>
             ) : (

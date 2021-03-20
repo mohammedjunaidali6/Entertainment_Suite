@@ -1,3 +1,6 @@
+import classnames from 'classnames';
+import ActionMenu from "../components/common/reactTable/menu";
+
 export const lineChartData = {
   labels: ['Jan 1', 'Jan 8', 'Jan 15', 'Jan 22', 'Feb 1', 'Feb 8', 'Feb 22', 'Mar 1', 'Mar 8'],
   datasets: [
@@ -154,14 +157,84 @@ export const doughnutChartData = {
 }
 
 export const CampaignMockData = [
-  { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 2, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 3, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 4, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
-  { id: 5, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
-  { id: 6, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
-  { id: 7, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "upcoming", isRecent: false }
+  { id: 1, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 2, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 3, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 4, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
+  { id: 5, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
+  { id: 6, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
+  { id: 7, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "upcoming", isRecent: false }
 ];
+
+export const CampaignTableColumns = [
+  {
+    name:"Engagement name",
+    selector:"offer"
+  },
+  {
+    name:"Expire On",
+    selector:"expiredOn"
+  },
+  {
+    name:"Customer Participated",
+    selector:"customer"
+  },
+  {
+    name:"Total No of Sales",
+    selector:"sales"
+  },
+  {
+    name:"Status",
+    cell: rowObj => 
+      <div className={classnames('text-c', {
+        'txt-green': rowObj.status === 'live',
+        'txt-grey': rowObj.status === 'paused',
+        'txt-orange': rowObj.status === 'expired',
+        'txt-blue': rowObj.status === 'upcoming'
+      })}>
+        {rowObj.status}  
+      </div>
+  },
+  {
+    name: "Actions",
+    cell: action => <ActionMenu />
+  }
+]
+
+export const AnalyticsMockData = [
+  { id: 1, name: 'All Customers', filter: '3 Filters', gender: 'Male', ageRange: "20-30", city: "Bangalore" },
+  { id: 2, name: 'Inactive Customers', filter: '5 Filters', gender: 'All', ageRange: "15-25", city: "Chennai" },
+  { id: 3, name: 'High Volume Customers', filter: '6 Filters', gender: 'ALL', ageRange: "15-90", city: "Mumbai" },
+  { id: 4, name: 'Inactive customers', filter: '4 Filters', gender: 'Female', ageRange: "20-40", city: "Delhi" },
+  { id: 5, name: 'New Customers', filter: '2 Filters', gender: 'All', ageRange: "1-100", city: "Kolkata" }
+];
+
+export const AnalyticsTableColumns = [
+  {
+    name:"Title",
+    selector:"name"
+  },
+  {
+    name:"Filters",
+    selector:"filter"
+  },
+  {
+    name:"Gender",
+    selector:"gender"
+  },
+  {
+    name:"Age range",
+    selector:"ageRange"
+  },
+  {
+    name:"City",
+    selector:"city"
+  },
+  {
+    name: "Actions",
+    cell: action => <ActionMenu />
+  }
+]
 
 export const LiveViewCampaignMockData = [
   { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: true },

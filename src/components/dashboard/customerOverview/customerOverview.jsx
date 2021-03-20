@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { BsThreeDots } from "react-icons/bs";
+import CustomerOverviewBox from "../customerOverviewBox/customerOverviewBox";
 import './customerOverview.css';
 
 const data = [
@@ -15,24 +16,7 @@ export default function CustomerOverview(props) {
             {data && data.length > 0 ? (
                 <Fragment>
                     {data.map((obj) => (
-                        <div key={obj.id} className="w-33 float-left clearfix  customer-overview-box-outer">
-                            <div className="customer-overview-box">
-                                <div className="customer-overview-action text-right">
-                                    <BsThreeDots></BsThreeDots>
-                                </div>
-                                <div className="customer-overview-heading text-left mb-1">{obj.title}</div>
-                                <div>
-                                    <div className="w-50 float-left clearfix text-left">
-                                        <span className="customer-overview-left-count">{obj.count}</span>
-                                        <span className="customer-overview-left-desc v-a-t-top pl-2">{obj.countDesc}</span>
-                                    </div>
-                                    <div className="w-50 float-left clearfix">
-                                        <div className="customer-overview-right-count text-right">{obj.percentage}</div>
-                                        <div className="customer-overview-right-desc">{obj.status}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <CustomerOverviewBox data={obj}></CustomerOverviewBox>
                     ))}
                 </Fragment>
             ) : null}

@@ -97,3 +97,6 @@
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
 }
+.e-s-switch {
+    color: var(--buttonBg);
+}
