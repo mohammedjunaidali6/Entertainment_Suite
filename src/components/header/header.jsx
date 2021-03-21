@@ -14,6 +14,7 @@ import logo_src from '../../assets/img/logo.png';
 import default_user_src from '../../assets/img/default_user.png';
 import product_tour_src from '../../assets/img/product_tour.svg';
 import support_src from '../../assets/img/support.svg';
+import settings_src from '../../assets/img/Property_Settings.svg';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -35,13 +36,20 @@ export default function Header(props) {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    // for notification poper
+    const [notifyEl, setNotifyEl] = useState(null);
+    const notifyOpen = Boolean(notifyEl);
+    const notifyId = notifyOpen ? 'notification-popover' : undefined;
+    const notifyClick = (event) => {
+        setNotifyEl(event.currentTarget);
+    };
+    const notifyClose = () => {
+        setNotifyEl(null);
+    };
+
     const handleChange = (event) => {
         setCompany(event.target.value);
     };
-
-    function notificationFn() {
-
-    }
 
     function searchFn() {
 
@@ -83,24 +91,27 @@ export default function Header(props) {
                     anchorEl={anchorEl}
                     onClose={handleClose}
                     anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
+                        vertical: 'bottom',
+                        horizontal: 'center',
                     }}
                     transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
+                        vertical: 'top',
+                        horizontal: 'center',
                     }}
                 >
                     <Typography className={classes.typography}>
                         <div className="h-logger-user-options p-0">
-                            <div onClick={() => settingsRedirectFn('/settings')}>Settings</div>
+                            <div onClick={() => settingsRedirectFn('/settings')}>
+                                <img src={settings_src} alt="Settings" />
+                                <span className="pl-2 pt-2">Settings</span>
+                            </div>
                             <div>Help</div>
                             <div style={{borderBottom: "1px solid #DBDDDE"}}>Logout</div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
                         </div>
                     </Typography>
                 </Popover>
-                <BsFillBellFill className="h-icons float-right clearfix" onClick={() => notificationFn()} ></BsFillBellFill>
+                <BsFillBellFill className="h-icons float-right clearfix" onClick={notifyClick} ></BsFillBellFill>
                 <BsSearch className="h-icons float-right clearfix" onClick={() => searchFn()} style={{marginLeft: "40px"}}></BsSearch>
                 <div className="h-links float-right clearfix">
                     <img src={product_tour_src} className="mb-1" />
@@ -110,6 +121,29 @@ export default function Header(props) {
                     <img src={support_src} className="mb-1" />
                     <span className="ml-2">Support Request</span>
                 </div>
+                <Popover
+                    id={notifyId}
+                    open={notifyOpen}
+                    anchorEl={notifyEl}
+                    onClose={notifyClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                >
+                    <Typography className={classes.typography}>
+                        <div className="h-notifications">
+                            <div className="h-n-h">
+                                <span className="h-n-h-lbl">Notifications</span>
+                                <span className="h-n-h-lbl-read float-right pt-2">Mark as read</span>
+                            </div>
+                        </div>
+                    </Typography>
+                </Popover>
             </div>
         </div>
     )

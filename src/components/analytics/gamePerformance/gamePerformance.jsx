@@ -7,7 +7,7 @@ export default function AnalyticsGamePerformance(props) {
     
     return (
         <div id="analytics-game-performance-container">
-            <span>Analytics gamePerformance Component</span>
+            <span>Analytics Game Performance</span>
         </div>
     )
 }

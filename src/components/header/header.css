@@ -83,3 +83,34 @@
 #header-container .MuiInput-underline:before, #header-container .MuiInput-underline:hover:not(.Mui-disabled):before {
     border-bottom: none;
 }
+.h-notifications {
+    height: 304px;
+    width: 375px;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    /* box-shadow: 0 1px 6px 0 rgba(0,0,0,0.23); */
+}
+.MuiTypography-root {
+    padding: 0 !important;
+}
+.h-n-h {
+    border-bottom: 1px solid #F2F4F5;
+    padding: 8px 16px;
+}
+.h-n-h-lbl {
+    height: 21px;
+    color: #1F263E;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+}
+.h-n-h-lbl-read {
+    height: 13px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 13px;
+    cursor: pointer;
+}

@@ -7,7 +7,7 @@ export default function AnalyticsTrends(props) {
     
     return (
         <div id="analytics-trends-container">
-            <span>Analytics Trends Component</span>
+            <span>Analytics Trends</span>
         </div>
     )
 }
