@@ -1,9 +1,10 @@
 #team-container{
     padding: 30px 30px;
-    padding-bottom: 0%;
+    padding-bottom: 2%;
     background-color: white;
     
 }
+
 
 .t-m-title{
     height: 15px;
@@ -20,6 +21,8 @@
     float: right;
     padding: 8px;
     padding-left: 12px;
+    cursor: pointer;
+    margin-bottom:16px;
   width: 123px;
   border-radius: 4px;
   background-color: #6B9CF3;

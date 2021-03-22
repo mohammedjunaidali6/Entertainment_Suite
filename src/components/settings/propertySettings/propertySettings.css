@@ -1,6 +1,13 @@
 #property-settings-container{
     padding: 40px ;
-    background-color: #ffff;
+    background-color: #ffff;  
+}
+
+.p-s-input-container{
+  height: 85px;
+  box-sizing: border-box;
+  padding-bottom: 100px;
+  border-bottom: 0.7px solid #D9DFE2;
 }
 
 .p-s-url-input-label{
@@ -36,7 +43,10 @@
 
 .verify-ownership-btn{
     height: 38px;
+    cursor: pointer;
   width: 128px;
+  position: relative;
+  bottom: 25px;
   border-radius: 6px;
   background-color: #63D2A9;
 }
@@ -57,7 +67,6 @@
     box-sizing: border-box;
     cursor: pointer;
   height: 38px;
-  padding: 10px;
   width: 76px;
   border: 1px solid #DBDDDE;
   border-radius: 4px;
@@ -82,3 +91,100 @@
   line-height: 20px;
 }
 
+.p-s-verify{
+  height: 16px;
+  color: #808A8F;
+  position: relative;
+  bottom: 25px;
+  margin-left: 7px;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.p-s-verify-another-site{
+  height: 16px;
+  width: 100px;
+  cursor: pointer;
+  text-decoration: underline;
+  position: relative;
+  bottom: 25px;
+  margin-left: 10px;
+  color: #808A8F;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.p-s-save-change{
+  height: 38px;
+  width: 137px;
+  cursor: pointer;
+  padding: 8px 16px;
+  float: right;
+  border-radius: 4px;
+  background-color: #6B9CF3;
+}
+
+.p-s-save-change-text{
+  height: 20px;
+  width: 103px;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+.p-s-ex{
+  height: 16px;
+  opacity: 0.5;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+.p-s-block-img {
+  margin-right: 10px;
+}
+.p-s-headers{
+  height: 15px;
+  margin-top: 20px;
+  margin-bottom: 27px;
+  color: #3F4045;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 15px;
+}
+
+.p-s-input-label{
+  height: 15px;
+  color: #5F6165;
+  margin-bottom: 6px;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 15px;
+}
+
+.p-s-input{
+  box-sizing: border-box;
+  height: 28px;
+  width: 407px;
+  margin-bottom: 13px;
+  border: 1px solid #DBDDDE;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+}
+
+.p-s-info{
+  margin-left: 4px;
+}
