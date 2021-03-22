@@ -17,7 +17,7 @@ export default function Team(props) {
                     <div className='team-management-header'>
                     <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
                     <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
-                        <div className='t-m-create-btn-text' role="button">+  Invite User</div>
+                        <div className='t-m-create-btn-text'>+  Invite User</div>
                     </div>
                     <Table columns={columns} data={data} actions={<SearchBar />} />
                 </div>
