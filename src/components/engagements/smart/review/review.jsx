@@ -92,7 +92,34 @@ export default function Review(props) {
                 </div>
             </div>
             <div className="w-30 float-left clearfix c-e-r-right">
-
+                <div className="w-100 float-left clearfix c-e-r-right-reach-box">
+                    
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-h">Key Summary</div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Segment & Rule</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c">New  Male Customers who is from New York has purchsed goods worth Rs.1000 in last 2 days</div>
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Number of days</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">6 days</div>
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Buget </div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">1000INR/Day</div>
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected number of sales projection</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">40</div>
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected Number of Engagement </div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2000</div>
+                </div>
+                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected Number of Engagement </div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2000 with a ROI of 1000%</div>
+                </div>
             </div>
         </div>
     )

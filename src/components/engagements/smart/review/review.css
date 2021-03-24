@@ -125,3 +125,45 @@
     letter-spacing: 0;
     line-height: 15px;
 }
+.c-e-r-right {
+    padding: 14px;
+}
+.c-e-r-right-reach-box {
+    height: 210px;
+    border-bottom: 1px solid #EDEEF0;
+}
+.c-e-r-right-reach-h {
+    height: 21px;
+    color: #3F4045;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: 21px;
+    padding: 14px 0;
+    border-bottom: 1px solid #EDEEF0;
+}
+.c-e-r-right-reach-sub {
+    padding: 14px 0;
+    border-bottom: 1px solid #EDEEF0;
+}
+.c-e-r-right-reach-sub-h {
+    color: #6A6976;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.c-e-r-right-reach-sub-c {
+    color: #808A8F;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 16px;
+    margin-top: 6px;
+}
+.c-e-r-right-reach-sub-c-c {
+    color: #6B9CF3;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-top: 6px;
+}

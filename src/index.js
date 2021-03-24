@@ -7,6 +7,7 @@ import store from './store/store';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-responsive-modal/styles.css';
+import "react-datepicker/dist/react-datepicker.css";
 import './index.css';
 import './assets/css/base.css';
 

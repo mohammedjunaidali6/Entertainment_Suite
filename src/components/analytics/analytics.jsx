@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, forwardRef } from 'react';
 import { useHistory } from "react-router-dom";
 import { Modal } from 'react-responsive-modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,15 +6,19 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
+import DatePicker from 'react-datepicker';
 import AnalyticsReportContatiner from "../../containers/analytics/report/reportContainer";
 import AnalyticsTrendsContatiner from "../../containers/analytics/trends/trendsContainer";
 import AnalyticsGamePerformanceContatiner from "../../containers/analytics/gamePerformance/gamePerformanceContainer";
+import { CustomDatePickerEL } from "../common/global";
 
 import share_src from '../../assets/img/share.svg';
 import filter_src from '../../assets/img/filter_main.svg';
 import download_src from '../../assets/img/download_main.svg';
 import s_filter_src from '../../assets/img/segment_filter.svg';
 import plus_src from '../../assets/img/add_gray.svg';
+import calender_src from '../../assets/img/calender.svg';
+import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './analytics.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +39,8 @@ export default function Analytics(props) {
     const [formats, setFormats] = useState(tempFormats);
     const [modalOpen, setModalOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState();
     const handleClick = (event) =>{
         setAnchorEl(event.currentTarget);
     }
@@ -97,16 +103,44 @@ export default function Analytics(props) {
                 }}
             >
                 <Typography className={classes.typography}>
-                    <div className="a-filter-p p-0">
-                        <div>
+                    <div className="a-filter-p">
+                        <div className="w-100 float-left clearfix mb-1">
                             <img src={s_filter_src} alt="Filter" />
                             <span className="a-filter-p-h pl-2">Filters</span>
                         </div>
-                        <div>
+
+                        <div className="w-100 float-left clearfix mb-1">
+                            <div className="w-100 float-left clearfix" >
+                                <img src={calender_src} alt="Calender" className="mr-2" style={{width: '10px'}} />
+                                <span className="c-d-p-lbl-s pr-1">Date Range</span>
+                                <img src={down_arrow_src} alt="Down Arrow" />
+                            </div>
+                        </div>
+
+                        <div className="w-100 float-left clearfix">
+                            <div className="w-45 float-left clearfix">
+                                <DatePicker 
+                                    selected={startDate} 
+                                    onChange={date => setStartDate(date)} 
+                                    customInput={<CustomDatePickerEL />} />
+                            </div>
+                            <div className="w-8 float-left clearfix text-center">
+                                <span className="c-d-p-to pr-2 pt-1 pl-1 float-left">To</span>
+                            </div>
+                            <div className="w-45 float-left clearfix">
+                                <DatePicker 
+                                    selected={endDate} 
+                                    onChange={date => setEndDate(date)} 
+                                    customInput={<CustomDatePickerEL />} />
+                            </div>
+                        </div>
+                        
+                        <div className="w-100 float-left clearfix">
                             <img src={plus_src} alt="Add Filter" />
                             <span className="a-filter-p-a-f-txt pl-2">Add Filter</span>
                         </div>
-                        <div className="a-filter-p-action">
+                        
+                        <div className="w-100 float-left clearfix a-filter-p-action">
                             <div className="a-filter-p-action-s float-right ml-2"><span className="a-filter-p-action-s-txt" onClick={filterClose}>Apply</span></div>
                             <div className="a-filter-p-action-c float-right"><span className="a-filter-p-action-c-txt" onClick={filterClose}>Cancel</span></div>
                         </div>

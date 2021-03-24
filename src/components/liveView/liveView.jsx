@@ -9,6 +9,8 @@ import { lineChartData, barChartData, LiveViewCampaignMockData,
     doughnutChartData, smallBarChartData, lineChartSingleBlueData, 
     lineChartSingleGreenData, lineChartSinglePurpleData, lineChartSingleOrangeData } from "../../constants/globalMockdata";
 import h_dots_src from "../../assets/img/dots-icon_horizontal.svg";
+import calender_src from '../../assets/img/calender.svg';
+import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './liveView.css';
 
 export default function LiveView(props) {
@@ -17,10 +19,24 @@ export default function LiveView(props) {
     
     return (
         <div id="liveview-container">
-            <div className="mb-3">
+            <div className="w-100 float-left clearfix">
+                <div className="w-50 float-left clearfix">
+                    <div className="overview-heading float-left clearfix mt-2 l-v-h">Sales Overview</div>
+                </div>
+                <div className="w-50 float-left clearfix">
+                    <div className="w-100 float-right clearfix mb-1">
+                        <div className="float-right clearfix mb-1 f-c-box" >
+                            <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
+                            <span className="d-dp-lbl pr-1">Current week</span>
+                            <img src={down_arrow_src} alt="Down Arrow" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* <div className="mb-3">
                 <span className="l-v-h">Sales Overview</span>
                 <span className="l-v-f float-right"></span>
-            </div>
+            </div> */}
             <div className="w-100 float-left clearfix l-v-s-o">
                 <div className="w-25 float-left clearfix l-v-s-o-box-outer">
                     <div className="l-v-s-o-box">
