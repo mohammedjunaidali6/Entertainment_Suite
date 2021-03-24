@@ -7,6 +7,7 @@ import setting_opt1 from '../../../assets/img/segment_filter.svg';
 import Configuration from '../../../assets/img/Configurations.svg';
 import setting_opt2 from '../../../assets/img/Setting_option.svg';
 import Tooltip from '@material-ui/core/Tooltip';
+import { containerHeightCalcFn } from '../../common/global';
 import './propertySettings.css';
 
 export default function PropertySettings(props) {
@@ -57,63 +58,18 @@ export default function PropertySettings(props) {
                         </Fragment>
                     )}
                 </div>
-                <div className='email-config-block'>
-                    <img className='p-s-block-img disp-inline-block' src={email_config_src} alt=""/>
-                    <div className='p-s-headers disp-inline-block'>Email Configuration</div>
-                    <div style={{marginLeft:'30px'}}>
-                        <div className='p-s-input-label'>Email Server</div>
-                        <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                        <Tooltip title="Help or details will load here">
-                            <img src={info_src} alt="" className='p-s-info'/>
-                        </Tooltip>
-                        <div className='p-s-input-label'>User Name</div>
-                        <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                        <Tooltip title="Help or details will load here">
-                            <img src={info_src} alt="" className='p-s-info'/>
-                        </Tooltip>
-
-                        <div className='p-s-input-label'>Password</div>
-                        <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                        <Tooltip title="Help or details will load here">
-                            <img src={info_src} alt="" className='p-s-info'/>
-                        </Tooltip>
-                    </div>
-                </div>   
-                <div className='setting-opt'>
-                    <img className='p-s-block-img disp-inline-block' src={setting_opt1} alt=""/>
-                        <div className='p-s-headers disp-inline-block'>Setting option</div>
-                        <div style={{marginLeft:'30px'}}>
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                 <img src={info_src} alt="" className='p-s-info'/>
-                             </Tooltip>
-
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                <img src={info_src} alt="" className='p-s-info'/>
-                            </Tooltip>
-
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                <img src={info_src} alt="" className='p-s-info'/>
-                            </Tooltip>
-                        </div>
-                </div>
-                <div className='congig-block'>
-                    <img className='p-s-block-img disp-inline-block' src={Configuration} alt=""/>
-                        <div className='p-s-headers disp-inline-block'>Configurations</div>
+                <div className="" style={{height: containerHeightCalcFn(325)}}>
+                    <div className='email-config-block'>
+                        <img className='p-s-block-img disp-inline-block' src={email_config_src} alt=""/>
+                        <div className='p-s-headers disp-inline-block'>Email Configuration</div>
                         <div style={{marginLeft:'30px'}}>
                             <div className='p-s-input-label'>Email Server</div>
                             <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
                             <Tooltip title="Help or details will load here">
                                 <img src={info_src} alt="" className='p-s-info'/>
                             </Tooltip>
-
                             <div className='p-s-input-label'>User Name</div>
-                            <input type="text"  disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                            <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
                             <Tooltip title="Help or details will load here">
                                 <img src={info_src} alt="" className='p-s-info'/>
                             </Tooltip>
@@ -124,29 +80,76 @@ export default function PropertySettings(props) {
                                 <img src={info_src} alt="" className='p-s-info'/>
                             </Tooltip>
                         </div>
-                </div>
-                <div className='setting-opt'>
-                    <img className='p-s-block-img disp-inline-block' src={setting_opt2} alt=""/>
-                        <div className='p-s-headers disp-inline-block'>Setting option</div>
-                        <div style={{marginLeft:'30px'}}>
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                <img src={info_src} alt="" className='p-s-info'/>
-                            </Tooltip>
+                    </div>   
+                    <div className='setting-opt'>
+                        <img className='p-s-block-img disp-inline-block' src={setting_opt1} alt=""/>
+                            <div className='p-s-headers disp-inline-block'>Setting option</div>
+                            <div style={{marginLeft:'30px'}}>
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
 
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="text" disabled={inputActive}  className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                <img src={info_src} alt="" className='p-s-info'/>
-                            </Tooltip>
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
 
-                            <div className='p-s-input-label'>Attribute 1</div>
-                            <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
-                            <Tooltip title="Help or details will load here">
-                                <img src={info_src} alt="" className='p-s-info'/>
-                            </Tooltip>
-                        </div>
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+                            </div>
+                    </div>
+                    <div className='congig-block'>
+                        <img className='p-s-block-img disp-inline-block' src={Configuration} alt=""/>
+                            <div className='p-s-headers disp-inline-block'>Configurations</div>
+                            <div style={{marginLeft:'30px'}}>
+                                <div className='p-s-input-label'>Email Server</div>
+                                <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+
+                                <div className='p-s-input-label'>User Name</div>
+                                <input type="text"  disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+
+                                <div className='p-s-input-label'>Password</div>
+                                <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+                            </div>
+                    </div>
+                    <div className='setting-opt'>
+                        <img className='p-s-block-img disp-inline-block' src={setting_opt2} alt=""/>
+                            <div className='p-s-headers disp-inline-block'>Setting option</div>
+                            <div style={{marginLeft:'30px'}}>
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="text" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="text" disabled={inputActive}  className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+
+                                <div className='p-s-input-label'>Attribute 1</div>
+                                <input type="password" disabled={inputActive} className='p-s-input disp-inline-block' placeholder='Enter'/>
+                                <Tooltip title="Help or details will load here">
+                                    <img src={info_src} alt="" className='p-s-info'/>
+                                </Tooltip>
+                            </div>
+                    </div>
                 </div>
             </div>
         </Fragment>

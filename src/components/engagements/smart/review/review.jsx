@@ -1,7 +1,16 @@
 import React from 'react';
+import { Fragment } from 'react';
 
 import edit_src from '../../../../assets/img/edit.svg'
 import './review.css';
+
+const tempArray = [
+    {id: 1, winnerPosition: 'First Prize', rewardType: 'Point Coupons', noOfAwards: 500, probability: '20%', displayName: 'Get 500 Points', rewards: 5000},
+    {id: 2, winnerPosition: 'Second Prize', rewardType: 'Point Coupons', noOfAwards: 300, probability: '20%', displayName: 'Get 300 Points', rewards: 3000},
+    {id: 3, winnerPosition: 'Third Prize', rewardType: 'Coupons', noOfAwards: 200, probability: '20%', displayName: 'Get 200 Points', rewards: 5000},
+    {id: 4, winnerPosition: 'Fourth Prize', rewardType: 'Point Coupons', noOfAwards: 100, probability: '20%', displayName: 'Get 100 Points', rewards: 1000},
+    {id: 5, winnerPosition: 'Fifth Prize', rewardType: 'Coupons', noOfAwards: 50, probability: '20%', displayName: 'Get 50 Points', rewards: 2000},
+]
 
 export default function Review(props) {
 
@@ -47,19 +56,38 @@ export default function Review(props) {
                     </div>
                 </div>
                 <div className="c-e-r-left-r-b-box">
-                    <div className="c-e-r-left-r-b-box-h">Rewards</div>
-                    <div className="c-e-r-left-r-b-box-table clearfix">
-                        <div className="c-e-r-left-r-b-box-bd-box-h">Winner Position</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h">Reward Type</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h">No. of Awards</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h">Probability</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h">Display Name</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h">Rewards</div>
+                    <div className="c-e-r-left-r-b-box-h w-100 float-left clearfix">Rewards</div>
+                    <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mb-2">
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Winner Position</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Reward Type</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">No. of Awards</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Probability</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Display Name</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Rewards</div>
                     </div>
-                    <div className="c-e-r-left-r-b-box-bd">
-                        <div className="c-e-r-left-r-b-box-bd-box"><span className="c-e-r-left-r-b-box-bd-prefix">$</span>2000</div>
-                        <div className="c-e-r-left-r-b-box-bd-box"></div>
-                        <div className="c-e-r-left-r-b-box-bd-box"></div>
+                    {tempArray && tempArray.length > 0 ? (
+                        <Fragment>
+                            {tempArray.map((rewObj) => (
+                                <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType}</div>
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.noOfAwards}</div>
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.probability}</div>
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.displayName}</div>
+                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewards}</div>
+                                </div>
+                            ))}
+                        </Fragment>
+                    ) : null}
+                    <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Budget</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Duration</div>
+                    </div>
+                    <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix"><span className="c-e-r-left-r-b-box-bd-prefix">$</span>2000</div>
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div>
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">7 Days</div>
                     </div>
                 </div>
             </div>
