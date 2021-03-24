@@ -1,19 +1,21 @@
 #verify-container{
     display: flex;
     justify-content: center;
+    height: 100%;
+    background-image: url(../../assets/img/curve_web.png);
+    background-repeat: no-repeat;
+    background-size: 100% 50%;
+    background-position: bottom;
+    position: relative;
 }
 
 .dont-have-account{
-    height: 19px;
-  width: 196px;
-  position: absolute;
-  right: 40px;
-  float: right;
-  color: #3F4045;
-  font-family: Roboto;
-  font-size: 14px;
-  letter-spacing: -0.12px;
-  line-height: 16px;
+    position: absolute;
+    right: 49px;
+    color: #3F4045;
+    font-size: 14px;
+    letter-spacing: -0.12px;
+    top: 32px;
 }
 
 .l-page-navigator{

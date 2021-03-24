@@ -1,6 +1,12 @@
 #register-container{  
-        display: flex;
-        justify-content: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  background-image: url(../../assets/img/curve_web.png);
+  background-repeat: no-repeat;
+  background-size: 100% 50%;
+  background-position: bottom;
+  position: relative;
 }
 
 .condition-text{
