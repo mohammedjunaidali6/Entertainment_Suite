@@ -22,7 +22,8 @@ export const columns =[
                 width: '48px',
                 border: '1px solid #E0E7EB',
                 borderRadius: '4px',
-                backgroundColor: '#FFFFFF'
+                backgroundColor: '#FFFFFF',
+                textAlign:'center'
             }}>
                 Shoes 
             </div>
@@ -45,7 +46,7 @@ export const columns =[
         selector:"expiringOn"
     },
     {
-        name:"Actions",
+        name:" ",
         cell: row=> <ActionMenu />
     }
 ]

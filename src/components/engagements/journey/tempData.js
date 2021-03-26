@@ -21,10 +21,15 @@ export const journeyColumns = [
             name:"Task assigned",
             // selector:"taskAssigned",
              cell: rowObj => 
-             <div>
+             <div style={{ paddingRight:'5px'}}>
                  <div>{rowObj.taskAssigned}</div>
                  <CustomTooltip tooltipText={rowObj.tooltipText} >
-                      <div role="button">3+</div>
+                      <div style={{height: '15px',
+                            width: '21px',
+                            borderRadius: '4px',
+                            backgroundColor: '#DBDDDE',
+                            cursor:'pointer'}}
+                            >3+</div>
                   </CustomTooltip>    
             </div>
         },
@@ -37,7 +42,7 @@ export const journeyColumns = [
             selector:"status"
         },
         {
-            name: "Action",
+            name: " ",
              cell: action=> <ActionMenu />
         }
         
