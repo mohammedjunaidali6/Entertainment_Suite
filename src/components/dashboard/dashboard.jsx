@@ -1,4 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
 import LineChart from "../common/utils/lineChart";
 import CustomerOverview from "./customerOverview/customerOverview";
 import GamePlayingOverview from "./gamePlayingOverview/gamePlayingOverview";
@@ -10,7 +13,45 @@ import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
 
+const useStyles = makeStyles((theme) => ({
+    typography: {
+      padding: theme.spacing(2),
+    },
+}));
+
 export default function Dashboard(props) {
+
+    const [soFilterVal, setSOFilterVal] = useState('Current Week');
+    const [coFilterVal, setCOFilterVal] = useState('Current Week');
+    const classes = useStyles();
+
+    const [soFilterEl, setsoFilterEl] = useState(null);
+    const soFilterOpen = Boolean(soFilterEl);
+    const soFilterId = soFilterOpen ? 'so-filter-popover' : undefined;
+    const soFilterOpenClick = (event) => {
+        setsoFilterEl(event.currentTarget);
+    };
+    function setSOFilterClick(val) {
+        setSOFilterVal(val);
+        setsoFilterEl(null);
+    };
+
+    const [coFilterEl, setcoFilterEl] = useState(null);
+    const coFilterOpen = Boolean(coFilterEl);
+    const coFilterId = coFilterOpen ? 'co-filter-popover' : undefined;
+    const coFilterOpenClick = (event) => {
+        setcoFilterEl(event.currentTarget);
+    };
+    function setCOFilterClick(val) {
+        setCOFilterVal(val);
+        setcoFilterEl(null);
+    };
+
+    const handleClose = () => {
+        setsoFilterEl(null);
+        setcoFilterEl(null);
+    };
+
     return (
         <Fragment>
             <div id="dashboard-container" className="p-2">
@@ -20,11 +61,34 @@ export default function Dashboard(props) {
                     </div>
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
-                            <div className="float-right clearfix mb-1 f-c-box" >
+                            <div className="float-right clearfix mb-1 f-c-box" onClick={soFilterOpenClick} >
                                 <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
-                                <span className="d-dp-lbl pr-1">Current week</span>
+                                <span className="d-dp-lbl pr-1">{soFilterVal}</span>
                                 <img src={down_arrow_src} alt="Down Arrow" />
                             </div>
+                            <Popover
+                                id={soFilterId}
+                                open={soFilterOpen}
+                                anchorEl={soFilterEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <Typography className={classes.typography}>
+                                    <div className="s-o-f-options p-0">
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Week')}>Last Week</div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last 1 Month')}>Last 1 Month</div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last 1 Year')}>Last 1 Year</div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Current Week')}>Current Week</div>
+                                    </div>
+                                </Typography>
+                            </Popover>
                         </div>
                     </div>
                 </div>
@@ -62,11 +126,34 @@ export default function Dashboard(props) {
                     </div>
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
-                            <div className="float-right clearfix mb-1 f-c-box" >
+                            <div className="float-right clearfix mb-1 f-c-box" onClick={coFilterOpenClick}>
                                 <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
-                                <span className="d-dp-lbl pr-1">Current week</span>
+                                <span className="d-dp-lbl pr-1">{coFilterVal}</span>
                                 <img src={down_arrow_src} alt="Down Arrow" />
                             </div>
+                            <Popover
+                                id={coFilterId}
+                                open={coFilterOpen}
+                                anchorEl={coFilterEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <Typography className={classes.typography}>
+                                    <div className="s-o-f-options p-0">
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Week')}>Last Week</div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last 1 Month')}>Last 1 Month</div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last 1 Year')}>Last 1 Year</div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Current Week')}>Current Week</div>
+                                    </div>
+                                </Typography>
+                            </Popover>
                         </div>
                     </div>
                 </div>

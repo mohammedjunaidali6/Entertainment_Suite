@@ -136,14 +136,14 @@ export default function SideMenu(props) {
                         <Fragment>
                             <div className="s-m-sub-h">Analytics</div>
                             <div className={`s-m-sub-tab ${analyticsSM === 1 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')} >
-                                <span>Report 1</span>
+                                <span>Report</span>
                             </div>
-                            <div className={`s-m-sub-tab ${analyticsSM === 2 ? `active` : ``}`} onClick={() => analyticsClick(4, 2, 'trends')}>
+                            {/* <div className={`s-m-sub-tab ${analyticsSM === 2 ? `active` : ``}`} onClick={() => analyticsClick(4, 2, 'trends')}>
                                 <span>Trends</span>
                             </div>
                             <div className={`s-m-sub-tab ${analyticsSM === 3 ? `active` : ``}`} onClick={() => analyticsClick(4, 3, 'gamePerformance')}>
                                 <span>Game Performance</span>
-                            </div>
+                            </div> */}
                         </Fragment>
                     ) : null }
                     {selectedSM === 6 ? (
