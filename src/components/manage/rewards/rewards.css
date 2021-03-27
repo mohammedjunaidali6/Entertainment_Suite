@@ -294,11 +294,11 @@ input:focus,select:focus{
 .c-r-controls{
     height: 60px;
     box-sizing: border-box;
-    border-top: 1px solid #EDEEF0;
+    /* border-bottom: 1px solid #EDEEF0; */
 }
 .c-r-control-buttons{
     height: 60px;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 .c-r-cancel-button{
     height: 38px;

@@ -15,6 +15,8 @@ import default_user_src from '../../assets/img/default_user.png';
 import product_tour_src from '../../assets/img/product_tour.svg';
 import support_src from '../../assets/img/support.svg';
 import settings_src from '../../assets/img/Property_Settings.svg';
+import help_src from '../../assets/img/User Guide.svg';
+import logout_src from '../../assets/img/logout.svg';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -105,8 +107,14 @@ export default function Header(props) {
                                 <img src={settings_src} alt="Settings" />
                                 <span className="pl-2 pt-2">Settings</span>
                             </div>
-                            <div>Help</div>
-                            <div style={{borderBottom: "1px solid #DBDDDE"}}>Logout</div>
+                            <div>
+                                <img src={help_src} alt="Help" />
+                                <span className="pl-2 pt-2">Help</span>
+                            </div>
+                            <div style={{borderBottom: "1px solid #DBDDDE"}}>
+                                <img src={logout_src} alt="logout" />
+                                <span className="pl-2 pt-2">Logout</span>
+                            </div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
                         </div>
                     </Typography>

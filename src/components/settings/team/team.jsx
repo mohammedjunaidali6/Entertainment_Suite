@@ -4,6 +4,17 @@ import Table from '../../common/reactTable/table';
 import { columns, data } from './teamTempData';
 import './team.css';
 
+
+const roles = [
+    {id:1, permission:"Overview" },
+    {id:2, permission:"Engagements" },
+    {id:3, permission:"Live view" },
+    {id:4, permission:"Analytics"},
+    {id:5, permission:"Customer Segment"},
+    {id:6, permission:"Manage" },
+    {id:7, permission:"Admin" }
+]
+
 export default function Team(props) {
     const[createClick, setCreateClick] = useState(false);
 
@@ -14,6 +25,7 @@ export default function Team(props) {
         <Fragment>
             <div id="team-container">
                 {!createClick ? (
+                    <div style={{padding: '30px'}}>
                     <div className='team-management-header'>
                     <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
                     <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
@@ -21,7 +33,10 @@ export default function Team(props) {
                     </div>
                     <Table columns={columns} data={data} actions={<SearchBar />} />
                 </div>
+                </div>
                 ) : (
+                    <Fragment>
+                    <div style={{padding: '30px'}}>  
                     <div className='invite-user-block'>
                         <div className='t-m-title'>Invite User</div>
                         <div className='t-m-input-block'>
@@ -36,7 +51,7 @@ export default function Team(props) {
                             <div className='t-m-input disp-inline-block'>
                                 <div className='t-m-input-label'>Role</div>
                                 <select className= 't-m-input-field' placeholder="Campaign Manager"> 
-                                    <option>Campaign Manager</option>
+                                   <option value="Campaign Manager">Campaign Manger</option>
                                 </select>
                             </div>
                             <div className='t-m-message-block'>
@@ -44,18 +59,19 @@ export default function Team(props) {
                                 <textarea className='t-m-message-box' placeholder="You’ve been invited to join Divinor Luckyme Dashbord. "/>
                             </div>
                         </div>
-                        <div className='t-m-actions'>
-                            <div className='t-m-act-btns'>
-                                <div className='t-m-cancel-btn disp-inline-block' role="button" onClick={()=>{setCreateClick(false)}}>
-                                    <div className='t-m-cancel-btn-text' >Cancel</div>
-                                </div>
-                                <div className='t-m-save-btn disp-inline-block'>
-                                    <div className='t-m-save-btn-text'>Save</div>
-                                </div>
-                            </div>
-                        </div>
-                        
                      </div>   
+                  </div>  
+                  <div className='role-actions  clearfix'>
+                                <div className='role-act-btn'>
+                                    <div className='role-cancel-btn disp-inline-block' role="button" onClick={()=>{setCreateClick(false)}}>
+                                        <div className='r-c-btn-text'>Cancel</div>
+                                    </div>
+                                    <div className='role-save-btn disp-inline-block' role="button">
+                                        <div className='r-s-btn-text'>Save</div>
+                                    </div>
+                                </div>
+                    </div>
+                  </Fragment>
                 )
                 }
             </div>

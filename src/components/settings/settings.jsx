@@ -3,6 +3,10 @@ import './settings.css';
 import Profile from './profile/profile';
 import Team from "./team/team";
 import Role from "./notification/notification";
+import profile_src from "../../assets/img/profile_setting.svg";
+import team_src from "../../assets/img/team_setting.svg";
+import role_src from "../../assets/img/role_setting.svg";
+
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
 
@@ -48,13 +52,16 @@ export default function Settings(props) {
                         <Content active={active === 0}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
+                                    <img src={profile_src} style={{marginRight: '13px'}}/>
                                     Profile
                                 </Tab>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
+                                     <img src={team_src} style={{marginRight: '13px'}}/>
                                     Team
                                 </Tab>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 2} id={2} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                    Notification
+                                  <img src={role_src} style={{marginRight: '13px'}}/>
+                                    Roles
                                 </Tab>
                             </Tabs>
                             <>

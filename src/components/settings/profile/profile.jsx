@@ -1,5 +1,6 @@
 import React, {useState, Fragment } from 'react';
 import user from "../../../assets/img/user.svg";
+import edit_src from '../../../assets/img/Edit_black.svg';
 import './profile.css';
 
 
@@ -22,7 +23,9 @@ export default function Profile(props) {
                 <div className='general-info-block'>
                     <div className='g-i-heading disp-inline-block'>GENERAL INFO</div>
                     {!editEnable ? (<div className='g-i-edit-block disp-inline-block' onClick={editEnabler}>
-                        <div className='g-i-edit' role='button'>Edit</div>
+                        
+                        <img src={edit_src} className='p-s-edit-btn-symbol disp-inline-block' />
+                        <div className='g-i-edit disp-inline-block' role='button'> Edit</div>
                     </div>) :(
                     <div className='g-i-edit-controls disp-inline-block'>
                         <div className='g-i-discard-btn disp-inline-block' role="button" onClick={editDisabler}>

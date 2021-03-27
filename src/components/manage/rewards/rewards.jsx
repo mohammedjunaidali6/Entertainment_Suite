@@ -90,11 +90,11 @@ export default function ManageRewards(props) {
                                     </div>
                                     <div className='expiry-date w-33 float-left clearfix' style={{marginRight: "0px"}}>
                                         <div className='expiry-date-text'>Expiry Date</div>
-                                        {/* <input className='expiry-date-input w-100' type="date"/> */}
-                                        <DatePicker 
+                                        {/* <input className='expiry-date-input w-100' type="date"/> */}                            
+                                        <DatePicker
                                             selected={startDate} 
                                             onChange={date => setStartDate(date)} 
-                                            customInput={<CustomDatePickerEL />} />
+                                            customInput={<CustomDatePickerEL />} />            
                                     </div>
                                 </div>
                                 <div className='description-box w-100 float-left clearfix'>

@@ -1,6 +1,4 @@
 #team-container{
-    padding: 30px 30px;
-    padding-bottom: 2%;
     background-color: white;
     
 }
@@ -63,7 +61,7 @@
   background-color: #FFFFFF;
 }
 
-.t-m-input-field::placeholder{
+.t-m-input-field::-webkit-input-placeholder{
     height: 19px;
     margin-left: 15px;
   color: #5F6165;
