@@ -85,10 +85,10 @@ export default function CampaignBox(props) {
                                 </Typography>
                             </Popover>
                             <span className="c-b-status float-right mt-1"><div className={classnames('mr-2', {
-                                'logo-live': obj.status === 'live',
-                                'logo-paused': obj.status === 'paused',
-                                'logo-expired': obj.status === 'expired',
-                                'logo-upcoming': obj.status === 'upcoming'
+                                'logo-live': obj.status === 'Live',
+                                'logo-paused': obj.status === 'Paused',
+                                'logo-expired': obj.status === 'Expired',
+                                'logo-upcoming': obj.status === 'Upcoming'
                             })}></div>{obj.status}</span>
                         </div>
                     </div>

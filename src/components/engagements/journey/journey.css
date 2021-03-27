@@ -45,6 +45,7 @@
 }
 
 .create-new-journey-container{
+    height: 750px;
     border-radius: 10px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
@@ -196,4 +197,10 @@
     letter-spacing: 0;
     line-height: 12px;
     text-align: center;
+}
+
+.c-j-action-sec{
+    height: 62px;
+    
+
 }

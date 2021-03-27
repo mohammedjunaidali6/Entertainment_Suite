@@ -138,6 +138,16 @@ export default function EngagementsJourney(props) {
                                 </Fragment>
                             ) : null}
                         </div>
+                        <div className='c-r-controls' style={{marginTop:'50px'}}>
+                                    <div className='c-r-button-controls float-right'>
+                                        <div className='c-r-cancel-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                            <div className='cancel-btn-font'>Cancel</div>
+                                        </div>
+                                        <div className='c-r-add-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                            <div className='add-btn-font'>Save</div>
+                                        </div>
+                                    </div>
+                        </div>
                     </div>
                     {/* <TaskDragDrop /> */}
                 </Fragment>
