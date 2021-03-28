@@ -194,6 +194,22 @@ input[type=checkbox]:after, input[type=radio]:after {
     position: absolute;
     transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
 }
+
+#manage-rewards-container header {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.rdt_Pagination, .rdt_TableBody {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.sc-hHftDr {
+    margin-bottom: 0px !important;
+}
+.rdt_TableRow, .rdt_TableHeadRow {
+    border: none !important;
+}
+
 @keyframes customEnterOverlayAnimation {
     0% {
       transform: scale(0);
