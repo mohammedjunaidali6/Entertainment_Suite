@@ -64,15 +64,15 @@ export default function Segments(props) {
     }
 
     return (
-        <div id="segments-container">
-            <div>
+        <div id="segments-container" className="w-99 float-left clearfix">
+            <div className="w-100 float-left clearfix">
                 <div className="disp-inline-block">
                     <span className="m-s-heading">Manage Segments</span>
                     <br />
                     <span className="m-s-sub-heading">6/18 Segments are part of running campaign</span>
                 </div>
                 {!createSegment ? (
-                    <div className="btn-create-engagement float-right text-center pt-2 mr-3" onClick={createSegmentClick} style={{marginBottom: '20px'}}>
+                    <div className="btn-create-engagement float-right text-center pt-2" onClick={createSegmentClick} style={{marginBottom: '20px'}}>
                         <span className="btn-c-e-text">+ Create Segments</span>
                     </div>
                 ) : null }

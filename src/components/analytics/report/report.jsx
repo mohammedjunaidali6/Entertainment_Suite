@@ -14,8 +14,8 @@ export default function AnalyticsReport(props) {
     let history = useHistory();
     
     return (
-        <div id="analytics-report-container">
-            <div className="a-r-table-sec">
+        <div id="analytics-report-container" className="w-100 float-left clearfix">
+            <div className="w-99 float-left clearfix a-r-table-sec">
                 <Table columns={AnalyticsTableColumns} 
                     data={ AnalyticsMockData } 
                     pagination={true}
@@ -25,7 +25,7 @@ export default function AnalyticsReport(props) {
                     subHeader={true} 
                 />
             </div>
-            <div className="w-100 float-left clearfix l-v-charts a-r-table-sec">
+            <div className="w-100 float-left clearfix l-v-charts a-r-charts-sec">
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
                         <LineChart data={lineChartData}

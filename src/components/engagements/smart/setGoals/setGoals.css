@@ -3,7 +3,7 @@
     background-color: #F2F4F5;
 }
 .c-e-campaign-goal-sec {
-    border-radius: 0 0 10px 10px;
+    /* border-radius: 0 0 10px 10px; */
     background-color: var(--whiteBg);
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
     padding: 0 42px 42px 42px;
@@ -118,4 +118,12 @@ div.checkmark .unmark-circle:after {
     -moz-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+.setGoalForm-input-lbl {
+    height: 16px;
+    color: #5F6165;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
 }

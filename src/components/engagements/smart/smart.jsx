@@ -116,8 +116,8 @@ export default function EngagementsSmart(props) {
                     <div className="mb-4">
                         <span className="e-s-heading">Active Campaigns</span>
                         <span className="float-right mr-3">
-                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)}></AiOutlineMenu>
-                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)}></BsGrid3X3GapFill>
+                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{width: "22px", height: "22px"}}></AiOutlineMenu>
+                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{width: "22px", height: "22px"}}></BsGrid3X3GapFill>
                         </span>
                     </div>
                     <div>
@@ -135,7 +135,7 @@ export default function EngagementsSmart(props) {
                                 ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
                             </div>
                         ) : (
-                            <div className="mt-4">
+                            <div className="mt-4" id="e-s-table-sec">
                                 <Table columns={CampaignTableColumns} 
                                     data={ campaigndata } 
                                     pagination={true}
