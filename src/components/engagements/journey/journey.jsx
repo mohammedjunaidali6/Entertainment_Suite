@@ -3,7 +3,8 @@ import Table from "../../common/reactTable/table";
 import Select from 'react-select';
 import {journeyColumns, journeyData} from "./tempData";
 
-
+import { containerHeightCalcFn } from "../../common/global";
+import SearchBar from "../../common/searchBar/searchBar";
 import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
@@ -82,12 +83,18 @@ export default function EngagementsJourney(props) {
                         </div>
                 
                     <div className='journey-table-block'>
-                        <Table columns={journeyColumns} data={ journeyData} />
+                        <Table columns={journeyColumns} 
+                                data={ journeyData} 
+                                pagination={true}
+                                subHeaderComponent={
+                                    <SearchBar placeHolder="Search journey" fromJourney={true} searchFilter="All Jouneys" />
+                                } 
+                                subHeader={true} />
                     </div>
                 </Fragment>
             ) : (
                 <Fragment>
-                    <div className="create-new-journey-container w-100 float-left clearfix">
+                    <div className="create-new-journey-container w-100 float-left clearfix" style={{height: containerHeightCalcFn(186), overflowY: "auto"}}>
                         <div className = 'heading-c-j'>Create New Journey</div>
                         <div className="w-100 float-left clearfix">
                             <div className='journey-name-c-j w-100 float-left clearfix'>Journey Name</div>
@@ -137,6 +144,13 @@ export default function EngagementsJourney(props) {
                                     </div>
                                 </Fragment>
                             ) : null}
+                        </div>
+                    </div>
+                    <div className="w-100 float-left clearfix c-j-a">
+                        <div className="w-50 float-left clearfix"></div>
+                        <div className="w-50 float-left clearfix" style={{marginRight: "45px"}}>
+                            <div className="c-j-a-s content-c float-right clearfix" onClick={() => setCreateFlag(false)}>Save</div>
+                            <div className="c-j-a-c content-c float-right clearfix" onClick={() => setCreateFlag(false)}>Cancel</div>
                         </div>
                     </div>
                     {/* <TaskDragDrop /> */}

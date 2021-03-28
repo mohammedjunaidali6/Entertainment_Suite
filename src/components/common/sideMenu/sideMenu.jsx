@@ -12,7 +12,7 @@ import manage_src from "../../../assets/img/Manage.svg";
 import segment_src from "../../../assets/img/Segment.svg";
 
 export default function SideMenu(props) {
-    console.log('Sidemenu JSX')
+    
     let history = useHistory();
     const [selectedSM, setSelectedSM] = useState(1);
     const [engagementSM, setEngagementSM] = useState(1);
@@ -40,6 +40,8 @@ export default function SideMenu(props) {
             } else if(history.location.pathname === '/analytics/gamePerformance') {
                 setSelectedSM(4);
                 setAnalyticsSM(2);
+            } else if(history.location.pathname === '/segments') {
+                setSelectedSM(5);
             } else if(history.location.pathname === '/manage/rewards') {
                 setSelectedSM(6);
                 setManageSM(1);

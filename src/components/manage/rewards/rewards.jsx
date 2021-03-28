@@ -43,7 +43,14 @@ export default function ManageRewards(props) {
                     </div>
                
                 <div className='journey-table-block'>
-                    <Table columns={columns} data={data} action={<SearchBar className='c-r-search-box' />}/>
+                    <Table columns={columns} 
+                        data={data} 
+                        pagination={true}
+                        subHeaderComponent={
+                            <SearchBar placeHolder="Search Reward" fromRewards={true} searchFilter="All Rewards" />
+                        } 
+                        subHeader={true}
+                    />
                 </div>
             </Fragment>): (
                 <Fragment>

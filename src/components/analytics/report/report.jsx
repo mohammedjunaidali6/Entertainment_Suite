@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import LineChart from "../../common/utils/lineChart";
 import BarChart from "../../common/utils/barChart";
+import SearchBar from "../../common/searchBar/searchBar";
 import DoughnutChart from '../../common/utils/doughnutChart';
 import Table from "../../common/reactTable/table";
 import { lineChartData, barChartData,
@@ -15,7 +16,14 @@ export default function AnalyticsReport(props) {
     return (
         <div id="analytics-report-container">
             <div className="a-r-table-sec">
-                <Table columns={AnalyticsTableColumns} data={ AnalyticsMockData } />
+                <Table columns={AnalyticsTableColumns} 
+                    data={ AnalyticsMockData } 
+                    pagination={true}
+                    subHeaderComponent={
+                        <SearchBar fromAnalyticsReport={true} />
+                    } 
+                    subHeader={true} 
+                />
             </div>
             <div className="w-100 float-left clearfix l-v-charts a-r-table-sec">
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">

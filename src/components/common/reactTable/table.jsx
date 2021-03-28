@@ -34,12 +34,17 @@ export default function Table(props){
         <Fragment>
            {props.data && props.data.length > 0 && props.columns && props.columns.length> 0?
            <Fragment>
+               {/* want to load subHeaderComponent you must pass 
+               subHeader as well true from the corresponding components */}
                <DataTable
-                    noHeader={props.noHeader ? props.noHeader : false}
+                    noHeader={props.noHeader ? props.noHeader : true}
                     columns = {props.columns}
                     data ={props.data}
                     striped
-                    action ={props.actions}
+                    action ={props.actions ? props.actions : null}
+                    subHeader={props.subHeader ? props.subHeader : false}
+                    subHeaderComponent={props.subHeaderComponent ? props.subHeaderComponent : []}
+                    subHeaderAlign={props.subHeaderAlign ? props.subHeaderAlign : 'left'}
                     pagination = {props.pagination ? props.pagination : false}
                     paginationPerPage ={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT} 
                     customStyles={customStyle} 

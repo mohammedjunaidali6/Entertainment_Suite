@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { containerHeightCalcFn } from "../../common/global";
 import CampaignBox from "../../common/campaignBox/campaignBox";
+import SearchBar from "../../common/searchBar/searchBar";
 import Table from "../../common/reactTable/table";
 import { CampaignMockData, CampaignTableColumns } from "../../../constants/globalMockdata";
 import SetGoals from "./setGoals/setGoals";
@@ -135,7 +136,14 @@ export default function EngagementsSmart(props) {
                             </div>
                         ) : (
                             <div className="mt-4">
-                                <Table columns={CampaignTableColumns} data={ campaigndata } />
+                                <Table columns={CampaignTableColumns} 
+                                    data={ campaigndata } 
+                                    pagination={true}
+                                    subHeaderComponent={
+                                        <SearchBar placeHolder="Search Engagements" fromEngagements={true} searchFilter="All Engagements" />
+                                    } 
+                                    subHeader={true}
+                                />
                             </div>
                         )}
                     </div>
