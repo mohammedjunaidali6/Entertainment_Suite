@@ -45,6 +45,8 @@
 }
 
 .create-new-journey-container{
+    height: 750px;
+    border-radius: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: #FFFFFF;
@@ -198,6 +200,13 @@
     line-height: 12px;
     text-align: center;
 }
+
+.c-j-action-sec{
+    height: 62px;     
+}
+
+/* came from master */
+
 .c-j-a {
     height: 62px;
     border-bottom-left-radius: 10px;

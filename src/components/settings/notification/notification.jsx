@@ -6,13 +6,13 @@ import PermissionList from "./permissionContainer";
 import './notification.css';
 
 const rolePermissionData = [
-    {id:1, permission:"Overview"},
-    {id:2, permission:"Engagements"},
-    {id:3, permission:"Live view"},
-    {id:4, permission:"Analytics"},
-    {id:5, permission:"Customer Segment"},
-    {id:6, permission:"Manage"},
-    {id:7, permission:"Admin"}
+    {id:1, permission:"Overview", isActive:true},
+    {id:2, permission:"Engagements", isActive:true},
+    {id:3, permission:"Live view", isActive:true},
+    {id:4, permission:"Analytics", isActive:true},
+    {id:5, permission:"Customer Segment", isActive:true },
+    {id:6, permission:"Manage", isActive:true},
+    {id:7, permission:"Admin", isActive:true}
 ]
 
 export default function Role(props) {
@@ -24,16 +24,18 @@ export default function Role(props) {
         <Fragment>
             <div id="role-container">
                 {!createClick ?
-               (<Fragment><div className='role-header'>
+               (<Fragment><div style={{padding: '35px 45px '}}><div className='role-header'>
                     <div className='role-title disp-inline'>TEAM MANAGEMENT</div>
                     <div className='add-new-role-btn disp-inline' role="button" onClick={clickHandler}>
                         <div className='add-new-role'>+ Add New Role</div>
                     </div>
                     </div>
                      <Table columns ={column} data={data}/>
+                     </div>
                     </Fragment>
                     ) 
                     :(<Fragment>
+                        <div style={{padding: '35px 45px'}}>
                         <div className='role-header'>
                             <div className='role-title'>CREATE ROLE</div>
                         </div>    
@@ -46,8 +48,9 @@ export default function Role(props) {
                                 <div className='r-permissions-list'>
                                     {rolePermissionData.map(obj =>(
                                         <div className='r-p-list-item'>
-                                        <input type="checkbox" className='disp-inline r-checkbox' />
-                                        <div className='r-p-item-text disp-inline'>{obj.permission}</div>    
+                                        
+                                        <input type="checkbox" className={`dips-inline-block r-checkbox ${obj.isActive ? ` r-checked`: `r-checked-out `}`} checked={obj.isActive? true : false}/>
+                                        <div className='r-p-item-text disp-inline-block'>{obj.permission}</div>    
                                          </div> 
                                     ))}
                                 </div>
@@ -56,7 +59,8 @@ export default function Role(props) {
                                 <div className= 't-m-input-label'>Description</div>
                                 <textarea className='role-description-box' placeholder="Add Note"></textarea>
                             </div>
-                            <div className='role-actions'>
+                            </div>
+                            <div className='role-actions  clearfix'>
                                 <div className='role-act-btn'>
                                     <div className='role-cancel-btn disp-inline-block' role="button" onClick={()=>{setCreateClick(false)}}>
                                         <div className='r-c-btn-text'>Cancel</div>

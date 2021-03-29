@@ -1,9 +1,29 @@
 #role-container{
     background-color: #FFFFFF;
-    padding: 35px 42px;
+    /* padding: 35px 42px; */
     padding-bottom: 0px;
     
 }
+
+.table-row-btn{
+  height: 15px;
+  width: 36px;
+  border-radius: 4px;
+  background-color: #DBDDDE;
+  outline: none;
+  border: none;
+}
+
+
+.table-row-btn-text{
+  height: 13px;
+  color: #6A6976;
+  font-family: Roboto;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+
 .role-header{
     padding-bottom: 35px;
 }
@@ -47,6 +67,16 @@
   background-color: #FFFFFF;
 }
 
+.r-input-field ::-webkit-input-placeholder{
+  margin-left: 16px ;
+  height: 9px;
+  width: 152px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 19px;
+}
 .role-description-box{
   box-sizing: border-box;
   height: 82px;
@@ -64,7 +94,9 @@
   flex-flow: row wrap;
 }
 .r-checkbox{
-  margin-right: 10px;
+  
+  position: relative;
+  bottom: 5px;
 }
 .r-p-list-item{
   box-sizing: border-box;
@@ -72,14 +104,22 @@
   margin: 10px;
   padding: 10px;
   padding-left: 20px; 
+  padding-right: 0px;
   width: 181px;
   border: 1px solid #E3E7ED;
   border-radius: 4px;
   background-color: #FFFFFF;
 }
 
+.r-checked{
+  border: 2px solid #0844ac;
+  border-radius: 4px;
+}
+
+
 .r-p-item-text{
   height: 21px;
+  margin-left: 4px;
   color: #3F4045;
   font-family: Roboto;
   font-size: 14px;
@@ -89,8 +129,7 @@
 .role-actions{
   margin-top: 96px;
   height: 60px;
-  width: 884px;
-  margin-left: -42px;
+  width: 100%;
   background-color: #FFFFFF;
   box-shadow: 0 -1px 7px 1px rgba(95,100,112,0.11);
 }

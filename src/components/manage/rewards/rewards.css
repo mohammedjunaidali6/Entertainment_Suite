@@ -57,7 +57,7 @@ input:focus,select:focus{
 }
 
 .create-new-rewards{
-    height: 481px;
+    height: 500px;
     border-radius: 10px;
     background-color: #FFFFFF;
     padding: 40px;
@@ -99,6 +99,19 @@ input:focus,select:focus{
     background-color: #F8F9F9
 }
 
+.c-r-display-input-field::-webkit-input-placeholder{
+    height: 20px;
+    width: 95px;
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 19px;
+    padding-left: 13px;
+
+}
+
 .c-r-coupon-code{
     height: 62px;
     display: inline-block;
@@ -124,6 +137,16 @@ input:focus,select:focus{
     background-color: #F8F9F9;
 }
 
+.coupon-code-input-field::-webkit-input-placeholder{
+    height: 20px;
+  color: #5F6165;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 19px;
+  padding-left: 13px;
+}
 .c-r-row-2{
     height: 62px;
   /* width: 886px; */
@@ -164,6 +187,17 @@ input:focus,select:focus{
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #F8F9F9;
+}
+
+.usage-per-customer-input-field::-webkit-input-placeholder{
+    height: 17px;
+    padding-left: 13px;
+    color: #5F6165;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 17px;
 }
 .rewarded-amount{
     height: 17px;
@@ -259,10 +293,12 @@ input:focus,select:focus{
 
 .c-r-controls{
     height: 60px;
+    box-sizing: border-box;
+    /* border-bottom: 1px solid #EDEEF0; */
 }
 .c-r-control-buttons{
     height: 60px;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 .c-r-cancel-button{
     height: 38px;
@@ -299,4 +335,13 @@ input:focus,select:focus{
   font-weight: 500;
   letter-spacing: 0;
   line-height: 20px;
+}
+
+.c-d-p-reward-container{
+    box-sizing: border-box;
+    height: 40px;
+    width: 285px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
 }

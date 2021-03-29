@@ -21,7 +21,6 @@ const customStyle ={
             // height: '40px',
             color: '#6A6976',
             fontFamily: 'Roboto',
-            border: '0px',
             fontSize: '12px',
             letterSpacing: 0,
             lineHeight: '18px',

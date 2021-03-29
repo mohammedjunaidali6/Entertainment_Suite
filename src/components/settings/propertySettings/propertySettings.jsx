@@ -58,7 +58,7 @@ export default function PropertySettings(props) {
                         </Fragment>
                     )}
                 </div>
-                <div className="" style={{height: containerHeightCalcFn(325)}}>
+                <div className="" style={{height: containerHeightCalcFn(825)}}>
                     <div className='email-config-block'>
                         <img className='p-s-block-img disp-inline-block' src={email_config_src} alt=""/>
                         <div className='p-s-headers disp-inline-block'>Email Configuration</div>

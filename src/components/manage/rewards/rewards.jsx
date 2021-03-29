@@ -4,6 +4,8 @@ import 'react-input-tags-hooks/build/index.css';
 import Table from "../../common/reactTable/table";
 import {columns, data} from "./tempData";
 import SearchBar from "../../common/searchBar/searchBar";
+import DatePicker from 'react-datepicker';
+import { CustomDatePickerEL } from "../../common/global";
 import './rewards.css';
 
 export default function ManageRewards(props) {
@@ -11,6 +13,7 @@ export default function ManageRewards(props) {
     const [active,setActive] =useState('all');
     const [createFlag, setCreateFlag] =useState(false);
     const [targetCategoryTags, settargetCategoryTags] = useState([]);
+    const [startDate, setStartDate] = useState(null);
 
     const tabClick=(val)=> {
         setActive(val);
@@ -92,9 +95,13 @@ export default function ManageRewards(props) {
                                     </select>
                                     <input className="amount-input w-67 float-left clearfix"text="type" placeholder="1000" />
                                 </div>
-                                <div className='expiry-date w-33 float-left clearfix' style={{marginRight: "0px"}}>
+                                <div className='expiry-date w-30 float-left clearfix' style={{marginRight: "0px"}}>
                                     <div className='expiry-date-text'>Expiry Date</div>
-                                    <input className='expiry-date-input w-100' type="date"/>
+                                    {/* <input className='expiry-date-input w-100' type="date"/> */}
+                                    <DatePicker
+                                            selected={startDate} 
+                                            onChange={date => setStartDate(date)} 
+                                            customInput={<CustomDatePickerEL fromReward={true} />} />       
                                 </div>
                             </div>
                             <div className='description-box w-100 float-left clearfix'>

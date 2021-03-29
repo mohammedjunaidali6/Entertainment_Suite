@@ -1,5 +1,15 @@
 import ActionMenu from "../../common/reactTable/menu";
 
+const tableRowBtnText={
+    height: '13px',
+  width: '22px',
+  color: '#6A6976',
+  fontFamily: 'Roboto',
+  fontSize: '10px',
+  letterSpacing: '0',
+  lineHeight: '13px'
+}
+
 export const column =[
     {
         name:"Role",
@@ -9,14 +19,9 @@ export const column =[
         name:"Permissions",
         cell: row =><div>
             <div className='disp-inline'>{row.permissions}</div>
-            <div className='disp-inline' style={{
-                height: '15px',
-                width: '36px',
-                marginLeft: '10px',
-                borderRadius: '4px',
-                backgroundColor: '#DBDDDE'
-              }}>View</div>
-            
+            <button className='disp-inline table-row-btn' style={{ marginLeft: '10px'}}> 
+               <div className='table-row-btn-text'>View</div> 
+            </button>
         </div>
         
     },

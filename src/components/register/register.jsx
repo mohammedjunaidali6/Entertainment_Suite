@@ -17,7 +17,7 @@ export default function Register(props) {
             <div className='dont-have-account'>Already have an account?
             <span className='l-page-navigator' onClick={loginOpenFn}>Login</span></div>
            <div className='login-outer-container'>
-               <div className='login-container'>
+               <div className='login-container' style={{height:'480px'}}>
                    <div className='login-intro'>Create your account</div>
                    <div className='login-input-field '>
                         <img src={user_src} className='l-i-symbol disp-inline' alt=""/>
@@ -40,7 +40,7 @@ export default function Register(props) {
                         <input className='login-field disp-inline' placeholder='Phone Number' type="text"/>
                     </div>
                     {/* <div className='login-divider'></div> */}
-                    <div className='login-btn' style={{ marginTop:'40px'}} role="button">
+                    <div className='login-btn' style={{ marginTop:'40px'}}>
                         <div className='l-btn-text'>Create My Account</div>
                     </div>
                     <div className='condition-text'>By signing up, you are agreeing to Divanor Terms & Conditions</div>
