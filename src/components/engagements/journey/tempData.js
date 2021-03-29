@@ -24,12 +24,9 @@ export const journeyColumns = [
              <div style={{ paddingRight:'5px'}}>
                  <div>{rowObj.taskAssigned}</div>
                  <CustomTooltip tooltipText={rowObj.tooltipText} >
-                      <div style={{height: '15px',
-                            width: '21px',
-                            borderRadius: '4px',
-                            backgroundColor: '#DBDDDE',
-                            cursor:'pointer'}}
-                            >3+</div>
+                    <button type="button" className='table-row-btn'>
+                        <div className='table-row-btn-text'>3+</div>
+                    </button>        
                   </CustomTooltip>    
             </div>
         },

@@ -27,12 +27,12 @@ export const columns =[
     },
     {
         name:"Category ",
-        cell:row =><div >
-            <div style={targetCategoryStyle}>{row.category[0]}</div>
-            <div style={targetCategoryStyle}>{row.category[1]}</div>
+        cell:row =><div>
+            <div style={targetCategoryStyle} className='clearfix'>{row.category[0]}</div>
+            <div style={targetCategoryStyle} className='clearfix'>{row.category[1]}</div>
             {row.category && row.category.length > 2 ? (
                 <CustomTooltip tooltipText={row.category[2]+" , "+ row.category[3]+" , "+ row.category[4]}>
-                    <div style={targetCategoryStyle}>3+</div>
+                    <div className='clearfix' style={targetCategoryStyle}>{row.category.length - 2}</div>
                 </CustomTooltip>
                  ):null
             }
