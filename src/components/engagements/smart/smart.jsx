@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { containerHeightCalcFn } from "../../common/global";
 import CampaignBox from "../../common/campaignBox/campaignBox";
+import SearchBar from "../../common/searchBar/searchBar";
 import Table from "../../common/reactTable/table";
 import { CampaignMockData, CampaignTableColumns } from "../../../constants/globalMockdata";
 import SetGoals from "./setGoals/setGoals";
@@ -115,8 +116,8 @@ export default function EngagementsSmart(props) {
                     <div className="mb-4">
                         <span className="e-s-heading">Active Campaigns</span>
                         <span className="float-right mr-3">
-                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)}></AiOutlineMenu>
-                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)}></BsGrid3X3GapFill>
+                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{width: "22px", height: "22px"}}></AiOutlineMenu>
+                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{width: "22px", height: "22px"}}></BsGrid3X3GapFill>
                         </span>
                     </div>
                     <div>
@@ -134,8 +135,15 @@ export default function EngagementsSmart(props) {
                                 ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
                             </div>
                         ) : (
-                            <div className="mt-4">
-                                <Table columns={CampaignTableColumns} data={ campaigndata } />
+                            <div className="mt-4" id="e-s-table-sec">
+                                <Table columns={CampaignTableColumns} 
+                                    data={ campaigndata } 
+                                    pagination={true}
+                                    subHeaderComponent={
+                                        <SearchBar placeHolder="Search Engagements" fromEngagements={true} searchFilter="All Engagements" />
+                                    } 
+                                    subHeader={true}
+                                />
                             </div>
                         )}
                     </div>

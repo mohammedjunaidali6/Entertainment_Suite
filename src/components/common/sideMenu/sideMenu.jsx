@@ -12,7 +12,7 @@ import manage_src from "../../../assets/img/Manage.svg";
 import segment_src from "../../../assets/img/Segment.svg";
 
 export default function SideMenu(props) {
-    console.log('Sidemenu JSX')
+    
     let history = useHistory();
     const [selectedSM, setSelectedSM] = useState(1);
     const [engagementSM, setEngagementSM] = useState(1);
@@ -40,6 +40,8 @@ export default function SideMenu(props) {
             } else if(history.location.pathname === '/analytics/gamePerformance') {
                 setSelectedSM(4);
                 setAnalyticsSM(2);
+            } else if(history.location.pathname === '/segments') {
+                setSelectedSM(5);
             } else if(history.location.pathname === '/manage/rewards') {
                 setSelectedSM(6);
                 setManageSM(1);
@@ -136,14 +138,14 @@ export default function SideMenu(props) {
                         <Fragment>
                             <div className="s-m-sub-h">Analytics</div>
                             <div className={`s-m-sub-tab ${analyticsSM === 1 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')} >
-                                <span>Report 1</span>
+                                <span>Report</span>
                             </div>
-                            <div className={`s-m-sub-tab ${analyticsSM === 2 ? `active` : ``}`} onClick={() => analyticsClick(4, 2, 'trends')}>
+                            {/* <div className={`s-m-sub-tab ${analyticsSM === 2 ? `active` : ``}`} onClick={() => analyticsClick(4, 2, 'trends')}>
                                 <span>Trends</span>
                             </div>
                             <div className={`s-m-sub-tab ${analyticsSM === 3 ? `active` : ``}`} onClick={() => analyticsClick(4, 3, 'gamePerformance')}>
                                 <span>Game Performance</span>
-                            </div>
+                            </div> */}
                         </Fragment>
                     ) : null }
                     {selectedSM === 6 ? (

@@ -5,9 +5,7 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import { BsChevronDown } from 'react-icons/bs';
-import { BsFillBellFill } from "react-icons/bs";
-import { BsSearch } from 'react-icons/bs';
+import { BsChevronDown, BsX, BsFillBellFill, BsSearch } from 'react-icons/bs';
 
 import './header.css';
 import logo_src from '../../assets/img/logo.png';
@@ -27,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
     let history = useHistory();
     const classes = useStyles();
+    const [searchOpen, setSearchOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [company, setCompany] = useState('');
     const handleClick = (event) => {
@@ -52,10 +51,6 @@ export default function Header(props) {
     const handleChange = (event) => {
         setCompany(event.target.value);
     };
-
-    function searchFn() {
-
-    }
 
     function redirectFn(param) {
         history.push(param);
@@ -120,7 +115,15 @@ export default function Header(props) {
                     </Typography>
                 </Popover>
                 <BsFillBellFill className="h-icons float-right clearfix" onClick={notifyClick} ></BsFillBellFill>
-                <BsSearch className="h-icons float-right clearfix" onClick={() => searchFn()} style={{marginLeft: "40px"}}></BsSearch>
+                {searchOpen === true ? (
+                    <div className="h-s-sec float-right clearfix">
+                        <BsSearch className="h-icons float-left clearfix m-0 h-s-sec-img mr-2"></BsSearch>
+                        <input type="text" className="h-s-sec-input" placeholder="Search" />
+                        <BsX className="h-icons float-right clearfix m-0 c-pointer h-s-sec-img" onClick={() => setSearchOpen(false)}></BsX>
+                    </div>
+                ) : (
+                    <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{marginLeft: "40px"}}></BsSearch>
+                )}
                 <div className="h-links float-right clearfix">
                     <img src={product_tour_src} className="mb-1" />
                     <span className="ml-2">Product Tour</span>

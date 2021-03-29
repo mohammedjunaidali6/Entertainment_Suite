@@ -28,7 +28,7 @@ export default function ManageRewards(props) {
     }
 
     return (
-        <div id="manage-rewards-container">
+        <div id="manage-rewards-container" className="w-99 float-left clearfix">
             {!createFlag ? (
             <Fragment>
                 <div className='manage-journey-block'>
@@ -41,82 +41,84 @@ export default function ManageRewards(props) {
                         <div onClick={() => tabClick('upcoming')} className={`r-m-tab ${active === 'upcoming' ? `r-m-tab-active` : ``}`}>Upcoming</div>
                     </div>
                 </div>
-                    <div className='btn-create-journey float-right text-center pt-2' onClick={createClick}>
-                                <span className="btn-c-j-text">+ Create Rewards</span>
-                    </div>
+                <div className='btn-create-journey float-right text-center pt-2' onClick={createClick}>
+                            <span className="btn-c-j-text">+ Create Rewards</span>
+                </div>
                
                 <div className='journey-table-block'>
-                    <Table columns={columns} data={data} action={<SearchBar className='c-r-search-box' />}/>
+                    <Table columns={columns} 
+                        data={data} 
+                        pagination={true}
+                        subHeaderComponent={
+                            <SearchBar placeHolder="Search Reward" fromRewards={true} searchFilter="All Rewards" />
+                        } 
+                        subHeader={true}
+                    />
                 </div>
             </Fragment>): (
                 <Fragment>
                     <div className='manage-coupons'>Manage Coupons</div>
-                        <div className='create-new-rewards'>
-                            <div className='add-coupon'>Add new Coupon</div>
-                                <div className='display-name w-65 float-left clearfix'>
-                                    <div className='display-name-text'>Display Name</div>
-                                    <input className='c-r-display-input-field w-97' type="text" placeholder='Get 100 points'/>
+                    <div className='create-new-rewards'>
+                        <div className='add-coupon'>Add new Coupon</div>
+                            <div className='display-name w-65 float-left clearfix'>
+                                <div className='display-name-text'>Display Name</div>
+                                <input className='c-r-display-input-field w-97' type="text" placeholder='Get 100 points'/>
+                            </div>
+                            <div className='c-r-coupon-code w-35 float-left clearfix'>
+                                <div className='c-r-coupon-code-text'>Coupon Code</div>
+                                <input className='coupon-code-input-field w-100' type="text" placeholder='COUP100OFF'/>
+                            </div>
+                            <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
+                                <div className='target-category-text'>Target Category</div>
+                                <div>
+                                    <InputTags
+                                        onTag={tagChange} // return array of tags
+                                        tagColor='#48c774' 
+                                        placeHolder="Press enter to add tags"
+                                    />
                                 </div>
-                                <div className='c-r-coupon-code w-35 float-left clearfix'>
-                                    <div className='c-r-coupon-code-text'>Coupon Code</div>
-                                    <input className='coupon-code-input-field w-100' type="text" placeholder='COUP100OFF'/>
+                            </div>
+                            <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
+                                <div className='usage-per-customer w-33 mr-2 float-left clearfix'>
+                                    <div className='usage-per-customer-text'>Usage Per Customer</div>
+                                    <input className='usage-per-customer-input-field w-97' type="text" placeholder="1"/>
+                                </div>   
+                                <div className='reward-amount w-15 float-left clearfix'>
+                                    <div className='rewarded-amount'>Rewarded Amount</div>
+                                    <select className="prize-types w-97">
+                                        <option className='option-text' value="fixedAmount">Fixed Amount</option>
+                                    </select>
                                 </div>
-                                <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
-                                    <div className='target-category-text'>Target Category</div>
-                                    <div>
-                                        <InputTags
-                                            onTag={tagChange} // return array of tags
-                                            tagColor='#48c774' 
-                                            placeHolder="Press enter to add tags"
-                                        />
+                                <div className='amount-selection-box w-15 mt-3 float-left clearfix'>
+                                    <select className='currency-selector w-30 float-left clearfix'>
+                                        <option value="Rs">Rs.</option>
+                                    </select>
+                                    <input className="amount-input w-67 float-left clearfix"text="type" placeholder="1000" />
+                                </div>
+                                <div className='expiry-date w-33 float-left clearfix' style={{marginRight: "0px"}}>
+                                    <div className='expiry-date-text'>Expiry Date</div>
+                                    <input className='expiry-date-input w-100' type="date"/>
+                                </div>
+                            </div>
+                            <div className='description-box w-100 float-left clearfix'>
+                                <div className='description-text'>Descritption</div>
+                                <input className='description-input w-100'type="text"/>
+                            </div>
+                            <div className='c-r-controls'>
+                                <div className='c-r-button-controls float-right'>
+                                    <div className='c-r-cancel-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                        <div className='cancel-btn-font'>Cancel</div>
+                                    </div>
+                                    <div className='c-r-add-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                        <div className='add-btn-font'>Add</div>
                                     </div>
                                 </div>
-                                <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
-                                    <div className='usage-per-customer w-33 mr-2 float-left clearfix'>
-                                        <div className='usage-per-customer-text'>Usage Per Customer</div>
-                                        <input className='usage-per-customer-input-field w-97' type="text" placeholder="1"/>
-                                    </div>   
-                                    <div className='reward-amount w-15 float-left clearfix'>
-                                        <div className='rewarded-amount'>Rewarded Amount</div>
-                                        <select className="prize-types w-97">
-                                            <option className='option-text' value="fixedAmount">Fixed Amount</option>
-                                        </select>
-                                    </div>
-                                    <div className='amount-selection-box w-15 mt-3 float-left clearfix'>
-                                        <select className='currency-selector w-30 float-left clearfix'>
-                                            <option value="Rs">Rs.</option>
-                                        </select>
-                                        <input className="amount-input w-67 float-left clearfix"text="type" placeholder="1000" />
-                                    </div>
-                                    <div className='expiry-date w-33 float-left clearfix' style={{marginRight: "0px"}}>
-                                        <div className='expiry-date-text'>Expiry Date</div>
-                                        {/* <input className='expiry-date-input w-100' type="date"/> */}                            
-                                        <DatePicker
-                                            selected={startDate} 
-                                            onChange={date => setStartDate(date)} 
-                                            customInput={<CustomDatePickerEL />} />            
-                                    </div>
-                                </div>
-                                <div className='description-box w-100 float-left clearfix'>
-                                    <div className='description-text'>Descritption</div>
-                                    <input className='description-input w-100'type="text"/>
-                                </div>
-                                <div className='c-r-controls'>
-                                    <div className='c-r-button-controls float-right'>
-                                        <div className='c-r-cancel-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
-                                            <div className='cancel-btn-font'>Cancel</div>
-                                        </div>
-                                        <div className='c-r-add-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
-                                            <div className='add-btn-font'>Add</div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>  
+                            </div>
+                    </div>  
                 </Fragment>
-                
             )
-            }
+        }
             
-        </div>
+    </div>
     )
 }

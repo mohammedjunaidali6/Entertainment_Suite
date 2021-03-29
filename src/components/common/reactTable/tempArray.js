@@ -66,5 +66,69 @@ export const segmentData = [
             gender: "All",
             age: "20-40",
             location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
+        },
+        {
+            segName: "First Purchase User 4",
+            customerType: "inactive customer",
+            filtersApplied: "3 filters",
+            gender: "All",
+            age: "20-40",
+            location: "India"
         }
     ]

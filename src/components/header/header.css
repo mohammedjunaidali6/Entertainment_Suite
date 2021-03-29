@@ -114,3 +114,24 @@
     line-height: 13px;
     cursor: pointer;
 }
+.h-s-sec {
+    height: 32px;
+    width: 274px;
+    border-radius: 22.5px;
+    background-color: #FFFFFF;
+    margin: 19px 14px 14px 0;
+    padding: 5px 10px;
+}
+.h-s-sec-input {
+    height: 21px;
+    width: 70%;
+    opacity: 0.6;
+    color: #AEB4B7;
+    font-size: 14px;
+    letter-spacing: -0.22px;
+    line-height: 21px;
+    border: none;
+}
+.h-s-sec-img {
+    color: #AEB4B7 !important;
+}

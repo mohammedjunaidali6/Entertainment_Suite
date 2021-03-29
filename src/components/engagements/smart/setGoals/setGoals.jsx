@@ -55,14 +55,16 @@ export default function SetGoals(props) {
                     render={({ get, invalid }) => (
                         <form>
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                <FieldControl name="campaignName" 
+                                <span className="setGoalForm-input-lbl">Campaign Name*</span>
+                                <FieldControl name="campaignName" className="pt-0"
                                     render={TextInput} 
-                                    meta={{ label: "Campaign Name" , maxlen: 100, showError: true }} />
+                                    meta={{ label: "Campaign Name" , maxlen: 100, showError: true, placeholder: false }} />
                             </div>
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                <FieldControl name="displayName" 
+                                <span className="setGoalForm-input-lbl">Display Name*</span>
+                                <FieldControl name="displayName"  className="pt-0"
                                     render={TextInput} 
-                                    meta={{ label: "Display Name" , maxlen: 300, showError: true }} />
+                                    meta={{ label: "Display Name" , maxlen: 300, showError: true, placeholder: false }} />
                             </div>
                         </form>
                     )}

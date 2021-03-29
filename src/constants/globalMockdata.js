@@ -22,6 +22,20 @@ export const lineChartData = {
   ],
 }
 
+export const slimBarChartData = {
+  labels: ['Jan 1', 'Jan 8', 'Jan 15', 'Jan 22', 'Feb 1', 'Feb 8', 'Feb 22', 'Mar 1', 'Mar 8'],
+  datasets: [
+    {
+      label: 'Revenue',
+      data: [12, 44, 10, 58, 35, 68, 48, 120, 57],
+      fill: false,
+      backgroundColor: '#3794FC',
+      borderColor: '#3794FC',
+      barThickness: 10
+    }
+  ],
+}
+
 export const lineChartSingleData = {
   labels: ['Jan 1', 'Jan 8', 'Jan 15', 'Jan 22', 'Feb 1', 'Feb 8', 'Feb 22', 'Mar 1', 'Mar 8'],
   datasets: [

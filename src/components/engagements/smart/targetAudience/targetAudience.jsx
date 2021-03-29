@@ -69,7 +69,7 @@ export default function TargetAudience(props) {
                 <Select options={options} className="w-40 p-r-10 float-left clearfix" />
                 <Select options={options} className="w-15 p-r-10 float-left clearfix" />
                 <Select options={options} className="w-15 p-r-10 float-left clearfix" />
-                <Select options={options} className="w-5 p-r-10 float-left clearfix" />
+                <Select options={options} className="w-10 p-r-10 float-left clearfix" />
                 <Select options={options} className="w-10 p-r-10 float-left clearfix" />
             </div>
         </div>

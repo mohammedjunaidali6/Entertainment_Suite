@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 
 export const TextInput = ({ handler, touched, hasError, meta }) => (
-  <div className={`p-0 pt-2 pb-2 clearfix float-left ${meta.colVal ? `col-md-${meta.colVal}` : `col-md-12`}`}>
+  <div className={`p-0 pb-2 clearfix float-left ${meta.colVal ? `col-md-${meta.colVal}` : `col-md-12`}`}>
     <TextField 
       id={`${meta.id}`} 
       inputProps={{ maxLength: `${meta.maxlen}` }}

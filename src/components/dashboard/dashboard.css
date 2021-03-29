@@ -18,3 +18,16 @@
     border-radius: 12.32px;
     background-color: #FFFFFF;
 }
+.s-o-f-options {
+    /* padding: 6px 0; */
+}
+.s-o-f-option {
+    padding: 8px 30px 8px 8px;
+    cursor: pointer;
+    color: #1F263E;
+    font-family: "Nunito Sans";
+    font-size: 13px;
+    letter-spacing: 0;
+    list-style: none;
+    border-bottom: solid 1px lightgray;
+}
