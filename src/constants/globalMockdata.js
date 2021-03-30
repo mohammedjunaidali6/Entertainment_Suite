@@ -171,13 +171,13 @@ export const doughnutChartData = {
 }
 
 export const CampaignMockData = [
-  { id: 1, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Live", isRecent: false },
-  { id: 2, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Live", isRecent: false },
-  { id: 3, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Live", isRecent: false },
-  { id: 4, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Paused", isRecent: false },
-  { id: 5, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Expired", isRecent: false },
-  { id: 6, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Expired", isRecent: false },
-  { id: 7, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "Upcoming", isRecent: false }
+  { id: 1, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 2, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 3, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 4, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
+  { id: 5, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
+  { id: 6, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
+  { id: 7, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "upcoming", isRecent: false }
 ];
 
 export const CampaignTableColumns = [

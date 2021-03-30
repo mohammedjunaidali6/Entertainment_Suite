@@ -87,7 +87,6 @@ export default function EngagementsSmart(props) {
     }
 
     const createEngagementDataClear = () => {
-        console.log('Fridoo');
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
         props.engagementsSmartActionHandler.dispatchDefineJourneyData(null);
     }

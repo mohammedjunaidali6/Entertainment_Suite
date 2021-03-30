@@ -99,6 +99,7 @@
     letter-spacing: 0;
     line-height: 19px;
     text-align: center;
+    text-transform: capitalize;
 }
 .logo-live { background-color: var(--campaignLive); height: 10px; width: 10px; border-radius: 2px; display: inline-block; }
 .logo-paused { background-color: var(--campaignPaused); height: 10px; width: 10px; border-radius: 2px; display: inline-block; }
