@@ -21,8 +21,9 @@ export default function SideMenu(props) {
 
     useEffect(() => {
         if(history && history.location) {
-            if(history.location.pathname === '') {
-                history.push('/');
+            if(history.location.pathname === '/') {
+                setSelectedSM(1);
+                // history.push('/');
             } else if(history.location.pathname === '/engagements/smart') {
                 setSelectedSM(2);
                 setEngagementSM(1);
@@ -52,7 +53,7 @@ export default function SideMenu(props) {
                 setSelectedSM(7);
             }
         }
-    }, []);
+    });
     
     function overviewClick() {
         setSelectedSM(1);
