@@ -6,6 +6,8 @@ import Role from "./notification/notification";
 import profile_src from "../../assets/img/profile_setting.svg";
 import team_src from "../../assets/img/team_setting.svg";
 import role_src from "../../assets/img/role_setting.svg";
+import settings_src from '../../assets/img/Property_Settings.svg';
+import close_src from '../../assets/img/close.svg';
 
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
@@ -34,12 +36,20 @@ export default function Settings(props) {
             setAppSettingActive(index2);
         }
     };
+    const settingCloseFn = () => {
+        props.history.push('/');
+    }
     
     return (
         <Fragment>
             <div id="settings-container" className="w-100">
                 <div className="s-tabs">
-                    <div className="s-header pt-1 mb-1">Settings</div>
+                    <div className="s-header pt-1 mb-1">
+                        <div className="disp-inline-block s-close float-right c-center" onClick={settingCloseFn}>
+                            <img src={close_src} alt="Close" />
+                        </div>
+                        Settings
+                    </div>
                     <Tabs>
                         <Tab onClick={handleClick} active={active === 0} id={0}>
                             My Account
@@ -79,19 +89,20 @@ export default function Settings(props) {
                         <Content active={active === 1}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
+                                    <img src={settings_src} style={{marginRight: '13px'}}/>
                                     Property Settings 
                                 </Tab>
-                                <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
+                                {/* <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
                                     Accessibility
-                                </Tab>
+                                </Tab> */}
                             </Tabs>
                             <>
                                 <AppSettingContent appSettingActive={appSettingActive === 0}>
                                     <PropertySettings />
                                 </AppSettingContent>
-                                <AppSettingContent appSettingActive={appSettingActive === 1}>
+                                {/* <AppSettingContent appSettingActive={appSettingActive === 1}>
                                     <h1>Accessibility Content</h1>
-                                </AppSettingContent>
+                                </AppSettingContent> */}
                             </>
                         </Content>
                     </>
