@@ -57,7 +57,7 @@ const lightTheme = [
   '--headerAltBg: #4C83E5', 
   '--borderBg: ##e2e2e2', 
   '--sideMenuBg: #ffffff',
-  '--sideMenuSubBg: rgb(237 238 240)',
+  '--sideMenuSubBg: #EDEEF0',
   '--sideMenuActiveBg: #EDEEF0',
   '--buttonBg: #6B9CF3',
   '--buttonTextActive: #fff',
@@ -69,7 +69,8 @@ const lightTheme = [
   '--campaignExpired: #E2BD7B',
   '--whiteBg: #ffffff',
   '--campaignLive: #4ACB91',
-  '--dashedBorderColor: #8097B1'
+  '--dashedBorderColor: #8097B1',
+  '--selectedBoxBorder: #6B9CF3'
 ];
 
 const darkTheme = [
@@ -78,7 +79,7 @@ const darkTheme = [
   '--headerAltBg: #4C83E5',
   '--borderBg: ##e2e2e2', 
   '--sideMenuBg: #ffffff',
-  '--sideMenuSubBg: rgb(237 238 240)',
+  '--sideMenuSubBg: #EDEEF0',
   '--sideMenuActiveBg: #EDEEF0',
   '--buttonBg: #6B9CF3',
   '--buttonTextActive: #fff',
@@ -90,5 +91,6 @@ const darkTheme = [
   '--campaignExpired: #E2BD7B',
   '--whiteBg: #ffffff',
   '--campaignLive: #4ACB91',
-  '--dashedBorderColor: #8097B1'
+  '--dashedBorderColor: #8097B1',
+  '--selectedBoxBorder: #6B9CF3'
 ];

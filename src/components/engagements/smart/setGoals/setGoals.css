@@ -1,6 +1,8 @@
 .c-e-campaign-sec {
     height: 88px;
     background-color: #F2F4F5;
+    border-left: solid 1px #ececec;
+    border-right: solid 1px #ececec;
 }
 .c-e-campaign-goal-sec {
     /* border-radius: 0 0 10px 10px; */
@@ -29,6 +31,7 @@
 .c-e-campaign-goal-box-inner {
     height: 192px;
     border: 1px solid #E3E7ED;
+    border-radius: 4px;
 }
 .setGoalForm-input-sec {
     padding: 14px 42px 0 42px;

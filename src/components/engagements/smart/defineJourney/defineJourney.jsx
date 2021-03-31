@@ -34,7 +34,7 @@ export default function DefineJourney(props) {
                     <Fragment>
                         {journeyBoxes.map((obj, idx) => (
                             <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
-                                <div className="c-e-journey-box-inner w-100 float-left clearfix checkmark">
+                                <div className={`c-e-journey-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
                                     {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
                                     <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive ? true : false} onChange={djChange}></input>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-h">Journey {idx + 1}</div>
