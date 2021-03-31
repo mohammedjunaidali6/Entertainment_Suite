@@ -345,3 +345,15 @@ input:focus,select:focus{
     border-radius: 4px;
     background-color: #F8F9F9;
 }
+.create-new-rewards .c-d-p-container {
+    box-sizing: border-box;
+    height: 40px;
+    width: 285px;
+    border: 1px solid #E3E7ED;
+    border-radius: 4px;
+    background-color: #F8F9F9;
+    padding: 7.5px 0 7.5px 10px;
+}
+.create-new-rewards input[type="text"] {
+    padding-left: 13px;
+}

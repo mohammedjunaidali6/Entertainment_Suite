@@ -20,11 +20,12 @@ import POCContainer from '../containers/poc/pocContainer';
 
 export default function AppRoute(props) {
   let history = useHistory();
+  console.log('window.location.href', window.location.href);
   return (
     <ThemeProvider>
       <div id="app-route-container">
         <BrowserRouter>
-          {window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
+          {(window.location.href && !window.location.href.includes('/login') && !window.location.href.includes('/register') && !window.location.href.includes('/verify')) ? (
             <HeaderContainer />
           ) : null}
           <Home>

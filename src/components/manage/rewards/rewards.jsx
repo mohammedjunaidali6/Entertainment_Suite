@@ -93,7 +93,7 @@ export default function ManageRewards(props) {
                                     <select className='currency-selector w-30 float-left clearfix'>
                                         <option value="Rs">Rs.</option>
                                     </select>
-                                    <input className="amount-input w-67 float-left clearfix"text="type" placeholder="1000" />
+                                    <input className="amount-input w-67 float-left clearfix" type="text" placeholder="1000" />
                                 </div>
                                 <div className='expiry-date w-30 float-left clearfix' style={{marginRight: "0px"}}>
                                     <div className='expiry-date-text'>Expiry Date</div>

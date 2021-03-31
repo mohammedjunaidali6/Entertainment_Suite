@@ -29,6 +29,11 @@ const customStyle ={
 }
 
 export default function Table(props){
+
+    const onSelectedRowsChangeFn = (ev) => {
+        props.selectedRowsFn(ev);
+    }
+
     return(
         <Fragment>
            {props.data && props.data.length > 0 && props.columns && props.columns.length> 0?
@@ -48,6 +53,8 @@ export default function Table(props){
                     paginationPerPage ={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT} 
                     customStyles={customStyle} 
                     noTableHead = {props.noTableHead ? props.noTableHead : false}
+                    selectableRows={props.selectableRows ? props.selectableRows : false}
+                    onSelectedRowsChange={onSelectedRowsChangeFn}
                     style={{borderRadius: "6px", marginBottom: "12px"}}
                 />
             </Fragment> :<div>Data Not found</div>} 

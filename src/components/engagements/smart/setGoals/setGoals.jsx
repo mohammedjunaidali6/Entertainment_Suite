@@ -2,6 +2,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { FormBuilder, FieldGroup, FieldControl, Validators } from "react-reactive-form";
 import { TextInput } from "../../../common/utils/textInput";
 import icon_src from "../../../../assets/img/Engagements.svg";
+import i_s_src from "../../../../assets/img/Goal_icon1.svg";
+import i_s_selected_src from "../../../../assets/img/Goal_icon1_hover.svg";
+import b_i_src from "../../../../assets/img/boost_icon2.svg";
+import b_i_selected_src from "../../../../assets/img/boost_icon2_hover.svg";
+import b_n_c_src from "../../../../assets/img/newcustomers.svg";
+import b_n_c_selected_src from "../../../../assets/img/newcustomers_hover.svg";
+import i_r_src from "../../../../assets/img/referral.svg";
+import i_r_selected_src from "../../../../assets/img/referral_hover.svg";
 import { storeDataFn } from "../../../common/global";
 
 import './setGoals.css';
@@ -81,7 +89,77 @@ export default function SetGoals(props) {
                                         {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
                                         <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive ? true : false} onChange={sgChange}></input>
                                         <div className="c-e-campaign-goal-box-inner-logo">
-                                            <img src={icon_src} alt={obj.heading} />
+                                            {obj.id === 1 ? (
+                                                <Fragment>
+                                                    {obj.isActive ? (
+                                                        <img src={i_s_selected_src} alt={obj.heading} />
+                                                    ) : (
+                                                        <img src={i_s_src} alt={obj.heading} />
+                                                    )}
+                                                </Fragment>
+                                            ) : (
+                                                <Fragment>
+                                                    {obj.id === 2 ? (
+                                                        <Fragment>
+                                                            {obj.isActive ? (
+                                                                <img src={b_i_selected_src} alt={obj.heading} />
+                                                            ) : (
+                                                                <img src={b_i_src} alt={obj.heading} />
+                                                            )}
+                                                        </Fragment>
+                                                    ) : (
+                                                        <Fragment>
+                                                            {obj.id === 3 ? (
+                                                                <Fragment>
+                                                                    {obj.isActive ? (
+                                                                        <img src={b_n_c_selected_src} alt={obj.heading} />
+                                                                    ) : (
+                                                                        <img src={b_n_c_src} alt={obj.heading} />
+                                                                    )}
+                                                                </Fragment>
+                                                            ) : (
+                                                                <Fragment>
+                                                                    {obj.id === 4 ? (
+                                                                        <Fragment>
+                                                                            {obj.isActive ? (
+                                                                                <img src={i_r_selected_src} alt={obj.heading} />
+                                                                            ) : (
+                                                                                <img src={i_r_src} alt={obj.heading} />
+                                                                            )}
+                                                                        </Fragment>
+                                                                    ) : (
+                                                                        <Fragment>
+                                                                            {obj.id === 5 ? (
+                                                                                <Fragment>
+                                                                                    {obj.isActive ? (
+                                                                                        <img src={b_i_selected_src} alt={obj.heading} />
+                                                                                    ) : (
+                                                                                        <img src={b_i_src} alt={obj.heading} />
+                                                                                    )}
+                                                                                </Fragment>
+                                                                            ) : (
+                                                                                <Fragment>
+                                                                                    {obj.id === 6 ? (
+                                                                                        <Fragment>
+                                                                                            {obj.isActive ? (
+                                                                                                <img src={b_n_c_selected_src} alt={obj.heading} />
+                                                                                            ) : (
+                                                                                                <img src={b_n_c_src} alt={obj.heading} />
+                                                                                            )}
+                                                                                        </Fragment>
+                                                                                    ) : (
+                                                                                        null
+                                                                                    )}
+                                                                                </Fragment>
+                                                                            )}
+                                                                        </Fragment>
+                                                                    )}
+                                                                </Fragment>
+                                                            )}
+                                                        </Fragment>
+                                                    )}
+                                                </Fragment>
+                                            )}
                                         </div>
                                         <div className="c-e-campaign-goal-box-inner-h">{obj.heading}</div>
                                         <div className="c-e-campaign-goal-box-inner-desc">{obj.desc}</div>

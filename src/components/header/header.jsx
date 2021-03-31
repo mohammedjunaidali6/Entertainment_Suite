@@ -51,6 +51,9 @@ export default function Header(props) {
     const handleChange = (event) => {
         setCompany(event.target.value);
     };
+    const logOutFn = () => {
+        window.location.href = '/login';
+    }
 
     function redirectFn(param) {
         history.push(param);
@@ -106,7 +109,7 @@ export default function Header(props) {
                                 <img src={help_src} alt="Help" />
                                 <span className="pl-2 pt-2">Help</span>
                             </div>
-                            <div style={{borderBottom: "1px solid #DBDDDE"}}>
+                            <div style={{borderBottom: "1px solid #DBDDDE"}} onClick={logOutFn}>
                                 <img src={logout_src} alt="logout" />
                                 <span className="pl-2 pt-2">Logout</span>
                             </div>

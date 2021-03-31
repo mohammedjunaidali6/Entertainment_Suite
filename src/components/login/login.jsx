@@ -7,10 +7,13 @@ import {containerHeightCalcFn } from '../../components/common/global';
 import './login.css';
 
 export default function POC(props) {
-
     
     function registerOpenFn(){
         props.history.push('/register');
+    }
+
+    const loginClickFn = () => {
+        window.location.href = '/';
     }
     
     return (
@@ -33,7 +36,7 @@ export default function POC(props) {
                     </div>
                     <div className='login-divider'></div>
                     <div className='l-forget-password'>Forget Password?</div>
-                    <div className='login-btn' role="button">
+                    <div className='login-btn' role="button" onClick={loginClickFn}>
                         <div className='l-btn-text'>Login Now</div>
                     </div>
                     <div className='copyright-text'>©2021 All Rights Reserved. Divanor</div>

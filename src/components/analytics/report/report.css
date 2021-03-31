@@ -4,3 +4,21 @@
 .a-r-table-sec {
     margin-bottom: 20px;
 }
+#analytics-report-container .css-yk16xz-control {
+    min-height: 14px !important;
+    box-sizing: border-box;
+    height: 21px;
+    width: 114px;
+    border: 1px solid #DBDDDE;
+    border-radius: 10px;
+    background-color: #F2F4F5;
+}
+#analytics-report-container .css-yk16xz-control .css-g1d714-ValueContainer {
+    padding: 0px 8px;
+}
+#analytics-report-container .css-tlfecz-indicatorContainer {
+    padding: 0px !important;
+}
+#analytics-report-container header {
+    min-height: 74px;
+}

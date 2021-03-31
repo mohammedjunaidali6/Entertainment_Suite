@@ -98,3 +98,6 @@
 .e-s-switch {
     color: var(--buttonBg);
 }
+#e-s-table-sec input[type="checkbox"] {
+    border-radius: 15%;
+}

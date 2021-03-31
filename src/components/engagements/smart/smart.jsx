@@ -108,6 +108,10 @@ export default function EngagementsSmart(props) {
         }
     }, []);
 
+    const selectedRowsFn = (selectedRows) => {
+        console.log('selectedRows', selectedRows);
+    }
+
     return (
         <div id="engagements-smart-container">
             {!createFlag ?  (
@@ -138,6 +142,8 @@ export default function EngagementsSmart(props) {
                                 <Table columns={CampaignTableColumns} 
                                     data={ campaigndata } 
                                     pagination={true}
+                                    selectableRows={true}
+                                    selectedRowsFn={selectedRowsFn}
                                     subHeaderComponent={
                                         <SearchBar placeHolder="Search Engagements" fromEngagements={true} searchFilter="All Engagements" />
                                     } 

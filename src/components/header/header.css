@@ -1,7 +1,7 @@
 #header-container {
     height: 70px;
     background-color: var(--headerBg);
-    display: inline-block;
+    display: block;
     width: 100%;
 }
 #header-container .w-50 {
@@ -33,6 +33,7 @@
     margin: 2px;
     padding: 2px;
 }
+.h-logger-user-options img { margin-bottom: 3px;}
 .h-logger-user-options div {
     color: #1F263E;
     font-family: "Nunito Sans";
@@ -51,6 +52,7 @@
     letter-spacing: 0;
     line-height: 0;
     padding-top: 14px;
+    padding-bottom: 16px;
 }
 .h-logger-user-options-sec {
     height: 144px;

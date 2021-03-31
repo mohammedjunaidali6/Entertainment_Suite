@@ -10,6 +10,7 @@ const targetCategoryStyle= {
     borderRadius: '4px',
     backgroundColor: '#FFFFFF',
     textAlign:'center',
+    float: 'left'
 }
 
 export const columns =[
@@ -27,12 +28,13 @@ export const columns =[
     },
     {
         name:"Category ",
+        width: "200px",
         cell:row =><div>
-            <div style={targetCategoryStyle} className='clearfix'>{row.category[0]}</div>
-            <div style={targetCategoryStyle} className='clearfix'>{row.category[1]}</div>
+            <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.category[0]}</div>
+            <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.category[1]}</div>
             {row.category && row.category.length > 2 ? (
                 <CustomTooltip tooltipText={row.category[2]+" , "+ row.category[3]+" , "+ row.category[4]}>
-                    <div className='clearfix' style={targetCategoryStyle}>{row.category.length - 2}</div>
+                    <div className='clearfix c-center' style={targetCategoryStyle}>{row.category.length - 2}+</div>
                 </CustomTooltip>
                  ):null
             }
