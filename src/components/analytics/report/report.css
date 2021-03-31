@@ -4,7 +4,7 @@
 .a-r-table-sec {
     margin-bottom: 20px;
 }
-#analytics-report-container .css-yk16xz-control {
+#analytics-report-container .css-yk16xz-control, #analytics-report-container .css-1pahdxg-control {
     min-height: 14px !important;
     box-sizing: border-box;
     height: 21px;
@@ -13,10 +13,10 @@
     border-radius: 10px;
     background-color: #F2F4F5;
 }
-#analytics-report-container .css-yk16xz-control .css-g1d714-ValueContainer {
+#analytics-report-container .css-yk16xz-control .css-g1d714-ValueContainer, #analytics-report-container .css-1pahdxg-control .css-g1d714-ValueContainer {
     padding: 0px 8px;
 }
-#analytics-report-container .css-tlfecz-indicatorContainer {
+#analytics-report-container .css-tlfecz-indicatorContainer, #analytics-report-container .css-1gtu0rj-indicatorContainer {
     padding: 0px !important;
 }
 #analytics-report-container header {
