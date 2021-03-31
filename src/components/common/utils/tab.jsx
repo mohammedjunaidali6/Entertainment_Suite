@@ -47,12 +47,12 @@ export const MyAccountContent = styled.div`
   ${props => (props.myAccountActive ? "" : "display:none")};
   width: 85%;
   float: left;
-  padding-top: 22px;
+  padding-top: 2px;
 `;
 
 export const AppSettingContent = styled.div`
   ${props => (props.appSettingActive ? "" : "display:none")};
   width: 85%;
   float: left;
-  padding-top: 22px;
+  padding-top: 2px;
 `;

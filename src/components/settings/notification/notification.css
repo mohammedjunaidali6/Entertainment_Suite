@@ -102,13 +102,12 @@
   box-sizing: border-box;
   height: 43px;
   margin: 10px;
-  padding: 10px;
-  padding-left: 20px; 
-  padding-right: 0px;
+  padding: 10px 0;
   width: 181px;
   border: 1px solid #E3E7ED;
   border-radius: 4px;
   background-color: #FFFFFF;
+  cursor: pointer;
 }
 
 .r-checked{
@@ -175,4 +174,16 @@
   font-size: 16px;
   letter-spacing: 0;
   line-height: 20px;
+}
+
+#role-container header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 2px 0 rgb(95 100 112 / 38%);
+}
+#role-container .sc-hHftDr {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  box-shadow: 0 0 2px 0 rgb(95 100 112 / 38%);
 }

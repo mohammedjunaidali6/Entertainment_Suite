@@ -141,3 +141,13 @@
   letter-spacing: 0;
   line-height: 20px;
 }
+.team-management-header header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 2px 0 rgb(95 100 112 / 38%);
+}
+.team-management-header .sc-hHftDr {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}

@@ -43,7 +43,7 @@ export default function SearchBar(props){
                 </Fragment>
             ) : (
                 <Fragment>
-                    {props.fromRewards ? (
+                    {props.fromRewards || props.fromSettingsTeam ? (
                         <div className="s-b-only-search float-left clearfix">
                             <input type="text" 
                                 onChange={handleChange} 

@@ -226,6 +226,9 @@ input[type=number]::-webkit-outer-spin-button {
 .rdt_TableRow, .rdt_TableHeadRow {
     border: none !important;
 }
+.rdt_Pagination {
+    border-top-style: unset !important;
+}
 
 @keyframes customEnterOverlayAnimation {
     0% {

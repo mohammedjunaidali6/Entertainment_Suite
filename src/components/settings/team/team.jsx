@@ -26,14 +26,21 @@ export default function Team(props) {
             <div id="team-container">
                 {!createClick ? (
                     <div style={{padding: '30px'}}>
-                    <div className='team-management-header'>
-                    <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
-                    <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
-                        <div className='t-m-create-btn-text'>+  Invite User</div>
+                        <div className='team-management-header'>
+                            <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
+                            <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
+                                <div className='t-m-create-btn-text'>+  Invite User</div>
+                            </div>
+                            <Table columns={columns} 
+                                data={data} 
+                                pagination={true}
+                                subHeaderComponent={
+                                    <SearchBar placeHolder="Search User" fromSettingsTeam={true} />
+                                } 
+                                subHeader={true}
+                            />
+                        </div>
                     </div>
-                    <Table columns={columns} data={data} actions={<SearchBar />} />
-                </div>
-                </div>
                 ) : (
                     <Fragment>
                     <div style={{padding: '30px'}}>  

@@ -12,3 +12,19 @@
     line-height: 24px;
     padding-left: 24px;
 }
+#settings-container input[type="text"], #settings-container input[type="password"], #settings-container select {
+    padding: 0 16px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 19px;
+}
+#settings-container textarea {
+    padding: 8px 16px;
+    opacity: 0.5;
+    color: #5F6165;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 19px;
+}

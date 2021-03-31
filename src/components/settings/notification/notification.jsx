@@ -2,15 +2,16 @@ import React, { useState, Fragment } from 'react';
 import Table from "../../common/reactTable/table";
 import {data, column} from "./tempData";
 import PermissionList from "./permissionContainer";
+import SearchBar from '../../common/searchBar/searchBar';
 
 import './notification.css';
 
 const rolePermissionData = [
     {id:1, permission:"Overview", isActive:true},
-    {id:2, permission:"Engagements", isActive:true},
+    {id:2, permission:"Engagements", isActive:false},
     {id:3, permission:"Live view", isActive:true},
-    {id:4, permission:"Analytics", isActive:true},
-    {id:5, permission:"Customer Segment", isActive:true },
+    {id:4, permission:"Analytics", isActive:false},
+    {id:5, permission:"Customer Segment", isActive:false },
     {id:6, permission:"Manage", isActive:true},
     {id:7, permission:"Admin", isActive:true}
 ]
@@ -19,6 +20,9 @@ export default function Role(props) {
     const [createClick, setCreateClick] = useState(false);
     function clickHandler(){
         setCreateClick(true);
+    }
+    function permissionBoxClick(boxData) {
+        boxData.isActive = true;
     }
     return (
         <Fragment>
@@ -30,7 +34,13 @@ export default function Role(props) {
                         <div className='add-new-role'>+ Add New Role</div>
                     </div>
                     </div>
-                     <Table columns ={column} data={data}/>
+                     <Table columns ={column} data={data}
+                        pagination={true}
+                        subHeaderComponent={
+                            <SearchBar placeHolder="Search Role" fromSettingsTeam={true} />
+                        } 
+                        subHeader={true}
+                    />
                      </div>
                     </Fragment>
                     ) 
@@ -47,11 +57,10 @@ export default function Role(props) {
                                 <div className='t-m-input-label'>Permissions</div>
                                 <div className='r-permissions-list'>
                                     {rolePermissionData.map(obj =>(
-                                        <div className='r-p-list-item'>
-                                        
-                                        <input type="checkbox" className={`dips-inline-block r-checkbox ${obj.isActive ? ` r-checked`: `r-checked-out `}`} checked={obj.isActive? true : false}/>
-                                        <div className='r-p-item-text disp-inline-block'>{obj.permission}</div>    
-                                         </div> 
+                                        <div className={`r-p-list-item ${obj.isActive ? `selectedBox`: ``}`} onClick={() => permissionBoxClick(obj)}>
+                                            <input type="checkbox" className={`dips-inline-block r-checkbox ${obj.isActive ? ` r-checked`: `r-checked-out `}`} checked={obj.isActive? true : false}/>
+                                            <div className='r-p-item-text disp-inline-block'>{obj.permission}</div>    
+                                        </div> 
                                     ))}
                                 </div>
                             </div>
