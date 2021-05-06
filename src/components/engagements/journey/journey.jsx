@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import Table from "../../common/reactTable/table";
 import Select from 'react-select';
 import {journeyColumns, journeyData} from "./tempData";
@@ -35,6 +35,7 @@ const options = [
 
 export default function EngagementsJourney(props) {
 
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [ createFlag, setCreateFlag] = useState(false);
     const [ droppedItems, setDroppedItems] = useState(tempDroppedItems);
 
@@ -61,16 +62,17 @@ export default function EngagementsJourney(props) {
                 data: []
             }
             tempDroppedItems.push(tempObj);
+            setDroppedItems(tempDroppedItems);
+            forceUpdate();
         }
     }
 
     useEffect(() => {
-        setDroppedItems(tempDroppedItems);
         console.log('droppedItems', droppedItems);
     }, []);
 
     return (
-        console.log('ReRender check'),
+        // console.log('ReRender check'),
         <div id="engagements-journey-container">
             {!createFlag ? (
                 <Fragment>
@@ -145,16 +147,16 @@ export default function EngagementsJourney(props) {
                                 </Fragment>
                             ) : null}
                         </div>
-                        <div className='c-r-controls' style={{marginTop:'50px'}}>
-                                    <div className='c-r-button-controls float-right'>
-                                        <div className='c-r-cancel-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
-                                            <div className='cancel-btn-font'>Cancel</div>
-                                        </div>
-                                        <div className='c-r-add-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
-                                            <div className='add-btn-font'>Save</div>
-                                        </div>
-                                    </div>
-                        </div>
+                        {/* <div className='c-r-controls' style={{marginTop:'50px'}}>
+                            <div className='c-r-button-controls float-right'>
+                                <div className='c-r-cancel-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                    <div className='cancel-btn-font'>Cancel</div>
+                                </div>
+                                <div className='c-r-add-button disp-inline-block' role="button" onClick={()=>setCreateFlag(false)}>
+                                    <div className='add-btn-font'>Save</div>
+                                </div>
+                            </div>
+                        </div> */}
                     </div>
                     <div className="w-100 float-left clearfix c-j-a">
                         <div className="w-50 float-left clearfix"></div>
