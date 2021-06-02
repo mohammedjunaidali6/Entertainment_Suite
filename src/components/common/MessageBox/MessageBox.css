@@ -1,0 +1,41 @@
+.group-6 {
+    height: 35px;
+    width: 981px;
+  }
+  
+.rectangle {
+    box-sizing: border-box;
+    height: 35px;
+    width: 981px;
+    border-radius: 6px;
+ }
+.rectangle-success{
+    border: 0.77px solid #6AD3A4;
+    background-color: #D8F3E7;
+}
+.rectangle-error{
+    border: 0.77px solid #E98EA3;
+    background-color: #FCE8ED;
+}
+.rectangle-warning{
+    border: 0.77px solid #DCA640;
+    background-color: #FAECD2;
+}
+
+.label {
+    height: 19px;
+    width: auto;
+    font-family: "Nunito Sans";
+    padding-left: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.label-success {
+    color: #38A876;
+}
+.label-error {
+    color: #D3607A;
+}
+.label-warning {
+    color: #CE8D13;
+}

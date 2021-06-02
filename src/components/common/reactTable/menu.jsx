@@ -1,19 +1,20 @@
-import React,{useState}from 'react';
-import {BsThreeDotsVertical} from 'react-icons/bs';
+import React, { useState } from 'react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
 
-export default function ActionMenu(){
+export default function ActionMenu(props) {
     const [anchorEl, setAnchorEl] = useState(null);
-    
-    const handleClick = (event) =>{
+
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     }
-    const handleClose = (event) =>{
+    const handleClose = (event) => {
+        props.onAction(event);
         setAnchorEl(null);
     }
 
-    return(
+    return (
         <div>
             <div role="button" onClick={handleClick}><BsThreeDotsVertical /></div>
 
@@ -23,9 +24,9 @@ export default function ActionMenu(){
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                 >
-                <MenuItem onClick={handleClose}>Pause</MenuItem>
-                <MenuItem onClick={handleClose}>Play</MenuItem>
+            >
+                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                <MenuItem onClick={handleClose}>Delete</MenuItem>
                 <MenuItem onClick={handleClose}>Exit</MenuItem>
             </Menu>
         </div>

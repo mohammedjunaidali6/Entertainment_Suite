@@ -18,15 +18,27 @@ const customerTypeOptions = [
     { value: 'New', label: 'New' },
 ];
 
-export default function SearchBar(props){
+export default function SearchBar(props) {
 
     const [value, setValue] = useState(null);
 
-    const handleChange = (event) =>{
+    const handleChange = (event) => {
         setValue(event.target.value);
-    } 
-    console.log(value);
-    return(
+    }
+    const onKeyPressInSearch = (e) => {
+        setTimeout(() => {
+            setValue(e.target.value);
+            if (e.key === 'Enter') {
+                props.onSearch(e.target.value);
+            }
+        }, 1)
+    }
+    const onSearchBlur = e => {
+        setValue(e.target.value);
+        props.onSearch(e.target.value);
+    }
+
+    return (
         <div className="s-b-sec">
             {props.fromAnalyticsReport ? (
                 <Fragment>
@@ -45,24 +57,28 @@ export default function SearchBar(props){
                 <Fragment>
                     {props.fromRewards || props.fromSettingsTeam ? (
                         <div className="s-b-only-search float-left clearfix">
-                            <input type="text" 
-                                onChange={handleChange} 
-                                placeholder={props.placeHolder ? props.placeHolder : "Search"} 
+                            <input type="text"
+                                maxLength={20}
+                                onChange={handleChange}
+                                placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                 className='searchBar'
-                            /> 
+                                onKeyPress={onKeyPressInSearch}
+                                onBlur={onSearchBlur}
+                            />
                         </div>
                     ) : (
                         <Fragment>
                             <div className="s-b-left float-left clearfix">
-                                <span className="s-b-l-txt ml-2">{props.searchFilter ? props.searchFilter : 'All' }</span>
+                                <span className="s-b-l-txt ml-2">{props.searchFilter ? props.searchFilter : 'All'}</span>
                                 <img src={down_src} alt="Down Arrow" className="float-right mr-1 ml-2" />
                             </div>
                             <div className="s-b-right float-left clearfix">
-                                <input type="text" 
-                                    onChange={handleChange} 
-                                    placeholder={props.placeHolder ? props.placeHolder : "Search"} 
+                                <input type="text"
+                                    maxLength={20}
+                                    onChange={handleChange}
+                                    placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                     className='searchBar'
-                                /> 
+                                />
                             </div>
                         </Fragment>
                     )}
@@ -70,6 +86,6 @@ export default function SearchBar(props){
             )}
         </div>
     )
-    
-    
+
+
 }
