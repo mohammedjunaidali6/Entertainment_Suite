@@ -59,6 +59,7 @@ export default function SearchBar(props) {
                         <div className="s-b-only-search float-left clearfix">
                             <input type="text"
                                 maxLength={20}
+                                value={value}
                                 onChange={handleChange}
                                 placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                 className='searchBar'
@@ -75,6 +76,7 @@ export default function SearchBar(props) {
                             <div className="s-b-right float-left clearfix">
                                 <input type="text"
                                     maxLength={20}
+                                    value={value}
                                     onChange={handleChange}
                                     placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                     className='searchBar'

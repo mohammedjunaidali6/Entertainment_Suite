@@ -8,6 +8,7 @@ import './notification.css';
 import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
+import Loader from '../../common/Spinner/spinner';
 
 const rolePermissionData = [
     { id: 1, permission: "Overview", isActive: true },
@@ -25,6 +26,7 @@ const headers = {
 
 export default function Role(props) {
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
+    const [visible, setVisible] = useState(false);
     const [updateRole, setUpdateRole] = useState();
     const [createClick, setCreateClick] = useState(false);
     const [roleData, setRoleData] = useState();
@@ -69,6 +71,7 @@ export default function Role(props) {
         setPermissions(perms);
     }
     const onSearch = (rname) => {
+        setVisible(true);
         if (rname) {
             axiosInstance.get(`http://localhost:807/api/idty/groupbygroupname?group_name=${rname}`, { headers: headers })
                 .then(response => {
@@ -86,10 +89,12 @@ export default function Role(props) {
                     } else {
                         setRoleData(null);
                     }
+                    setVisible(false);
                 })
                 .catch(error => {
                     console.error('*', error);
                     setRoleData(null);
+                    setVisible(false);
                 });
         } else {
             axiosInstance.get('http://localhost:807/api/idty/getgroups', { headers: headers })
@@ -108,10 +113,12 @@ export default function Role(props) {
                     } else {
                         setRoleData(null);
                     }
+                    setVisible(false);
                 })
                 .catch(error => {
                     console.error('*', error);
                     setRoleData(null);
+                    setVisible(false);
                 });
         }
 
@@ -123,7 +130,7 @@ export default function Role(props) {
             setUpdateRole(rowData)
             setRoleName(rowData.role);
         } else if (e.target.outerText === 'Delete') {
-            console.log('*', 'DELETE')
+            setVisible(true);
             axiosInstance.get('http://localhost:807/api/idty/deletegroup?group_id=' + rowData.groupID, { headers: headers })
                 .then(response => {
                     if (response.status == 200 && response.data.data && response.data.data.length) {
@@ -138,15 +145,17 @@ export default function Role(props) {
                     } else {
                         handleMessageBox('error', 'Deleting Group is failed');
                     }
+                    setVisible(false);
                 })
                 .catch(error => {
                     console.error('***', error);
                     handleMessageBox('error', error.toString());
+                    setVisible(false);
                 });
         }
     }
     const onViewClick = (e, rowData) => {
-        console.log('*', rowData)
+        setVisible(true);
         axiosInstance.get('http://localhost:807/api/idty/permissionsbygroup?group_id=' + rowData.groupID)
             .then(response => {
                 if (response.status == 200 && response.data.data && response.data.data.length) {
@@ -163,11 +172,13 @@ export default function Role(props) {
                     handleMessageBox('error', 'Group Permission fetch is failed');
                     setGroupPermissions();
                 }
+                setVisible(false);
             })
             .catch(error => {
                 console.error('***', error);
                 handleMessageBox('error', error.toString());
                 setGroupPermissions();
+                setVisible(false);
             });
     }
     const onSaveRole = () => {
@@ -178,6 +189,7 @@ export default function Role(props) {
             postData.Name = roleName;
             postData.Description = description;
             postData.Permissions = permissions?.reduce((p, o) => (o.is_enabled && p.push(o.permission_id), p), []);
+            setVisible(true);
             axiosInstance.post('http://localhost:807/api/idty/addnewgroup', postData, { headers: headers })
                 .then(response => {
                     if (response.status == 200 && response.data.data) {
@@ -193,10 +205,12 @@ export default function Role(props) {
                         handleMessageBox('error', response.data.message);
                         //Invitation sent failed
                     }
+                    setVisible(false);
                 })
                 .catch(error => {
                     console.error('***', error);
                     handleMessageBox('error', error.toString());
+                    setVisible(false);
                 })
         }
     }
@@ -205,7 +219,7 @@ export default function Role(props) {
         postData.group_id = updateRole.groupID;
         postData.Permissions = [];
         postData.Permissions = permissions?.reduce((p, o) => (o.is_enabled && p.push(o.permission_id), p), []);
-        console.log('*', postData);
+        setVisible(true);
         axiosInstance.post('http://localhost:807/api/idty/updategroup', postData, { headers: headers })
             .then(response => {
                 if (response.status == 200) {
@@ -230,14 +244,17 @@ export default function Role(props) {
                     setCreateClick(false);
                     handleMessageBox('error', 'User Group Update is failed');
                 }
+                setVisible(false);
             })
             .catch(error => {
                 console.error('***', error);
                 handleMessageBox('error', error.toString());
+                setVisible(false);
             })
     }
 
     useEffect(() => {
+        setVisible(true);
         axiosInstance.get('http://localhost:807/api/idty/getgroups', { headers: headers })
             .then(response => {
                 let data = response.data.data;
@@ -251,13 +268,16 @@ export default function Role(props) {
                         roleArr.push(roleObj);
                     })
                     setRoleData(roleArr);
+                    setVisible(false);
                 } else {
                     setRoleData(null);
+                    setVisible(false);
                 }
             })
             .catch(error => {
                 console.error('*', error);
                 setRoleData(null);
+                setVisible(false);
             });
 
         axiosInstance.get('http://localhost:807/api/idty/permission/all')
@@ -277,94 +297,98 @@ export default function Role(props) {
 
     return (
         <Fragment>
-            <div id="role-container">
-                <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
-                {!createClick ?
-                    (<Fragment>
-                        <div style={{ padding: '35px 45px ' }}><div className='role-header'>
-                            <div className='role-title disp-inline'>TEAM MANAGEMENT</div>
-                            <div className='add-new-role-btn disp-inline' role="button" onClick={clickHandler}>
-                                <div className='add-new-role'>+ Add New Role</div>
+            {visible ?
+                <Loader />
+                :
+                <div id="role-container">
+                    <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
+                    {!createClick ?
+                        (<Fragment>
+                            <div style={{ padding: '35px 45px ' }}><div className='role-header'>
+                                <div className='role-title disp-inline'>TEAM MANAGEMENT</div>
+                                <div className='add-new-role-btn disp-inline' role="button" onClick={clickHandler}>
+                                    <div className='add-new-role'>+ Add New Role</div>
+                                </div>
                             </div>
-                        </div>
-                            <Table columns={column}
-                                data={roleData}
-                                pagination={true}
-                                subHeaderComponent={
-                                    <SearchBar placeHolder="Search Role" fromSettingsTeam={true} onSearch={(rname) => onSearch(rname)} />
-                                }
-                                subHeader={true}
-                            />
-                        </div>
-                    </Fragment>
-                    )
-                    : (<Fragment>
-                        <div style={{ padding: '35px 45px' }}>
-                            <div className='role-header'>
-                                {!updateRole ?
-                                    <div className='role-title'>CREATE ROLE</div>
-                                    :
-                                    <div className='role-title'>UPDATE ROLE</div>
-                                }
-                            </div>
-                            <div className='role-name'>
-                                <div className='t-m-input-label'>Role Name</div>
-                                <input
-                                    type="text"
-                                    className='r-input-field'
-                                    placeholder='Campaign Manager'
-                                    maxLength={40}
-                                    onChange={e => setRoleName(e.target.value)}
-                                    value={roleName}
-                                    disabled={updateRole}
+                                <Table columns={column}
+                                    data={roleData}
+                                    pagination={true}
+                                    subHeaderComponent={
+                                        <SearchBar placeHolder="Search Role" fromSettingsTeam={true} onSearch={(rname) => onSearch(rname)} />
+                                    }
+                                    subHeader={true}
                                 />
                             </div>
-                            <div className='role-permissions'>
-                                <div className='t-m-input-label'>Permissions</div>
-                                <div className='r-permissions-list'>
-                                    {permissions?.map(obj => (
-                                        <div className={`r-p-list-item ${obj.is_enabled ? `selectedBox` : ``}`} onClick={() => permissionBoxClick(obj)}>
-                                            <input
-                                                type="checkbox"
-                                                className={`dips-inline-block r-checkbox ${obj.is_enabled ? ` r-checked` : `r-checked-out `}`}
-                                                checked={obj.is_enabled}
-                                            />
-                                            <div className='r-p-item-text disp-inline-block'>{obj.description}</div>
+                        </Fragment>
+                        )
+                        : (<Fragment>
+                            <div style={{ padding: '35px 45px' }}>
+                                <div className='role-header'>
+                                    {!updateRole ?
+                                        <div className='role-title'>CREATE ROLE</div>
+                                        :
+                                        <div className='role-title'>UPDATE ROLE</div>
+                                    }
+                                </div>
+                                <div className='role-name'>
+                                    <div className='t-m-input-label'>Role Name</div>
+                                    <input
+                                        type="text"
+                                        className='r-input-field'
+                                        placeholder='Campaign Manager'
+                                        maxLength={40}
+                                        onChange={e => setRoleName(e.target.value)}
+                                        value={roleName}
+                                        disabled={updateRole}
+                                    />
+                                </div>
+                                <div className='role-permissions'>
+                                    <div className='t-m-input-label'>Permissions</div>
+                                    <div className='r-permissions-list'>
+                                        {permissions?.map(obj => (
+                                            <div className={`r-p-list-item ${obj.is_enabled ? `selectedBox` : ``}`} onClick={() => permissionBoxClick(obj)}>
+                                                <input
+                                                    type="checkbox"
+                                                    className={`dips-inline-block r-checkbox ${obj.is_enabled ? ` r-checked` : `r-checked-out `}`}
+                                                    checked={obj.is_enabled}
+                                                />
+                                                <div className='r-p-item-text disp-inline-block'>{obj.description}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className='role-description'>
+                                    <div className='t-m-input-label'>Description</div>
+                                    <textarea
+                                        className='role-description-box'
+                                        placeholder="Add Note"
+                                        maxLength={200}
+                                        onChange={e => setDescription(e.target.value)}
+                                        value={description}
+                                    >
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div className='role-actions  clearfix'>
+                                <div className='role-act-btn'>
+                                    <div className='role-cancel-btn disp-inline-block' role="button" onClick={() => { setCreateClick(false) }}>
+                                        <div className='r-c-btn-text'>Cancel</div>
+                                    </div>
+                                    {!updateRole ?
+                                        <div className='role-save-btn disp-inline-block' role="button" onClick={onSaveRole}>
+                                            <div className='r-s-btn-text'>Save</div>
                                         </div>
-                                    ))}
+                                        :
+                                        <div className='role-save-btn disp-inline-block' role="button" onClick={onUpdateRole}>
+                                            <div className='r-s-btn-text'>Update</div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
-                            <div className='role-description'>
-                                <div className='t-m-input-label'>Description</div>
-                                <textarea
-                                    className='role-description-box'
-                                    placeholder="Add Note"
-                                    maxLength={200}
-                                    onChange={e => setDescription(e.target.value)}
-                                    value={description}
-                                >
-                                </textarea>
-                            </div>
-                        </div>
-                        <div className='role-actions  clearfix'>
-                            <div className='role-act-btn'>
-                                <div className='role-cancel-btn disp-inline-block' role="button" onClick={() => { setCreateClick(false) }}>
-                                    <div className='r-c-btn-text'>Cancel</div>
-                                </div>
-                                {!updateRole ?
-                                    <div className='role-save-btn disp-inline-block' role="button" onClick={onSaveRole}>
-                                        <div className='r-s-btn-text'>Save</div>
-                                    </div>
-                                    :
-                                    <div className='role-save-btn disp-inline-block' role="button" onClick={onUpdateRole}>
-                                        <div className='r-s-btn-text'>Update</div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </Fragment>
-                    )}
-            </div>
+                        </Fragment>
+                        )}
+                </div>
+            }
         </Fragment>
 
     )
