@@ -1,7 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import Table from "../../common/reactTable/table";
-import { data, column } from "./tempData";
-import PermissionList from "./permissionContainer";
 import SearchBar from '../../common/searchBar/searchBar';
 import { axiosInstance } from '../../../actions/axios-config';
 import './notification.css';
@@ -9,20 +7,8 @@ import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
+import { headers } from '../../../api/apiConstants';
 
-const rolePermissionData = [
-    { id: 1, permission: "Overview", isActive: true },
-    { id: 2, permission: "Engagements", isActive: false },
-    { id: 3, permission: "Live view", isActive: true },
-    { id: 4, permission: "Analytics", isActive: false },
-    { id: 5, permission: "Customer Segment", isActive: false },
-    { id: 6, permission: "Manage", isActive: true },
-    { id: 7, permission: "Admin", isActive: true }
-]
-const headers = {
-    client_id: 'identity_mgt_tenant_2',
-    secret: 'XsrRvPkMHmXkkFeW'
-}
 
 export default function Role(props) {
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
@@ -66,7 +52,7 @@ export default function Role(props) {
     }
     function permissionBoxClick(boxData) {
         let perms = [...permissions];
-        boxData.is_enabled = !boxData.is_enabled;
+        boxData.isAssigned = !boxData.isAssigned;
         perms.splice(_.findIndex(perms, p => p.permission_id == boxData.permission_id), 1, boxData);
         setPermissions(perms);
     }
@@ -85,6 +71,7 @@ export default function Role(props) {
                             roleObj.permissions = r.PermissionCount;
                             roleArr.push(roleObj);
                         })
+                        roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
                         setRoleData(roleArr);
                     } else {
                         setRoleData(null);
@@ -109,6 +96,7 @@ export default function Role(props) {
                             roleObj.permissions = r.PermissionCount;
                             roleArr.push(roleObj);
                         })
+                        roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
                         setRoleData(roleArr);
                     } else {
                         setRoleData(null);
@@ -124,22 +112,49 @@ export default function Role(props) {
 
     }
     const onActionClick = (e, rowData) => {
-        console.log('*', e.target.outerText, rowData);
         if (e.target.outerText === 'Edit') {
             setCreateClick(true);
             setUpdateRole(rowData)
             setRoleName(rowData.role);
-        } else if (e.target.outerText === 'Delete') {
-            setVisible(true);
-            axiosInstance.get('http://localhost:807/api/idty/deletegroup?group_id=' + rowData.groupID, { headers: headers })
+            axiosInstance.get('http://localhost:807/api/idty/permissionsbygroup?group_id=' + rowData.groupID)
                 .then(response => {
                     if (response.status == 200 && response.data.data && response.data.data.length) {
                         let data = response.data.data;
-                        console.log('*', data)
                         if (typeof data === 'string') {
                             console.error('***', data);
                             handleMessageBox('error', data);
                         } else {
+                            let permissionsArr = [...permissions];
+                            permissionsArr = permissionsArr.map(prm => {
+                                prm.isAssigned = !!(_.find(data, p => prm.permission_id == p.permission_id))
+                                return prm;
+                            });
+                            setPermissions(permissionsArr);
+                        }
+                    } else {
+                        handleMessageBox('error', 'Group Permission fetch is failed');
+                    }
+                    setVisible(false);
+                })
+                .catch(error => {
+                    console.error('***', error);
+                    handleMessageBox('error', error.toString());
+                    setVisible(false);
+                });
+
+        } else if (e.target.outerText === 'Delete') {
+            setVisible(true);
+            axiosInstance.get('http://localhost:807/api/idty/deletegroup?group_id=' + rowData.groupID, { headers: headers })
+                .then(response => {
+                    if (response.status == 200 && response.data.data) {
+                        let data = response.data.data;
+                        if (typeof data === 'string') {
+                            console.error('***', data);
+                            handleMessageBox('error', data);
+                        } else {
+                            let tempRoles = [...roleData];
+                            tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == rowData.groupID), 1);
+                            setRoleData(tempRoles);
                             handleMessageBox('success', 'Group is deleted succesfully');
                         }
                     } else {
@@ -160,7 +175,6 @@ export default function Role(props) {
             .then(response => {
                 if (response.status == 200 && response.data.data && response.data.data.length) {
                     let data = response.data.data;
-                    console.log('*', data)
                     if (typeof data === 'string') {
                         console.error('***', data);
                         handleMessageBox('error', data);
@@ -218,7 +232,7 @@ export default function Role(props) {
         var postData = {};
         postData.group_id = updateRole.groupID;
         postData.Permissions = [];
-        postData.Permissions = permissions?.reduce((p, o) => (o.is_enabled && p.push(o.permission_id), p), []);
+        postData.Permissions = permissions?.reduce((p, o) => (o.isAssigned && p.push(o.permission_id), p), []);
         setVisible(true);
         axiosInstance.post('http://localhost:807/api/idty/updategroup', postData, { headers: headers })
             .then(response => {
@@ -236,6 +250,7 @@ export default function Role(props) {
                         roleObj.permissions = postData.Permissions.length;
                         let rolesArr = [...roleData];
                         rolesArr.splice(_.findIndex(rolesArr, r => r.groupID == roleObj.groupID), 1, roleObj);
+                        rolesArr = rolesArr.sort((a, b) => a.role < b.role ? -1 : 1);
                         setRoleData(rolesArr);
                         handleMessageBox('success', 'User Group is Updated succesfully');
                     }
@@ -264,9 +279,10 @@ export default function Role(props) {
                         let roleObj = {};
                         roleObj.groupID = r.GroupID;
                         roleObj.role = r.GroupName;
-                        roleObj.permissions = r.PermissionCount;
+                        roleObj.permissions = r.PermissionCount + ' Permissions';
                         roleArr.push(roleObj);
                     })
+                    roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
                     setRoleData(roleArr);
                     setVisible(false);
                 } else {
@@ -304,12 +320,13 @@ export default function Role(props) {
                     <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
                     {!createClick ?
                         (<Fragment>
-                            <div style={{ padding: '35px 45px ' }}><div className='role-header'>
-                                <div className='role-title disp-inline'>TEAM MANAGEMENT</div>
-                                <div className='add-new-role-btn disp-inline' role="button" onClick={clickHandler}>
-                                    <div className='add-new-role'>+ Add New Role</div>
+                            <div style={{ padding: '35px 45px ' }}>
+                                <div className='role-header'>
+                                    <div className='role-title disp-inline'>TEAM MANAGEMENT</div>
+                                    <div className='add-new-role-btn disp-inline' role="button" onClick={clickHandler}>
+                                        <div className='add-new-role'>+ Add New Role</div>
+                                    </div>
                                 </div>
-                            </div>
                                 <Table columns={column}
                                     data={roleData}
                                     pagination={true}
@@ -324,11 +341,7 @@ export default function Role(props) {
                         : (<Fragment>
                             <div style={{ padding: '35px 45px' }}>
                                 <div className='role-header'>
-                                    {!updateRole ?
-                                        <div className='role-title'>CREATE ROLE</div>
-                                        :
-                                        <div className='role-title'>UPDATE ROLE</div>
-                                    }
+                                    <div className='role-title'>{updateRole ? 'UPDATE ROLE' : 'CREATE ROLE'}</div>
                                 </div>
                                 <div className='role-name'>
                                     <div className='t-m-input-label'>Role Name</div>
@@ -346,11 +359,11 @@ export default function Role(props) {
                                     <div className='t-m-input-label'>Permissions</div>
                                     <div className='r-permissions-list'>
                                         {permissions?.map(obj => (
-                                            <div className={`r-p-list-item ${obj.is_enabled ? `selectedBox` : ``}`} onClick={() => permissionBoxClick(obj)}>
+                                            <div className={`r-p-list-item ${obj.isAssigned ? `selectedBox` : ``}`} onClick={() => permissionBoxClick(obj)}>
                                                 <input
                                                     type="checkbox"
-                                                    className={`dips-inline-block r-checkbox ${obj.is_enabled ? ` r-checked` : `r-checked-out `}`}
-                                                    checked={obj.is_enabled}
+                                                    className={`dips-inline-block r-checkbox ${obj.isAssigned ? ` r-checked` : `r-checked-out `}`}
+                                                    checked={obj.isAssigned}
                                                 />
                                                 <div className='r-p-item-text disp-inline-block'>{obj.description}</div>
                                             </div>

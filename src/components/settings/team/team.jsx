@@ -1,27 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import SearchBar from '../../common/searchBar/searchBar';
 import Table from '../../common/reactTable/table';
-import { columns, data } from './teamTempData';
 import './team.css';
 import { axiosInstance } from '../../../actions/axios-config';
 import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
+import { headers } from '../../../api/apiConstants';
+import { GetUsersByFilter } from '../../../api/userAPI';
 
-const roles = [
-    { id: 1, permission: "Overview" },
-    { id: 2, permission: "Engagements" },
-    { id: 3, permission: "Live view" },
-    { id: 4, permission: "Analytics" },
-    { id: 5, permission: "Customer Segment" },
-    { id: 6, permission: "Manage" },
-    { id: 7, permission: "Admin" }
-]
-const headers = {
-    client_id: 'identity_mgt_tenant_2',
-    secret: 'XsrRvPkMHmXkkFeW'
-}
 
 export default function Team(props) {
     const [visible, setVisible] = useState(false);
@@ -47,7 +35,6 @@ export default function Team(props) {
                 .then(response => {
                     if (response.status == 200 && response.data.data && response.data.data.length) {
                         let data = response.data.data;
-                        console.log('*', data)
                         if (typeof data === 'string') {
                             console.error('***', data);
                             handleMessageBox('error', data);
@@ -117,7 +104,6 @@ export default function Team(props) {
             .then(response => {
                 if (response.status == 200 && response.data.data && response.data.data.length) {
                     let data = response.data.data;
-                    console.log('*', data)
                     if (typeof data === 'string') {
                         console.error('***', data);
                         setUsers();
@@ -140,7 +126,6 @@ export default function Team(props) {
         axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
             .then(response => {
                 if (response.status == 200 && response.data.data && response.data.data.length) {
-                    console.log('*', response)
                     let data = response.data.data;
                     if (typeof data === 'string') {
                         console.error('***', data);
@@ -163,6 +148,7 @@ export default function Team(props) {
                             userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
                             usersArr.push(userObj);
                         });
+                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
                         setUsers(usersArr);
                     }
 
@@ -218,7 +204,6 @@ export default function Team(props) {
             setVisible(true);
             axiosInstance.post('http://localhost:807/api/idty/admin/inviteuser', postData, { headers: headers })
                 .then(response => {
-                    console.log('***', response)
                     if (response.status == 200 && response.data.data) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
@@ -295,6 +280,7 @@ export default function Team(props) {
                             userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
                             usersArr.push(userObj);
                         });
+                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
                         setUsers(usersArr);
                     }
                     setVisible(false);
@@ -323,6 +309,7 @@ export default function Team(props) {
                             userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
                             usersArr.push(userObj);
                         });
+                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
                         setUsers(usersArr);
                     } else {
                         setUsers(null);
@@ -367,7 +354,7 @@ export default function Team(props) {
                         <Fragment>
                             <div style={{ padding: '30px' }}>
                                 <div className='invite-user-block'>
-                                    <div className='t-m-title'>{!updateUser ? 'Invite User' : 'Update Role'}</div>
+                                    <div className='t-m-title'>{updateUser ? 'Update Role' : 'Invite User'}</div>
                                     <div className='t-m-input-block'>
                                         <div className='t-m-input disp-inline-block'>
                                             <div className='t-m-input-label'>E-mail*</div>
@@ -404,7 +391,12 @@ export default function Team(props) {
                                         </div>
                                         <div className='t-m-message-block'>
                                             <div className='t-m-input-label'>Message</div>
-                                            <textarea className='t-m-message-box' placeholder="You’ve been invited to join Divinor Luckyme Dashbord. " onChange={e => setMessage(e.target.value)} />
+                                            <textarea
+                                                className='t-m-message-box'
+                                                placeholder="You’ve been invited to join Divinor Luckyme Dashbord. "
+                                                maxLength={200}
+                                                onChange={e => setMessage(e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>

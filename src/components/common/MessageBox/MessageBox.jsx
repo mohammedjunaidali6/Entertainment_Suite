@@ -12,7 +12,7 @@ export default function MessageBox(props) {
             props.type == 'warning' ? 'label label-warning' : '';
 
     return (
-        <div className={rectType} style={{ display: props.display }}>
+        <div className={rectType} style={{ display: props.display, position: 'absolute' }}>
             <label className={labelType}>
                 {props.text}
             </label>
