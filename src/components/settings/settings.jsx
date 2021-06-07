@@ -11,6 +11,7 @@ import close_src from '../../assets/img/close.svg';
 
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
+import TeamContatiner from '../../containers/settings/team/teamContainer';
 
 
 export default function Settings(props) {
@@ -39,7 +40,7 @@ export default function Settings(props) {
     const settingCloseFn = () => {
         props.history.push('/');
     }
-    
+
     return (
         <Fragment>
             <div id="settings-container" className="w-100">
@@ -62,15 +63,15 @@ export default function Settings(props) {
                         <Content active={active === 0}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                    <img src={profile_src} style={{marginRight: '13px'}}/>
+                                    <img src={profile_src} style={{ marginRight: '13px' }} />
                                     Profile
                                 </Tab>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                     <img src={team_src} style={{marginRight: '13px'}}/>
+                                    <img src={team_src} style={{ marginRight: '13px' }} />
                                     Team
                                 </Tab>
                                 <Tab onClick={handleMyAccountTabClick} myAccountActive={myAccountActive === 2} id={2} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                  <img src={role_src} style={{marginRight: '13px'}}/>
+                                    <img src={role_src} style={{ marginRight: '13px' }} />
                                     Roles
                                 </Tab>
                             </Tabs>
@@ -79,7 +80,7 @@ export default function Settings(props) {
                                     <Profile />
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 1}>
-                                    <Team></Team>
+                                    <TeamContatiner></TeamContatiner>
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 2}>
                                     <Role />
@@ -89,8 +90,8 @@ export default function Settings(props) {
                         <Content active={active === 1}>
                             <Tabs settingsSub={true}>
                                 <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 0} id={0} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
-                                    <img src={settings_src} style={{marginRight: '13px'}}/>
-                                    Property Settings 
+                                    <img src={settings_src} style={{ marginRight: '13px' }} />
+                                    Property Settings
                                 </Tab>
                                 {/* <Tab onClick={handleAppSettingTabClick} appSettingActive={appSettingActive === 1} id={1} fullWidth={true} fontSize={14} opacity={0.5} isSettingSub={true}>
                                     Accessibility

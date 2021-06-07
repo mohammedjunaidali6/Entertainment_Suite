@@ -1,15 +1,11 @@
 import { axiosInstance } from '../actions/axios-config';
-import { localHost807Uri, headers } from './apiConstants';
+import { Gateway_Host_URI, Identity_Host_URI, headers, USER_BY_FILTERS } from './apiConstants';
+import { handleResponse, handleError } from './response';
 
-export const GetUsersByFilter = () => {
-    return axiosInstance.get(`${localHost807Uri}/idty/userbyfilter?pagesize=100`, { headers: headers })
-        .then(response => {
-            if (response.status == 200 && response.data.data) {
-                return response.data
-            }
-        })
-        .catch(error => {
-            console.error('***', error);
-        });
-    return null;
+export const GetUsersByFilter = async (pageSize) => {
+    return axiosInstance
+        .get(`${Identity_Host_URI}${USER_BY_FILTERS}?pagesize=${pageSize}`, { headers: headers })
+        .then(handleResponse)
+        .catch(handleError)
 }
+

@@ -8,3 +8,7 @@ export const E_S_REWARDS_AND_BUDGET = 'E_S_REWARDS_AND_BUDGET';
 
 // Application URL's 
 export const ACTION_TYPE_URL = '';
+
+
+export const GET_USERS = "GET_USERS";
+export const GET_ROLES = "GET_ROLES";

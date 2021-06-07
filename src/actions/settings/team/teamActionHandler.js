@@ -1,9 +1,18 @@
-import { ACTION_TYPE} from '../../../constants/actionTypes';
+import { GET_USERS, GET_ROLES } from '../../../constants/actionTypes';
 
-export function dispatchData(data) {
+export function get_Users(data) {
   return (dispatch) => {
     dispatch({
-      type: ACTION_TYPE,
+      type: GET_USERS,
+      payload: data,
+    });
+  };
+}
+
+export function get_Roles(data) {
+  return (dispatch) => {
+    dispatch({
+      type: GET_ROLES,
       payload: data,
     });
   };

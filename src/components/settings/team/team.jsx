@@ -8,10 +8,9 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { headers } from '../../../api/apiConstants';
-import { GetUsersByFilter } from '../../../api/userAPI';
-
 
 export default function Team(props) {
+    console.log('***', props)
     const [visible, setVisible] = useState(false);
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [createClick, setCreateClick] = useState(false);
@@ -98,70 +97,70 @@ export default function Team(props) {
         setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
     }
 
+    const fetchUsersData = async () => {
+        const response = await axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers });
+        props.teamActionHandler.get_Users(response.data.data)
+    }
+    const fetchRolesData = async () => {
+        const response = await axiosInstance.get('http://localhost:807/api/idty/group/all');
+        props.teamActionHandler.get_Roles(response.data.data);
+
+    }
     useEffect(() => {
-        setVisible(true);
-        axiosInstance.get('http://localhost:807/api/idty/group/all')
-            .then(response => {
-                if (response.status == 200 && response.data.data && response.data.data.length) {
-                    let data = response.data.data;
-                    if (typeof data === 'string') {
-                        console.error('***', data);
-                        setUsers();
-                        handleMessageBox('error', data);
-                    } else {
-                        setRoles(data);
-                    }
-                } else {
-                    setRoles(null);
-                }
-                setVisible(false);
-            })
-            .catch(error => {
-                console.error('***', error);
-                setRoles(null);
-                handleMessageBox('error', error.toString());
-                setVisible(false);
-            });
+        fetchRolesData();
+        fetchUsersData();
+        // setVisible(true);
+        // axiosInstance.get('http://localhost:807/api/idty/group/all')
+        //     .then(response => {
+        //         if (response.status == 200 && response.data.data && response.data.data.length) {
+        //             let data = response.data.data;
+        //             if (typeof data === 'string') {
+        //                 console.error('***', data);
+        //                 setUsers();
+        //                 handleMessageBox('error', data);
+        //             } else {
+        //                 setRoles(data);
+        //             }
+        //         } else {
+        //             console.error(response.data)
+        //             setRoles(null);
+        //         }
+        //         setVisible(false);
+        //     })
 
-        axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
-            .then(response => {
-                if (response.status == 200 && response.data.data && response.data.data.length) {
-                    let data = response.data.data;
-                    if (typeof data === 'string') {
-                        console.error('***', data);
-                        setUsers();
-                        handleMessageBox('error', data);
+        // axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
+        //     .then(response => {
+        //         if (response.status == 200 && response.data.data && response.data.data.length) {
+        //             let data = response.data.data;
+        //             if (typeof data === 'string') {
+        //                 console.error('***', data);
+        //                 setUsers();
+        //                 handleMessageBox('error', data);
+        //             } else {
+        //                 let usersArr = [];
+        //                 data.forEach(obj => {
+        //                     let userObj = {};
+        //                     userObj.user_id = obj.user_id;
+        //                     userObj.userName = obj.user_name;
+        //                     userObj.firstName = obj.first_name;
+        //                     userObj.lastName = obj.last_name;
+        //                     userObj.middleName = obj.middle_name;
+        //                     userObj.imgSrc = user;
+        //                     userObj.email = obj.email;
+        //                     userObj.mobileNumber = obj.mobile_number;
+        //                     userObj.role = obj.groups[0]?.name;
+        //                     userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
+        //                     usersArr.push(userObj);
+        //                 });
+        //                 usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
+        //                 setUsers(usersArr);
+        //             }
 
-                    } else {
-                        let usersArr = [];
-                        data.forEach(obj => {
-                            let userObj = {};
-                            userObj.user_id = obj.user_id;
-                            userObj.userName = obj.user_name;
-                            userObj.firstName = obj.first_name;
-                            userObj.lastName = obj.last_name;
-                            userObj.middleName = obj.middle_name;
-                            userObj.imgSrc = user;
-                            userObj.email = obj.email;
-                            userObj.mobileNumber = obj.mobile_number;
-                            userObj.role = obj.groups[0]?.name;
-                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                            usersArr.push(userObj);
-                        });
-                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                        setUsers(usersArr);
-                    }
-
-                } else {
-                    setUsers(null);
-                }
-            })
-            .catch(error => {
-                console.error('***', error);
-                setUsers();
-                handleMessageBox('error', error.toString());
-            });
-
+        //         } else {
+        //             console.error(response.data)
+        //             setUsers(null);
+        //         }
+        //     })
 
     }, [])
 
@@ -326,7 +325,6 @@ export default function Team(props) {
 
     }
 
-
     return (
         <Fragment>
             {visible ?
@@ -341,7 +339,7 @@ export default function Team(props) {
                                     <div className='t-m-create-btn-text'>+  Invite User</div>
                                 </div>
                                 <Table columns={columns}
-                                    data={users}
+                                    data={props.users}
                                     pagination={true}
                                     subHeaderComponent={
                                         <SearchBar placeHolder="Search User" fromSettingsTeam={true} onSearch={(uname) => onSearch(uname)} />
@@ -384,7 +382,7 @@ export default function Team(props) {
                                             <div className='t-m-input-label'>Role</div>
                                             <select className='t-m-input-field' placeholder="Select" onChange={onGroupSelect}>
                                                 <option value=''>Select Role</option>
-                                                {roles && roles.map(role =>
+                                                {props.roles && props.roles.map(role =>
                                                     <option value={role.group_id}>{role.name}</option>
                                                 )}
                                             </select>
