@@ -139,7 +139,7 @@ export default function Role(props) {
             setVisible(true);
             getData('/idty/getgroups')
                 .then(response => {
-                    if (typeof response.data.data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
                         let roleArr = [];
                         response.data.data.forEach(r => {
                             let roleObj = {};
