@@ -2,12 +2,11 @@ import React, { useState, useEffect, Fragment } from 'react';
 import SearchBar from '../../common/searchBar/searchBar';
 import Table from '../../common/reactTable/table';
 import './team.css';
-import { axiosInstance } from '../../../actions/axios-config';
 import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
-import { headers } from '../../../api/apiConstants';
+import { getData, postData } from '../../../api/ApiHelper';
 
 export default function Team(props) {
     const [visible, setVisible] = useState(false);
@@ -18,8 +17,6 @@ export default function Team(props) {
     const [phoneNumber, setPhoneNumber] = useState();
     const [group, setGroup] = useState();
     const [message, setMessage] = useState('');
-    const [roles, setRoles] = useState();
-    const [users, setUsers] = useState();
 
     const onActionClick = (e, rowData) => {
         if (e.target.outerText === 'Edit') {
@@ -29,9 +26,9 @@ export default function Team(props) {
             setUpdateUser(rowData);
         } else if (e.target.outerText === 'Delete') {
             setVisible(true);
-            axiosInstance.get('http://localhost:807/api/idty/deleteuser?user_id=' + rowData.user_id, { headers: headers })
+            getData('/idty/deleteuser?user_id=' + rowData.user_id)
                 .then(response => {
-                    if (response.status == 200 && response.data.data && response.data.data.length) {
+                    if (response.data.data && response.data.data.length) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
                             console.error('***', data);
@@ -44,11 +41,6 @@ export default function Team(props) {
                     }
                     setVisible(false);
                 })
-                .catch(error => {
-                    console.error('***', error);
-                    handleMessageBox('error', error.toString());
-                    setVisible(false);
-                });
         }
     }
 
@@ -96,50 +88,51 @@ export default function Team(props) {
         setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
     }
 
-    const fetchRolesData = async () => {
+    const fetchRolesData = () => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get('http://localhost:807/api/idty/group/all')
+            getData('/idty/group/all')
+                .then(response => {
+                    if (response.data.data && typeof response.data.data !== 'string') {
+                        let rolesArr = response.data.data?.sort((a, b) => a.name < b.name ? -1 : 1);
+                        props.teamActionHandler.get_Roles(rolesArr);
+                    } else {
 
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                let rolesArr = response.data.data?.sort((a, b) => a.name < b.name ? -1 : 1);
-                props.teamActionHandler.get_Roles(rolesArr);
-            } else {
-
-            }
+                    }
+                })
         } catch (error) {
             console.error(error)
         }
         setVisible(false);
     }
-    const fetchUsersData = async () => {
+    const fetchUsersData = () => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
-                .catch(error => console.error(error));
+            getData('/idty/userbyfilter?pagesize=100')
+                .then(response => {
+                    if (response.data.data && typeof response.data.data !== 'string') {
+                        let usersArr = [];
+                        response.data.data?.forEach(obj => {
+                            let userObj = {};
+                            userObj.user_id = obj.user_id;
+                            userObj.userName = obj.user_name;
+                            userObj.firstName = obj.first_name;
+                            userObj.lastName = obj.last_name;
+                            userObj.middleName = obj.middle_name;
+                            userObj.imgSrc = user;
+                            userObj.email = obj.email;
+                            userObj.mobileNumber = obj.mobile_number;
+                            userObj.role = obj.groups[0]?.name;
+                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
+                            usersArr.push(userObj);
+                        });
+                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
+                        props.teamActionHandler.get_Users(usersArr);
 
-            if (response && response.status == 200 && typeof response.data.data !== 'string') {
-                let usersArr = [];
-                response.data.data?.forEach(obj => {
-                    let userObj = {};
-                    userObj.user_id = obj.user_id;
-                    userObj.userName = obj.user_name;
-                    userObj.firstName = obj.first_name;
-                    userObj.lastName = obj.last_name;
-                    userObj.middleName = obj.middle_name;
-                    userObj.imgSrc = user;
-                    userObj.email = obj.email;
-                    userObj.mobileNumber = obj.mobile_number;
-                    userObj.role = obj.groups[0]?.name;
-                    userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                    usersArr.push(userObj);
-                });
-                usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                props.teamActionHandler.get_Users(usersArr);
+                    } else {
 
-            } else {
-
-            }
+                    }
+                })
         } catch (error) {
             console.error(error)
         }
@@ -148,29 +141,30 @@ export default function Team(props) {
     const fetchUsersByUserName = async (username) => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get(`http://localhost:807/api/idty/userbyusername?user_name=${username}`, { headers: headers });
+            getData(`/idty/userbyusername?user_name=${username}`)
+                .then(response => {
+                    if (typeof response.data.data !== 'string') {
+                        let usersArr = [];
+                        response.data.data?.forEach(obj => {
+                            let userObj = {};
+                            userObj.user_id = obj.user_id;
+                            userObj.userName = obj.user_name;
+                            userObj.firstName = obj.first_name;
+                            userObj.lastName = obj.last_name;
+                            userObj.middleName = obj.middle_name;
+                            userObj.imgSrc = user;
+                            userObj.email = obj.email;
+                            userObj.mobileNumber = obj.mobile_number;
+                            userObj.role = obj.groups[0]?.name;
+                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
+                            usersArr.push(userObj);
+                        });
+                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
+                        props.teamActionHandler.get_Users(usersArr);
+                    } else {
 
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                let usersArr = [];
-                response.data.data?.forEach(obj => {
-                    let userObj = {};
-                    userObj.user_id = obj.user_id;
-                    userObj.userName = obj.user_name;
-                    userObj.firstName = obj.first_name;
-                    userObj.lastName = obj.last_name;
-                    userObj.middleName = obj.middle_name;
-                    userObj.imgSrc = user;
-                    userObj.email = obj.email;
-                    userObj.mobileNumber = obj.mobile_number;
-                    userObj.role = obj.groups[0]?.name;
-                    userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                    usersArr.push(userObj);
-                });
-                usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                props.teamActionHandler.get_Users(usersArr);
-            } else {
-
-            }
+                    }
+                })
         } catch (error) {
             console.error(error)
         }
@@ -211,21 +205,20 @@ export default function Team(props) {
         } else if (!group) {
             handleMessageBox('error', 'Please select atleast one role');
         } else {
-            let postData = {};
-            postData.email = email;
-            postData.mobile_number = phoneNumber;
-            postData.user_groups = [];
-            postData.user_groups.push(group);
-            postData.message = message;
+            let postObj = {};
+            postObj.email = email;
+            postObj.mobile_number = phoneNumber;
+            postObj.user_groups = [];
+            postObj.user_groups.push(group);
+            postObj.message = message;
             setVisible(true);
-            axiosInstance.post('http://localhost:807/api/idty/admin/inviteuser', postData, { headers: headers })
+            postData('/idty/admin/inviteuser', postObj)
                 .then(response => {
-                    if (response.status == 200 && response.data.data) {
+                    if (response.data.data) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
                             console.error('***', data);
                             handleMessageBox('error', data);
-
                         } else {
                             setCreateClick(false);
                             setGroup();
@@ -238,21 +231,16 @@ export default function Team(props) {
                     }
                     setVisible(false);
                 })
-                .catch(error => {
-                    console.error('***', error);
-                    handleMessageBox('error', error.toString());
-                    setVisible(false);
-                })
         }
     }
     const onUpdateClick = () => {
-        var postData = { ...updateUser };
-        postData.groups = [];
-        postData.groups.push(group);
+        var postObj = { ...updateUser };
+        postObj.groups = [];
+        postObj.groups.push(group);
         setVisible(true);
-        axiosInstance.post('http://localhost:807/api/idty/updateuser', postData, { headers: headers })
+        postData('/idty/updateuser', postObj)
             .then(response => {
-                if (response.status == 200) {
+                if (response.data.data) {
                     let data = response.data.data;
                     if (typeof data === 'string') {
                         console.error('***', data);
@@ -267,11 +255,6 @@ export default function Team(props) {
                     setCreateClick(false);
                     handleMessageBox('error', 'User Group Update is failed');
                 }
-                setVisible(false);
-            })
-            .catch(error => {
-                console.error('***', error);
-                handleMessageBox('error', error.toString());
                 setVisible(false);
             })
     }

@@ -1,21 +1,18 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import Table from "../../common/reactTable/table";
 import SearchBar from '../../common/searchBar/searchBar';
-import { axiosInstance } from '../../../actions/axios-config';
 import './role.css';
 import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
-import { headers } from '../../../api/apiConstants';
-
+import { getData, postData } from '../../../api/ApiHelper';
 
 export default function Role(props) {
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [visible, setVisible] = useState(false);
     const [updateRole, setUpdateRole] = useState();
     const [createClick, setCreateClick] = useState(false);
-    const [roleData, setRoleData] = useState();
     const [roleName, setRoleName] = useState();
     const [permissions, setPermissions] = useState(props.permissions);
     const [groupPermissions, setGroupPermissions] = useState();
@@ -73,7 +70,7 @@ export default function Role(props) {
             setCreateClick(true);
             setUpdateRole(rowData)
             setRoleName(rowData.role);
-            axiosInstance.get('http://localhost:807/api/idty/permissionsbygroup?group_id=' + rowData.groupID)
+            getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
                 .then(response => {
                     if (response.status == 200 && response.data.data && response.data.data.length) {
                         let data = response.data.data;
@@ -92,11 +89,6 @@ export default function Role(props) {
                         handleMessageBox('error', 'Group Permission fetch is failed');
                     }
                     setVisible(false);
-                })
-                .catch(error => {
-                    console.error('***', error);
-                    handleMessageBox('error', error.toString());
-                    setVisible(false);
                 });
 
         } else if (e.target.outerText === 'Delete') {
@@ -105,7 +97,7 @@ export default function Role(props) {
     }
     const onViewClick = (e, rowData) => {
         setVisible(true);
-        axiosInstance.get('http://localhost:807/api/idty/permissionsbygroup?group_id=' + rowData.groupID)
+        getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
             .then(response => {
                 if (response.status == 200 && response.data.data && response.data.data.length) {
                     let data = response.data.data;
@@ -121,50 +113,47 @@ export default function Role(props) {
                     setGroupPermissions();
                 }
                 setVisible(false);
-            })
-            .catch(error => {
-                console.error('***', error);
-                handleMessageBox('error', error.toString());
-                setGroupPermissions();
-                setVisible(false);
             });
     }
     const onSaveRole = () => {
         if (!roleName) {
             handleMessageBox('error', 'Role name is required');
         } else {
-            let postData = {};
-            postData.Name = roleName;
-            postData.Description = description;
-            postData.Permissions = permissions?.reduce((p, o) => (o.is_enabled && p.push(o.permission_id), p), []);
-            addRole(postData)
+            let postObj = {};
+            postObj.Name = roleName;
+            postObj.Description = description;
+            postObj.Permissions = permissions?.reduce((p, o) => (o.is_enabled && p.push(o.permission_id), p), []);
+            addRole(postObj)
         }
     }
     const onUpdateRole = () => {
-        var postData = {};
-        postData.group_id = updateRole.groupID;
-        postData.Permissions = [];
-        postData.Permissions = permissions?.reduce((p, o) => (o.isAssigned && p.push(o.permission_id), p), []);
-        updateRoles(postData);
+        var postObj = {};
+        postObj.group_id = updateRole.groupID;
+        postObj.Permissions = [];
+        postObj.Permissions = permissions?.reduce((p, o) => (o.isAssigned && p.push(o.permission_id), p), []);
+        updateRoles(postObj);
     }
 
     const fetchRolesWithPermissionsCount = async () => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get('http://localhost:807/api/idty/getgroups', { headers: headers });
-            console.log('***', response)
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                let roleArr = [];
-                response.data.data.forEach(r => {
-                    let roleObj = {};
-                    roleObj.groupID = r.GroupID;
-                    roleObj.role = r.GroupName;
-                    roleObj.permissions = r.PermissionCount + ' Permissions';
-                    roleArr.push(roleObj);
+            getData('/idty/getgroups')
+                .then(response => {
+                    if (typeof response.data.data !== 'string') {
+                        let roleArr = [];
+                        response.data.data.forEach(r => {
+                            let roleObj = {};
+                            roleObj.groupID = r.GroupID;
+                            roleObj.role = r.GroupName;
+                            roleObj.permissions = r.PermissionCount + ' Permissions';
+                            roleArr.push(roleObj);
+                        })
+                        roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
+                        props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
+                    } else {
+
+                    }
                 })
-                roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
-                props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
-            }
         } catch (error) {
             console.error(error)
         }
@@ -173,35 +162,41 @@ export default function Role(props) {
     const fetchPermissions = async () => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get('http://localhost:807/api/idty/permission/all');
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                props.notificationActionHandler.setPermissions(response.data.data);
-                setPermissions(response.data.data)
-            }
+            getData('/idty/permission/all')
+                .then(response => {
+                    if (typeof response.data.data !== 'string') {
+                        props.notificationActionHandler.setPermissions(response.data.data);
+                        setPermissions(response.data.data)
+                    } else {
+
+                    }
+                })
         } catch (error) {
             console.error(error)
         }
         setVisible(false);
     }
-    const updateRoles = async (postData) => {
+    const updateRoles = async (postObj) => {
         try {
             setVisible(true);
-            const response = await axiosInstance.post('http://localhost:807/api/idty/updategroup', postData, { headers: headers });
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                setCreateClick(false);
-                setUpdateRole();
-                let roleObj = {};
-                roleObj.groupID = postData.group_id;
-                roleObj.role = updateRole.role;
-                roleObj.permissions = postData.Permissions.length + ' Permissions';
-                let rolesArr = props.roleData;
-                rolesArr.splice(_.findIndex(rolesArr, r => r.groupID == roleObj.groupID), 1, roleObj);
-                rolesArr = rolesArr.sort((a, b) => a.role < b.role ? -1 : 1);
-                props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
-                handleMessageBox('success', 'User Group is Updated succesfully');
-            } else {
-                handleMessageBox('error', 'User Group Update is failed');
-            }
+            postData('/idty/updategroup', postObj)
+                .then(response => {
+                    if (typeof response.data.data !== 'string') {
+                        setCreateClick(false);
+                        setUpdateRole();
+                        let roleObj = {};
+                        roleObj.groupID = postObj.group_id;
+                        roleObj.role = updateRole.role;
+                        roleObj.permissions = postObj.Permissions.length + ' Permissions';
+                        let rolesArr = props.roleData;
+                        rolesArr.splice(_.findIndex(rolesArr, r => r.groupID == roleObj.groupID), 1, roleObj);
+                        rolesArr = rolesArr.sort((a, b) => a.role < b.role ? -1 : 1);
+                        props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
+                        handleMessageBox('success', 'User Group is Updated succesfully');
+                    } else {
+                        handleMessageBox('error', 'User Group Update is failed');
+                    }
+                })
         } catch (error) {
             console.error(error);
             handleMessageBox('error', error.message);
@@ -211,44 +206,50 @@ export default function Role(props) {
     const searchRoleByRoleName = async (rolename) => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get(`http://localhost:807/api/idty/groupbygroupname?group_name=${rolename}`, { headers: headers })
-            let data = response.data.data;
-            let roleArr = [];
-            if (response.status == 200 && typeof data !== 'string') {
-                data.forEach(r => {
-                    let roleObj = {};
-                    roleObj.groupID = r.GroupID;
-                    roleObj.role = r.GroupName;
-                    roleObj.permissions = r.PermissionCount;
-                    roleArr.push(roleObj);
+            getData(`/idty/groupbygroupname?group_name=${rolename}`)
+                .then(response => {
+                    let data = response.data.data;
+                    let roleArr = [];
+                    if (response.status == 200 && typeof data !== 'string') {
+                        data.forEach(r => {
+                            let roleObj = {};
+                            roleObj.groupID = r.GroupID;
+                            roleObj.role = r.GroupName;
+                            roleObj.permissions = r.PermissionCount;
+                            roleArr.push(roleObj);
+                        })
+                        roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
+                        console.log('***', roleArr)
+                        props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
+                    } else {
+
+                    }
                 })
-                roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
-                console.log('***', roleArr)
-                props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
-            }
         } catch (error) {
             console.error(error);
         }
         setVisible(false);
     }
-    const addRole = async (postData) => {
+    const addRole = async (postObj) => {
         try {
             setVisible(true);
-            const response = await axiosInstance.post('http://localhost:807/api/idty/addnewgroup', postData, { headers: headers });
-            if (response.status === 200 && typeof response.data.data !== 'string') {
-                setCreateClick(false);
-                let data = response.data.data;
-                let rolesArr = props.roleData;
-                let roleObj = {};
-                roleObj.groupID = data.group_id;
-                roleObj.role = postData.Name;
-                roleObj.permissions = postData.Permissions.length + ' Permissions';
-                rolesArr.push(roleObj);
-                props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
-                handleMessageBox('success', 'Role added succesfully');
-            } else {
-                handleMessageBox('error', 'Adding Role is failed');
-            }
+            postData('/idty/addnewgroup', postObj)
+                .then(response => {
+                    if (response.status === 200 && typeof response.data.data !== 'string') {
+                        setCreateClick(false);
+                        let data = response.data.data;
+                        let rolesArr = props.roleData;
+                        let roleObj = {};
+                        roleObj.groupID = data.group_id;
+                        roleObj.role = postObj.Name;
+                        roleObj.permissions = postObj.Permissions.length + ' Permissions';
+                        rolesArr.push(roleObj);
+                        props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
+                        handleMessageBox('success', 'Role added succesfully');
+                    } else {
+                        handleMessageBox('error', 'Adding Role is failed');
+                    }
+                })
         } catch (error) {
             console.error(error)
             handleMessageBox('error', error.message);
@@ -258,29 +259,22 @@ export default function Role(props) {
     const deleteRole = async (id) => {
         try {
             setVisible(true);
-            const response = await axiosInstance.get('http://localhost:807/api/idty/deletegroup?group_id=' + id, { headers: headers });
-            if (response.status == 200 && typeof response.data.data !== 'string') {
-                let tempRoles = [...props.roleData];
-                tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
-                props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)
-                handleMessageBox('success', 'Group is deleted succesfully');
-            } else {
-                handleMessageBox('error', 'Deleting Group is failed');
-            }
+            getData('/idty/deletegroup?group_id=' + id)
+                .then(response => {
+                    if (response.status == 200 && typeof response.data.data !== 'string') {
+                        let tempRoles = [...props.roleData];
+                        tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
+                        props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)
+                        handleMessageBox('success', 'Group is deleted succesfully');
+                    } else {
+                        handleMessageBox('error', 'Deleting Group is failed');
+                    }
+                })
         } catch (error) {
             console.error(error)
             handleMessageBox('error', error.message);
         }
         setVisible(false);
-    }
-    const permissionsByGroupId = async (id) => {
-        try {
-            const response = await axiosInstance.get('http://localhost:807/api/idty/permissionsbygroup?group_id=' + id);
-
-
-        } catch (error) {
-            console.error(error)
-        }
     }
 
 
