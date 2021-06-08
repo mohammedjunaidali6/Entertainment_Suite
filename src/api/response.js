@@ -11,6 +11,7 @@ export function handleResponse(response) {
 }
 
 export function handleError(error) {
+    return null;
     if (error.data) {
         return error.data;
     }

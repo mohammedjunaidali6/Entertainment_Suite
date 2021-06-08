@@ -28,7 +28,7 @@ export default function Team(props) {
             setVisible(true);
             getData('/idty/deleteuser?user_id=' + rowData.user_id)
                 .then(response => {
-                    if (response.data.data && response.data.data.length) {
+                    if (response && response.data.data && response.data.data.length) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
                             console.error('***', data);
@@ -93,7 +93,7 @@ export default function Team(props) {
             setVisible(true);
             getData('/idty/group/all')
                 .then(response => {
-                    if (response.data.data && typeof response.data.data !== 'string') {
+                    if (response && response.data && response.data.data && typeof response.data.data !== 'string') {
                         let rolesArr = response.data.data?.sort((a, b) => a.name < b.name ? -1 : 1);
                         props.teamActionHandler.get_Roles(rolesArr);
                     } else {
@@ -110,7 +110,7 @@ export default function Team(props) {
             setVisible(true);
             getData('/idty/userbyfilter?pagesize=100')
                 .then(response => {
-                    if (response.data.data && typeof response.data.data !== 'string') {
+                    if (response && response.data.data && typeof response.data.data !== 'string') {
                         let usersArr = [];
                         response.data.data?.forEach(obj => {
                             let userObj = {};
@@ -143,7 +143,7 @@ export default function Team(props) {
             setVisible(true);
             getData(`/idty/userbyusername?user_name=${username}`)
                 .then(response => {
-                    if (typeof response.data.data !== 'string') {
+                    if (response && response.data && response.data.data && typeof response.data.data !== 'string') {
                         let usersArr = [];
                         response.data.data?.forEach(obj => {
                             let userObj = {};
@@ -214,7 +214,7 @@ export default function Team(props) {
             setVisible(true);
             postData('/idty/admin/inviteuser', postObj)
                 .then(response => {
-                    if (response.data.data) {
+                    if (response && response.data && response.data.data) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
                             console.error('***', data);
@@ -240,7 +240,7 @@ export default function Team(props) {
         setVisible(true);
         postData('/idty/updateuser', postObj)
             .then(response => {
-                if (response.data.data) {
+                if (response && response.data && response.data.data) {
                     let data = response.data.data;
                     if (typeof data === 'string') {
                         console.error('***', data);

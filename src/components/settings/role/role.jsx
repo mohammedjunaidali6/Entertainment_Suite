@@ -72,7 +72,7 @@ export default function Role(props) {
             setRoleName(rowData.role);
             getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
                 .then(response => {
-                    if (response.status == 200 && response.data.data && response.data.data.length) {
+                    if (response && response.data.data && response.data.data.length) {
                         let data = response.data.data;
                         if (typeof data === 'string') {
                             console.error('***', data);
@@ -99,7 +99,7 @@ export default function Role(props) {
         setVisible(true);
         getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
             .then(response => {
-                if (response.status == 200 && response.data.data && response.data.data.length) {
+                if (response && response.data.data && response.data.data.length) {
                     let data = response.data.data;
                     if (typeof data === 'string') {
                         console.error('***', data);
@@ -164,7 +164,7 @@ export default function Role(props) {
             setVisible(true);
             getData('/idty/permission/all')
                 .then(response => {
-                    if (typeof response.data.data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
                         props.notificationActionHandler.setPermissions(response.data.data);
                         setPermissions(response.data.data)
                     } else {
@@ -181,7 +181,7 @@ export default function Role(props) {
             setVisible(true);
             postData('/idty/updategroup', postObj)
                 .then(response => {
-                    if (typeof response.data.data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
                         setCreateClick(false);
                         setUpdateRole();
                         let roleObj = {};
@@ -208,9 +208,9 @@ export default function Role(props) {
             setVisible(true);
             getData(`/idty/groupbygroupname?group_name=${rolename}`)
                 .then(response => {
-                    let data = response.data.data;
-                    let roleArr = [];
-                    if (response.status == 200 && typeof data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
+                        let data = response.data.data;
+                        let roleArr = [];
                         data.forEach(r => {
                             let roleObj = {};
                             roleObj.groupID = r.GroupID;
@@ -235,7 +235,7 @@ export default function Role(props) {
             setVisible(true);
             postData('/idty/addnewgroup', postObj)
                 .then(response => {
-                    if (response.status === 200 && typeof response.data.data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
                         setCreateClick(false);
                         let data = response.data.data;
                         let rolesArr = props.roleData;
@@ -261,7 +261,7 @@ export default function Role(props) {
             setVisible(true);
             getData('/idty/deletegroup?group_id=' + id)
                 .then(response => {
-                    if (response.status == 200 && typeof response.data.data !== 'string') {
+                    if (response && typeof response.data.data !== 'string') {
                         let tempRoles = [...props.roleData];
                         tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)

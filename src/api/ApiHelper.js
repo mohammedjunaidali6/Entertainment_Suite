@@ -24,8 +24,11 @@ export const getData = async (resource) => {
     try {
         const response = await axiosInstance
             .get(`${Identity_Host_URI}${resource}`, { headers: headers });
+
         return handleResponse(response);
+
     } catch (error) {
+        console.log('***', error.message)
         return handleError(error);
     }
 };
@@ -36,8 +39,11 @@ export const postData = async (resource) => {
     try {
         const response = await axiosInstance
             .post(`${Identity_Host_URI}${resource}`, { headers: headers });
+
         return handleResponse(response);
+
     } catch (error) {
+        console.log('***', error.message)
         return handleError(error);
     }
 };
