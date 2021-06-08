@@ -1,19 +1,20 @@
-import React, { Fragment, useState } from 'react';
-
+import React, { Fragment, useEffect, useState } from 'react';
+import { getData, postData } from '../../../../api/ApiHelper';
 import './defineJourney.css';
+import _ from 'lodash';
 
 const tempArray = [
-    {id: 1, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false},
-    {id: 2, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false},
-    {id: 3, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false},
-    {id: 4, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false},
-    {id: 5, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false},
-    {id: 6, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false}
+    { id: 1, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
+    { id: 2, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
+    { id: 3, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
+    { id: 4, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
+    { id: 5, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
+    { id: 6, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false }
 ];
 
 export default function DefineJourney(props) {
 
-    const [journeyBoxes, setJourneyBoxes] = useState(tempArray);
+    const [journeyBoxes, setJourneyBoxes] = useState();
 
     function journeyBoxClick(boxData) {
         journeyBoxes.forEach((loopObj) => { loopObj.isActive = false });
@@ -23,8 +24,41 @@ export default function DefineJourney(props) {
     }
 
     const djChange = () => {
-        
+
     }
+    const fetchJourneyData = () => {
+        //props.setLoading(true);
+        getData(`/engt/journeybyfilters`)
+            .then(response => {
+                if (response && Array.isArray(response.data?.data)) {
+                    let grouped = _.groupBy(response.data.data, j => j.JourneyID);
+                    console.log('***', grouped)
+                    let journeyArr = [];
+                    response.data.data.forEach(journey => {
+                        let existedJrny = _.find(journeyArr, j => j.id == journey.JourneyID);
+                        if (existedJrny) {
+                            existedJrny.tags.push(journey.EventDisplayName);
+                        } else {
+                            let journObj = {};
+                            journObj.id = journey.JourneyID;
+                            journObj.name = journey.JourneyName;
+                            journObj.isActive = false;
+                            journObj.tags = [];
+                            journObj.tags.push(journey.EventDisplayName);
+                            journeyArr.push(journObj);
+                        }
+                    })
+                    setJourneyBoxes(journeyArr);
+                } else {
+                    setJourneyBoxes();
+                }
+                //props.setLoading(false);
+            })
+    }
+
+    useEffect(() => {
+        fetchJourneyData();
+    }, []);
 
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">
@@ -36,8 +70,8 @@ export default function DefineJourney(props) {
                             <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
                                 <div className={`c-e-journey-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
                                     {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
-                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive ? true : false} onChange={djChange}></input>
-                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-h">Journey {idx + 1}</div>
+                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive} onChange={djChange}></input>
+                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-h">{obj.name}</div>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-tags">
                                         {obj.tags && obj.tags.length > 0 ? (
                                             <Fragment>

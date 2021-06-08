@@ -1,8 +1,9 @@
 export const Gateway_Host_URI = "http://localhost:806/api";
 export const Identity_Host_URI = "http://localhost:807/api";
+export const Engagement_Host_URI = "http://localhost:815/api";
 
 export const headers = {
-    client_id: 'identity_mgt_tenant_2',
+    client_id: 'client_1_engagement', //identity_mgt_tenant_2',
     secret: 'XsrRvPkMHmXkkFeW'
 }
 

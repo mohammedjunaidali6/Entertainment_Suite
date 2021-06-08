@@ -15,12 +15,12 @@ import { storeDataFn } from "../../../common/global";
 import './setGoals.css';
 
 const tempArray = [
-    {id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false},
-    {id: 2, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false},
-    {id: 3, heading: "Bring New Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false},
-    {id: 4, heading: "Increase Referral", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false},
-    {id: 5, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false},
-    {id: 6, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false}
+    { id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 2, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 3, heading: "Bring New Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 4, heading: "Increase Referral", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 5, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 6, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false }
 ];
 
 const setGoalForm = FormBuilder.group({
@@ -52,7 +52,7 @@ export default function SetGoals(props) {
         console.log('goalBoxes', goalBoxes);
     }
     const sgChange = () => {
-        
+
     }
 
     return (
@@ -65,14 +65,14 @@ export default function SetGoals(props) {
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
                                 <span className="setGoalForm-input-lbl">Campaign Name*</span>
                                 <FieldControl name="campaignName" className="pt-0"
-                                    render={TextInput} 
-                                    meta={{ label: "Campaign Name" , maxlen: 100, showError: true, placeholder: false }} />
+                                    render={TextInput}
+                                    meta={{ label: "Campaign Name", maxlen: 100, showError: true, placeholder: false }} />
                             </div>
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
                                 <span className="setGoalForm-input-lbl">Display Name*</span>
-                                <FieldControl name="displayName"  className="pt-0"
-                                    render={TextInput} 
-                                    meta={{ label: "Display Name" , maxlen: 300, showError: true, placeholder: false }} />
+                                <FieldControl name="displayName" className="pt-0"
+                                    render={TextInput}
+                                    meta={{ label: "Display Name", maxlen: 300, showError: true, placeholder: false }} />
                             </div>
                         </form>
                     )}
@@ -83,11 +83,11 @@ export default function SetGoals(props) {
                 <div className="c-e-campaign-goal-boxes w-100 float-left clearfix">
                     {goalBoxes && goalBoxes.length > 0 ? (
                         <Fragment>
-                            {goalBoxes.map((obj) => (
-                                <div className={`c-e-campaign-goal-box w-33 float-left clearfix p-relative`} key={obj.id} onClick={() => goalBoxClick(obj)}>
+                            {goalBoxes.map((obj, indx) => (
+                                <div className={`c-e-campaign-goal-box w-33 float-left clearfix p-relative`} style={{ pointerEvents: indx == 0 ? 'auto' : 'none', opacity: indx == 0 ? '1' : '0.4' }} key={obj.id} onClick={() => goalBoxClick(obj)}>
                                     <div className={`c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
                                         {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
-                                        <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive ? true : false} onChange={sgChange}></input>
+                                        <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive} onChange={sgChange}></input>
                                         <div className="c-e-campaign-goal-box-inner-logo">
                                             {obj.id === 1 ? (
                                                 <Fragment>
@@ -170,6 +170,6 @@ export default function SetGoals(props) {
                     ) : null}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

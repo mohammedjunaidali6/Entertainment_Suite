@@ -1,26 +1,20 @@
 import axios from 'axios';
 import { axiosInstance } from '../actions/axios-config';
-import { Gateway_Host_URI, Identity_Host_URI, headers, USER_BY_FILTERS } from './apiConstants';
+import { Gateway_Host_URI, Identity_Host_URI, Engagement_Host_URI, headers } from './apiConstants';
 import { handleResponse, handleError } from './response';
 
-export const GetUsersByFilter = async (uri, pageSize) => {
-    return axiosInstance
-        .get(`${Identity_Host_URI}${USER_BY_FILTERS}?pagesize=${pageSize}`, { headers: headers })
-        .then(handleResponse)
-        .catch(handleError)
-}
 
-
-export const getSingle = (resource, id) => {
-    return axiosInstance
-        .get(`${Identity_Host_URI}${resource}`)
-        .then(handleResponse)
-        .catch(handleError)
+export const getSingle = async (resource, id) => {
+    try {
+        const response = await axiosInstance
+            .get(`${Identity_Host_URI}${resource}`);
+        return handleResponse(response);
+    } catch (error) {
+        return handleError(error);
+    }
 };
 
 export const getData = async (resource) => {
-    console.log('****', `${Identity_Host_URI}${resource}`)
-
     try {
         const response = await axiosInstance
             .get(`${Identity_Host_URI}${resource}`, { headers: headers });
@@ -34,8 +28,6 @@ export const getData = async (resource) => {
 };
 
 export const postData = async (resource) => {
-    console.log('****', `${Identity_Host_URI}${resource}`)
-
     try {
         const response = await axiosInstance
             .post(`${Identity_Host_URI}${resource}`, { headers: headers });

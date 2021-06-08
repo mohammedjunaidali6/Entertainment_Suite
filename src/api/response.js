@@ -1,7 +1,6 @@
 import handleMessageBox from '../components/common/MessageBox/MessageBox';
 
 export function handleResponse(response) {
-    console.log('****', response)
     if (response.status == 200) {
         return response;
     } else {

@@ -1,6 +1,10 @@
 import classnames from 'classnames';
 import ActionMenu from "../components/common/reactTable/menu";
 
+
+export const engagementStatusArr = ['All', 'Live', 'Paused', 'Upcoming', 'Completed'];
+
+
 export const lineChartData = {
   labels: ['Jan 1', 'Jan 8', 'Jan 15', 'Jan 22', 'Feb 1', 'Feb 8', 'Feb 22', 'Mar 1', 'Mar 8'],
   datasets: [
@@ -11,13 +15,13 @@ export const lineChartData = {
       backgroundColor: '#3794FC',
       borderColor: '#3794FC',
       barThickness: 10
-    },{
-        label: 'Cost',
-        data: [58, 84, 30, 88, 94, 87, 102, 135, 85],
-        fill: false,
-        backgroundColor: '#9D60FB',
-        borderColor: '#9D60FB',
-        barThickness: 10
+    }, {
+      label: 'Cost',
+      data: [58, 84, 30, 88, 94, 87, 102, 135, 85],
+      fill: false,
+      backgroundColor: '#9D60FB',
+      borderColor: '#9D60FB',
+      barThickness: 10
     }
   ],
 }
@@ -140,7 +144,7 @@ export const smallBarChartData = {
       label: 'Coupons',
       data: [500, 490, 505, 520, 540, 510, 500],
       fill: false,
-      backgroundColor:'#3794FC',
+      backgroundColor: '#3794FC',
       borderColor: '#3794FC',
       barThickness: 16
     }
@@ -173,7 +177,7 @@ export const doughnutChartData = {
 export const CampaignMockData = [
   { id: 1, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
   { id: 2, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 3, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
+  { id: 3, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "completed", isRecent: false },
   { id: 4, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
   { id: 5, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
   { id: 6, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "expired", isRecent: false },
@@ -182,31 +186,31 @@ export const CampaignMockData = [
 
 export const CampaignTableColumns = [
   {
-    name:"Engagement name",
-    selector:"offer"
+    name: "Engagement name",
+    selector: "offer"
   },
   {
-    name:"Expire On",
-    selector:"expiredOn"
+    name: "Expire On",
+    selector: "expiredOn"
   },
   {
-    name:"Customer Participated",
-    selector:"customer"
+    name: "Customer Participated",
+    selector: "customer"
   },
   {
-    name:"Total No of Sales",
-    selector:"sales"
+    name: "Total No of Sales",
+    selector: "sales"
   },
   {
-    name:"Status",
-    cell: rowObj => 
+    name: "Status",
+    cell: rowObj =>
       <div className={classnames('text-c', {
         'txt-green': rowObj.status === 'live',
         'txt-grey': rowObj.status === 'paused',
         'txt-orange': rowObj.status === 'expired',
         'txt-blue': rowObj.status === 'upcoming'
       })}>
-        {rowObj.status}  
+        {rowObj.status}
       </div>
   },
   {
@@ -225,24 +229,24 @@ export const AnalyticsMockData = [
 
 export const AnalyticsTableColumns = [
   {
-    name:"Title",
-    selector:"name"
+    name: "Title",
+    selector: "name"
   },
   {
-    name:"Filters",
-    selector:"filter"
+    name: "Filters",
+    selector: "filter"
   },
   {
-    name:"Gender",
-    selector:"gender"
+    name: "Gender",
+    selector: "gender"
   },
   {
-    name:"Age range",
-    selector:"ageRange"
+    name: "Age range",
+    selector: "ageRange"
   },
   {
-    name:"City",
-    selector:"city"
+    name: "City",
+    selector: "city"
   },
   {
     name: "Actions",

@@ -1,4 +1,19 @@
-import { E_S_SET_GOALS, E_S_TARGET_AUDIENCE, E_S_DEFINE_JOURNEY, E_S_REWARDS_AND_BUDGET } from '../../../constants/actionTypes';
+import {
+  E_S_SET_GOALS,
+  E_S_TARGET_AUDIENCE,
+  E_S_DEFINE_JOURNEY,
+  E_S_REWARDS_AND_BUDGET,
+  SET_ENGAGEMENTS
+} from '../../../constants/actionTypes';
+
+export function dispatchEngagementsData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_ENGAGEMENTS,
+      payload: data,
+    });
+  };
+}
 
 export function dispatchSetGoalsData(data) {
   return (dispatch) => {
