@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react';
 import Table from "../../common/reactTable/table";
 import SearchBar from '../../common/searchBar/searchBar';
 import { axiosInstance } from '../../../actions/axios-config';
-import './notification.css';
+import './role.css';
 import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';

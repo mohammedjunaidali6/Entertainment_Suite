@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import './settings.css';
 import Profile from './profile/profile';
 import Team from "./team/team";
-import Role from "./notification/notification";
+import Role from "./role/role";
 import profile_src from "../../assets/img/profile_setting.svg";
 import team_src from "../../assets/img/team_setting.svg";
 import role_src from "../../assets/img/role_setting.svg";
@@ -12,7 +12,7 @@ import close_src from '../../assets/img/close.svg';
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
 import TeamContatiner from '../../containers/settings/team/teamContainer';
-import NotificationContatiner from '../../containers/settings/notification/notificationContainer';
+import RoleContatiner from '../../containers/settings/role/roleContainer';
 
 
 export default function Settings(props) {
@@ -84,7 +84,7 @@ export default function Settings(props) {
                                     <TeamContatiner></TeamContatiner>
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 2}>
-                                    <NotificationContatiner />
+                                    <RoleContatiner />
                                 </MyAccountContent>
                             </>
                         </Content>

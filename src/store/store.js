@@ -5,7 +5,7 @@ import DashboardReducer from '../reducers/dashboard/dashboardReducer';
 import SettingsReducer from "../reducers/settings/settingsReducer";
 import ProfileReducer from "../reducers/settings/profile/profileReducer";
 import TeamReducer from "../reducers/settings/team/teamReducer";
-import NotificationReducer from "../reducers/settings/notification/notificationReducer";
+import RoleReducer from "../reducers/settings/role/roleReducer";
 import AccessibilityReducer from "../reducers/settings/accessibility/accessibilityReducer";
 import PropertySettingsReducer from "../reducers/settings/propertySettings/propertySettingsReducer";
 import ManageReducer from "../reducers/manage/manageReducer";
@@ -30,7 +30,7 @@ function saveToSessionStorage(state) {
   try {
     const serializedState = JSON.stringify(state);
     sessionStorage.setItem('ssoState', serializedState);
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 }
@@ -38,9 +38,9 @@ function saveToSessionStorage(state) {
 function loadFromSessionStorage(state) {
   try {
     const serializedState = sessionStorage.getItem('ssoState');
-    if(serializedState === null) return undefined;
+    if (serializedState === null) return undefined;
     return JSON.parse(serializedState);
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return undefined;
   }
@@ -52,7 +52,7 @@ const reducer = combineReducers({
   SettingsReducer: SettingsReducer,
   ProfileReducer: ProfileReducer,
   TeamReducer: TeamReducer,
-  NotificationReducer: NotificationReducer,
+  RoleReducer: RoleReducer,
   AccessibilityReducer: AccessibilityReducer,
   PropertySettingsReducer: PropertySettingsReducer,
   ManageReducer: ManageReducer,

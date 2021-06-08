@@ -4,7 +4,7 @@ const initialState = {
   roleData: [],
   permissions: []
 };
-const NotificationReducer = (state = initialState, { type, payload }) => {
+const RoleReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_ROLES_WITH_PERMISSION_COUNT: {
       const newState = { ...state };
@@ -21,4 +21,4 @@ const NotificationReducer = (state = initialState, { type, payload }) => {
     }
   }
 };
-export default NotificationReducer;
+export default RoleReducer;
