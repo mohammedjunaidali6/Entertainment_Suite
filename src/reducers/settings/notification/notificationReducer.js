@@ -1,18 +1,24 @@
-import { ACTION_TYPE } from '../../../constants/actionTypes';
+import { SET_ROLES_WITH_PERMISSION_COUNT, SET_PERMISSIONS } from '../../../constants/actionTypes';
 
 const initialState = {
-//   settingdata: undefined
+  roleData: [],
+  permissions: []
 };
-const Notificationeducer = (state = initialState, action) => {
-  switch (action.type) {
-    // case ACTION_TYPE: {
-    //   const newState = { ...state };
-    //   newState.settingdata = action.payload ? action.payload: null;
-    //   return newState;
-    // }
+const NotificationReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case SET_ROLES_WITH_PERMISSION_COUNT: {
+      const newState = { ...state };
+      newState.roleData = payload ?? null;
+      return newState;
+    }
+    case SET_PERMISSIONS: {
+      const newState = { ...state };
+      newState.permissions = payload ?? null;
+      return newState;
+    }
     default: {
       return state;
     }
   }
 };
-export default Notificationeducer;
+export default NotificationReducer;

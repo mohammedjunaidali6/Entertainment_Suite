@@ -10,7 +10,6 @@ import Loader from '../../common/Spinner/spinner';
 import { headers } from '../../../api/apiConstants';
 
 export default function Team(props) {
-    console.log('***', props)
     const [visible, setVisible] = useState(false);
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [createClick, setCreateClick] = useState(false);
@@ -97,71 +96,89 @@ export default function Team(props) {
         setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
     }
 
-    const fetchUsersData = async () => {
-        const response = await axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers });
-        props.teamActionHandler.get_Users(response.data.data)
-    }
     const fetchRolesData = async () => {
-        const response = await axiosInstance.get('http://localhost:807/api/idty/group/all');
-        props.teamActionHandler.get_Roles(response.data.data);
+        try {
+            setVisible(true);
+            const response = await axiosInstance.get('http://localhost:807/api/idty/group/all')
 
+            if (response.status == 200 && typeof response.data.data !== 'string') {
+                let rolesArr = response.data.data?.sort((a, b) => a.name < b.name ? -1 : 1);
+                props.teamActionHandler.get_Roles(rolesArr);
+            } else {
+
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        setVisible(false);
+    }
+    const fetchUsersData = async () => {
+        try {
+            setVisible(true);
+            const response = await axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
+                .catch(error => console.error(error));
+
+            if (response && response.status == 200 && typeof response.data.data !== 'string') {
+                let usersArr = [];
+                response.data.data?.forEach(obj => {
+                    let userObj = {};
+                    userObj.user_id = obj.user_id;
+                    userObj.userName = obj.user_name;
+                    userObj.firstName = obj.first_name;
+                    userObj.lastName = obj.last_name;
+                    userObj.middleName = obj.middle_name;
+                    userObj.imgSrc = user;
+                    userObj.email = obj.email;
+                    userObj.mobileNumber = obj.mobile_number;
+                    userObj.role = obj.groups[0]?.name;
+                    userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
+                    usersArr.push(userObj);
+                });
+                usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
+                props.teamActionHandler.get_Users(usersArr);
+
+            } else {
+
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        setVisible(false);
+    }
+    const fetchUsersByUserName = async (username) => {
+        try {
+            setVisible(true);
+            const response = await axiosInstance.get(`http://localhost:807/api/idty/userbyusername?user_name=${username}`, { headers: headers });
+
+            if (response.status == 200 && typeof response.data.data !== 'string') {
+                let usersArr = [];
+                response.data.data?.forEach(obj => {
+                    let userObj = {};
+                    userObj.user_id = obj.user_id;
+                    userObj.userName = obj.user_name;
+                    userObj.firstName = obj.first_name;
+                    userObj.lastName = obj.last_name;
+                    userObj.middleName = obj.middle_name;
+                    userObj.imgSrc = user;
+                    userObj.email = obj.email;
+                    userObj.mobileNumber = obj.mobile_number;
+                    userObj.role = obj.groups[0]?.name;
+                    userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
+                    usersArr.push(userObj);
+                });
+                usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
+                props.teamActionHandler.get_Users(usersArr);
+            } else {
+
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        setVisible(false);
     }
     useEffect(() => {
         fetchRolesData();
         fetchUsersData();
-        // setVisible(true);
-        // axiosInstance.get('http://localhost:807/api/idty/group/all')
-        //     .then(response => {
-        //         if (response.status == 200 && response.data.data && response.data.data.length) {
-        //             let data = response.data.data;
-        //             if (typeof data === 'string') {
-        //                 console.error('***', data);
-        //                 setUsers();
-        //                 handleMessageBox('error', data);
-        //             } else {
-        //                 setRoles(data);
-        //             }
-        //         } else {
-        //             console.error(response.data)
-        //             setRoles(null);
-        //         }
-        //         setVisible(false);
-        //     })
-
-        // axiosInstance.get('http://localhost:807/api/idty/userbyfilter?pagesize=100', { headers: headers })
-        //     .then(response => {
-        //         if (response.status == 200 && response.data.data && response.data.data.length) {
-        //             let data = response.data.data;
-        //             if (typeof data === 'string') {
-        //                 console.error('***', data);
-        //                 setUsers();
-        //                 handleMessageBox('error', data);
-        //             } else {
-        //                 let usersArr = [];
-        //                 data.forEach(obj => {
-        //                     let userObj = {};
-        //                     userObj.user_id = obj.user_id;
-        //                     userObj.userName = obj.user_name;
-        //                     userObj.firstName = obj.first_name;
-        //                     userObj.lastName = obj.last_name;
-        //                     userObj.middleName = obj.middle_name;
-        //                     userObj.imgSrc = user;
-        //                     userObj.email = obj.email;
-        //                     userObj.mobileNumber = obj.mobile_number;
-        //                     userObj.role = obj.groups[0]?.name;
-        //                     userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-        //                     usersArr.push(userObj);
-        //                 });
-        //                 usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-        //                 setUsers(usersArr);
-        //             }
-
-        //         } else {
-        //             console.error(response.data)
-        //             setUsers(null);
-        //         }
-        //     })
-
     }, [])
 
     const onEmailChange = e => {
@@ -259,70 +276,11 @@ export default function Team(props) {
             })
     }
     const onSearch = (username) => {
-        setVisible(true);
         if (username) {
-            axiosInstance.get(`http://localhost:807/api/idty/userbyusername?user_name=${username}`, { headers: headers })
-                .then(response => {
-                    if (response.status == 200 && response.data.data && response.data.data.length) {
-                        let usersArr = [];
-                        response.data.data.forEach(obj => {
-                            let userObj = {};
-                            userObj.user_id = obj.user_id;
-                            userObj.userName = obj.user_name;
-                            userObj.firstName = obj.first_name;
-                            userObj.lastName = obj.last_name;
-                            userObj.middleName = obj.middle_name;
-                            userObj.imgSrc = user;
-                            userObj.email = obj.email;
-                            userObj.mobileNumber = obj.mobile_number;
-                            userObj.role = obj.groups[0]?.name;
-                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                            usersArr.push(userObj);
-                        });
-                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                        setUsers(usersArr);
-                    }
-                    setVisible(false);
-                })
-                .catch(error => {
-                    console.error('***', error);
-                    handleMessageBox('error', error.toString());
-                    setVisible(false);
-                })
+            fetchUsersByUserName(username);
         } else {
-            axiosInstance.get('http://localhost:807/api/idty/userbyfilter', { headers: headers })
-                .then(response => {
-                    if (response.status == 200 && response.data.data && response.data.data.length) {
-                        let usersArr = [];
-                        response.data.data.forEach(obj => {
-                            let userObj = {};
-                            userObj.user_id = obj.user_id;
-                            userObj.userName = obj.user_name;
-                            userObj.firstName = obj.first_name;
-                            userObj.lastName = obj.last_name;
-                            userObj.middleName = obj.middle_name;
-                            userObj.imgSrc = user;
-                            userObj.email = obj.email;
-                            userObj.mobileNumber = obj.mobile_number;
-                            userObj.role = obj.groups[0]?.name;
-                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                            usersArr.push(userObj);
-                        });
-                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                        setUsers(usersArr);
-                    } else {
-                        setUsers(null);
-                    }
-                    setVisible(false);
-                })
-                .catch(error => {
-                    console.error('***', error);
-                    setUsers(null);
-                    handleMessageBox('error', error.toString());
-                    setVisible(false);
-                });
+            fetchUsersData();
         }
-
     }
 
     return (

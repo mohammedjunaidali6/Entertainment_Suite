@@ -12,6 +12,7 @@ import close_src from '../../assets/img/close.svg';
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
 import TeamContatiner from '../../containers/settings/team/teamContainer';
+import NotificationContatiner from '../../containers/settings/notification/notificationContainer';
 
 
 export default function Settings(props) {
@@ -83,7 +84,7 @@ export default function Settings(props) {
                                     <TeamContatiner></TeamContatiner>
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 2}>
-                                    <Role />
+                                    <NotificationContatiner />
                                 </MyAccountContent>
                             </>
                         </Content>

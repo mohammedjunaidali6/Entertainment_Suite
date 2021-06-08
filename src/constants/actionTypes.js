@@ -12,3 +12,6 @@ export const ACTION_TYPE_URL = '';
 
 export const GET_USERS = "GET_USERS";
 export const GET_ROLES = "GET_ROLES";
+
+export const SET_ROLES_WITH_PERMISSION_COUNT = "SET_ROLES_WITH_PERMISSION_COUNT";
+export const SET_PERMISSIONS = "SET_PERMISSIONS";

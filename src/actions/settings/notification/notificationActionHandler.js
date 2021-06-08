@@ -1,10 +1,19 @@
-import { ACTION_TYPE} from '../../../constants/actionTypes';
+import { SET_ROLES_WITH_PERMISSION_COUNT, SET_PERMISSIONS } from '../../../constants/actionTypes';
 
-export function dispatchData(data) {
+export function setRolesWithPermissionCount(data) {
   return (dispatch) => {
     dispatch({
-      type: ACTION_TYPE,
+      type: SET_ROLES_WITH_PERMISSION_COUNT,
       payload: data,
     });
   };
 }
+export function setPermissions(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_PERMISSIONS,
+      payload: data,
+    });
+  };
+}
+
