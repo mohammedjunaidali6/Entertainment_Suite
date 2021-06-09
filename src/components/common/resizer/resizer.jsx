@@ -4,11 +4,14 @@ import { getLinearGradientCSS } from "../global";
 import './resizer.css';
 
 export default function Resizer(props) {
-    console.log('props.initialSize', props.initialSize);
     const [ballSize, setBallSize] = useState(props.initialSize);
-    console.log('ballSize', ballSize);
 
     const handleChange = (e) => {
+        if (e.target.id === 'budgetResizer') {
+            props.updateBudget(e.target.value)
+        } else {
+            props.updateBudgetDuration(e.target.value)
+        }
         setBallSize(e.target.value);
         calculateFn(e.target);
     }
@@ -23,15 +26,15 @@ export default function Resizer(props) {
     }
 
     useEffect(() => {
-        if(props.id) {
+        if (props.id) {
             calculateFn(document.getElementById(props.id));
         }
     });
 
     return (
         <div id="resizer-container">
-            <div className={`float-left clearfix ${props.valText !== undefined ? `w-80` : `w-100`}`} style={{position: "relative"}}>
-                <input id={props.id ? props.id : 'resizer'} 
+            <div className={`float-left clearfix ${props.valText !== undefined ? `w-80` : `w-100`}`} style={{ position: "relative" }}>
+                <input id={props.id ? props.id : 'resizer'}
                     type="range"
                     className="slider"
                     min={props.minSize}

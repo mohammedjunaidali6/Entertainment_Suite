@@ -68,7 +68,7 @@ export default function TargetAudience(props) {
                     }
                 })
         } catch (error) {
-
+            console.error(error)
         }
     }
 

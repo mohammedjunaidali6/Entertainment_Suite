@@ -1,4 +1,9 @@
-import { E_S_SET_GOALS, SET_ENGAGEMENTS } from '../../../constants/actionTypes';
+import {
+  SET_ENGAGEMENTS,
+  E_S_SET_GOALS,
+  SET_JOURNEY_BOX,
+  SET_REWARDS, SET_BUDGET, SET_BUDGET_DURATION
+} from '../../../constants/actionTypes';
 
 const initialState = {
   campaignsData: null,
@@ -18,6 +23,26 @@ const EngagementsSmartReducer = (state = initialState, action) => {
     case E_S_SET_GOALS: {
       const newState = { ...state };
       newState.setGoals = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_JOURNEY_BOX: {
+      const newState = { ...state };
+      newState.journeyBox = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_REWARDS: {
+      const newState = { ...state };
+      newState.rewardsData = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_BUDGET: {
+      const newState = { ...state };
+      newState.budget = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_BUDGET_DURATION: {
+      const newState = { ...state };
+      newState.budgetDuration = action.payload ? action.payload : null;
       return newState;
     }
     default: {

@@ -8,7 +8,11 @@ const mapStateToProps = state => ({
     setGoals: state.EngagementsSmartReducer.setGoals,
     targetAudience: state.EngagementsSmartReducer.targetAudience,
     defineJourney: state.EngagementsSmartReducer.defineJourney,
+    journeyBox: state.EngagementsSmartReducer.journeyBox,
     rewardsAndBudget: state.EngagementsSmartReducer.rewardsAndBudget,
+    rewardsData: state.EngagementsSmartReducer.rewardsData,
+    budget: state.EngagementsSmartReducer.budget,
+    budgetDuration: state.EngagementsSmartReducer.budgetDuration,
     review: state.EngagementsSmartReducer.review,
 });
 

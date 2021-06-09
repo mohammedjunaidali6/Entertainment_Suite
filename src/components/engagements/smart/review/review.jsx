@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fragment } from 'react';
-
 import edit_src from '../../../../assets/img/edit.svg'
 import './review.css';
+import store from '../../../../../src/store/store';
 
 const tempArray = [
-    {id: 1, winnerPosition: 'First Prize', rewardType: 'Point Coupons', noOfAwards: 500, probability: '20%', displayName: 'Get 500 Points', rewards: 5000},
-    {id: 2, winnerPosition: 'Second Prize', rewardType: 'Point Coupons', noOfAwards: 300, probability: '20%', displayName: 'Get 300 Points', rewards: 3000},
-    {id: 3, winnerPosition: 'Third Prize', rewardType: 'Coupons', noOfAwards: 200, probability: '20%', displayName: 'Get 200 Points', rewards: 5000},
-    {id: 4, winnerPosition: 'Fourth Prize', rewardType: 'Point Coupons', noOfAwards: 100, probability: '20%', displayName: 'Get 100 Points', rewards: 1000},
-    {id: 5, winnerPosition: 'Fifth Prize', rewardType: 'Coupons', noOfAwards: 50, probability: '20%', displayName: 'Get 50 Points', rewards: 2000},
+    { id: 1, winnerPosition: 'First Prize', rewardType: 'Point Coupons', noOfAwards: 500, probability: '20%', displayName: 'Get 500 Points', rewards: 5000 },
+    { id: 2, winnerPosition: 'Second Prize', rewardType: 'Point Coupons', noOfAwards: 300, probability: '20%', displayName: 'Get 300 Points', rewards: 3000 },
+    { id: 3, winnerPosition: 'Third Prize', rewardType: 'Coupons', noOfAwards: 200, probability: '20%', displayName: 'Get 200 Points', rewards: 5000 },
+    { id: 4, winnerPosition: 'Fourth Prize', rewardType: 'Point Coupons', noOfAwards: 100, probability: '20%', displayName: 'Get 100 Points', rewards: 1000 },
+    { id: 5, winnerPosition: 'Fifth Prize', rewardType: 'Coupons', noOfAwards: 50, probability: '20%', displayName: 'Get 50 Points', rewards: 2000 },
 ]
 
 export default function Review(props) {
+    const engagement = store.getState().EngagementsSmartReducer;
+    console.log('****', engagement)
+
+    const goalsData = engagement.setGoals;
+    const journeyData = engagement.journeyBox;
+    const rewardsData = engagement.rewardsData;
+    const budget = engagement.budget;
+    const budgetDuration = engagement.budgetDuration;
 
     return (
         <div id="review-container" >
             <div className="w-70 float-left clearfix c-e-r-left">
                 <div className="c-e-r-left-h mb-1">Campaign Name</div>
                 <div className="c-e-r-left-c-n">
-                    New Year Sal 1000 Off
-                    <div className="disp-inline-b float-right c-pointer">
+                    {goalsData.displayName}
+                    <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('setGoals')}>
                         <img src={edit_src} alt="Edit" />
                         <span className="c-e-r-left-e-txt">Edit</span>
                     </div>
@@ -36,21 +44,21 @@ export default function Review(props) {
 
                 <div className="c-e-r-left-h">
                     Define Journey
-                    <div className="disp-inline-b float-right c-pointer">
+                    <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('defineJourney')}>
                         <img src={edit_src} alt="Edit" />
                         <span className="c-e-r-left-e-txt">Edit</span>
                     </div>
                 </div>
                 <div className="c-e-r-left-d-j-box">
-                    <div className="c-e-r-left-t-a-box-h">Journey Name 1</div>
-                    <div className="disp-inline-b c-e-r-left-d-j-tag">Login</div>
-                    <div className="disp-inline-b c-e-r-left-d-j-tag">Add 5 products to cart</div>
-                    <div className="disp-inline-b c-e-r-left-d-j-tag">Add 2 products to Wishlist</div>
+                    <div className="c-e-r-left-t-a-box-h">{journeyData.name}</div>
+                    {journeyData.tags && journeyData.tags.length && journeyData.tags.map(tag =>
+                        <div className="disp-inline-b c-e-r-left-d-j-tag">{tag}</div>
+                    )}
                 </div>
 
                 <div className="c-e-r-left-h">
                     Rewards & Budget
-                    <div className="disp-inline-b float-right c-pointer">
+                    <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('rewardsAndBudget')}>
                         <img src={edit_src} alt="Edit" />
                         <span className="c-e-r-left-e-txt">Edit</span>
                     </div>
@@ -65,35 +73,34 @@ export default function Review(props) {
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Display Name</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Rewards</div>
                     </div>
-                    {tempArray && tempArray.length > 0 ? (
-                        <Fragment>
-                            {tempArray.map((rewObj) => (
-                                <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType}</div>
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.noOfAwards}</div>
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.probability}</div>
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.displayName}</div>
-                                    <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewards}</div>
-                                </div>
-                            ))}
-                        </Fragment>
-                    ) : null}
+                    {rewardsData.length && rewardsData.map((rewObj) => (
+                        <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.noOfAwards}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.probability}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.displayName}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewards}</div>
+                        </div>
+                    ))}
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Budget</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Duration</div>
                     </div>
                     <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
-                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix"><span className="c-e-r-left-r-b-box-bd-prefix">$</span>2000</div>
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">
+                            <span className="c-e-r-left-r-b-box-bd-prefix">$</span>
+                            {budget}
+                        </div>
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div>
-                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">7 Days</div>
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{budgetDuration} Days</div>
                     </div>
                 </div>
             </div>
             <div className="w-30 float-left clearfix c-e-r-right">
                 <div className="w-100 float-left clearfix c-e-r-right-reach-box">
-                    
+
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-h">Key Summary</div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
@@ -121,6 +128,6 @@ export default function Review(props) {
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2000 with a ROI of 1000%</div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

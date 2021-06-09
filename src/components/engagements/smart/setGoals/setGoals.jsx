@@ -31,6 +31,7 @@ const setGoalForm = FormBuilder.group({
 
 export default function SetGoals(props) {
     const [goalBoxes, setGoalBoxes] = useState(tempArray);
+
     function changeHandler() {
         setGoalForm.patchValue({
             campaignName: setGoalForm.controls.campaignName.value,
@@ -49,11 +50,11 @@ export default function SetGoals(props) {
             goal: boxData
         });
         props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
-        console.log('goalBoxes', goalBoxes);
     }
     const sgChange = () => {
 
     }
+
 
     return (
         <div id="set-goals-container" >
@@ -63,16 +64,22 @@ export default function SetGoals(props) {
                     render={({ get, invalid }) => (
                         <form>
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                <span className="setGoalForm-input-lbl">Campaign Name*</span>
-                                <FieldControl name="campaignName" className="pt-0"
+                                {/* <span className="setGoalForm-input-lbl">Campaign Name*</span> */}
+                                <FieldControl
+                                    name="campaignName"
+                                    className="pt-0"
                                     render={TextInput}
-                                    meta={{ label: "Campaign Name", maxlen: 100, showError: true, placeholder: false }} />
+                                    meta={{ label: "Campaign Name", maxlen: 100, showError: true, placeholder: false }}
+                                />
                             </div>
                             <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                <span className="setGoalForm-input-lbl">Display Name*</span>
-                                <FieldControl name="displayName" className="pt-0"
+                                {/* <span className="setGoalForm-input-lbl">Display Name*</span> */}
+                                <FieldControl
+                                    name="displayName"
+                                    className="pt-0"
                                     render={TextInput}
-                                    meta={{ label: "Display Name", maxlen: 300, showError: true, placeholder: false }} />
+                                    meta={{ label: "Display Name", maxlen: 300, showError: true, placeholder: false }}
+                                />
                             </div>
                         </form>
                     )}

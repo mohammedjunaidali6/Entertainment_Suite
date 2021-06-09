@@ -17,7 +17,7 @@ export const getSingle = async (resource, id) => {
 export const getData = async (resource) => {
     try {
         const response = await axiosInstance
-            .get(`${Identity_Host_URI}${resource}`, { headers: headers });
+            .get(`${Engagement_Host_URI}${resource}`, { headers: headers });
 
         return handleResponse(response);
 
@@ -30,7 +30,7 @@ export const getData = async (resource) => {
 export const postData = async (resource) => {
     try {
         const response = await axiosInstance
-            .post(`${Identity_Host_URI}${resource}`, { headers: headers });
+            .post(`${Engagement_Host_URI}${resource}`, { headers: headers });
 
         return handleResponse(response);
 

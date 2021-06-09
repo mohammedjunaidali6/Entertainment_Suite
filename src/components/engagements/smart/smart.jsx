@@ -16,10 +16,10 @@ import DefineJourney from "./defineJourney/defineJourney";
 import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
 import EStepper from "./stepper/stepper";
 import Review from "./review/review";
-import store from "../../../store/store";
 import './smart.css';
 import { getData, postData } from '../../../api/ApiHelper';
 import Loader from '../../common/Spinner/spinner';
+import Alert from '../../common/alertBox/alertBox';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -28,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EngagementsSmart(props) {
-    console.log('****', props);
     const [active, setActive] = useState('all');
-    const [campaigndata, setCampaigndata] = useState();
     const [createFlag, setCreateFlag] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
     const classes = useStyles();
@@ -40,13 +38,12 @@ export default function EngagementsSmart(props) {
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const createClick = () => {
         setCreateFlag(true);
-
-
-
     }
+
     function tabClick(val) {
         setActive(val);
         if (val === 'all') {
@@ -57,6 +54,7 @@ export default function EngagementsSmart(props) {
             //setCampaigndata(CampaignMockData.filter(e => e.status === val));
         }
     }
+
     const stepsBackfn = () => {
         if (step === 'setGoals') {
             createEngagementDataClear();
@@ -82,7 +80,7 @@ export default function EngagementsSmart(props) {
         } else if (step === 'defineJourney') {
             if (defineJourney) {
                 setStep('rewardsAndBudget');
-                props.engagementsSmartActionHandler.dispatchDefineJourneyData(defineJourney);
+                props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
             }
         } else if (step === 'rewardsAndBudget') {
             setStep('review');
@@ -90,12 +88,49 @@ export default function EngagementsSmart(props) {
             createEngagementDataClear();
             setCreateFlag(false);
             setStep('setGoals');
+            //createEngagement();
         }
     }
 
+    const createEngagement = () => {
+        let engagementObj = {};
+        engagementObj.CampaignName = "Engagement_Test_Campaign 3";
+        engagementObj.DisplayName = "Engagement Test Campaign_3";
+        engagementObj.StatusID = 1;
+        engagementObj.CustomerSegmentID = 1;
+        engagementObj.PurchaseRule = {};
+        engagementObj.PurchaseRule.Value = 50;
+        engagementObj.PurchaseRule.NumberOfDays = 3;
+        engagementObj.JourneyID = 1;
+        engagementObj.Rewards = [];
+
+        let rewardObj = {};
+        rewardObj.WinPosition = 1;
+        rewardObj.DisplayName = "Reward #1";
+        rewardObj.RewardType = "Coupon#100";
+        rewardObj.Probability = 50;
+        rewardObj.RewardMasterID = 1;
+
+        engagementObj.DailyBudget = 100;
+        engagementObj.BudgetDays = 5;
+
+        postData(`/engt/createengagement`, engagementObj)
+            .then(response => {
+                if (response && Array.isArray(response.data.data)) {
+                    console.log('***', 'Engagement saved Succesfully');
+                } else {
+
+                }
+            });
+    }
+
     const createEngagementDataClear = () => {
+        console.log('***', 'CLEARING ENGMT DATA');
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
-        props.engagementsSmartActionHandler.dispatchDefineJourneyData(null);
+        props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
+        props.engagementsSmartActionHandler.dispatchRewardsData(null);
+        props.engagementsSmartActionHandler.dispatchBudget(null);
+        props.engagementsSmartActionHandler.dispatchBudgetDuration(null);
     }
 
     const getSetGoalsFormValues = (val, status) => {
@@ -164,20 +199,25 @@ export default function EngagementsSmart(props) {
                 }
             })
     })
+    const onAlertClick = (isYes) => {
+        setShowAlert(false);
+    }
 
     useEffect(() => {
         fetchEngagements();
+        setShowAlert(true);
         return () => {
             createEngagementDataClear();
         }
     }, []);
 
     const selectedRowsFn = (selectedRows) => {
-        console.log('selectedRows', selectedRows);
+        console.log('****selectedRows', selectedRows);
     }
 
     return (
         <div id="engagements-smart-container">
+            {showAlert && <Alert title={'Are you sure ?'} text={'Do you confirm this action ?'} onAlertClick={onAlertClick} />}
             {loading ?
                 <Loader /> :
                 !createFlag ? (
@@ -243,9 +283,9 @@ export default function EngagementsSmart(props) {
                             <div className="c-s-content-sec w-100 float-left clearfix">
                                 {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} /> :
                                     step === 'targetAudience' ? <TargetAudience /> :
-                                        step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} setLoading={(bool) => setLoading(bool)} /> :
-                                            step === 'rewardsAndBudget' ? <RewardsAndBudget /> :
-                                                step === 'review' ? <Review /> :
+                                        step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
+                                            step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
+                                                step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
                                                     null
                                 }
                             </div>
