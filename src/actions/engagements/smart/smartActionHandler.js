@@ -1,6 +1,7 @@
 import {
   E_S_SET_GOALS,
   E_S_TARGET_AUDIENCE,
+  SET_PURCHASE_RULE,
   E_S_DEFINE_JOURNEY, SET_JOURNEY_BOX,
   SET_BUDGET, SET_BUDGET_DURATION,
   E_S_REWARDS_AND_BUDGET, SET_REWARDS,
@@ -29,6 +30,14 @@ export function dispatchTargetAudienceData(data) {
   return (dispatch) => {
     dispatch({
       type: E_S_TARGET_AUDIENCE,
+      payload: data,
+    });
+  };
+}
+export function dispatchPurchaseRuleData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_PURCHASE_RULE,
       payload: data,
     });
   };

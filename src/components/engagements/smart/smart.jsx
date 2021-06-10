@@ -20,6 +20,7 @@ import './smart.css';
 import { getData, postData } from '../../../api/ApiHelper';
 import Loader from '../../common/Spinner/spinner';
 import Alert from '../../common/alertBox/alertBox';
+import store from '../../../../src/store/store';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -38,7 +39,7 @@ export default function EngagementsSmart(props) {
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
+    const [alert, setAlert] = useState({ title: '', text: '', show: false });
 
     const createClick = () => {
         setCreateFlag(true);
@@ -85,48 +86,63 @@ export default function EngagementsSmart(props) {
         } else if (step === 'rewardsAndBudget') {
             setStep('review');
         } else if (step === 'review') {
-            createEngagementDataClear();
             setCreateFlag(false);
             setStep('setGoals');
-            //createEngagement();
+            setAlert({ title: 'Are you sure!', text: 'Do you want create engagement?', show: true });
         }
     }
 
     const createEngagement = () => {
+        const engagementState = store.getState().EngagementsSmartReducer;
+        const goalsData = engagementState.setGoals;
+        const journeyData = engagementState.journeyBox;
+        const rewardsData = engagementState.rewardsData;
+        const budget = parseInt(engagementState.budget ?? '0');
+        const budgetDuration = parseInt(engagementState.budgetDuration ?? '0');
+        console.log('***', engagementState)
         let engagementObj = {};
-        engagementObj.CampaignName = "Engagement_Test_Campaign 3";
-        engagementObj.DisplayName = "Engagement Test Campaign_3";
+        engagementObj.CampaignName = goalsData.campaignName;
+        engagementObj.DisplayName = goalsData.displayName;
         engagementObj.StatusID = 1;
         engagementObj.CustomerSegmentID = 1;
+        engagementObj.JourneyID = journeyData.id;
+
         engagementObj.PurchaseRule = {};
-        engagementObj.PurchaseRule.Value = 50;
-        engagementObj.PurchaseRule.NumberOfDays = 3;
-        engagementObj.JourneyID = 1;
+        if (engagementState.purchaseRuleData.purchaseValue && engagementState.purchaseRuleData.durationNum) {
+            engagementObj.PurchaseRule.Value = parseInt(engagementState.purchaseRuleData.purchaseValue);
+            let daysType = engagementState.purchaseRuleData.daysType?.value;
+            let durationNum = parseInt(engagementState.purchaseRuleData.durationNum);
+            let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
+            engagementObj.PurchaseRule.NumberOfDays = days;
+        }
+
         engagementObj.Rewards = [];
+        rewardsData.forEach(rewObj => {
+            let rewardObj = {};
+            rewardObj.WinPosition = rewObj.winnerPosition;
+            rewardObj.DisplayName = rewObj.displayName;
+            rewardObj.RewardType = rewObj.rewardType;
+            rewardObj.Probability = rewObj.probability;
+            rewardObj.RewardMasterID = rewObj.id;
+            engagementObj.Rewards.push(rewardObj);
+        })
 
-        let rewardObj = {};
-        rewardObj.WinPosition = 1;
-        rewardObj.DisplayName = "Reward #1";
-        rewardObj.RewardType = "Coupon#100";
-        rewardObj.Probability = 50;
-        rewardObj.RewardMasterID = 1;
-
-        engagementObj.DailyBudget = 100;
-        engagementObj.BudgetDays = 5;
-
+        engagementObj.DailyBudget = budget;
+        engagementObj.BudgetDays = budgetDuration;
         postData(`/engt/createengagement`, engagementObj)
             .then(response => {
-                if (response && Array.isArray(response.data.data)) {
+                if (response.status == 200) {
                     console.log('***', 'Engagement saved Succesfully');
+                    createEngagementDataClear();
                 } else {
-
+                    console.log('**** CREATE FAILED', response)
                 }
             });
     }
 
     const createEngagementDataClear = () => {
-        console.log('***', 'CLEARING ENGMT DATA');
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
+        props.engagementsSmartActionHandler.dispatchPurchaseRuleData(null);
         props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
         props.engagementsSmartActionHandler.dispatchRewardsData(null);
         props.engagementsSmartActionHandler.dispatchBudget(null);
@@ -137,7 +153,6 @@ export default function EngagementsSmart(props) {
         setGoalDataForm(status);
         setGoalData(val);
     }
-
     const getDefineJourney = (data) => {
         setDefineJourney(data);
     }
@@ -164,6 +179,8 @@ export default function EngagementsSmart(props) {
                         })
                         props.engagementsSmartActionHandler.dispatchEngagementsData(engmentsArr);
                         //setCampaigndata(engmentsArr);
+                    } else {
+                        console.log('****', response?.data?.message, response?.data?.data)
                     }
                     setLoading(false);
                 })
@@ -200,12 +217,64 @@ export default function EngagementsSmart(props) {
             })
     })
     const onAlertClick = (isYes) => {
-        setShowAlert(false);
+        setAlert({ title: '', text: '', show: false });
+        if (isYes) {
+            createEngagement();
+        }
+    }
+    const getEngagementByID = (id) => {
+        return getData(`/engt/engagementbyid?engagement_id=${id}`)
+    }
+    const onPauseClick = (engmt) => {
+        console.log('****', engmt)
+        getEngagementByID(engmt.id)
+            .then(response => {
+                if (response && response.data.data) {
+                    console.log('*****', response.data.data)
+                } else {
+                    console.log('*****', response)
+                }
+            });
+    }
+    const onEditClick = (engmt) => {
+        console.log('****', engmt)
+        getEngagementByID(engmt.id)
+            .then(response => {
+                if (response && response.data.data) {
+                    console.log('*****', response.data.data)
+                } else {
+                    console.log('*****', response)
+                }
+            });
+    }
+    const onViewReportClick = (engmt) => {
+        console.log('****', engmt)
+        getEngagementByID(engmt.id)
+            .then(response => {
+                if (response && response.data.data) {
+                    console.log('*****', response.data.data)
+                } else {
+                    console.log('*****', response)
+                }
+            });
+    }
+    const onDeleteClick = (engmt) => {
+        console.log('****', engmt)
+        getEngagementByID(engmt.id)
+            .then(response => {
+                if (response && response.data.data) {
+                    console.log('*****', response.data.data)
+                } else {
+                    console.log('*****', response)
+                }
+            });
+    }
+    const setPurchaseRuleData = (purchaseRule) => {
+        props.engagementsSmartActionHandler.dispatchPurchaseRuleData(purchaseRule);
     }
 
     useEffect(() => {
         fetchEngagements();
-        setShowAlert(true);
         return () => {
             createEngagementDataClear();
         }
@@ -215,9 +284,10 @@ export default function EngagementsSmart(props) {
         console.log('****selectedRows', selectedRows);
     }
 
+
     return (
         <div id="engagements-smart-container">
-            {showAlert && <Alert title={'Are you sure ?'} text={'Do you confirm this action ?'} onAlertClick={onAlertClick} />}
+            {alert.show && <Alert title={alert.title} text={alert.text} onAlertClick={onAlertClick} />}
             {loading ?
                 <Loader /> :
                 !createFlag ? (
@@ -240,9 +310,17 @@ export default function EngagementsSmart(props) {
                             </div>
                             {gridFlag ? (
                                 <div className="w-100 float-left clearfix mt-3">
-                                    {props.campaignsData && props.campaignsData.length > 0 ? (
-                                        <CampaignBox campaigndata={props.campaignsData}></CampaignBox>
-                                    ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
+                                    {props.campaignsData && props.campaignsData.length > 0 ?
+                                        <CampaignBox
+                                            campaigndata={props.campaignsData}
+                                            onPauseClick={(engmt) => onPauseClick(engmt)}
+                                            onEditClick={(engmt) => onEditClick(engmt)}
+                                            onViewReportClick={(engmt) => onViewReportClick(engmt)}
+                                            onDeleteClick={(engmt) => onDeleteClick(engmt)}
+                                        >
+                                        </CampaignBox>
+                                        :
+                                        <div className="e-s-heading ml-4">No campaigns found!</div>}
                                 </div>
                             ) : (
                                 <div className="mt-4" id="e-s-table-sec">
@@ -282,7 +360,7 @@ export default function EngagementsSmart(props) {
                             </div>
                             <div className="c-s-content-sec w-100 float-left clearfix">
                                 {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} /> :
-                                    step === 'targetAudience' ? <TargetAudience /> :
+                                    step === 'targetAudience' ? <TargetAudience setPurchaseRuleData={(obj) => setPurchaseRuleData(obj)} props={props} /> :
                                         step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
                                             step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
                                                 step === 'review' ? <Review setStep={txt => setStep(txt)} /> :

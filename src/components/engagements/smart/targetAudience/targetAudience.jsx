@@ -14,46 +14,45 @@ const rule1options = [
 ]
 const rule2options = [
     { value: 'Greater than or Equal To', label: 'Greater than or Equal To' },
-    { value: 'Less Than Or Equal To', label: 'Less Than Or Equal To' }
+    //{ value: 'Less Than Or Equal To', label: 'Less Than Or Equal To' }
 ]
 const rule4options = [
     { value: 'In Last', label: 'In Last' }
 ]
-const rule6options = [
+const DaysTypeOptions = [
     { value: 'Days', label: 'Days' },
     { value: 'Week', label: 'Week' },
     { value: 'Month', label: 'Month' }
 ]
 
 export default function TargetAudience(props) {
-
     const [rule1, setRule1] = useState(rule1options[0]);
+    const [rule2, setRule2] = useState(rule2options[0]);
+    const [purchaseValue, setPurchaseValue] = useState(props.props?.purchaseRuleData?.value);
+    const [rule4, setRule4] = useState(rule4options[0]);
+    const [durationNum, setDurationNum] = useState(props.props?.purchaseRuleData?.days || "2");
+    const [daysType, setDaysType] = useState(DaysTypeOptions[0]);
+    const [selectedTABox, setSelectedTABox] = useState("All");
+
     const rule1Change = (event) => {
         setRule1(event);
     }
-    const [rule2, setRule2] = useState(rule2options[0]);
     const rule2Change = (event) => {
         setRule2(event);
     }
-    const [rule3, setRule3] = useState("");
     const rule3Change = (event) => {
-        setRule3(event.target.value);
+        setPurchaseValue(event.target.value);
     }
-    const [rule4, setRule4] = useState(rule4options[0]);
     const rule4Change = (event) => {
         setRule4(event);
     }
-    const [rule5, setRule5] = useState("2");
     const rule5Change = (event) => {
         if (event.target.value && (event.target.value > 99 || event.target.value < 1)) { return false }
-        setRule5(event.target.value);
+        setDurationNum(event.target.value);
     }
-    const [rule6, setRule6] = useState(rule6options[0]);
     const rule6Change = (event) => {
-        console.log('event', event)
-        setRule6(event);
+        setDaysType(event);
     }
-    const [selectedTABox, setSelectedTABox] = useState("All");
     function taBoxSelect(val) {
         setSelectedTABox(val);
     }
@@ -62,9 +61,7 @@ export default function TargetAudience(props) {
             getData(`/engt/customersbyfilters`)
                 .then(response => {
                     if (response && Array.isArray(response.data.data)) {
-                        console.log('***', response)
                     } else {
-                        console.log('***', response)
                     }
                 })
         } catch (error) {
@@ -75,6 +72,15 @@ export default function TargetAudience(props) {
     useEffect(() => {
         fetchCustomerSegments();
     }, []);
+    useEffect(() => {
+        return () => {
+            props.setPurchaseRuleData({
+                purchaseValue: purchaseValue,
+                durationNum: durationNum,
+                daysType: daysType
+            })
+        }
+    }, [purchaseValue, durationNum, daysType]);
 
     return (
         <div id="target-audience-container" className="c-e-target-sec w-100 float-left clearfix">
@@ -148,7 +154,8 @@ export default function TargetAudience(props) {
                 </div>
             </div>
             <div className="w-100 float-left clearfix c-e-target-p-rule">
-                <img src={p_rule_src} alt="Purchase Rule" className="mr-1" />Purchase Rule
+                <img src={p_rule_src} alt="Purchase Rule" className="mr-1" />
+                Purchase Rule
             </div>
             <div className="w-100 float-left clearfix c-e-target-p-rule-opt">
                 <Select options={rule1options} value={rule1} onChange={rule1Change} className="w-30 p-r-10 float-left clearfix" />
@@ -159,7 +166,7 @@ export default function TargetAudience(props) {
                     </div>
                     <div className="w-70 s-b-right float-left clearfix">
                         <input type="text"
-                            value={rule3}
+                            value={purchaseValue}
                             onChange={rule3Change}
                             className='searchBar'
                             placeholder="Value"
@@ -169,14 +176,14 @@ export default function TargetAudience(props) {
                 <Select options={rule4options} value={rule4} className="w-10 p-r-10 float-left clearfix" />
                 <div className="w-5 m-r-10 float-left clearfix s-b-only-search t-a-r-5">
                     <input type="number" id="t-a-r-5"
-                        value={rule5}
+                        value={durationNum}
                         onChange={rule5Change}
                         max={99}
                         min={1}
                         className='searchBar'
                     />
                 </div>
-                <Select options={rule6options} value={rule6} onChange={rule6Change} className="w-10 p-r-10 float-left clearfix" />
+                <Select options={DaysTypeOptions} value={daysType} onChange={rule6Change} className="w-10 p-r-10 float-left clearfix" />
             </div>
         </div>
     )

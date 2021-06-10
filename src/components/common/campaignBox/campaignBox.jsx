@@ -60,27 +60,27 @@ export default function CampaignBox(props) {
                         <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
                             <BsCalendar></BsCalendar>
                             <span className="pl-2 c-b-lbl-expiry">Expire On : {obj.expiredOn}</span>
-                            <BsThreeDotsVertical onClick={campaignActionClick} className="float-right ml-2 mt-1" style={{cursor: "pointer"}}></BsThreeDotsVertical>
+                            <BsThreeDotsVertical onClick={campaignActionClick} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
                             <Popover
                                 id={id}
                                 open={open}
                                 anchorEl={anchorEl}
                                 onClose={campaignActionClose}
                                 anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
                                 }}
                                 transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }}
                             >
                                 <Typography className="">
                                     <div className="c-b-campaign-options p-0">
-                                        <div>Pause</div>
-                                        <div>Edit</div>
-                                        <div>View Report</div>
-                                        <div>Delete</div>
+                                        <div onClick={() => { setAnchorEl(null); props.onPauseClick(obj) }}>Pause</div>
+                                        <div onClick={() => { setAnchorEl(null); props.onEditClick(obj) }}>Edit</div>
+                                        <div onClick={() => { setAnchorEl(null); props.onViewReportClick(obj) }}>View Report</div>
+                                        <div onClick={() => { setAnchorEl(null); props.onDeleteClick(obj) }}>Delete</div>
                                     </div>
                                 </Typography>
                             </Popover>

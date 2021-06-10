@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
     campaignsData: state.EngagementsSmartReducer.campaignsData,
     setGoals: state.EngagementsSmartReducer.setGoals,
     targetAudience: state.EngagementsSmartReducer.targetAudience,
+    purchaseRuleData: state.EngagementsSmartReducer.purchaseRuleData,
     defineJourney: state.EngagementsSmartReducer.defineJourney,
     journeyBox: state.EngagementsSmartReducer.journeyBox,
     rewardsAndBudget: state.EngagementsSmartReducer.rewardsAndBudget,

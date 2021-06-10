@@ -22,10 +22,10 @@ export const rbColumns = [
         name: "Reward Value",
         selector: "rewardValue"
     },
-    {
-        name: "Product Category",
-        selector: "productCategory"
-    },
+    // {
+    //     name: "Product Category",
+    //     selector: "productCategory"
+    // },
     {
         name: "Probability",
         selector: "probability"
@@ -115,6 +115,8 @@ export default function RewardsAndBudget(props) {
     }
     useEffect(() => {
         fetchRewards();
+        props.props.engagementsSmartActionHandler.dispatchBudget(BUDGET_DEFAULT)
+        props.props.engagementsSmartActionHandler.dispatchBudgetDuration(BUDGET_DURATION_DEFAULT)
     }, []);
     useEffect(() => {
         setRewardsData(props.props.rewardsData)

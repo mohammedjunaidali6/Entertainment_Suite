@@ -16,8 +16,8 @@
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
   }
 .rectangle-alert {
-    height: 228px;
-    width: 600px;
+    height: 220px;
+    width: 75%;
     border-radius: 9.58px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
@@ -36,8 +36,8 @@
     font-family: Roboto;
     font-size: 16px;
     letter-spacing: 0;
-    line-height: 20px;
-    margin-left: 50px;
+    line-height: 20x;
+    margin-left: 5%;
   }
   .discard {
     height: 20px;
@@ -49,7 +49,7 @@
     line-height: 20px;
     border-color: transparent;
     background-color: transparent;
-    margin-left: 365px;
+    margin-left: 55%;
     margin-top: 8px;
   }
   .save-rectangle {

@@ -22,20 +22,20 @@ export const getData = async (resource) => {
         return handleResponse(response);
 
     } catch (error) {
-        console.log('***', error.message)
+        console.log(`*** ${resource} `, error.message)
         return handleError(error);
     }
 };
 
-export const postData = async (resource) => {
+export const postData = async (resource, postData) => {
     try {
         const response = await axiosInstance
-            .post(`${Engagement_Host_URI}${resource}`, { headers: headers });
+            .post(`${Engagement_Host_URI}${resource}`, postData, { headers: headers });
 
         return handleResponse(response);
 
     } catch (error) {
-        console.log('***', error.message)
+        console.log(`*** ${resource} `, error.message)
         return handleError(error);
     }
 };
