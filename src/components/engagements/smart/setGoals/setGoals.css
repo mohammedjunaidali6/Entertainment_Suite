@@ -130,3 +130,9 @@ div.checkmark .unmark-circle:after {
     letter-spacing: 0;
     line-height: 16px;
 }
+
+.grayed-goals{
+    pointer-events: none;
+    opacity: 0.4;
+    background-color: rgb(224, 220, 220);
+}
