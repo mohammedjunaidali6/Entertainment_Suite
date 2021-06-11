@@ -3,6 +3,7 @@ import Select from 'react-select';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
 import { getData, postData } from '../../../../api/ApiHelper';
+import store from '../../../../store/store';
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -26,12 +27,13 @@ const DaysTypeOptions = [
 ]
 
 export default function TargetAudience(props) {
+    const [customerSegments, setCustomerSegments] = useState();
     const [rule1, setRule1] = useState(rule1options[0]);
     const [rule2, setRule2] = useState(rule2options[0]);
-    const [purchaseValue, setPurchaseValue] = useState(props.props?.purchaseRuleData?.value);
+    const [purchaseValue, setPurchaseValue] = useState(props.props?.targetAudience?.purchaseValue);
     const [rule4, setRule4] = useState(rule4options[0]);
-    const [durationNum, setDurationNum] = useState(props.props?.purchaseRuleData?.days || "2");
-    const [daysType, setDaysType] = useState(DaysTypeOptions[0]);
+    const [durationNum, setDurationNum] = useState(props.props?.targetAudience?.durationNum || "2");
+    const [daysType, setDaysType] = useState(props.props?.targetAudience?.daysType || DaysTypeOptions[0]);
     const [selectedTABox, setSelectedTABox] = useState("All");
 
     const rule1Change = (event) => {
@@ -60,7 +62,9 @@ export default function TargetAudience(props) {
         try {
             getData(`/engt/customersbyfilters`)
                 .then(response => {
+                    console.log('***', response)
                     if (response && Array.isArray(response.data.data)) {
+                        setCustomerSegments(response.data.data);
                     } else {
                     }
                 })
@@ -74,13 +78,14 @@ export default function TargetAudience(props) {
     }, []);
     useEffect(() => {
         return () => {
-            props.setPurchaseRuleData({
+            props.setTargetAudienceData({
+                targetAudience: customerSegments,
                 purchaseValue: purchaseValue,
                 durationNum: durationNum,
                 daysType: daysType
             })
         }
-    }, [purchaseValue, durationNum, daysType]);
+    }, [customerSegments, purchaseValue, durationNum, daysType]);
 
     return (
         <div id="target-audience-container" className="c-e-target-sec w-100 float-left clearfix">

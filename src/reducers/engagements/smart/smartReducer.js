@@ -1,7 +1,7 @@
 import {
   SET_ENGAGEMENTS,
   E_S_SET_GOALS,
-  SET_PURCHASE_RULE,
+  E_S_TARGET_AUDIENCE,
   SET_JOURNEY_BOX,
   SET_REWARDS, SET_BUDGET, SET_BUDGET_DURATION
 } from '../../../constants/actionTypes';
@@ -46,9 +46,9 @@ const EngagementsSmartReducer = (state = initialState, action) => {
       newState.budgetDuration = action.payload ? action.payload : null;
       return newState;
     }
-    case SET_PURCHASE_RULE: {
+    case E_S_TARGET_AUDIENCE: {
       const newState = { ...state };
-      newState.purchaseRuleData = action.payload ? action.payload : null;
+      newState.targetAudience = action.payload ? action.payload : null;
       return newState;
     }
     default: {

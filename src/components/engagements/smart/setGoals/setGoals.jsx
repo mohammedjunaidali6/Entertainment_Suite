@@ -11,7 +11,7 @@ import b_n_c_selected_src from "../../../../assets/img/newcustomers_hover.svg";
 import i_r_src from "../../../../assets/img/referral.svg";
 import i_r_selected_src from "../../../../assets/img/referral_hover.svg";
 import { storeDataFn } from "../../../common/global";
-
+import store from '../../../../store/store';
 import './setGoals.css';
 
 const tempArray = [
@@ -54,7 +54,11 @@ export default function SetGoals(props) {
     const sgChange = () => {
 
     }
+    useEffect(() => {
+        const storeSetGoals = store.getState().EngagementsSmartReducer.campaignsData;
+        console.log('****', storeSetGoals)
 
+    }, [])
 
     return (
         <div id="set-goals-container" >

@@ -17,6 +17,7 @@ import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
 import EStepper from "./stepper/stepper";
 import Review from "./review/review";
 import './smart.css';
+import _ from 'lodash';
 import { getData, postData } from '../../../api/ApiHelper';
 import Loader from '../../common/Spinner/spinner';
 import Alert from '../../common/alertBox/alertBox';
@@ -33,6 +34,7 @@ export default function EngagementsSmart(props) {
     const [createFlag, setCreateFlag] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
     const classes = useStyles();
+    const [campaignsData, setCampaignsData] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
     const [step, setStep] = useState('setGoals');
     const [goalDataForm, setGoalDataForm] = useState(null);
@@ -99,7 +101,6 @@ export default function EngagementsSmart(props) {
         const rewardsData = engagementState.rewardsData;
         const budget = parseInt(engagementState.budget ?? '0');
         const budgetDuration = parseInt(engagementState.budgetDuration ?? '0');
-        console.log('***', engagementState)
         let engagementObj = {};
         engagementObj.CampaignName = goalsData.campaignName;
         engagementObj.DisplayName = goalsData.displayName;
@@ -108,10 +109,10 @@ export default function EngagementsSmart(props) {
         engagementObj.JourneyID = journeyData.id;
 
         engagementObj.PurchaseRule = {};
-        if (engagementState.purchaseRuleData.purchaseValue && engagementState.purchaseRuleData.durationNum) {
-            engagementObj.PurchaseRule.Value = parseInt(engagementState.purchaseRuleData.purchaseValue);
-            let daysType = engagementState.purchaseRuleData.daysType?.value;
-            let durationNum = parseInt(engagementState.purchaseRuleData.durationNum);
+        if (engagementState.targetAudience.purchaseValue && engagementState.targetAudience.durationNum) {
+            engagementObj.PurchaseRule.Value = parseInt(engagementState.targetAudience.purchaseValue);
+            let daysType = engagementState.targetAudience.daysType?.value;
+            let durationNum = parseInt(engagementState.targetAudience.durationNum);
             let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
             engagementObj.PurchaseRule.NumberOfDays = days;
         }
@@ -142,7 +143,7 @@ export default function EngagementsSmart(props) {
 
     const createEngagementDataClear = () => {
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
-        props.engagementsSmartActionHandler.dispatchPurchaseRuleData(null);
+        props.engagementsSmartActionHandler.dispatchTargetAudienceData(null);
         props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
         props.engagementsSmartActionHandler.dispatchRewardsData(null);
         props.engagementsSmartActionHandler.dispatchBudget(null);
@@ -152,6 +153,10 @@ export default function EngagementsSmart(props) {
     const getSetGoalsFormValues = (val, status) => {
         setGoalDataForm(status);
         setGoalData(val);
+    }
+    const setTargetAudienceData = (data) => {
+        console.log('***', data)
+        props.engagementsSmartActionHandler.dispatchTargetAudienceData(data);
     }
     const getDefineJourney = (data) => {
         setDefineJourney(data);
@@ -177,8 +182,8 @@ export default function EngagementsSmart(props) {
 
                             engmentsArr.push(obj);
                         })
-                        props.engagementsSmartActionHandler.dispatchEngagementsData(engmentsArr);
-                        //setCampaigndata(engmentsArr);
+                        props.engagementsSmartActionHandler.dispatchEngagementsData(data);
+                        setCampaignsData(engmentsArr);
                     } else {
                         console.log('****', response?.data?.message, response?.data?.data)
                     }
@@ -206,12 +211,12 @@ export default function EngagementsSmart(props) {
                         obj.isRecent = false;
                         engmentsArr.push(obj);
                     })
-                    props.engagementsSmartActionHandler.dispatchEngagementsData(engmentsArr);
-                    //setCampaigndata(engmentsArr);
+                    props.engagementsSmartActionHandler.dispatchEngagementsData(data);
+                    setCampaignsData(engmentsArr);
                     setLoading(false);
                 } else {
                     props.engagementsSmartActionHandler.dispatchEngagementsData();
-                    //setCampaigndata();
+                    setCampaignsData();
                     setLoading(false);
                 }
             })
@@ -226,26 +231,31 @@ export default function EngagementsSmart(props) {
         return getData(`/engt/engagementbyid?engagement_id=${id}`)
     }
     const onPauseClick = (engmt) => {
-        console.log('****', engmt)
-        getEngagementByID(engmt.id)
-            .then(response => {
+        getData(`/engt/updateengagementstatus?engagement_id=${engmt.id}&engagement_status_id=${2}`)
+            .then((response) => {
                 if (response && response.data.data) {
-                    console.log('*****', response.data.data)
+                    engmt.status = 'paused';
+                    let campaigns = [...campaignsData];
+                    let storeEngagements = [...props?.campaignsData];
+                    campaigns.splice(_.findIndex(campaigns, e => e.id == engmt.id), 1, engmt);
+                    storeEngagements.splice(_.findIndex(storeEngagements, e => e.EngagementID == engmt.id), 1, response.data.data);
+                    props.engagementsSmartActionHandler.dispatchEngagementsData(storeEngagements);
+                    setCampaignsData(campaigns)
                 } else {
-                    console.log('*****', response)
+                    console.error('*****', response)
                 }
-            });
+            })
     }
     const onEditClick = (engmt) => {
         console.log('****', engmt)
-        getEngagementByID(engmt.id)
+        getData(`/engt/engagementdetailsbyid?engagement_id=${engmt.id}`)
             .then(response => {
-                if (response && response.data.data) {
-                    console.log('*****', response.data.data)
+                if (response && response.data?.data) {
+
                 } else {
-                    console.log('*****', response)
+                    console.error('*****', response)
                 }
-            });
+            })
     }
     const onViewReportClick = (engmt) => {
         console.log('****', engmt)
@@ -254,24 +264,22 @@ export default function EngagementsSmart(props) {
                 if (response && response.data.data) {
                     console.log('*****', response.data.data)
                 } else {
-                    console.log('*****', response)
+                    console.error('*****', response)
                 }
             });
     }
     const onDeleteClick = (engmt) => {
         console.log('****', engmt)
-        getEngagementByID(engmt.id)
+        getData(`/engt/engagementbyid?engagement_id=${engmt.id}`)
             .then(response => {
                 if (response && response.data.data) {
                     console.log('*****', response.data.data)
                 } else {
-                    console.log('*****', response)
+                    console.error('*****', response)
                 }
             });
     }
-    const setPurchaseRuleData = (purchaseRule) => {
-        props.engagementsSmartActionHandler.dispatchPurchaseRuleData(purchaseRule);
-    }
+
 
     useEffect(() => {
         fetchEngagements();
@@ -310,9 +318,9 @@ export default function EngagementsSmart(props) {
                             </div>
                             {gridFlag ? (
                                 <div className="w-100 float-left clearfix mt-3">
-                                    {props.campaignsData && props.campaignsData.length > 0 ?
+                                    {campaignsData && campaignsData.length > 0 ?
                                         <CampaignBox
-                                            campaigndata={props.campaignsData}
+                                            campaigndata={campaignsData}
                                             onPauseClick={(engmt) => onPauseClick(engmt)}
                                             onEditClick={(engmt) => onEditClick(engmt)}
                                             onViewReportClick={(engmt) => onViewReportClick(engmt)}
@@ -325,7 +333,7 @@ export default function EngagementsSmart(props) {
                             ) : (
                                 <div className="mt-4" id="e-s-table-sec">
                                     <Table columns={CampaignTableColumns}
-                                        data={props.campaignsData}
+                                        data={campaignsData}
                                         pagination={true}
                                         selectableRows={true}
                                         selectedRowsFn={selectedRowsFn}
@@ -359,11 +367,16 @@ export default function EngagementsSmart(props) {
 
                             </div>
                             <div className="c-s-content-sec w-100 float-left clearfix">
-                                {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} /> :
-                                    step === 'targetAudience' ? <TargetAudience setPurchaseRuleData={(obj) => setPurchaseRuleData(obj)} props={props} /> :
-                                        step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
-                                            step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
-                                                step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
+                                {step === 'setGoals' ?
+                                    <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} /> :
+                                    step === 'targetAudience' ?
+                                        <TargetAudience setTargetAudienceData={(obj) => setTargetAudienceData(obj)} props={props} /> :
+                                        step === 'defineJourney' ?
+                                            <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
+                                            step === 'rewardsAndBudget' ?
+                                                <RewardsAndBudget props={props} /> :
+                                                step === 'review' ?
+                                                    <Review setStep={txt => setStep(txt)} /> :
                                                     null
                                 }
                             </div>

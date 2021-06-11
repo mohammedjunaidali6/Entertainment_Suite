@@ -56,6 +56,9 @@ export default function DefineJourney(props) {
 
     useEffect(() => {
         fetchJourneyData();
+        return () => {
+            console.log('defineJourney Component Unmount')
+        }
     }, []);
 
 
