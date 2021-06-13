@@ -23,6 +23,27 @@ export default function CampaignBox(props) {
         setAnchorEl(null);
         setOpenedPopoverId(null);
     };
+    const pauseClick = (obj) => {
+        setAnchorEl(null);
+        setOpenedPopoverId(null);
+        props.onPauseClick(obj);
+    }
+    const editClick = (obj) => {
+        setAnchorEl(null);
+        setOpenedPopoverId(null);
+        props.onEditClick(obj);
+    }
+    const deleteClick = (obj) => {
+        setAnchorEl(null);
+        setOpenedPopoverId(null);
+        props.onDeleteClick(obj);
+    }
+    const viewClick = (obj) => {
+        setAnchorEl(null);
+        setOpenedPopoverId(null);
+        props.onViewReportClick(obj);
+    }
+
 
     return (
         <div className="w-100 float-left clearfix">
@@ -65,7 +86,7 @@ export default function CampaignBox(props) {
                         <div className="c-b-dotted"></div>
                         <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
                             <BsCalendar></BsCalendar>
-                            <span className="pl-2 c-b-lbl-expiry">Expire On : {obj.expiredOn}</span>
+                            <span className="pl-2 c-b-lbl-expiry">Expire On : {new Date(obj.CompletedDate).toLocaleDateString('en-US')}</span>
                             <BsThreeDotsVertical onClick={(e) => campaignActionClick(e, obj.EngagementID)} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
 
                             <Popover
@@ -73,21 +94,15 @@ export default function CampaignBox(props) {
                                 open={openedPopoverId === obj.EngagementID}
                                 anchorEl={anchorEl}
                                 onClose={campaignActionClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                                transformOrigin={{ vertical: 'top', horizontal: 'right', }}
                             >
                                 <Typography className="">
                                     <span className="c-b-campaign-options p-0">
-                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onPauseClick(obj) }}>Pause</span>
-                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onEditClick(obj) }}>Edit</span>
-                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onViewReportClick(obj) }}>View Report</span>
-                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onDeleteClick(obj) }}>Delete</span>
+                                        <span onClick={() => pauseClick(obj)}>Pause</span>
+                                        <span onClick={() => editClick(obj)}>Edit</span>
+                                        <span onClick={() => viewClick(obj)}>View Report</span>
+                                        <span onClick={() => deleteClick(obj)}>Delete</span>
                                     </span>
                                 </Typography>
                             </Popover>
