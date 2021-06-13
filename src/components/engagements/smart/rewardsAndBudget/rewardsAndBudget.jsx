@@ -80,9 +80,13 @@ export const rbData = [
 ];
 
 export default function RewardsAndBudget(props) {
+    const rewardsAndBudgetData = props.props.rewardsAndBudget;
     const [addReward, setAddReward] = useState(false);
-    const [rewardsData, setRewardsData] = useState(props.props.rewardsData);
+    const [rewardsData, setRewardsData] = useState(rewardsAndBudgetData?.rewards);
     const [loading, setLoading] = useState(false);
+    const [budget, setBudget] = useState(rewardsAndBudgetData?.budget);
+    const [budgetDuration, setBudgetDuration] = useState(rewardsAndBudgetData?.budgetDuration);
+
 
     const fetchRewards = () => {
         setLoading(true);
@@ -95,32 +99,36 @@ export default function RewardsAndBudget(props) {
                         rewardObj.id = rew.reward_master_id;
                         rewardObj.winnerPosition = rew.win_position;
                         rewardObj.rewardType = rew.reward_type;
-                        rewardObj.rewardValue = rew.engagement_reward_id;
+                        rewardObj.rewardValue = rew.Value;
                         rewardObj.probability = rew.probability;
                         rewardObj.displayName = rew.display_name;
                         rewardArr.push(rewardObj);
                     });
-                    props.props.engagementsSmartActionHandler.dispatchRewardsData(rewardArr);
+                    setRewardsData(rewardArr);
                 } else {
                     setRewardsData();
                 }
                 setLoading(false);
             })
     }
-    const updateBudget = (budget) => {
-        props.props.engagementsSmartActionHandler.dispatchBudget(budget)
-    }
-    const updateBudgetDuration = duration => {
-        props.props.engagementsSmartActionHandler.dispatchBudgetDuration(duration)
-    }
+
+
     useEffect(() => {
-        fetchRewards();
-        props.props.engagementsSmartActionHandler.dispatchBudget(BUDGET_DEFAULT)
-        props.props.engagementsSmartActionHandler.dispatchBudgetDuration(BUDGET_DURATION_DEFAULT)
+        if (!Array.isArray(rewardsAndBudgetData?.rewards)) {
+            fetchRewards();
+        }
     }, []);
     useEffect(() => {
-        setRewardsData(props.props.rewardsData)
-    }, [props.props.rewardsData])
+
+        return () => {
+            let rewardsAndBudget = {
+                rewards: [...rewardsData],
+                budget: budget,
+                budgetDuration: budgetDuration
+            }
+            props.props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(rewardsAndBudget)
+        }
+    }, [budget, budgetDuration, rewardsData])
 
     return (
         <Fragment>
@@ -214,10 +222,10 @@ export default function RewardsAndBudget(props) {
                                     <Resizer
                                         minSize={BUDGET_MIN}
                                         maxSize={BUDGET_MAX}
-                                        initialSize={props.props.budget ?? BUDGET_DEFAULT}
+                                        initialSize={rewardsAndBudgetData?.budget ?? BUDGET_DEFAULT}
                                         id='budgetResizer'
                                         valText=''
-                                        updateBudget={budget => updateBudget(budget)}
+                                        updateBudget={budget => setBudget(budget)}
                                     />
                                 </div>
                             </div>
@@ -231,10 +239,10 @@ export default function RewardsAndBudget(props) {
                                     <Resizer
                                         minSize={BUDGET_DURATION_MIN}
                                         maxSize={BUDGET_DURATION_MAX}
-                                        initialSize={props.props.budgetDuration ?? BUDGET_DURATION_DEFAULT}
+                                        initialSize={rewardsAndBudgetData?.budgetDuration ?? BUDGET_DURATION_DEFAULT}
                                         id='daysResizer'
                                         valText='Days'
-                                        updateBudgetDuration={duration => updateBudgetDuration(duration)}
+                                        updateBudgetDuration={duration => setBudgetDuration(duration)}
                                     />
                                 </div>
                             </div>

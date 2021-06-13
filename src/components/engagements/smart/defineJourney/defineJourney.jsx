@@ -3,6 +3,8 @@ import { getData, postData } from '../../../../api/ApiHelper';
 import './defineJourney.css';
 import _ from 'lodash';
 import Loader from '../../../common/Spinner/spinner'
+import { JOURNEY_BY_FILTERS } from '../../../../api/apiConstants';
+
 
 const tempArray = [
     { id: 1, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
@@ -28,11 +30,11 @@ export default function DefineJourney(props) {
     }
     const fetchJourneyData = () => {
         setLoading(true);
-        getData(`/engt/journeybyfilters`)
-            .then(response => {
-                if (response && Array.isArray(response.data?.data)) {
+        getData(JOURNEY_BY_FILTERS)
+            .then(journeys => {
+                if (journeys) {
                     let journeyArr = [];
-                    response.data.data.forEach(journey => {
+                    journeys.forEach(journey => {
                         let existedJrny = _.find(journeyArr, j => j.id == journey.JourneyID);
                         if (existedJrny) {
                             existedJrny.tags.push(journey.EventDisplayName);
@@ -47,6 +49,7 @@ export default function DefineJourney(props) {
                         }
                     })
                     setJourneyBoxes(journeyArr);
+                    props.getDefineJourney(journeyArr.find(j => j.isActive));
                 } else {
                     setJourneyBoxes();
                 }

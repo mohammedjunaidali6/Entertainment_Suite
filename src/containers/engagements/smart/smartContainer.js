@@ -10,14 +10,12 @@ const mapStateToProps = state => ({
     defineJourney: state.EngagementsSmartReducer.defineJourney,
     journeyBox: state.EngagementsSmartReducer.journeyBox,
     rewardsAndBudget: state.EngagementsSmartReducer.rewardsAndBudget,
-    rewardsData: state.EngagementsSmartReducer.rewardsData,
-    budget: state.EngagementsSmartReducer.budget,
-    budgetDuration: state.EngagementsSmartReducer.budgetDuration,
     review: state.EngagementsSmartReducer.review,
 });
 
 const mapDispatchToProps = dispatch => ({
     engagementsSmartActionHandler: bindActionCreators(actionsHandler, dispatch)
+
 });
 
 const EngagementsSmartContatiner = connect(mapStateToProps, mapDispatchToProps)(EngagementsSmart);
