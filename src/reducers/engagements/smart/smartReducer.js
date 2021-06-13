@@ -1,9 +1,9 @@
 import {
   SET_ENGAGEMENTS,
   E_S_SET_GOALS,
-  E_S_TARGET_AUDIENCE,
-  SET_JOURNEY_BOX,
-  SET_REWARDS, SET_BUDGET, SET_BUDGET_DURATION
+  E_S_SET_TARGET_AUDIENCE,
+  E_S_SET_JOURNEY_BOX,
+  E_S_SET_REWARDS_AND_BUDGET
 } from '../../../constants/actionTypes';
 
 const initialState = {
@@ -26,27 +26,17 @@ const EngagementsSmartReducer = (state = initialState, action) => {
       newState.setGoals = action.payload ? action.payload : null;
       return newState;
     }
-    case SET_JOURNEY_BOX: {
+    case E_S_SET_JOURNEY_BOX: {
       const newState = { ...state };
       newState.journeyBox = action.payload ? action.payload : null;
       return newState;
     }
-    case SET_REWARDS: {
+    case E_S_SET_REWARDS_AND_BUDGET: {
       const newState = { ...state };
-      newState.rewardsData = action.payload ? action.payload : null;
+      newState.rewardsAndBudget = action.payload ? action.payload : null;
       return newState;
     }
-    case SET_BUDGET: {
-      const newState = { ...state };
-      newState.budget = action.payload ? action.payload : null;
-      return newState;
-    }
-    case SET_BUDGET_DURATION: {
-      const newState = { ...state };
-      newState.budgetDuration = action.payload ? action.payload : null;
-      return newState;
-    }
-    case E_S_TARGET_AUDIENCE: {
+    case E_S_SET_TARGET_AUDIENCE: {
       const newState = { ...state };
       newState.targetAudience = action.payload ? action.payload : null;
       return newState;

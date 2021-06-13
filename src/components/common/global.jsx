@@ -20,38 +20,41 @@ export function bodyOverflowHiddenFn() {
     document.body.style.overflow = "hidden";
 }
 
+export function storeStateFn() {
+    return store && store.getState();
+}
 export function storeDataFn(reducerName, objName) {
     return store && store.getState([reducerName]) && store.getState([reducerName][objName]) ? store.getState([reducerName][objName]) : "";
 }
 
 export function getLinearGradientCSS(ratio, leftColor, rightColor) {
     return [
-      '-webkit-gradient(',
-      'linear, ',
-      'left top, ',
-      'right top, ',
-      'color-stop(' + ratio + ', ' + leftColor + '), ',
-      'color-stop(' + ratio + ', ' + rightColor + ')',
-      ')'
+        '-webkit-gradient(',
+        'linear, ',
+        'left top, ',
+        'right top, ',
+        'color-stop(' + ratio + ', ' + leftColor + '), ',
+        'color-stop(' + ratio + ', ' + rightColor + ')',
+        ')'
     ].join('');
 }
 
 export const CustomDatePickerEL = forwardRef(
     ({ value, onClick }, props, ref) => (props.fromReward ? (
         <Fragment>
-        <div className="c-d-p-reward-container float-left" onClick={onClick} ref={ref} >
-            <img src={calender_src} alt="Calender" className="mr-2" />
-            <span className="c-d-p-lbl pr-2">{value ? value : `MM/DD/YYYY`}</span>
-            <img src={down_arrow_src} alt="Down Arrow" />
-        </div>
+            <div className="c-d-p-reward-container float-left" onClick={onClick} ref={ref} >
+                <img src={calender_src} alt="Calender" className="mr-2" />
+                <span className="c-d-p-lbl pr-2">{value ? value : `MM/DD/YYYY`}</span>
+                <img src={down_arrow_src} alt="Down Arrow" />
+            </div>
         </Fragment>
-    ):(
+    ) : (
         <Fragment>
-        <div className="c-d-p-container float-left" onClick={onClick} ref={ref} >
-            <img src={calender_src} alt="Calender" className="mr-2" />
-            <span className="c-d-p-lbl pr-2">{value ? value : `MM/DD/YYYY`}</span>
-            <img src={down_arrow_src} alt="Down Arrow" />
-        </div> </Fragment>)
+            <div className="c-d-p-container float-left" onClick={onClick} ref={ref} >
+                <img src={calender_src} alt="Calender" className="mr-2" />
+                <span className="c-d-p-lbl pr-2">{value ? value : `MM/DD/YYYY`}</span>
+                <img src={down_arrow_src} alt="Down Arrow" />
+            </div> </Fragment>)
     ),
 );
 

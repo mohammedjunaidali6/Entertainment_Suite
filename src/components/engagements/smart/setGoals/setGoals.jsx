@@ -22,22 +22,20 @@ const tempArray = [
     { id: 5, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
     { id: 6, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false }
 ];
-
 const setGoalForm = FormBuilder.group({
-    campaignName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['campaignName'] : "", Validators.required],
-    displayName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['displayName'] : "", Validators.required],
+    campaignName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['campaignName'] : "TEST", Validators.required],
+    displayName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['displayName'] : "TEST DISPLAY", Validators.required],
     goal: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['goal'] : "", Validators.required]
 });
 
 export default function SetGoals(props) {
     const [goalBoxes, setGoalBoxes] = useState(tempArray);
-
-    function changeHandler() {
+    if (props.props.setGoals) {
         setGoalForm.patchValue({
-            campaignName: setGoalForm.controls.campaignName.value,
-            displayName: setGoalForm.controls.displayName.value
+            campaignName: props.props.setGoals.campaignName,
+            displayName: props.props.setGoals.displayName,
+            goal: props.props.goal
         });
-        props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
     }
     function goalBoxClick(boxData) {
         goalBoxes.forEach((obj) => {
@@ -45,8 +43,8 @@ export default function SetGoals(props) {
         });
         boxData.isActive = true;
         setGoalForm.patchValue({
-            campaignName: setGoalForm.controls.campaignName.value,
-            displayName: setGoalForm.controls.displayName.value,
+            campaignName: setGoalForm.controls.campaignName?.value ?? props.props.setGoals.campaignName,
+            displayName: setGoalForm.controls.displayName?.value,
             goal: boxData
         });
         props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
@@ -54,11 +52,6 @@ export default function SetGoals(props) {
     const sgChange = () => {
 
     }
-    useEffect(() => {
-        const storeSetGoals = store.getState().EngagementsSmartReducer.campaignsData;
-        console.log('****', storeSetGoals)
-
-    }, [])
 
     return (
         <div id="set-goals-container" >

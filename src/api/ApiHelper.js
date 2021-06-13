@@ -1,41 +1,42 @@
-import axios from 'axios';
-import { axiosInstance } from '../actions/axios-config';
-import { Gateway_Host_URI, Identity_Host_URI, Engagement_Host_URI, headers } from './apiConstants';
-import { handleResponse, handleError } from './response';
-
-
-export const getSingle = async (resource, id) => {
-    try {
-        const response = await axiosInstance
-            .get(`${Identity_Host_URI}${resource}`);
-        return handleResponse(response);
-    } catch (error) {
-        return handleError(error);
-    }
-};
+import { axiosInstance } from './axios-config';
 
 export const getData = async (resource) => {
     try {
-        const response = await axiosInstance
-            .get(`${Engagement_Host_URI}${resource}`, { headers: headers });
+        const response = await axiosInstance.get(resource);
 
         return handleResponse(response);
 
     } catch (error) {
-        console.log(`*** ${resource} `, error.message)
         return handleError(error);
     }
 };
 
 export const postData = async (resource, postData) => {
     try {
-        const response = await axiosInstance
-            .post(`${Engagement_Host_URI}${resource}`, postData, { headers: headers });
+        const response = await axiosInstance.post(resource, postData);
 
         return handleResponse(response);
 
     } catch (error) {
-        console.log(`*** ${resource} `, error.message)
         return handleError(error);
     }
 };
+
+
+function handleResponse(response) {
+    if (response.status == 200 && response.data?.message == "SUCCESS") {
+        return response.data.data;
+    } else {
+        console.error(`*** `, response.data?.data)
+        return null;
+    }
+}
+
+function handleError(error) {
+    console.error(`*** `, error.message)
+    return null;
+    if (error.data) {
+        return error.data;
+    }
+    return error;
+}

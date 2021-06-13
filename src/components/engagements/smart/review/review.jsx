@@ -18,16 +18,16 @@ export default function Review(props) {
 
     const goalsData = engagement.setGoals;
     const journeyData = engagement.journeyBox;
-    const rewardsData = engagement.rewardsData;
-    const budget = engagement.budget;
-    const budgetDuration = engagement.budgetDuration;
+    const rewardsAndBudgetData = engagement.rewardsAndBudget;
+    console.log('***', rewardsAndBudgetData)
+
 
     return (
         <div id="review-container" >
             <div className="w-70 float-left clearfix c-e-r-left">
                 <div className="c-e-r-left-h mb-1">Campaign Name</div>
                 <div className="c-e-r-left-c-n">
-                    {goalsData.displayName}
+                    {goalsData?.displayName}
                     <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('setGoals')}>
                         <img src={edit_src} alt="Edit" />
                         <span className="c-e-r-left-e-txt">Edit</span>
@@ -73,7 +73,7 @@ export default function Review(props) {
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Display Name</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Rewards</div>
                     </div>
-                    {rewardsData.length && rewardsData.map((rewObj) => (
+                    {rewardsAndBudgetData?.rewards?.length && rewardsAndBudgetData?.rewards?.map((rewObj) => (
                         <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
                             <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
                             <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType}</div>
@@ -91,10 +91,10 @@ export default function Review(props) {
                     <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">
                             <span className="c-e-r-left-r-b-box-bd-prefix">$</span>
-                            {budget}
+                            {rewardsAndBudgetData?.budget}
                         </div>
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div>
-                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{budgetDuration} Days</div>
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewardsAndBudgetData?.budgetDuration} Days</div>
                     </div>
                 </div>
             </div>

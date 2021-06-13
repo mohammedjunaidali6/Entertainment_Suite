@@ -187,30 +187,38 @@ export const CampaignMockData = [
 export const CampaignTableColumns = [
   {
     name: "Engagement name",
-    selector: "offer"
+    selector: "DisplayName"
   },
   {
     name: "Expire On",
-    selector: "expiredOn"
+    selector: "CompletedDate"
   },
   {
-    name: "Customer Participated",
-    selector: "customer"
+    name: "Customers Participated",
+    selector: "CustomersParticipatedCount"
   },
   {
-    name: "Total No of Sales",
-    selector: "sales"
+    name: "Total Winners",
+    selector: "WinnersCount"
+  },
+  {
+    name: "Repeated Customers",
+    selector: "RepeatedCustomersCount"
+  },
+  {
+    name: "TBD",
+    selector: "ToBeDiscussed"
   },
   {
     name: "Status",
     cell: rowObj =>
       <div className={classnames('text-c', {
-        'txt-green': rowObj.status === 'live',
-        'txt-grey': rowObj.status === 'paused',
-        'txt-orange': rowObj.status === 'expired',
-        'txt-blue': rowObj.status === 'upcoming'
+        'txt-green': rowObj.Status === 1,
+        'txt-grey': rowObj.Status === 2,
+        'txt-orange': rowObj.Status === 3,
+        'txt-blue': rowObj.Status === 4
       })}>
-        {rowObj.status}
+        {rowObj.Status === 1 ? 'live' : rowObj.Status === 2 ? 'paused' : rowObj.Status === 3 ? 'expired' : rowObj.Status === 4 ? 'upcoming' : 'completed'}
       </div>
   },
   {
