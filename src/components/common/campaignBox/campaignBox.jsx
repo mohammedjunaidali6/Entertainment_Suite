@@ -8,20 +8,23 @@ import './campaignBox.css'
 
 export default function CampaignBox(props) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [openedPopoverId, setOpenedPopoverId] = useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'campaign-action-popover' : undefined;
 
-    const campaignActionClick = (event) => {
+    const campaignActionClick = (event, id) => {
         setAnchorEl(event.currentTarget);
+        setOpenedPopoverId(id);
     };
     const campaignActionClose = () => {
         setAnchorEl(null);
+        setOpenedPopoverId(null);
     };
 
     return (
         <div className="w-100 float-left clearfix">
-            {props.campaigndata.map((obj) => (
-                <div key={obj.id} className="campaign-box-outer float-left clearfix mb-3">
+            {props.campaigndata.map((obj, idx) => (
+                <div key={idx} className="campaign-box-outer float-left clearfix mb-3">
                     <div className="campaign-box">
                         <div className={classnames('c-b-discount pl-3 pt-2', {
                             'c-b-discount-live': obj.status === 'live',
@@ -60,10 +63,10 @@ export default function CampaignBox(props) {
                         <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
                             <BsCalendar></BsCalendar>
                             <span className="pl-2 c-b-lbl-expiry">Expire On : {obj.expiredOn}</span>
-                            <BsThreeDotsVertical onClick={campaignActionClick} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
+                            <BsThreeDotsVertical onClick={(e) => campaignActionClick(e, obj.EngagementID)} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
                             <Popover
                                 id={id}
-                                open={open}
+                                open={openedPopoverId === obj.EngagementID}
                                 anchorEl={anchorEl}
                                 onClose={campaignActionClose}
                                 anchorOrigin={{
@@ -76,12 +79,12 @@ export default function CampaignBox(props) {
                                 }}
                             >
                                 <Typography className="">
-                                    <div className="c-b-campaign-options p-0">
-                                        <div onClick={() => { setAnchorEl(null); props.onPauseClick(obj) }}>Pause</div>
-                                        <div onClick={() => { setAnchorEl(null); props.onEditClick(obj) }}>Edit</div>
-                                        <div onClick={() => { setAnchorEl(null); props.onViewReportClick(obj) }}>View Report</div>
-                                        <div onClick={() => { setAnchorEl(null); props.onDeleteClick(obj) }}>Delete</div>
-                                    </div>
+                                    <span className="c-b-campaign-options p-0">
+                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onPauseClick(obj) }}>Pause</span>
+                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onEditClick(obj) }}>Edit</span>
+                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onViewReportClick(obj) }}>View Report</span>
+                                        <span onClick={() => { setAnchorEl(null); setOpenedPopoverId(null); props.onDeleteClick(obj) }}>Delete</span>
+                                    </span>
                                 </Typography>
                             </Popover>
                             <span className="c-b-status float-right mt-1"><div className={classnames('mr-2', {
