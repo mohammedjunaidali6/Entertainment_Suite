@@ -19,11 +19,8 @@ import Review from "./review/review";
 import './smart.css';
 import _ from 'lodash';
 import { getData, postData } from '../../../api/ApiHelper';
-import Loader from '../../common/Spinner/spinner';
-import Alert from '../../common/alertBox/alertBox';
-import store from '../../../../src/store/store';
 import { storeStateFn } from "../../common/global";
-import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENTS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
+import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EngagementsSmart(props) {
+    console.log('****', props)
     const [active, setActive] = useState('all');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
@@ -42,8 +40,13 @@ export default function EngagementsSmart(props) {
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [alert, setAlert] = useState({ title: '', text: '', show: false });
+
+    const handleLoader = (showBool) => {
+        props.routeActionHandler.dispatchLoaderData(showBool);
+    }
+    const handleAlertDialog = (obj) => {
+        props.routeActionHandler.dispatchAlertDialogData(obj);
+    }
 
     const createClick = () => {
         setOpenEngagementWizard(true);
@@ -93,7 +96,6 @@ export default function EngagementsSmart(props) {
         } else if (step === 'review') {
             setOpenEngagementWizard(false);
             setStep('setGoals');
-            setAlert({ title: 'Are you sure!', text: 'Do you want create engagement?', show: true });
         }
     }
 
@@ -137,18 +139,26 @@ export default function EngagementsSmart(props) {
         engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
         engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
         console.log('UPDATED', engagementObj);
-        postData(SAVE_ENGAGEMENT, engagementObj)
-            .then(engagementDbObj => {
-                if (engagementDbObj) {
-                    console.log('***', 'Engagement saved Succesfully');
-                    createEngagementDataClear();
-                    var engagements = store.getState().EngagementsSmartReducer.campaignsData;
-                    engagements.splice(_.findIndex(engagements, e => e.EngagementID == engagementObj.EngagementID), 1, engagementObj);
-                    props.engagementsSmartActionHandler.dispatchEngagementsData(engagements);
+        handleAlertDialog({
+            open: true, title: 'Save Engagement', text: 'Are you sure? Do you want to save it?', handleClose: (bool) => {
+                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                if (bool) {
+                    postData(SAVE_ENGAGEMENT, engagementObj)
+                        .then(engagementDbObj => {
+                            if (engagementDbObj) {
+                                console.log('***', 'Engagement saved Succesfully');
+                                fetchEngagements();
+                                createEngagementDataClear();
+                            } else {
+                                console.log('**** Engagement Saving FAILED')
+                            }
+                        });
                 } else {
-                    console.log('**** Engagement Saving FAILED')
+
                 }
-            });
+            }
+        });
+
     }
 
     const createEngagementDataClear = () => {
@@ -168,7 +178,7 @@ export default function EngagementsSmart(props) {
 
     const fetchEngagements = () => {
         try {
-            setLoading(true);
+            handleLoader(true);
             getData(ENGAGEMENTS_BY_FILTERS)
                 .then(engagementsData => {
                     if (engagementsData && Array.isArray(engagementsData)) {
@@ -176,14 +186,15 @@ export default function EngagementsSmart(props) {
                     } else {
                         props.engagementsSmartActionHandler.dispatchEngagementsData();
                     }
-                    setLoading(false);
+                    handleLoader(false);
                 })
         } catch (error) {
+            handleLoader(false);
             console.log(error.message)
         }
     }
     const fetchEngagementsByStatus = (id => {
-        setLoading(true);
+        handleLoader(true);
         getData(`${ENGAGEMENT_BY_STATUS_ID}${id}`)
             .then(engagements => {
                 if (engagements && Array.isArray(engagements)) {
@@ -191,34 +202,26 @@ export default function EngagementsSmart(props) {
                 } else {
                     props.engagementsSmartActionHandler.dispatchEngagementsData();
                 }
-                setLoading(false);
+                handleLoader(false);
             })
     })
-    const onAlertClick = (isYes) => {
-        setAlert({ title: '', text: '', show: false });
-        if (isYes) {
-            saveEngagement();
-        }
-    }
 
-    const onPauseClick = (engmt) => {
-        getData(`${ENGAGEMENT_UPDATE_STATUS}?engagement_id=${engmt.EngagementID}&engagement_status_id=${2}`)
+    const onPauseClick = (engmt, status) => {
+        handleLoader(true);
+        getData(`${ENGAGEMENT_UPDATE_STATUS}?engagement_id=${engmt.EngagementID}&engagement_status_id=${status}`)
             .then((response) => {
                 if (response) {
+                    fetchEngagements();
                     console.log(`*** ${engmt.EngagementID} Engagement is Paused succesfully`)
-                    var campaignsData = props.campaignsData;
-                    var engagement = campaignsData.find(e => e.EngagementID == engmt.EngagementID);
-                    campaignsData.splice(_.findIndex(campaignsData, e => e.EngagementID == engmt.EngagementID), 1, engagement);
-                    props.engagementsSmartActionHandler.dispatchEngagementsData(campaignsData);
                 } else {
                 }
+                handleLoader(false);
             })
     }
     const onEditClick = (engmt) => {
-        setLoading(true);
+        handleLoader(true);
         getData(`${ENGAGEMENTS_DETAILS_BY_ID}${engmt.EngagementID}`)
             .then(engagements => {
-                setLoading(false);
                 if (engagements) {
                     let setGoals = {
                         EngagementId: engagements.EngagementID,
@@ -275,28 +278,45 @@ export default function EngagementsSmart(props) {
                 } else {
 
                 }
+                handleLoader(false);
             })
     }
+
+    const onDeleteClick = (engmt) => {
+        handleAlertDialog({
+            open: true, title: 'Delete Engagement', text: 'Do you want to DELETE Engagement?', handleClose: (bool) => {
+                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                if (bool) {
+                    handleLoader(true);
+                    getData(`${DELETE_ENGAGEMENT}${engmt.EngagementID}`)
+                        .then(engagement => {
+                            if (engagement) {
+                                fetchEngagements();
+                                console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
+                            }
+                            handleLoader(false);
+                        });
+                } else {
+
+                }
+            }
+        });
+    }
+
     const onViewReportClick = (engmt) => {
         console.log(`*** ${engmt.EngagementID} Engagement is to be Viewed`)
     }
-    const onDeleteClick = (engmt) => {
-        getData(`${DELETE_ENGAGEMENT}${engmt.EngagementID}`)
-            .then(engagement => {
-                if (engagement) {
-                    console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
-                    var campaignsData = props.campaignsData;
-                    var engagement = _.remove(campaignsData, e => e.EngagementID == engmt.EngagementID);
-                    props.engagementsSmartActionHandler.dispatchEngagementsData(campaignsData);
-                } else {
-                    props.engagementsSmartActionHandler.dispatchEngagementsData();
-                }
-            });
-    }
-
 
     useEffect(() => {
-        fetchEngagements();
+        handleAlertDialog({
+            open: true, title: 'Load Engagements', text: 'Do you want to load Engagements?', handleClose: (bool) => {
+                console.log('****', bool)
+                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                if (bool) {
+                    fetchEngagements();
+                }
+            }
+        })
         return () => {
             createEngagementDataClear();
         }
@@ -309,95 +329,92 @@ export default function EngagementsSmart(props) {
 
     return (
         <div id="engagements-smart-container">
-            {alert.show && <Alert title={alert.title} text={alert.text} onAlertClick={onAlertClick} />}
-            {loading ?
-                <Loader /> :
-                !openEngagementWizard ? (
-                    <Fragment>
-                        <div className="mb-4">
-                            <span className="e-s-heading">Active Campaigns</span>
-                            <span className="float-right mr-3">
-                                <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{ width: "22px", height: "22px" }}></AiOutlineMenu>
-                                <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{ width: "22px", height: "22px" }}></BsGrid3X3GapFill>
-                            </span>
+            {!openEngagementWizard ? (
+                <Fragment>
+                    <div className="mb-4">
+                        <span className="e-s-heading">Active Campaigns</span>
+                        <span className="float-right mr-3">
+                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{ width: "22px", height: "22px" }}></AiOutlineMenu>
+                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{ width: "22px", height: "22px" }}></BsGrid3X3GapFill>
+                        </span>
+                    </div>
+                    <div>
+                        <div onClick={() => tabClick('all')} className={`e-s-tab ${active === 'all' ? `e-s-tab-active` : ``}`}>All</div>
+                        <div onClick={() => tabClick('live')} className={`e-s-tab ${active === 'live' ? `e-s-tab-active` : ``}`}>Active</div>
+                        <div onClick={() => tabClick('paused')} className={`e-s-tab ${active === 'paused' ? `e-s-tab-active` : ``}`}>Paused</div>
+                        <div onClick={() => tabClick('upcoming')} className={`e-s-tab ${active === 'upcoming' ? `e-s-tab-active` : ``}`}>Upcoming</div>
+                        <div onClick={() => tabClick('completed')} className={`e-s-tab ${active === 'completed' ? `e-s-tab-active` : ``}`}>Completed</div>
+                        <div className="btn-create-engagement float-right text-center pt-2 mr-3" onClick={createClick}>
+                            <span className="btn-c-e-text">+ Create Engagements</span>
                         </div>
-                        <div>
-                            <div onClick={() => tabClick('all')} className={`e-s-tab ${active === 'all' ? `e-s-tab-active` : ``}`}>All</div>
-                            <div onClick={() => tabClick('live')} className={`e-s-tab ${active === 'live' ? `e-s-tab-active` : ``}`}>Active</div>
-                            <div onClick={() => tabClick('paused')} className={`e-s-tab ${active === 'paused' ? `e-s-tab-active` : ``}`}>Paused</div>
-                            <div onClick={() => tabClick('upcoming')} className={`e-s-tab ${active === 'upcoming' ? `e-s-tab-active` : ``}`}>Upcoming</div>
-                            <div onClick={() => tabClick('completed')} className={`e-s-tab ${active === 'completed' ? `e-s-tab-active` : ``}`}>Completed</div>
-                            <div className="btn-create-engagement float-right text-center pt-2 mr-3" onClick={createClick}>
-                                <span className="btn-c-e-text">+ Create Engagements</span>
+                        {gridFlag ? (
+                            <div className="w-100 float-left clearfix mt-3">
+                                {props.campaignsData && props.campaignsData.length > 0 ?
+                                    <CampaignBox
+                                        campaigndata={props.campaignsData}
+                                        onPauseClick={(engmt, status) => onPauseClick(engmt, status)}
+                                        onEditClick={(engmt) => onEditClick(engmt)}
+                                        onViewReportClick={(engmt) => onViewReportClick(engmt)}
+                                        onDeleteClick={(engmt) => onDeleteClick(engmt)}
+                                    >
+                                    </CampaignBox>
+                                    :
+                                    <div className="e-s-heading ml-4">No campaigns found!</div>}
                             </div>
-                            {gridFlag ? (
-                                <div className="w-100 float-left clearfix mt-3">
-                                    {props.campaignsData && props.campaignsData.length > 0 ?
-                                        <CampaignBox
-                                            campaigndata={props.campaignsData}
-                                            onPauseClick={(engmt) => onPauseClick(engmt)}
-                                            onEditClick={(engmt) => onEditClick(engmt)}
-                                            onViewReportClick={(engmt) => onViewReportClick(engmt)}
-                                            onDeleteClick={(engmt) => onDeleteClick(engmt)}
-                                        >
-                                        </CampaignBox>
-                                        :
-                                        <div className="e-s-heading ml-4">No campaigns found!</div>}
-                                </div>
-                            ) : (
-                                <div className="mt-4" id="e-s-table-sec">
-                                    <Table columns={CampaignTableColumns}
-                                        data={props.campaignsData}
-                                        pagination={true}
-                                        selectableRows={true}
-                                        selectedRowsFn={selectedRowsFn}
-                                        subHeaderComponent={
-                                            <SearchBar placeHolder="Search Engagements" fromEngagements={true} searchFilter="All Engagements" />
-                                        }
-                                        subHeader={true}
-                                    />
-                                </div>
-                            )}
+                        ) : (
+                            <div className="mt-4" id="e-s-table-sec">
+                                <Table columns={CampaignTableColumns}
+                                    data={props.campaignsData}
+                                    pagination={true}
+                                    selectableRows={true}
+                                    selectedRowsFn={selectedRowsFn}
+                                    subHeaderComponent={
+                                        <SearchBar placeHolder="Search Engagements" fromEngagements={true} searchFilter="All Engagements" />
+                                    }
+                                    subHeader={true}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </Fragment>
+            ) : (
+                <Fragment>
+                    <div style={{ height: containerHeightCalcFn(192), overflowY: "auto" }}>
+                        <div id="c-s-breadcrum">
+                            <div className="c-s-breadcrum-back" onClick={() => setOpenEngagementWizard(false)}><BsChevronLeft></BsChevronLeft>Back</div>
+                            <div className="c-s-breadcrum-title">
+                                <span className="pl-1 c-pointer" onClick={() => setOpenEngagementWizard(false)}>Smart Engagements / </span>
+                                <span className="text-bold">Create Engagement</span>
+                            </div>
                         </div>
-                    </Fragment>
-                ) : (
-                    <Fragment>
-                        <div style={{ height: containerHeightCalcFn(192), overflowY: "auto" }}>
-                            <div id="c-s-breadcrum">
-                                <div className="c-s-breadcrum-back" onClick={() => setOpenEngagementWizard(false)}><BsChevronLeft></BsChevronLeft>Back</div>
-                                <div className="c-s-breadcrum-title">
-                                    <span className="pl-1 c-pointer" onClick={() => setOpenEngagementWizard(false)}>Smart Engagements / </span>
-                                    <span className="text-bold">Create Engagement</span>
-                                </div>
-                            </div>
-                            <div className="c-s-step-sec mt-2 content-c">
-                                {step === 'setGoals' ? <EStepper stepName="Set Goals" stepCount={1} thumbHide={true} /> :
-                                    step === 'targetAudience' ? <EStepper stepName="Target Audience" stepCount={2} thumbHide={true} /> :
-                                        step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={3} thumbHide={true} /> :
-                                            step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Journey" stepCount={4} thumbHide={true} /> :
-                                                step === 'review' ? <EStepper stepName="Review" stepCount={5} thumbHide={true} /> :
-                                                    null
-                                }
+                        <div className="c-s-step-sec mt-2 content-c">
+                            {step === 'setGoals' ? <EStepper stepName="Set Goals" stepCount={1} thumbHide={true} /> :
+                                step === 'targetAudience' ? <EStepper stepName="Target Audience" stepCount={2} thumbHide={true} /> :
+                                    step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={3} thumbHide={true} /> :
+                                        step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Journey" stepCount={4} thumbHide={true} /> :
+                                            step === 'review' ? <EStepper stepName="Review" stepCount={5} thumbHide={true} /> :
+                                                null
+                            }
 
-                            </div>
-                            <div className="c-s-content-sec w-100 float-left clearfix">
-                                {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
-                                    step === 'targetAudience' ? <TargetAudience props={props} /> :
-                                        step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
-                                            step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
-                                                step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
-                                                    null
-                                }
-                            </div>
                         </div>
-                        <div id="c-s-action-sec" className="w-100">
-                            <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>
-                                {step === 'review' ? 'Approve' : 'Next'}
-                            </button>
-                            <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
+                        <div className="c-s-content-sec w-100 float-left clearfix">
+                            {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
+                                step === 'targetAudience' ? <TargetAudience props={props} /> :
+                                    step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
+                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
+                                            step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
+                                                null
+                            }
                         </div>
-                    </Fragment>
-                )
+                    </div>
+                    <div id="c-s-action-sec" className="w-100">
+                        <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>
+                            {step === 'review' ? 'Approve' : 'Next'}
+                        </button>
+                        <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
+                    </div>
+                </Fragment>
+            )
             }
         </div>
     )

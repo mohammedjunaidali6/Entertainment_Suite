@@ -23,10 +23,10 @@ export default function CampaignBox(props) {
         setAnchorEl(null);
         setOpenedPopoverId(null);
     };
-    const pauseClick = (obj) => {
+    const pauseClick = (obj, status) => {
         setAnchorEl(null);
         setOpenedPopoverId(null);
-        props.onPauseClick(obj);
+        props.onPauseClick(obj, status);
     }
     const editClick = (obj) => {
         setAnchorEl(null);
@@ -99,8 +99,12 @@ export default function CampaignBox(props) {
                             >
                                 <Typography className="">
                                     <span className="c-b-campaign-options p-0">
-                                        <span onClick={() => pauseClick(obj)}>Pause</span>
-                                        <span onClick={() => editClick(obj)}>Edit</span>
+                                        {obj.Status === 1 ?
+                                            <span onClick={() => pauseClick(obj, 2)}>Pause</span>
+                                            :
+                                            <span onClick={() => pauseClick(obj, 1)}>Resume</span>
+                                        }
+                                        < span onClick={() => editClick(obj)}>Edit</span>
                                         <span onClick={() => viewClick(obj)}>View Report</span>
                                         <span onClick={() => deleteClick(obj)}>Delete</span>
                                     </span>
@@ -115,7 +119,8 @@ export default function CampaignBox(props) {
                         </div>
                     </div>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     )
 }
