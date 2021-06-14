@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import NotFound from '../components/common/notFound';
@@ -17,10 +17,17 @@ import LoginContatiner from "../containers/login/loginContainer";
 import RegisterContatiner from "../containers/register/registerContainer";
 import VerifyContatiner from "../containers/verify/verifyContainer";
 import POCContainer from '../containers/poc/pocContainer';
+import AlertDialog from '../components/common/alertBox/dialogBox';
+import Loader from '../components/common/Spinner/spinner';
+import store from '../store/store';
+
 
 export default function AppRoute(props) {
+  console.log('****', props);
   let history = useHistory();
   console.log('window.location.href', window.location.href);
+
+
   return (
     <ThemeProvider>
       <div id="app-route-container">
@@ -29,8 +36,15 @@ export default function AppRoute(props) {
             <HeaderContainer />
           ) : null}
           <Home>
+            <Loader show={props.showLoader} />
+            <AlertDialog
+              open={props.alertDialog.open}
+              title={props.alertDialog.title}
+              text={props.alertDialog.text}
+              handleClose={(bool) => props.alertDialog.handleClose(bool)}
+            />
             <Switch>
-              <Route exact path="/" component={DashboardContatiner}/>
+              <Route exact path="/" component={DashboardContatiner} />
               <Route exact path="/engagements/:tabname" component={EngagementsContatiner} />
               <Route exact path="/liveview" component={LiveViewContatiner} />
               <Route exact path="/analytics/:tabname" component={AnalyticsContatiner} />

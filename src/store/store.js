@@ -25,6 +25,7 @@ import LoginReducer from "../reducers/login/loginReducer";
 import RegisterReducer from "../reducers/register/registerReducer";
 import VerifyReducer from "../reducers/verify/verifyReducer";
 import POCReducer from '../reducers/poc/pocReducer';
+import RouteReducer from '../reducers/route/routeReducer';
 
 function saveToSessionStorage(state) {
   try {
@@ -47,6 +48,7 @@ function loadFromSessionStorage(state) {
 }
 
 const reducer = combineReducers({
+  RouteReducer: RouteReducer,
   HeaderReducer: HeaderReducer,
   DashboardReducer: DashboardReducer,
   SettingsReducer: SettingsReducer,

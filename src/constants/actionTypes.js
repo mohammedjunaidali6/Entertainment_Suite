@@ -1,6 +1,9 @@
 // Store Action Types
 export const ACTION_TYPE = 'ACTION_TYPE';
 
+export const SET_SHOW_LOADER = "SET_SHOW_LOADER";
+export const SET_OPEN_ALERT_DIALOG = "SET_OPEN_ALERT_DIALOG";
+
 export const SET_ENGAGEMENTS = 'SET_ENGAGEMENTS';
 export const E_S_SET_GOALS = 'E_S_SET_GOALS';
 export const E_S_SET_TARGET_AUDIENCE = 'E_S_SET_TARGET_AUDIENCE';

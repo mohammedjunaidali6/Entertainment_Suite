@@ -4,7 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import AppRoute from './routes/route';
 import store from './store/store';
-
+import RouteContatiner from './containers/route/routeContainer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-responsive-modal/styles.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +14,7 @@ import './assets/css/base.css';
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppRoute />
+      <RouteContatiner />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
