@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EngagementsSmart(props) {
-    console.log('****', props)
     const [active, setActive] = useState('all');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
@@ -96,6 +95,7 @@ export default function EngagementsSmart(props) {
         } else if (step === 'review') {
             setOpenEngagementWizard(false);
             setStep('setGoals');
+            saveEngagement();
         }
     }
 
@@ -308,15 +308,16 @@ export default function EngagementsSmart(props) {
     }
 
     useEffect(() => {
-        handleAlertDialog({
-            open: true, title: 'Load Engagements', text: 'Do you want to load Engagements?', handleClose: (bool) => {
-                console.log('****', bool)
-                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
-                if (bool) {
-                    fetchEngagements();
-                }
-            }
-        })
+        fetchEngagements();
+
+        // handleAlertDialog({
+        //     open: true, title: 'Load Engagements', text: 'Do you want to load Engagements?', handleClose: (bool) => {
+        //         handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+        //         if (bool) {
+        //             fetchEngagements();
+        //         }
+        //     }
+        // })
         return () => {
             createEngagementDataClear();
         }
@@ -391,7 +392,7 @@ export default function EngagementsSmart(props) {
                             {step === 'setGoals' ? <EStepper stepName="Set Goals" stepCount={1} thumbHide={true} /> :
                                 step === 'targetAudience' ? <EStepper stepName="Target Audience" stepCount={2} thumbHide={true} /> :
                                     step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={3} thumbHide={true} /> :
-                                        step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Journey" stepCount={4} thumbHide={true} /> :
+                                        step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Budget" stepCount={4} thumbHide={true} /> :
                                             step === 'review' ? <EStepper stepName="Review" stepCount={5} thumbHide={true} /> :
                                                 null
                             }
@@ -399,9 +400,9 @@ export default function EngagementsSmart(props) {
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
-                                step === 'targetAudience' ? <TargetAudience props={props} /> :
-                                    step === 'defineJourney' ? <DefineJourney getDefineJourney={getDefineJourney} props={props} /> :
-                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} /> :
+                                step === 'targetAudience' ? <TargetAudience props={props} handleLoader={(bool) => handleLoader(bool)} /> :
+                                    step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
+                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} handleLoader={(bool) => handleLoader(bool)} /> :
                                             step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
                                                 null
                             }

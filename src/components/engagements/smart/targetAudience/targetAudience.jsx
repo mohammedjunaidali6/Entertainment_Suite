@@ -3,7 +3,8 @@ import Select from 'react-select';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
 import { getData, postData } from '../../../../api/ApiHelper';
-import store from '../../../../store/store';
+import { CUSTOMERS_BY_FILTERS } from '../../../../api/apiConstants';
+
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -28,7 +29,6 @@ const DaysTypeOptions = [
 
 export default function TargetAudience(props) {
     const targetAudienceData = props.props?.targetAudience;
-    console.log('***TargetAudience', targetAudienceData)
     const [customerSegments, setCustomerSegments] = useState();
     const [rule1, setRule1] = useState(rule1options[0]);
     const [rule2, setRule2] = useState(rule2options[0]);
@@ -62,7 +62,8 @@ export default function TargetAudience(props) {
     }
     const fetchCustomerSegments = () => {
         try {
-            getData(`/engt/customersbyfilters`)
+            props.handleLoader(true);
+            getData(CUSTOMERS_BY_FILTERS)
                 .then(response => {
                     console.log('***', response)
                     if (response && Array.isArray(response.data.data)) {
@@ -70,8 +71,10 @@ export default function TargetAudience(props) {
                     } else {
                         console.log('***', response)
                     }
+                    props.handleLoader(false);
                 })
         } catch (error) {
+            props.handleLoader(false);
             console.error(error)
         }
     }

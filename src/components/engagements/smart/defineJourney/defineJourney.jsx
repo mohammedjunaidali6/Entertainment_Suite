@@ -17,7 +17,6 @@ const tempArray = [
 
 export default function DefineJourney(props) {
     const [journeyBoxes, setJourneyBoxes] = useState();
-    const [loading, setLoading] = useState(false);
 
     function journeyBoxClick(boxData) {
         journeyBoxes.forEach((loopObj) => { loopObj.isActive = false });
@@ -29,7 +28,7 @@ export default function DefineJourney(props) {
 
     }
     const fetchJourneyData = () => {
-        setLoading(true);
+        props.handleLoader(true);
         getData(JOURNEY_BY_FILTERS)
             .then(journeys => {
                 if (journeys) {
@@ -53,7 +52,7 @@ export default function DefineJourney(props) {
                 } else {
                     setJourneyBoxes();
                 }
-                setLoading(false);
+                props.handleLoader(false);
             })
     }
 
@@ -68,36 +67,32 @@ export default function DefineJourney(props) {
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">
             <div className="c-e-journey-h">Choose User Journey </div>
-            {loading ?
-                <Loader />
-                :
-                <div className="c-e-journey-boxes w-100 float-left clearfix">
-                    {journeyBoxes && journeyBoxes.length > 0 ? (
-                        <Fragment>
-                            {journeyBoxes.map((obj, idx) => (
-                                <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
-                                    <div className={`c-e-journey-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
-                                        {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
-                                        <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive} onChange={djChange}></input>
-                                        <div className="w-100 float-left clearfix c-e-journey-box-inner-h">{obj.name}</div>
-                                        <div className="w-100 float-left clearfix c-e-journey-box-inner-tags">
-                                            {obj.tags && obj.tags.length > 0 ? (
-                                                <Fragment>
-                                                    {obj.tags.map((tagObj) => (
-                                                        <div className="c-e-journey-box-tag mt-2" key={tagObj}>
-                                                            <span className="c-e-journey-box-tag-text">{tagObj}</span>
-                                                        </div>
-                                                    ))}
-                                                </Fragment>
-                                            ) : null}
-                                        </div>
+            <div className="c-e-journey-boxes w-100 float-left clearfix">
+                {journeyBoxes && journeyBoxes.length > 0 ? (
+                    <Fragment>
+                        {journeyBoxes.map((obj, idx) => (
+                            <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
+                                <div className={`c-e-journey-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
+                                    {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
+                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive} onChange={djChange}></input>
+                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-h">{obj.name}</div>
+                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-tags">
+                                        {obj.tags && obj.tags.length > 0 ? (
+                                            <Fragment>
+                                                {obj.tags.map((tagObj) => (
+                                                    <div className="c-e-journey-box-tag mt-2" key={tagObj}>
+                                                        <span className="c-e-journey-box-tag-text">{tagObj}</span>
+                                                    </div>
+                                                ))}
+                                            </Fragment>
+                                        ) : null}
                                     </div>
                                 </div>
-                            ))}
-                        </Fragment>
-                    ) : null}
-                </div>
-            }
+                            </div>
+                        ))}
+                    </Fragment>
+                ) : null}
+            </div>
         </div>
     )
 }
