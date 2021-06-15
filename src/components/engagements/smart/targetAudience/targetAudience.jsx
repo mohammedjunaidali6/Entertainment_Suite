@@ -64,12 +64,11 @@ export default function TargetAudience(props) {
         try {
             props.handleLoader(true);
             getData(CUSTOMERS_BY_FILTERS)
-                .then(response => {
-                    console.log('***', response)
-                    if (response && Array.isArray(response.data.data)) {
-                        setCustomerSegments(response.data.data);
+                .then(customerSegments => {
+                    if (customerSegments && Array.isArray(customerSegments)) {
+                        setCustomerSegments(customerSegments);
                     } else {
-                        console.log('***', response)
+                        console.log('***', customerSegments)
                     }
                     props.handleLoader(false);
                 })

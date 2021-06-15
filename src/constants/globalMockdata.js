@@ -184,48 +184,7 @@ export const CampaignMockData = [
   { id: 7, offer: 'Win Rs.1000 Flat Discount', customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "upcoming", isRecent: false }
 ];
 
-export const CampaignTableColumns = [
-  {
-    name: "Engagement name",
-    selector: "DisplayName"
-  },
-  {
-    name: "Expire On",
-    selector: "CompletedDate"
-  },
-  {
-    name: "Customers Participated",
-    selector: "CustomersParticipatedCount"
-  },
-  {
-    name: "Total Winners",
-    selector: "WinnersCount"
-  },
-  {
-    name: "Repeated Customers",
-    selector: "RepeatedCustomersCount"
-  },
-  {
-    name: "TBD",
-    selector: "ToBeDiscussed"
-  },
-  {
-    name: "Status",
-    cell: rowObj =>
-      <div className={classnames('text-c', {
-        'txt-green': rowObj.Status === 1,
-        'txt-grey': rowObj.Status === 2,
-        'txt-orange': rowObj.Status === 3,
-        'txt-blue': rowObj.Status === 4
-      })}>
-        {rowObj.Status === 1 ? 'live' : rowObj.Status === 2 ? 'paused' : rowObj.Status === 3 ? 'expired' : rowObj.Status === 4 ? 'upcoming' : 'completed'}
-      </div>
-  },
-  {
-    name: "Actions",
-    cell: action => <ActionMenu />
-  }
-]
+
 
 export const AnalyticsMockData = [
   { id: 1, name: 'All Customers', filter: '3 Filters', gender: 'Male', ageRange: "20-30", city: "Bangalore" },

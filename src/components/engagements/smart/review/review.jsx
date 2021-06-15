@@ -14,12 +14,10 @@ const tempArray = [
 
 export default function Review(props) {
     const engagement = store.getState().EngagementsSmartReducer;
-    console.log('****', engagement)
 
     const goalsData = engagement.setGoals;
     const journeyData = engagement.journeyBox;
     const rewardsAndBudgetData = engagement.rewardsAndBudget;
-    console.log('***', rewardsAndBudgetData)
 
 
     return (
@@ -50,8 +48,8 @@ export default function Review(props) {
                     </div>
                 </div>
                 <div className="c-e-r-left-d-j-box">
-                    <div className="c-e-r-left-t-a-box-h">{journeyData.name}</div>
-                    {journeyData.tags && journeyData.tags.length && journeyData.tags.map(tag =>
+                    <div className="c-e-r-left-t-a-box-h">{journeyData?.name}</div>
+                    {journeyData?.tags && journeyData.tags.length && journeyData.tags.map(tag =>
                         <div className="disp-inline-b c-e-r-left-d-j-tag">{tag}</div>
                     )}
                 </div>
@@ -68,24 +66,24 @@ export default function Review(props) {
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mb-2">
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Winner Position</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Reward Type</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">No. of Awards</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Probability</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Display Name</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Rewards</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-20">Reward Name</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-10">Probability</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-20">Display Name</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-10">Rewards</div>
                     </div>
                     {rewardsAndBudgetData?.rewards?.length && rewardsAndBudgetData?.rewards?.map((rewObj) => (
                         <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
                             <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.noOfAwards}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.probability}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.displayName}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewards}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType?.label}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-20 float-left clearfix">{rewObj.rewardName}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.probability}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-20 float-left clearfix">{rewObj.displayName}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.rewardValue}</div>
                         </div>
                     ))}
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Budget</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div>
+                        {/* <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div> */}
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Duration</div>
                     </div>
                     <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
@@ -93,7 +91,7 @@ export default function Review(props) {
                             <span className="c-e-r-left-r-b-box-bd-prefix">$</span>
                             {rewardsAndBudgetData?.budget}
                         </div>
-                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div>
+                        {/* <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div> */}
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewardsAndBudgetData?.budgetDuration} Days</div>
                     </div>
                 </div>

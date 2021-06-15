@@ -19,7 +19,7 @@ import Review from "./review/review";
 import './smart.css';
 import _ from 'lodash';
 import { getData, postData } from '../../../api/ApiHelper';
-import { storeStateFn } from "../../common/global";
+import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
 
 
@@ -39,6 +39,50 @@ export default function EngagementsSmart(props) {
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
+
+    const CampaignTableColumns = [
+        {
+            name: "Engagement name",
+            selector: "DisplayName"
+        },
+        {
+            name: "Expire On",
+            cell: rowObj => new Date(rowObj.CompletedDate).toLocaleDateString()
+        },
+        {
+            name: "Customers Participated",
+            selector: "CustomersParticipatedCount"
+        },
+        {
+            name: "Total Winners",
+            selector: "WinnersCount"
+        },
+        {
+            name: "Repeated Customers",
+            selector: "RepeatedCustomersCount"
+        },
+        {
+            name: "TBD",
+            selector: "ToBeDiscussed"
+        },
+        {
+            name: "Status",
+            cell: rowObj =>
+                <div className={classnames('text-c', {
+                    'txt-green': rowObj.Status === 1,
+                    'txt-grey': rowObj.Status === 2,
+                    'txt-orange': rowObj.Status === 3,
+                    'txt-blue': rowObj.Status === 4
+                })}>
+                    {rowObj.Status === 1 ? 'live' : rowObj.Status === 2 ? 'paused' : rowObj.Status === 3 ? 'expired' : rowObj.Status === 4 ? 'upcoming' : 'completed'}
+                </div>
+        },
+        {
+            name: "Actions",
+            cell: rowObj => <EngagementContextMenu onAction={(e) => onActionClick(e, rowObj)} status={rowObj.Status} />
+        }
+    ]
+
 
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
@@ -93,72 +137,78 @@ export default function EngagementsSmart(props) {
         } else if (step === 'rewardsAndBudget') {
             setStep('review');
         } else if (step === 'review') {
-            setOpenEngagementWizard(false);
-            setStep('setGoals');
-            saveEngagement();
+            handleAlertDialog({
+                open: true, title: 'Save Engagement', text: 'Are you sure? Do you want to save it?', handleClose: (bool) => {
+                    handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                    if (bool) {
+                        saveEngagement();
+                    }
+                    setOpenEngagementWizard(false);
+                    setStep('setGoals');
+                }
+            });
         }
     }
 
     const saveEngagement = () => {
-        const engagementReducer = storeStateFn().EngagementsSmartReducer;
-        const targetAudienceData = engagementReducer.targetAudience;
-        const goalsData = engagementReducer.setGoals;
-        const journeyData = engagementReducer.journeyBox;
-        const rewardsAndBudget = engagementReducer.rewardsAndBudget;
+        try {
+            handleLoader(true);
+            const targetAudienceData = props.targetAudience;
+            const goalsData = props.setGoals;
+            const journeyData = props.journeyBox;
+            const rewardsAndBudget = props.rewardsAndBudget;
+            console.log('****', props)
+            debugger
+            let engagementObj = {};
+            engagementObj.EngagementID = goalsData.EngagementId ?? 0;
+            engagementObj.CampaignName = goalsData.campaignName;
+            engagementObj.DisplayName = goalsData.displayName;
+            engagementObj.StatusID = 1;
+            engagementObj.CustomerSegmentID = 1;
+            engagementObj.JourneyID = journeyData.id;
 
-        let engagementObj = {};
-        engagementObj.EngagementID = goalsData.EngagementId ?? 0;
-        engagementObj.CampaignName = goalsData.campaignName;
-        engagementObj.DisplayName = goalsData.displayName;
-        engagementObj.StatusID = 1;
-        engagementObj.CustomerSegmentID = 1;
-        engagementObj.JourneyID = journeyData.id;
-
-        engagementObj.PurchaseRule = {};
-        if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
-            engagementObj.PurchaseRule.Value = parseInt(targetAudienceData.purchaseValue);
-            let daysType = targetAudienceData.daysType?.value;
-            let durationNum = parseInt(targetAudienceData.durationNum);
-            let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
-            engagementObj.PurchaseRule.NumberOfDays = days;
-            engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId ?? 0
-        }
-
-        engagementObj.Rewards = [];
-        rewardsAndBudget?.rewards?.forEach(rewObj => {
-            let rewardObj = {};
-            rewardObj.EngagementRewardId = rewObj.engagementRewardId
-            rewardObj.WinPosition = rewObj.winnerPosition;
-            rewardObj.DisplayName = rewObj.displayName;
-            rewardObj.RewardType = rewObj.rewardType;
-            rewardObj.Probability = rewObj.probability;
-            rewardObj.RewardMasterID = rewObj.id;
-            engagementObj.Rewards.push(rewardObj);
-        })
-
-        engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
-        engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
-        console.log('UPDATED', engagementObj);
-        handleAlertDialog({
-            open: true, title: 'Save Engagement', text: 'Are you sure? Do you want to save it?', handleClose: (bool) => {
-                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
-                if (bool) {
-                    postData(SAVE_ENGAGEMENT, engagementObj)
-                        .then(engagementDbObj => {
-                            if (engagementDbObj) {
-                                console.log('***', 'Engagement saved Succesfully');
-                                fetchEngagements();
-                                createEngagementDataClear();
-                            } else {
-                                console.log('**** Engagement Saving FAILED')
-                            }
-                        });
-                } else {
-
-                }
+            engagementObj.PurchaseRule = {};
+            if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
+                engagementObj.PurchaseRule.Value = parseInt(targetAudienceData.purchaseValue);
+                let daysType = targetAudienceData.daysType;
+                let durationNum = parseInt(targetAudienceData.durationNum);
+                let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
+                engagementObj.PurchaseRule.NumberOfDays = days;
+                engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId ?? 0
             }
-        });
 
+            engagementObj.Rewards = [];
+            rewardsAndBudget?.rewards?.forEach(rewObj => {
+                let rewardObj = {};
+                rewardObj.EngagementRewardId = rewObj.engagementRewardId || 0
+                rewardObj.WinPosition = rewObj.winnerPosition;
+                rewardObj.DisplayName = rewObj.displayName;
+                rewardObj.RewardType = rewObj.rewardType?.label;
+                rewardObj.Probability = rewObj.probability;
+                rewardObj.RewardMasterID = rewObj.id || 0;
+                rewardObj.Value = rewObj.rewardValue || null;
+                engagementObj.Rewards.push(rewardObj);
+            })
+
+            engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
+            engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
+            console.log('****UPDATED', engagementObj);
+
+            postData(SAVE_ENGAGEMENT, engagementObj)
+                .then(engagementDbObj => {
+                    if (engagementDbObj) {
+                        console.log('***', 'Engagement saved Succesfully');
+                        fetchEngagements();
+                        createEngagementDataClear();
+                    } else {
+                        console.log('**** Engagement Saving FAILED')
+                    }
+                    handleLoader(false);
+                });
+        } catch (error) {
+            handleLoader(false);
+
+        }
     }
 
     const createEngagementDataClear = () => {
@@ -175,6 +225,7 @@ export default function EngagementsSmart(props) {
     const getDefineJourney = (data) => {
         setDefineJourney(data);
     }
+
 
     const fetchEngagements = () => {
         try {
@@ -205,6 +256,22 @@ export default function EngagementsSmart(props) {
                 handleLoader(false);
             })
     })
+
+
+    const onActionClick = (e, obj) => {
+        var actionText = e.target.innerText;
+        if (actionText == 'Pause') {
+            onPauseClick(obj, 2);
+        } else if (actionText == 'Resume') {
+            onPauseClick(obj, 1);
+        } else if (actionText == 'Edit') {
+            onEditClick(obj);
+        } else if (actionText == 'Delete') {
+            onDeleteClick(obj);
+        } else if (actionText == 'View Report') {
+            onDeleteClick(obj);
+        }
+    }
 
     const onPauseClick = (engmt, status) => {
         handleLoader(true);
@@ -402,7 +469,7 @@ export default function EngagementsSmart(props) {
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
                                 step === 'targetAudience' ? <TargetAudience props={props} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
-                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} handleLoader={(bool) => handleLoader(bool)} /> :
+                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
                                             step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
                                                 null
                             }

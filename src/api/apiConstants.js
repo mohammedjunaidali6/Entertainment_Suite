@@ -26,6 +26,7 @@ export const ENGAGEMENTS_BY_FILTERS = "/engt/engagementbyfilters";
 export const CUSTOMERS_BY_FILTERS = "/engt/customersbyfilters";
 export const REWARD_BY_FILTERS = "/engt/rewardbyfilters";
 export const REWARD_TYPES = "/engt/rewardtypes";
+export const REWARDS = "/engt/rewards";
 export const JOURNEY_BY_FILTERS = "/engt/journeybyfilters";
 export const SAVE_ENGAGEMENT = "/engt/saveengagement";
 export const DELETE_ENGAGEMENT = "/engt/deleteengagement?engagement_id=";

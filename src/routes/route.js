@@ -23,7 +23,6 @@ import store from '../store/store';
 
 
 export default function AppRoute(props) {
-  console.log('****', props);
   let history = useHistory();
   console.log('window.location.href', window.location.href);
 
