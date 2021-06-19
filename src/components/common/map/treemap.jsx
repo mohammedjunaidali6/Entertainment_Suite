@@ -28,7 +28,7 @@ export default function BasicTreeMap(props) {
                 value="percentage"
                 valueFormat=" ^0.0%"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                label={(e) => e.data.name + " (" + e.data.percentage * 100 + "%)"}
+                label={(e) => e.data.name}
                 labelSkipSize={12}
                 labelTextColor={{ from: 'color', modifiers: [['darker', 1.2]] }}
                 enableParentLabel={false}
