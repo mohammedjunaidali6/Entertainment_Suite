@@ -4,6 +4,8 @@ import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
 import { getData, postData } from '../../../../api/ApiHelper';
 import { CUSTOMERS_BY_FILTERS } from '../../../../api/apiConstants';
+import TreeMap, { transformData } from 'react-canvas-treemap';
+import BasicTreeMap from '../../../common/map/treemap';
 
 
 const options = [
@@ -30,6 +32,7 @@ const DaysTypeOptions = [
 export default function TargetAudience(props) {
     const targetAudienceData = props.props?.targetAudience;
     const [customerSegments, setCustomerSegments] = useState();
+    const [selectedSegment, setSelectedSegment] = useState();
     const [rule1, setRule1] = useState(rule1options[0]);
     const [rule2, setRule2] = useState(rule2options[0]);
     const [purchaseValue, setPurchaseValue] = useState(targetAudienceData?.purchaseValue);
@@ -60,13 +63,28 @@ export default function TargetAudience(props) {
     function taBoxSelect(val) {
         setSelectedTABox(val);
     }
+
+    const onSegmentSelection = (obj) => {
+        setSelectedSegment(obj.data);
+    }
+
+
     const fetchCustomerSegments = () => {
         try {
             props.handleLoader(true);
             getData(CUSTOMERS_BY_FILTERS)
                 .then(customerSegments => {
                     if (customerSegments && Array.isArray(customerSegments)) {
-                        setCustomerSegments(customerSegments);
+                        const data = {
+                            "name": "Target Audience",
+                            "color": "hsl(233, 70%, 50%)",
+                            "children": []
+                        }
+                        customerSegments.map(c => {
+                            c.percentage = (c.customer_segment_id == 6 ? 0.45 : c.customer_segment_id == 1 ? 0.25 : c.customer_segment_id == 2 ? 0.1 : c.customer_segment_id == 4 ? 0.07 : c.customer_segment_id == 5 ? 0.08 : 0.05)
+                            data.children.push(c);
+                        })
+                        setCustomerSegments(data);
                     } else {
                         console.log('***', customerSegments)
                     }
@@ -78,6 +96,7 @@ export default function TargetAudience(props) {
         }
     }
 
+
     useEffect(() => {
         fetchCustomerSegments();
     }, []);
@@ -85,20 +104,23 @@ export default function TargetAudience(props) {
         return () => {
             let targetAudience = {
                 purchaseRuleId: targetAudienceData?.purchaseRuleId ?? 0,
-                targetAudience: customerSegments,
+                targetAudience: selectedSegment,
                 purchaseValue: purchaseValue,
                 durationNum: durationNum,
                 daysType: daysType.value
             };
             props.props.engagementsSmartActionHandler.dispatchTargetAudienceData(targetAudience);
         }
-    }, [customerSegments, purchaseValue, durationNum, daysType]);
+    }, [selectedSegment, purchaseValue, durationNum, daysType]);
 
     return (
         <div id="target-audience-container" className="c-e-target-sec w-100 float-left clearfix">
             <div className="w-100 float-left clearfix c-e-target-h">Select Target Audience for the Engagement</div>
             <div className="c-e-target-content w-100 float-left clearfix">
-                <div className="w-85 float-left clearfix c-e-target-left-box-con">
+                {customerSegments && <BasicTreeMap data={customerSegments} onSegmentSelection={obj => onSegmentSelection(obj)} />}
+                <div className="w-100 float-left clearfix pl-2 pt-1">Selected Customer Segment : <b>{selectedSegment?.name || 'No Segment selected'}</b></div>
+
+                {/* <div className="w-85 float-left clearfix c-e-target-left-box-con">
                     <div className="w-100 float-left clearfix">
                         <div className="w-60 float-left clearfix c-e-t-box c-e-target-g-box" onClick={() => taBoxSelect('All')}>
                             <div className="w-100 float-left clearfix c-r-t-box-n">All Customers</div>
@@ -163,7 +185,7 @@ export default function TargetAudience(props) {
                     {selectedTABox && selectedTABox === 'HVC3' ? (
                         <div className="c-r-t-box-select float-left c-center mr-2">Selected</div>
                     ) : null}
-                </div>
+                </div> */}
             </div>
             <div className="w-100 float-left clearfix c-e-target-p-rule">
                 <img src={p_rule_src} alt="Purchase Rule" className="mr-1" />

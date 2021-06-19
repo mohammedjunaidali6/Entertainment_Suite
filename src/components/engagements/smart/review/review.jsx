@@ -15,10 +15,10 @@ const tempArray = [
 export default function Review(props) {
     const engagement = store.getState().EngagementsSmartReducer;
 
+    const targetAudience = engagement.targetAudience;
     const goalsData = engagement.setGoals;
     const journeyData = engagement.journeyBox;
     const rewardsAndBudgetData = engagement.rewardsAndBudget;
-
 
     return (
         <div id="review-container" >
@@ -34,7 +34,7 @@ export default function Review(props) {
                 <div className="c-e-r-left-h">Target Audience</div>
                 <div className="c-e-r-left-t-a-box">
                     <div className="c-e-r-left-t-a-box-h">User Segment</div>
-                    <div className="c-e-r-left-t-a-box-i"></div>
+                    <div className="c-e-r-left-t-a-box-i pl-2">{targetAudience?.targetAudience?.name}</div>
                     <div className="c-e-r-left-t-a-box-i"></div>
                     <div className="c-e-r-left-t-a-box-h">Rule</div>
                     <div className="c-e-r-left-t-a-box-i"></div>

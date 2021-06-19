@@ -157,14 +157,13 @@ export default function EngagementsSmart(props) {
             const goalsData = props.setGoals;
             const journeyData = props.journeyBox;
             const rewardsAndBudget = props.rewardsAndBudget;
-            console.log('****', props)
-            debugger
+
             let engagementObj = {};
             engagementObj.EngagementID = goalsData.EngagementId ?? 0;
             engagementObj.CampaignName = goalsData.campaignName;
             engagementObj.DisplayName = goalsData.displayName;
             engagementObj.StatusID = 1;
-            engagementObj.CustomerSegmentID = 1;
+            engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.customer_segment_id;
             engagementObj.JourneyID = journeyData.id;
 
             engagementObj.PurchaseRule = {};
@@ -257,7 +256,7 @@ export default function EngagementsSmart(props) {
             })
     })
 
-
+    /// Context Menu Click from List View of EN
     const onActionClick = (e, obj) => {
         var actionText = e.target.innerText;
         if (actionText == 'Pause') {

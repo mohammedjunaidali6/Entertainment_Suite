@@ -141,14 +141,16 @@ export default function RewardsAndBudget(props) {
         props.handleLoader(true);
         getData(REWARD_TYPES).then(rewardTypes => {
             var rewardTypeOptions = [];
-            rewardTypes.forEach(rewType => {
-                let option = {
-                    value: rewType.reward_type_id,
-                    label: rewType.reward_type
-                }
-                rewardTypeOptions.push(option);
-            })
-            setRewardTypes(rewardTypeOptions);
+            if (rewardTypes?.length) {
+                rewardTypes.forEach(rewType => {
+                    let option = {
+                        value: rewType.reward_type_id,
+                        label: rewType.reward_type
+                    }
+                    rewardTypeOptions.push(option);
+                })
+                setRewardTypes(rewardTypeOptions);
+            }
             props.handleLoader(false);
         })
     }
