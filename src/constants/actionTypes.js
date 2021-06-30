@@ -13,6 +13,9 @@ export const E_S_SET_REWARDS_AND_BUDGET = "E_S_SET_REWARDS_AND_BUDGET";
 // Application URL's 
 export const ACTION_TYPE_URL = '';
 
+export const ES_SET_JOURNEY_DETAILS = 'ES_SET_JOURNEY_DETAILS';
+export const ES_SET_ALL_JOURNEYS_DATA = 'ES_SET_ALL_JOURNEYS_DATA';
+export const ES_SET_ALL_JOURNEYS_TASKS = 'ES_SET_ALL_JOURNEYS_TASKS';
 
 export const GET_USERS = "GET_USERS";
 export const GET_ROLES = "GET_ROLES";

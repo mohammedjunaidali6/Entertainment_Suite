@@ -80,6 +80,8 @@ export default function SearchBar(props) {
                                     onChange={handleChange}
                                     placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                     className='searchBar'
+                                    onKeyPress={onKeyPressInSearch}
+                                    onBlur={onSearchBlur}
                                 />
                             </div>
                         </Fragment>

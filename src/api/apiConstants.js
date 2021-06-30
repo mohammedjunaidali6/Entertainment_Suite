@@ -36,3 +36,10 @@ export const ENGAGEMENTS_BY_ID = '/engt/engagementbyid?engagement_id=';
 export const ENGAGEMENTS_DETAILS_BY_ID = '/engt/engagementdetailsbyid?engagement_id=';
 export const ENGAGEMENT_UPDATE_STATUS = '/engt/updateengagementstatus';
 export const ENGAGEMENT_BY_STATUS_ID = '/engt/engagementsbystatus?engagement_status_id=';
+
+export const JOURNEYS = '/engt/AllJourneys'
+export const JOURNEY_TASKS = '/engt/journeyTasks'
+export const ADD_JOURNEY_DETAILS = '/engt/addjourneydetails';
+export const UPDATE_JOURNEY_DETAILS = '/engt/updatejourneydetails';
+export const DELETE_JOURNEY_DETAILS = '/engt/deletejourney';
+export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName';
