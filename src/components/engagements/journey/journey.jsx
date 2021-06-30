@@ -73,11 +73,11 @@ export default function EngagementsJourney(props) {
             name: "Created by",
             selector: "CreatedByUser"
         },
-        {
-            name: "Status",
-            cell: rowObj => rowObj.IsActive ? 'Active' : false
+        // {
+        //     name: "Status",
+        //     cell: rowObj => rowObj.IsActive ? 'Active' : false
 
-        },
+        // },
         {
             name: " ",
             cell: rowObj => <ActionMenu onAction={e => onActionClick(e, rowObj)} />
