@@ -39,12 +39,12 @@ const options = [
 ]
 
 export default function EngagementsJourney(props) {
-    console.log('***', props)
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [createFlag, setCreateFlag] = useState(false);
+    const [updateFlag, setUpdateFlag] = useState(false);
     const [journeysData, setJourneysData] = useState();
-    const [journeyName, setJourneyName] = useState();
+    const [journey, setJourney] = useState({ ID: 0, Name: '' });
     const [journeyTasks, setJourneyTasks] = useState();
     const [droppedItems, setDroppedItems] = useState();
 
@@ -71,7 +71,7 @@ export default function EngagementsJourney(props) {
         },
         {
             name: "Created by",
-            selector: "CreatedByUser"
+            selector: "CreatedBy"
         },
         // {
         //     name: "Status",
@@ -116,15 +116,15 @@ export default function EngagementsJourney(props) {
     const onTaskValueChange = (e, taskObj) => {
         taskObj.value = e.target.value;
         let selectedTasks = [...droppedItems];
-        let taskIndex = _.findIndex(selectedTasks, t => t.journey_task_id == taskObj.journey_task_id);
+        let taskIndex = _.findIndex(selectedTasks, t => t.JourneyTaskID == taskObj.JourneyTaskID);
         selectedTasks.splice(taskIndex, 1, taskObj);
         setDroppedItems(selectedTasks);
     }
 
-    const onSave = () => {
+    const onJourneySave = () => {
         handleLoader(true);
         let journeyData = {
-            JourneyName: journeyName,
+            JourneyName: journey.Name,
             JourneyTasks: droppedItems.map((task, ndx) => {
                 return {
                     JourneyTaskID: task.journey_task_id,
@@ -137,103 +137,137 @@ export default function EngagementsJourney(props) {
             .then(response => {
                 if (response) {
                     setCreateFlag(false);
+                    setJourney({ ID: 0, Name: '' });
+                    setDroppedItems();
+                    handleLoader(false);
                     handleMessageBox('success', `${response.journey_name} Journey Created Succesfully`)
                 } else {
+                    handleLoader(false);
                     handleMessageBox('error', `Journey Creation is failed`)
                 }
-                handleLoader(false);
             });
+    }
+
+    const onJourneyUpdate = () => {
+        handleLoader(true);
+        let journeyData = {
+            JourneyID: journey.ID,
+            JourneyName: journey.Name,
+            JourneyTasks: droppedItems.map((task, ndx) => {
+                return {
+                    JourneyTaskID: task.JourneyTaskID,
+                    Value: task.value,
+                    Order: ndx + 1
+                }
+            })
+        }
+        postData(`${Engagement_Host_URI}${UPDATE_JOURNEY_DETAILS}`, journeyData)
+            .then(journeyDetails => {
+                if (journeyDetails) {
+                    getAllJourneys();
+                    handleLoader(false);
+                    handleMessageBox('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
+                } else {
+                    handleLoader(false);
+                    handleMessageBox('error', `Journey Updating failed`);
+                }
+            })
     }
 
     const onCancel = () => {
         setCreateFlag(false);
+        setUpdateFlag(false);
     }
+    const getAllJourneys = () => {
+        handleLoader(true);
+        getData(`${Engagement_Host_URI}${JOURNEYS}`)
+            .then(journeys => {
+                if (journeys) {
+                    setGroupedJourneys(journeys);
+                } else {
 
+                }
+                handleLoader(false);
+            });
+    }
     const searchJourneyByName = (searchText) => {
         if (searchText) {
             getData(`${Engagement_Host_URI}${JOURNEYS_BY_SEARCH}?journey_name=${searchText}`)
                 .then(journeys => {
-                    var groupedJourneys = groupJourneys(journeys);
-
-                    setJourneysData(groupedJourneys);
+                    setGroupedJourneys(journeys);
                 });
         } else {
             getAllJourneys();
         }
     }
-    const groupJourneys = (journeys) => {
+    const setGroupedJourneys = (journeys) => {
         var grouped = [];
         journeys.forEach(j => {
             var jrny = _.find(grouped, g => g.JourneyID == j.JourneyID);
             if (jrny) {
                 jrny.JourneyTasks.push({
                     JourneyTaskID: j.JourneyTaskID,
-                    JourneyTaskName: j.JourneyTaskName
+                    JourneyTaskName: j.JourneyTaskName,
+                    TaskValue: j.TaskValue,
+                    TaskOrder: j.TaskOrder
                 });
             } else {
                 grouped.push({
                     JourneyID: j.JourneyID,
                     JourneyName: j.JourneyName,
                     CreatedBy: j.CreatedBy,
-                    CreatedByUser: j.CreatedByUser,
                     IsActive: j.IsActive,
                     JourneyTasks: [{
                         JourneyTaskID: j.JourneyTaskID,
-                        JourneyTaskName: j.JourneyTaskName
+                        JourneyTaskName: j.JourneyTaskName,
+                        TaskValue: j.TaskValue,
+                        TaskOrder: j.TaskOrder
                     }]
                 });
             }
         })
-        return grouped;
+        var groupedJourneys = setGroupedJourneys(journeys);
+
+        props.engagementsJourneyActionHandler.dispatchJourneysData(groupedJourneys);
+        setJourneysData(groupedJourneys);
     }
-    const getAllJourneys = () => {
-        handleLoader(true);
-        getData(`${Engagement_Host_URI}${JOURNEYS}`)
-            .then(journeys => {
-                var groupedJourneys = groupJourneys(journeys);
-                console.log('***', groupedJourneys)
-                setJourneysData(groupedJourneys);
-                props.engagementsJourneyActionHandler.dispatchJourneysData(groupedJourneys);
-                handleLoader(false);
-            });
-    }
+
     const getAllJourneyTasks = () => {
         handleLoader(true);
         getData(`${Engagement_Host_URI}${JOURNEY_TASKS}`)
             .then(journeyTasks => {
-                setJourneyTasks(journeyTasks);
-                props.engagementsJourneyActionHandler.dispatchJourneyTasks(journeyTasks);
+                if (journeyTasks) {
+                    setJourneyTasks(journeyTasks);
+                    props.engagementsJourneyActionHandler.dispatchJourneyTasks(journeyTasks);
+                } else {
+
+                }
                 handleLoader(false);
             });
     }
 
     const onActionClick = (e, rowObj) => {
-        console.log('***', e.target.outerText, rowObj)
         let action = e.target.outerText;
         if (action === 'Edit') {
-            var data = {
-
-            }
-            postData(`${Engagement_Host_URI}${UPDATE_JOURNEY_DETAILS}`, data)
-                .then(journeyDetails => {
-                    if (journeyDetails) {
-                        console.log('***', journeyDetails);
-                        getAllJourneys();
-                        handleMessageBox('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
-                    } else {
-                        handleMessageBox('error', `Journey Updating failed`);
-                    }
-                })
+            setUpdateFlag(true);
+            setJourney({ ID: rowObj.JourneyID, Name: rowObj.JourneyName });
+            var tasks = rowObj.JourneyTasks.length && rowObj.JourneyTasks.map(jTask => {
+                var allJourneyTasks = [...props.allJourneyTasks]
+                var getTask = _.find(allJourneyTasks, t => t.JourneyTaskID == jTask.JourneyTaskID);
+                var allJourneys = [...props.allJourneysData];
+                var getJourneyTask = _.find(_.find(allJourneys, t => t.JourneyID == rowObj.JourneyID)?.JourneyTasks, jt => jt.JourneyTaskID == jTask.JourneyTaskID);
+                if (getTask) {
+                    getTask.value = getJourneyTask?.TaskValue;
+                    return getTask;
+                }
+            });
+            console.log('***', tasks)
+            setDroppedItems(tasks);
         } else if (action === 'Delete') {
             getData(`${Engagement_Host_URI}${DELETE_JOURNEY_DETAILS}?journey_id=${rowObj.JourneyID}`)
-                .then(journeyDetails => {
-                    console.log('***', journeyDetails);
-                    if (journeyDetails) {
-                        getAllJourneys();
-                        handleMessageBox('success', `${journeyDetails.journey_name} Journey Deleted Succesfully`);
-                    } else {
-                        handleMessageBox('error', `Journey Deleting failed`);
-                    }
+                .then(response => {
+                    getAllJourneys();
+                    handleMessageBox('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
                 })
         } else {
 
@@ -241,30 +275,28 @@ export default function EngagementsJourney(props) {
     }
 
     useEffect(() => {
-        if (createFlag) {
-            getAllJourneyTasks();
-        }
-    }, [createFlag]);
+        getAllJourneyTasks();
+    }, [createFlag, updateFlag]);
 
     useEffect(() => {
         getAllJourneys();
     }, []);
 
-    useEffect(() => {
-        return (() => {
-            let journeyDetails = {
-                JourneyName: journeyName,
-                JourneyTasks: [...droppedItems || []]
-            }
-            props.engagementsJourneyActionHandler.dispatchJourneyDetails(journeyDetails);
-        });
-    }, [journeyName, droppedItems]);
+    // useEffect(() => {
+    //     return (() => {
+    //         let journeyDetails = {
+    //             JourneyName: journeyName,
+    //             JourneyTasks: [...droppedItems || []]
+    //         }
+    //         props.engagementsJourneyActionHandler.dispatchJourneyDetails(journeyDetails);
+    //     });
+    // }, [journeyName, droppedItems]);
 
 
     return (
         <div id="engagements-journey-container">
             <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
-            {!createFlag ? (
+            {(!createFlag && !updateFlag) ?
                 <Fragment>
                     <div className='manage-journey-block'>
                         <div className='manage-journey'>Manage journey</div>
@@ -284,7 +316,7 @@ export default function EngagementsJourney(props) {
                             subHeader={true} />
                     </div>
                 </Fragment>
-            ) : (
+                :
                 <Fragment>
                     <div className="create-new-journey-container w-100 float-left clearfix" style={{ height: containerHeightCalcFn(186), overflowY: "auto" }}>
                         <div className='heading-c-j'>Create New Journey</div>
@@ -293,9 +325,9 @@ export default function EngagementsJourney(props) {
                             <input
                                 className='input-field-c-j w-50 float-left clearfix'
                                 type="text"
-                                placeholder="First Purchase User's journey"
-                                onChange={e => e.target.value?.length < 26 && setJourneyName(e.target.value)}
-                                value={journeyName}
+                                placeholder="Enter Journey Name"
+                                onChange={e => e.target.value?.length < 26 && setJourney({ ...journey, Name: e.target.value })}
+                                value={journey.Name}
                             />
                         </div>
                         <div className="c-j-lbl-u-t w-100 float-left clearfix">User tasks</div>
@@ -303,11 +335,11 @@ export default function EngagementsJourney(props) {
                             {journeyTasks && journeyTasks.length > 0 ? (
                                 <Fragment>
                                     {journeyTasks.map((taskObj) => (
-                                        <div className="w-25 float-left clearfix" key={taskObj.journey_task_id} draggable={true} onDragOver={(event) => onDragOver(event)} onDragStart={(event) => onDragStart(event, taskObj)}>
+                                        <div className="w-25 float-left clearfix" key={taskObj.JourneyTaskID} draggable={true} onDragOver={(event) => onDragOver(event)} onDragStart={(event) => onDragStart(event, taskObj)}>
                                             <div className="u-t-box w-97 float-left clearfix">
-                                                <span className="u-t-box-h">{taskObj.event_display_name}</span>
-                                                <img src={three_dot_src} alt={taskObj.event_display_name} />
-                                                <img src={three_dot_src} alt={taskObj.event_display_name} />
+                                                <span className="u-t-box-h">{taskObj.JourneyTaskName}</span>
+                                                <img src={three_dot_src} alt={taskObj.JourneyTaskName} />
+                                                <img src={three_dot_src} alt={taskObj.JourneyTaskName} />
                                             </div>
                                         </div>
                                     ))}
@@ -318,19 +350,20 @@ export default function EngagementsJourney(props) {
                         <div className="dropped-tasks w-100 float-left clearfix">
                             <Fragment>
                                 {droppedItems && droppedItems.length > 0 && droppedItems.map((taskObj) => (
-                                    <div className="w-25 float-left clearfix" key={taskObj.journey_task_id}>
+                                    <div className="w-25 float-left clearfix" key={taskObj.JourneyTaskID}>
                                         <div className="u-t-dropped-box w-97 float-left clearfix">
                                             <div className="u-t-dropped-box-h">
-                                                <div className="u-t-dropped-box-h-lbl">{taskObj.event_display_name}</div>
+                                                <div className="u-t-dropped-box-h-lbl">{taskObj.JourneyTaskName}</div>
                                             </div>
-                                            <div className="u-t-dropped-box-sub-h">{taskObj.value_question}</div>
+                                            <div className="u-t-dropped-box-sub-h">{taskObj.ValueQuestion}</div>
                                             <div>
                                                 <input
                                                     type='number'
                                                     className="w-100 float-left clearfix"
                                                     styles={{ fontSize: "12px" }}
-                                                    disabled={!taskObj.need_value}
+                                                    disabled={!taskObj.NeedValue}
                                                     onChange={e => onTaskValueChange(e, taskObj)}
+                                                    value={taskObj.value || ''}
                                                 />
                                             </div>
                                         </div>
@@ -361,13 +394,18 @@ export default function EngagementsJourney(props) {
                     <div className="w-100 float-left clearfix c-j-a">
                         <div className="w-50 float-left clearfix"></div>
                         <div className="w-50 float-left clearfix" style={{ marginRight: "45px" }}>
-                            <div className="c-j-a-s content-c float-right clearfix" onClick={onSave}>Save</div>
+                            {createFlag &&
+                                <div className="c-j-a-s content-c float-right clearfix" onClick={onJourneySave}>Save</div>
+                            }
+                            {updateFlag &&
+                                <div className="c-j-a-s content-c float-right clearfix" onClick={onJourneyUpdate}>Update</div>
+                            }
                             <div className="c-j-a-c content-c float-right clearfix" onClick={onCancel}>Cancel</div>
                         </div>
                     </div>
                     {/* <TaskDragDrop /> */}
                 </Fragment>
-            )}
+            }
         </div>
     )
 }

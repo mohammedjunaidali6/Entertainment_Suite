@@ -5,8 +5,7 @@ import * as actionsHandler from '../../../actions/engagements/journey/journeyAct
 import * as routeActionHandler from '../../../actions/route/routeActionHandler';
 
 const mapStateToProps = state => ({
-    journeyDetails: state.EngagementsJourneyReducer.journeyDetails,
-    allJourneysData: state.EngagementsJourneyReducer.journeysData,
+    allJourneysData: state.EngagementsJourneyReducer.allJourneysData,
     allJourneyTasks: state.EngagementsJourneyReducer.allJourneyTasks
 });
 
