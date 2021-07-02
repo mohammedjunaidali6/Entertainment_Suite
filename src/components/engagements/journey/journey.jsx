@@ -127,7 +127,7 @@ export default function EngagementsJourney(props) {
             JourneyName: journey.Name,
             JourneyTasks: droppedItems.map((task, ndx) => {
                 return {
-                    JourneyTaskID: task.journey_task_id,
+                    JourneyTaskID: task.JourneyTaskID,
                     Value: task.value,
                     Order: ndx + 1
                 }
@@ -136,9 +136,8 @@ export default function EngagementsJourney(props) {
         postData(`${Engagement_Host_URI}${ADD_JOURNEY_DETAILS}`, journeyData)
             .then(response => {
                 if (response) {
-                    setCreateFlag(false);
-                    setJourney({ ID: 0, Name: '' });
-                    setDroppedItems();
+                    getAllJourneys();
+                    onCancel();
                     handleLoader(false);
                     handleMessageBox('success', `${response.journey_name} Journey Created Succesfully`)
                 } else {
@@ -165,6 +164,7 @@ export default function EngagementsJourney(props) {
             .then(journeyDetails => {
                 if (journeyDetails) {
                     getAllJourneys();
+                    onCancel();
                     handleLoader(false);
                     handleMessageBox('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
                 } else {
@@ -177,6 +177,8 @@ export default function EngagementsJourney(props) {
     const onCancel = () => {
         setCreateFlag(false);
         setUpdateFlag(false);
+        setJourney({ ID: 0, Name: '' });
+        setDroppedItems();
     }
     const getAllJourneys = () => {
         handleLoader(true);
@@ -201,9 +203,9 @@ export default function EngagementsJourney(props) {
         }
     }
     const setGroupedJourneys = (journeys) => {
-        var grouped = [];
+        var groupedJourneys = [];
         journeys.forEach(j => {
-            var jrny = _.find(grouped, g => g.JourneyID == j.JourneyID);
+            var jrny = _.find(groupedJourneys, g => g.JourneyID == j.JourneyID);
             if (jrny) {
                 jrny.JourneyTasks.push({
                     JourneyTaskID: j.JourneyTaskID,
@@ -212,7 +214,7 @@ export default function EngagementsJourney(props) {
                     TaskOrder: j.TaskOrder
                 });
             } else {
-                grouped.push({
+                groupedJourneys.push({
                     JourneyID: j.JourneyID,
                     JourneyName: j.JourneyName,
                     CreatedBy: j.CreatedBy,
@@ -226,7 +228,6 @@ export default function EngagementsJourney(props) {
                 });
             }
         })
-        var groupedJourneys = setGroupedJourneys(journeys);
 
         props.engagementsJourneyActionHandler.dispatchJourneysData(groupedJourneys);
         setJourneysData(groupedJourneys);
@@ -261,12 +262,12 @@ export default function EngagementsJourney(props) {
                     return getTask;
                 }
             });
-            console.log('***', tasks)
             setDroppedItems(tasks);
         } else if (action === 'Delete') {
             getData(`${Engagement_Host_URI}${DELETE_JOURNEY_DETAILS}?journey_id=${rowObj.JourneyID}`)
                 .then(response => {
                     getAllJourneys();
+                    setUpdateFlag(false);
                     handleMessageBox('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
                 })
         } else {
@@ -275,11 +276,8 @@ export default function EngagementsJourney(props) {
     }
 
     useEffect(() => {
-        getAllJourneyTasks();
-    }, [createFlag, updateFlag]);
-
-    useEffect(() => {
         getAllJourneys();
+        getAllJourneyTasks();
     }, []);
 
     // useEffect(() => {
