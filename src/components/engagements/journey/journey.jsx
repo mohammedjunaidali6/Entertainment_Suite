@@ -43,6 +43,7 @@ export default function EngagementsJourney(props) {
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [createFlag, setCreateFlag] = useState(false);
     const [updateFlag, setUpdateFlag] = useState(false);
+    const [journeysCount, setJourneysCount] = useState({ usedInEngagements: 0, Total: 0 });
     const [journeysData, setJourneysData] = useState();
     const [journey, setJourney] = useState({ ID: 0, Name: '' });
     const [journeyTasks, setJourneyTasks] = useState();
@@ -183,9 +184,11 @@ export default function EngagementsJourney(props) {
     const getAllJourneys = () => {
         handleLoader(true);
         getData(`${Engagement_Host_URI}${JOURNEYS}`)
-            .then(journeys => {
-                if (journeys) {
-                    setGroupedJourneys(journeys);
+            .then(journeysData => {
+                if (journeysData) {
+                    console.log('****', journeysData)
+                    setGroupedJourneys(journeysData.JourneysResponse);
+                    setJourneysCount({ usedInEngagements: journeysData.UsedJourneysCount, Total: journeysData.TotalJourneysCount });
                 } else {
 
                 }
@@ -298,7 +301,7 @@ export default function EngagementsJourney(props) {
                 <Fragment>
                     <div className='manage-journey-block'>
                         <div className='manage-journey'>Manage journey</div>
-                        <div className='manage-journey-text'>6/18 jouneys are part of running campaign</div>
+                        <div className='manage-journey-text'>{`${journeysCount.usedInEngagements}/${journeysCount.Total} jouneys are part of running campaign`}</div>
                     </div>
                     <div className='btn-create-journey float-right text-center pt-2' onClick={createClick}>
                         <span className="btn-c-j-text">+ Create Journey</span>
