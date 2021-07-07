@@ -10,33 +10,9 @@ import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
 import { getData, postData } from '../../../api/ApiHelper';
-import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, Engagement_Host_URI, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
+import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
 
-
-const tempDraggedItems = [
-    { id: 1, name: "Login to the App" },
-    { id: 2, name: "Add Product to Cart" },
-    { id: 3, name: "Added Product to wishlist" },
-    { id: 4, name: "First Purchase" },
-    { id: 5, name: "Second Purchase" },
-    { id: 6, name: "Not Purchase last 2 months" },
-    { id: 7, name: "Added Product to wishlist" },
-    { id: 8, name: "Added Product to wishlist" },
-]
-
-const tempDroppedItems = [
-    { id: 1, name: "Login to the App", subHeading: "Channel Options", data: [] },
-    { id: 2, name: "Add Product to Cart", subHeading: "No of products added to cart", data: [] },
-    { id: 3, name: "Added Product to wishlist", subHeading: "No of products added to whislist", data: [] },
-    { id: 4, name: "First Purchase", subHeading: "No of products added to cart", data: [] },
-    { id: 5, name: "Second Purchase", subHeading: "Channel Options", data: [] },
-    { id: 6, name: "Not Purchase last 2 months", subHeading: "No of products added to cart", data: [] }
-]
-
-const options = [
-    { value: 'val 1', label: 'val 1' }
-]
 
 export default function EngagementsJourney(props) {
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
@@ -134,7 +110,7 @@ export default function EngagementsJourney(props) {
                 }
             })
         }
-        postData(`${Engagement_Host_URI}${ADD_JOURNEY_DETAILS}`, journeyData)
+        postData(`${ADD_JOURNEY_DETAILS}`, journeyData)
             .then(response => {
                 if (response) {
                     getAllJourneys();
@@ -161,7 +137,7 @@ export default function EngagementsJourney(props) {
                 }
             })
         }
-        postData(`${Engagement_Host_URI}${UPDATE_JOURNEY_DETAILS}`, journeyData)
+        postData(`${UPDATE_JOURNEY_DETAILS}`, journeyData)
             .then(journeyDetails => {
                 if (journeyDetails) {
                     getAllJourneys();
@@ -183,7 +159,7 @@ export default function EngagementsJourney(props) {
     }
     const getAllJourneys = () => {
         handleLoader(true);
-        getData(`${Engagement_Host_URI}${JOURNEYS}`)
+        getData(JOURNEYS)
             .then(journeysData => {
                 if (journeysData) {
                     console.log('****', journeysData)
@@ -197,7 +173,7 @@ export default function EngagementsJourney(props) {
     }
     const searchJourneyByName = (searchText) => {
         if (searchText) {
-            getData(`${Engagement_Host_URI}${JOURNEYS_BY_SEARCH}?journey_name=${searchText}`)
+            getData(`${JOURNEYS_BY_SEARCH}${searchText}`)
                 .then(journeys => {
                     setGroupedJourneys(journeys);
                 });
@@ -238,7 +214,7 @@ export default function EngagementsJourney(props) {
 
     const getAllJourneyTasks = () => {
         handleLoader(true);
-        getData(`${Engagement_Host_URI}${JOURNEY_TASKS}`)
+        getData(JOURNEY_TASKS)
             .then(journeyTasks => {
                 if (journeyTasks) {
                     setJourneyTasks(journeyTasks);
@@ -267,7 +243,7 @@ export default function EngagementsJourney(props) {
             });
             setDroppedItems(tasks);
         } else if (action === 'Delete') {
-            getData(`${Engagement_Host_URI}${DELETE_JOURNEY_DETAILS}?journey_id=${rowObj.JourneyID}`)
+            getData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`)
                 .then(response => {
                     getAllJourneys();
                     setUpdateFlag(false);

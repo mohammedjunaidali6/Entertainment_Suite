@@ -177,7 +177,7 @@ export default function RewardsAndBudget(props) {
     }
     const onRewardTypeSelect = (e, obj) => {
         props.handleLoader(true);
-        getData(`${REWARDS}?reward_type_id=${e.value}`)
+        getData(`${REWARDS}${e.value}`)
             .then(rewards => {
                 if (Array.isArray(rewards)) {
                     obj.rewardName = rewards[0].reward_name;

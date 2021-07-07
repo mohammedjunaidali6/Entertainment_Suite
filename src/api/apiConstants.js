@@ -1,10 +1,11 @@
 export const Gateway_Host_URI = "http://localhost:806/api";
 export const Identity_Host_URI = "http://localhost:807/api";
-export const Engagement_Host_URI = "http://localhost:815/api";
+//export const Engagement_Host_URI = "http://localhost:815/api";
+export const Prod_Base_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
 
 export const headers = {
     client_id: 'identity_mgt_tenant_2',//'client_1_engagement', //
-    secret: 'XsrRvPkMHmXkkFeW'
+    secret: 'XsrRvPkMHmXkkFeW',
 }
 
 export const USER_BY_FILTERS = "/idty/userbyfilter";
@@ -26,7 +27,7 @@ export const ENGAGEMENTS_BY_FILTERS = "/engt/engagementbyfilters";
 export const CUSTOMERS_BY_FILTERS = "/engt/customersbyfilters";
 export const REWARD_BY_FILTERS = "/engt/rewardbyfilters";
 export const REWARD_TYPES = "/engt/rewardtypes";
-export const REWARDS = "/engt/rewards";
+export const REWARDS = "/engt/rewards?reward_type_id=";
 export const JOURNEY_BY_FILTERS = "/engt/journeybyfilters";
 export const SAVE_ENGAGEMENT = "/engt/saveengagement";
 export const DELETE_ENGAGEMENT = "/engt/deleteengagement?engagement_id=";
@@ -34,12 +35,12 @@ export const UPDATE_ENGAGEMENT_STATUS = "/engt/updateengagementstatus";
 export const ENGAGEMENTS_BY_STATUS = "/engt/engagementsbystatus";
 export const ENGAGEMENTS_BY_ID = '/engt/engagementbyid?engagement_id=';
 export const ENGAGEMENTS_DETAILS_BY_ID = '/engt/engagementdetailsbyid?engagement_id=';
-export const ENGAGEMENT_UPDATE_STATUS = '/engt/updateengagementstatus';
+export const ENGAGEMENT_UPDATE_STATUS = '/engt/updateengagementstatus?engagement_id=';
 export const ENGAGEMENT_BY_STATUS_ID = '/engt/engagementsbystatus?engagement_status_id=';
 
 export const JOURNEYS = '/engt/AllJourneys'
 export const JOURNEY_TASKS = '/engt/journeyTasks'
 export const ADD_JOURNEY_DETAILS = '/engt/addjourneydetails';
 export const UPDATE_JOURNEY_DETAILS = '/engt/updatejourneydetails';
-export const DELETE_JOURNEY_DETAILS = '/engt/deletejourney';
-export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName';
+export const DELETE_JOURNEY_DETAILS = '/engt/deletejourney?journey_id=';
+export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName?journey_name=';

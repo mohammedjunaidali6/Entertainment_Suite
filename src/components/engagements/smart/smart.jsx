@@ -274,7 +274,7 @@ export default function EngagementsSmart(props) {
 
     const onPauseClick = (engmt, status) => {
         handleLoader(true);
-        getData(`${ENGAGEMENT_UPDATE_STATUS}?engagement_id=${engmt.EngagementID}&engagement_status_id=${status}`)
+        getData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`)
             .then((response) => {
                 if (response) {
                     fetchEngagements();
