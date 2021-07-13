@@ -3,13 +3,10 @@ import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from
 import { AiOutlineMenu } from "react-icons/ai";
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
 import { containerHeightCalcFn } from "../../common/global";
 import CampaignBox from "../../common/campaignBox/campaignBox";
 import SearchBar from "../../common/searchBar/searchBar";
 import Table from "../../common/reactTable/table";
-import { CampaignMockData, CampaignTableColumns } from "../../../constants/globalMockdata";
 import SetGoals from "./setGoals/setGoals";
 import TargetAudience from "./targetAudience/targetAudience";
 import DefineJourney from "./defineJourney/defineJourney";
@@ -21,7 +18,7 @@ import _ from 'lodash';
 import { getData, postData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
-
+import MessageBox from '../../common/MessageBox/MessageBox';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -39,6 +36,7 @@ export default function EngagementsSmart(props) {
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
+    const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
 
     const CampaignTableColumns = [
         {
@@ -83,7 +81,10 @@ export default function EngagementsSmart(props) {
         }
     ]
 
-
+    const handleMessageBox = (messageType, textToDisplay) => {
+        setMessageBox({ display: true, type: messageType, text: textToDisplay });
+        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
+    }
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
     }
@@ -196,11 +197,13 @@ export default function EngagementsSmart(props) {
             postData(SAVE_ENGAGEMENT, engagementObj)
                 .then(engagementDbObj => {
                     if (engagementDbObj) {
+                        handleMessageBox('success', 'Engagement Saved Succesfully');
                         console.log('***', 'Engagement saved Succesfully');
                         fetchEngagements();
                         createEngagementDataClear();
                     } else {
                         console.log('**** Engagement Saving FAILED')
+                        handleMessageBox('error', 'Engagement Saving failed');
                     }
                     handleLoader(false);
                 });
@@ -277,7 +280,7 @@ export default function EngagementsSmart(props) {
         getData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`)
             .then((response) => {
                 if (response) {
-                    fetchEngagements();
+                    tabClick(active);
                     console.log(`*** ${engmt.EngagementID} Engagement is Paused succesfully`)
                 } else {
                 }
@@ -357,7 +360,7 @@ export default function EngagementsSmart(props) {
                     getData(`${DELETE_ENGAGEMENT}${engmt.EngagementID}`)
                         .then(engagement => {
                             if (engagement) {
-                                fetchEngagements();
+                                tabClick(active);
                                 console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
                             }
                             handleLoader(false);
@@ -376,14 +379,6 @@ export default function EngagementsSmart(props) {
     useEffect(() => {
         fetchEngagements();
 
-        // handleAlertDialog({
-        //     open: true, title: 'Load Engagements', text: 'Do you want to load Engagements?', handleClose: (bool) => {
-        //         handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
-        //         if (bool) {
-        //             fetchEngagements();
-        //         }
-        //     }
-        // })
         return () => {
             createEngagementDataClear();
         }
@@ -396,6 +391,7 @@ export default function EngagementsSmart(props) {
 
     return (
         <div id="engagements-smart-container">
+            <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
             {!openEngagementWizard ? (
                 <Fragment>
                     <div className="mb-4">

@@ -12,6 +12,8 @@
   position: absolute;
   left: 56px;
   top: 30px;
+  height: 80px;
+  width: 180px;
 }
 .login-outer-container{
     display: flex;

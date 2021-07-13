@@ -5,17 +5,20 @@ import Typography from '@material-ui/core/Typography';
 import LineChart from "../common/utils/lineChart";
 import CustomerOverview from "./customerOverview/customerOverview";
 import GamePlayingOverview from "./gamePlayingOverview/gamePlayingOverview";
-import { lineChartData, lineChartSingleBlueData, lineChartSingleGreenData, 
-        lineChartSinglePurpleData, lineChartSingleOrangeData } from "../../constants/globalMockdata";
+import {
+    lineChartData, lineChartSingleBlueData, lineChartSingleGreenData,
+    lineChartSinglePurpleData, lineChartSingleOrangeData
+} from "../../constants/globalMockdata";
 import SalesOverviewBox from "./salesOverviewBox/salesOverviewBox";
 import h_dots_src from "../../assets/img/dots-icon_horizontal.svg";
 import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
 }));
 
@@ -52,6 +55,17 @@ export default function Dashboard(props) {
         setcoFilterEl(null);
     };
 
+    useEffect(() => {
+        if (localStorage.getItem('loggedIn')) {
+
+        } else {
+            props.history.push('/login');
+        }
+        return () => {
+            localStorage.setItem('loggedIn', false);
+        }
+    })
+
     return (
         <Fragment>
             <div id="dashboard-container" className="p-2">
@@ -62,7 +76,7 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
                             <div className="float-right clearfix mb-1 f-c-box" onClick={soFilterOpenClick} >
-                                <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
+                                <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
                                 <span className="d-dp-lbl pr-1">{soFilterVal}</span>
                                 <img src={down_arrow_src} alt="Down Arrow" />
                             </div>
@@ -116,8 +130,8 @@ export default function Dashboard(props) {
                 </div>
                 <div className="w-100 float-left clearfix p-4 mb-4 chart-container">
                     <LineChart data={lineChartData}
-                                chartTitle="Sales Chart"
-                                showAction={true} >
+                        chartTitle="Sales Chart"
+                        showAction={true} >
                     </LineChart>
                 </div>
                 <div className="w-100 float-left clearfix">
@@ -127,7 +141,7 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
                             <div className="float-right clearfix mb-1 f-c-box" onClick={coFilterOpenClick}>
-                                <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
+                                <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
                                 <span className="d-dp-lbl pr-1">{coFilterVal}</span>
                                 <img src={down_arrow_src} alt="Down Arrow" />
                             </div>

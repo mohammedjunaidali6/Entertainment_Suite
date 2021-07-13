@@ -6,9 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import { BsChevronDown, BsX, BsFillBellFill, BsSearch } from 'react-icons/bs';
-
 import './header.css';
-import logo_src from '../../assets/img/logo.png';
+import logo_src from '../../assets/img/blaash-logo.png';
 import default_user_src from '../../assets/img/default_user.png';
 import product_tour_src from '../../assets/img/product_tour.svg';
 import support_src from '../../assets/img/support.svg';
@@ -18,7 +17,7 @@ import logout_src from '../../assets/img/logout.svg';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
 }));
 
@@ -71,7 +70,7 @@ export default function Header(props) {
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={company}
-                    onChange={handleChange} className="h-dd" style={{marginTop: "12px", marginLeft: "40px"}} >
+                    onChange={handleChange} className="h-dd" style={{ marginTop: "12px", marginLeft: "40px" }} >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
@@ -83,7 +82,7 @@ export default function Header(props) {
             <div className="w-50 float-left clearfix">
                 <div className="h-logged-user-sec float-right clearfix" onClick={handleClick}>
                     <img src={default_user_src} alt="logged user" className="h-logger-user" />
-                    <BsChevronDown style={{color: "white"}} />
+                    <BsChevronDown style={{ color: "white" }} />
                 </div>
                 <Popover
                     id={id}
@@ -109,7 +108,7 @@ export default function Header(props) {
                                 <img src={help_src} alt="Help" />
                                 <span className="pl-2 pt-2">Help</span>
                             </div>
-                            <div style={{borderBottom: "1px solid #DBDDDE"}} onClick={logOutFn}>
+                            <div style={{ borderBottom: "1px solid #DBDDDE" }} onClick={logOutFn}>
                                 <img src={logout_src} alt="logout" />
                                 <span className="pl-2 pt-2">Logout</span>
                             </div>
@@ -125,7 +124,7 @@ export default function Header(props) {
                         <BsX className="h-icons float-right clearfix m-0 c-pointer h-s-sec-img" onClick={() => setSearchOpen(false)}></BsX>
                     </div>
                 ) : (
-                    <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{marginLeft: "40px"}}></BsSearch>
+                    <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{ marginLeft: "40px" }}></BsSearch>
                 )}
                 <div className="h-links float-right clearfix">
                     <img src={product_tour_src} className="mb-1" />
