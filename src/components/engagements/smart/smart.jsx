@@ -144,7 +144,6 @@ export default function EngagementsSmart(props) {
                     if (bool) {
                         saveEngagement();
                     }
-                    setOpenEngagementWizard(false);
                     setStep('setGoals');
                 }
             });
@@ -197,6 +196,7 @@ export default function EngagementsSmart(props) {
             postData(SAVE_ENGAGEMENT, engagementObj)
                 .then(engagementDbObj => {
                     if (engagementDbObj) {
+                        setOpenEngagementWizard(false);
                         handleMessageBox('success', 'Engagement Saved Succesfully');
                         console.log('***', 'Engagement saved Succesfully');
                         fetchEngagements();
