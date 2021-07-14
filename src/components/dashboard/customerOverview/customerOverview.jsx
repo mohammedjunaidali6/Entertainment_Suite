@@ -4,9 +4,9 @@ import CustomerOverviewBox from "../customerOverviewBox/customerOverviewBox";
 import './customerOverview.css';
 
 const data = [
-    { id: 1, title: 'Customers Engaged', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" },
-    { id: 2, title: 'Customer Retention', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" },
-    { id: 3, title: 'Customer Brought Back', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" }
+    { id: 1, title: 'Customers Engaged', count: '2,345', countDesc: 'NUM', percentage: "+51%", status: "this week" },
+    { id: 2, title: 'Customer Retention', count: '349', countDesc: 'NUM', percentage: "+9%", status: "this week" },
+    { id: 3, title: 'Customer Brought Back', count: '761', countDesc: 'NUM', percentage: "+16%", status: "this week" }
 ];
 
 export default function CustomerOverview(props) {

@@ -112,22 +112,26 @@ export default function Dashboard(props) {
                 <div className="w-100 float-left clearfix mb-4 sales-overview">
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleBlueData}></SalesOverviewBox>
+                            <SalesOverviewBox opt={lineChartSingleBlueData} header='Active Customers' count={'2,763'} perc='67%'>
+                            </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleGreenData}></SalesOverviewBox>
+                            <SalesOverviewBox opt={lineChartSingleGreenData} header='Total Sales' count={'3,922'} perc='42%'>
+                            </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSinglePurpleData}></SalesOverviewBox>
+                            <SalesOverviewBox opt={lineChartSinglePurpleData} header='Repeat Purchases' count={'1,012'} perc='58%'>
+                            </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleOrangeData}></SalesOverviewBox>
+                            <SalesOverviewBox opt={lineChartSingleOrangeData} header='Game Plays' count={'1,802'} perc='61%'>
+                            </SalesOverviewBox>
                         </div>
                     </div>
                 </div>

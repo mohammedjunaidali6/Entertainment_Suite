@@ -5,9 +5,9 @@ import LineChart from "../../common/utils/lineChart";
 import './gamePlayingOverview.css';
 
 const data = [
-    { id: 1, title: 'Total Coupon Scratch', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" },
-    { id: 2, title: 'Repeat Players', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" },
-    { id: 3, title: 'Avg Engagement Rate', count: 2345, countDesc: 'NUM', percentage: "+40%", status: "this week" }
+    { id: 1, title: 'Total Coupon Scratch', count: '2,401', countDesc: 'NUM', percentage: "+48%", status: "this week" },
+    { id: 2, title: 'Repeat Players', count: '1,003', countDesc: 'NUM', percentage: "+20%", status: "this week" },
+    { id: 3, title: 'Avg Engagement Rate', count: '1,175', countDesc: 'NUM', percentage: "+60%", status: "this week" }
 ];
 
 export default function GamePlayingOverview(props) {
