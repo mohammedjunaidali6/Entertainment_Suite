@@ -222,13 +222,13 @@ export const AnalyticsTableColumns = [
 ]
 
 export const LiveViewCampaignMockData = [
-  { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: true },
-  { id: 2, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 3, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 4, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
-  { id: 5, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: true },
-  { id: 6, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "paused", isRecent: false },
-  { id: 7, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 8, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false },
-  { id: 9, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', expiredOn: "31/02/21", status: "live", isRecent: false }
+  { id: 1, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "06-02-2021", status: "live", isRecent: true, DisplayName: 'Campaign for Discount' },
+  { id: 2, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "09-07-2021", status: "live", isRecent: false, DisplayName: 'Campaign for Coupon' },
+  { id: 3, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "19-07-2021", status: "live", isRecent: false, DisplayName: 'Get Points Campaign' },
+  { id: 4, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "19-06-2021", status: "paused", isRecent: false, DisplayName: 'Win Coupon Campaign' },
+  { id: 5, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "09-06-2021", status: "paused", isRecent: true, DisplayName: 'Rewards Campaign' },
+  { id: 6, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "15-06-2021", status: "paused", isRecent: false, DisplayName: 'Shop more Get Discount' },
+  { id: 7, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "05-07-2021", status: "live", isRecent: false, DisplayName: 'Campaign ##0001' },
+  { id: 8, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "11-06-2021", status: "live", isRecent: false, DisplayName: 'Campaign #0002' },
+  { id: 9, offer: 'Win Rs.1000 Flat Discount', isRecent: true, customer: '120,124', sales: '34564', CompletedDate: "16-06-2021", status: "live", isRecent: false, DisplayName: 'Campaign #0003' }
 ];

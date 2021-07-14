@@ -56,13 +56,16 @@ export default function Dashboard(props) {
     };
 
     useEffect(() => {
-        if (localStorage.getItem('loggedIn')) {
+        let logged = localStorage.getItem('loggedIn');
+        console.log('**** LoggedIn', logged);
+        if (logged === 'true') {
 
         } else {
             props.history.push('/login');
         }
         return () => {
             localStorage.setItem('loggedIn', false);
+            console.log('****', 'LoggedOut');
         }
     })
 

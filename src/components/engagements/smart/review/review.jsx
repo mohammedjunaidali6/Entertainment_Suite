@@ -62,23 +62,23 @@ export default function Review(props) {
                     </div>
                 </div>
                 <div className="c-e-r-left-r-b-box">
-                    <div className="c-e-r-left-r-b-box-h w-100 float-left clearfix">Rewards</div>
+                    {/* <div className="c-e-r-left-r-b-box-h w-100 float-left clearfix">Rewards</div> */}
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mb-2">
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Winner Position</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-15">Reward Type</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-20">Reward Name</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-12">Win Position</div>
+                        {/* <div className="c-e-r-left-r-b-box-bd-box-h w-15">Reward Type</div> */}
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-30">Reward Name</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-10">Value</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-10">Probability</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-20">Display Name</div>
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-10">Rewards</div>
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-25">Display Name</div>
                     </div>
                     {rewardsAndBudgetData?.rewards?.length && rewardsAndBudgetData?.rewards?.map((rewObj) => (
                         <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.winnerPosition}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType?.label}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-20 float-left clearfix">{rewObj.rewardName}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.probability}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-20 float-left clearfix">{rewObj.displayName}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.winnerPosition}</div>
+                            {/* <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType?.label}</div> */}
+                            <div className="c-e-r-left-r-b-box-bd-box w-30 float-left clearfix">{rewObj.rewardName}</div>
                             <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.rewardValue}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.probability}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-30 float-left clearfix">{rewObj.displayName}</div>
                         </div>
                     ))}
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
@@ -111,7 +111,7 @@ export default function Review(props) {
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Buget </div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">1000INR/Day</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">1,000 INR/Day</div>
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected number of sales projection</div>
@@ -119,11 +119,11 @@ export default function Review(props) {
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected Number of Engagement </div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2000</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2,000</div>
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected Number of Engagement </div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2000 with a ROI of 1000%</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2,000 with a ROI of 1000%</div>
                 </div>
             </div>
         </div >

@@ -35,7 +35,7 @@ export default function EngagementsJourney(props) {
             selector: "JourneyName"
         },
         {
-            name: "Tasks assigned",
+            name: "Tasks Assigned",
             cell: rowObj =>
                 <div style={{ paddingRight: '5px' }}>
                     <div>{rowObj.JourneyTasks.length && rowObj.JourneyTasks[0].JourneyTaskName}</div>

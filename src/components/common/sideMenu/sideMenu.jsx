@@ -12,7 +12,7 @@ import manage_src from "../../../assets/img/Manage.svg";
 import segment_src from "../../../assets/img/Segment.svg";
 
 export default function SideMenu(props) {
-    
+
     let history = useHistory();
     const [selectedSM, setSelectedSM] = useState(1);
     const [engagementSM, setEngagementSM] = useState(1);
@@ -20,41 +20,41 @@ export default function SideMenu(props) {
     const [manageSM, setManageSM] = useState(1);
 
     useEffect(() => {
-        if(history && history.location) {
-            if(history.location.pathname === '/') {
+        if (history && history.location) {
+            if (history.location.pathname === '/') {
                 setSelectedSM(1);
                 // history.push('/');
-            } else if(history.location.pathname === '/engagements/smart') {
+            } else if (history.location.pathname === '/engagements/smart') {
                 setSelectedSM(2);
                 setEngagementSM(1);
-            } else if(history.location.pathname === '/engagements/journey') {
+            } else if (history.location.pathname === '/engagements/journey') {
                 setSelectedSM(2);
                 setEngagementSM(2);
-            } else if(history.location.pathname === '/liveview') {
+            } else if (history.location.pathname === '/liveview') {
                 setSelectedSM(3);
-            } else if(history.location.pathname === '/analytics/report') {
+            } else if (history.location.pathname === '/analytics/report') {
                 setSelectedSM(4);
                 setAnalyticsSM(1);
-            } else if(history.location.pathname === '/analytics/trends') {
+            } else if (history.location.pathname === '/analytics/trends') {
                 setSelectedSM(4);
                 setAnalyticsSM(2);
-            } else if(history.location.pathname === '/analytics/gamePerformance') {
+            } else if (history.location.pathname === '/analytics/gamePerformance') {
                 setSelectedSM(4);
                 setAnalyticsSM(2);
-            } else if(history.location.pathname === '/segments') {
+            } else if (history.location.pathname === '/segments') {
                 setSelectedSM(5);
-            } else if(history.location.pathname === '/manage/rewards') {
+            } else if (history.location.pathname === '/manage/rewards') {
                 setSelectedSM(6);
                 setManageSM(1);
-            } else if(history.location.pathname === '/manage/gameplay') {
+            } else if (history.location.pathname === '/manage/gameplay') {
                 setSelectedSM(6);
                 setManageSM(2);
-            } else if(history.location.pathname === '/admin') {
+            } else if (history.location.pathname === '/admin') {
                 setSelectedSM(7);
             }
         }
     });
-    
+
     function overviewClick() {
         setSelectedSM(1);
         history.push('/');
@@ -91,7 +91,7 @@ export default function SideMenu(props) {
     }
 
     return (
-        <div id="side-menu-container" className="w-20 float-left clearfix" style={{height: containerHeightCalcFn()}}>
+        <div id="side-menu-container" className="w-20 float-left clearfix" style={{ height: containerHeightCalcFn() }}>
             <div className={`s-m-major float-left clearfix ${sideLabelFlag() ? `w-100` : `w-25`}`} >
                 <div className={`s-m-item ${selectedSM === 1 ? `active` : ``}`} onClick={() => overviewClick()}>
                     <img src={overview_src} className="s-m-item-img" alt="Overview" />
@@ -117,10 +117,10 @@ export default function SideMenu(props) {
                     <img src={manage_src} className="s-m-item-img" alt="Manage" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Manage</span>) : null}
                 </div>
-                <div className={`s-m-item ${selectedSM === 7 ? `active` : ``}`} onClick={() => adminClick()}>
+                {/* <div className={`s-m-item ${selectedSM === 7 ? `active` : ``}`} onClick={() => adminClick()}>
                     <img src={admin_src} className="s-m-item-img" alt="Admin" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Admin</span>) : null}
-                </div>
+                </div> */}
             </div>
             {selectedSM !== 1 || selectedSM !== 3 || selectedSM !== 5 || selectedSM !== 7 ? (
                 <div className="s-m-sub w-75 float-left clearfix">
@@ -134,7 +134,7 @@ export default function SideMenu(props) {
                                 <span>Journey</span>
                             </div>
                         </Fragment>
-                    ) : null }
+                    ) : null}
                     {selectedSM === 4 ? (
                         <Fragment>
                             <div className="s-m-sub-h">Analytics</div>
@@ -148,7 +148,7 @@ export default function SideMenu(props) {
                                 <span>Game Performance</span>
                             </div> */}
                         </Fragment>
-                    ) : null }
+                    ) : null}
                     {selectedSM === 6 ? (
                         <Fragment>
                             <div className="s-m-sub-h">Manage</div>
@@ -159,9 +159,9 @@ export default function SideMenu(props) {
                                 <span>Game Play</span>
                             </div>
                         </Fragment>
-                    ) : null }
+                    ) : null}
                 </div>
-            ) : null }
+            ) : null}
         </div>
     )
 }

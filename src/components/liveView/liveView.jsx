@@ -3,23 +3,27 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-
 import LineChart from "../common/utils/lineChart";
 import BarChart from "../common/utils/barChart";
 import DoughnutChart from '../common/utils/doughnutChart';
 import CampaignBox from "../common/campaignBox/campaignBox";
-import { lineChartData, barChartData, LiveViewCampaignMockData, 
-    doughnutChartData, smallBarChartData, lineChartSingleBlueData, 
-    lineChartSingleGreenData, lineChartSinglePurpleData, lineChartSingleOrangeData, 
-    slimBarChartData } from "../../constants/globalMockdata";
+import {
+    lineChartData, barChartData, LiveViewCampaignMockData,
+    doughnutChartData, smallBarChartData, lineChartSingleBlueData,
+    lineChartSingleGreenData, lineChartSinglePurpleData, lineChartSingleOrangeData,
+    slimBarChartData
+} from "../../constants/globalMockdata";
 import h_dots_src from "../../assets/img/dots-icon_horizontal.svg";
 import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './liveView.css';
+import { useEffect } from 'react';
+import { ENGAGEMENTS_BY_FILTERS } from '../../api/apiConstants';
+import { getData } from '../../api/ApiHelper';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
-      padding: theme.spacing(2),
+        padding: theme.spacing(2),
     },
 }));
 
@@ -27,7 +31,7 @@ export default function LiveView(props) {
     let history = useHistory();
     const classes = useStyles();
     const [lvFilterVal, setLVFilterVal] = useState('Current Week');
-    const [campaigndata, setCampaigndata] = useState(LiveViewCampaignMockData);
+    const [campaigndata, setCampaignData] = useState(LiveViewCampaignMockData);
     const [lvfEl, setlvfEl] = useState(null);
     const lvfOpen = Boolean(lvfEl);
     const lvfId = lvfOpen ? 'lvf-filter' : undefined;
@@ -41,7 +45,16 @@ export default function LiveView(props) {
         setLVFilterVal(val);
         setlvfEl(null);
     };
-    
+
+    useEffect(() => {
+        // getData(ENGAGEMENTS_BY_FILTERS)
+        //     .then(engagementsData => {
+        //         if (engagementsData && Array.isArray(engagementsData)) {
+        //             setCampaignData(engagementsData);
+        //         }
+        //     })
+    }, [])
+
     return (
         <div id="liveview-container">
             <div className="w-100 float-left clearfix">
@@ -51,7 +64,7 @@ export default function LiveView(props) {
                 <div className="w-50 float-left clearfix">
                     <div className="w-100 float-right clearfix mb-1">
                         <div className="float-right clearfix mb-1 f-c-box" onClick={lvFilterOpenClick} >
-                            <img src={calender_src} alt="Calender" className="mr-2" style={{width: '16px'}} />
+                            <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
                             <span className="d-dp-lbl pr-1">{lvFilterVal}</span>
                             <img src={down_arrow_src} alt="Down Arrow" />
                         </div>
@@ -94,7 +107,7 @@ export default function LiveView(props) {
                             </div>
                             <div className="l-v-s-o-box-t-h">Active Customer</div>
                             <div>
-                                <span className="l-v-s-o-box-t-c">1345</span>
+                                <span className="l-v-s-o-box-t-c">1,345</span>
                                 <span className="l-v-s-o-box-t-c-lbl">Customers</span>
                                 <div className="disp-inline-b float-right pr-3">
                                     <div className="l-v-s-o-box-t-c-per">+40%</div>
@@ -104,8 +117,8 @@ export default function LiveView(props) {
                         </div>
                         <div className="l-v-s-o-box-b">
                             <LineChart data={lineChartSingleBlueData}
-                                    hideAxis={true}
-                                    hideHeader={true} >
+                                hideAxis={true}
+                                hideHeader={true} >
                             </LineChart>
                         </div>
                     </div>
@@ -128,8 +141,8 @@ export default function LiveView(props) {
                         </div>
                         <div className="l-v-s-o-box-b">
                             <LineChart data={lineChartSingleGreenData}
-                                    hideAxis={true}
-                                    hideHeader={true} >
+                                hideAxis={true}
+                                hideHeader={true} >
                             </LineChart>
                         </div>
                     </div>
@@ -152,8 +165,8 @@ export default function LiveView(props) {
                         </div>
                         <div className="l-v-s-o-box-b">
                             <LineChart data={lineChartSinglePurpleData}
-                                    hideAxis={true}
-                                    hideHeader={true} >
+                                hideAxis={true}
+                                hideHeader={true} >
                             </LineChart>
                         </div>
                     </div>
@@ -176,8 +189,8 @@ export default function LiveView(props) {
                         </div>
                         <div className="l-v-s-o-box-b">
                             <LineChart data={lineChartSingleOrangeData}
-                                    hideAxis={true}
-                                    hideHeader={true} >
+                                hideAxis={true}
+                                hideHeader={true} >
                             </LineChart>
                         </div>
                     </div>
@@ -188,38 +201,38 @@ export default function LiveView(props) {
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
                         <LineChart data={lineChartData}
-                                chartTitle="Sales Chart"
-                                showAction={true} >
+                            chartTitle="Sales Chart"
+                            showAction={true} >
                         </LineChart>
                     </div>
                 </div>
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
                         <BarChart data={slimBarChartData}
-                                chartTitle="Sales Chart" 
-                                showAction={true}
-                                showInfo={true}
-                                showRefresh={true} >
+                            chartTitle="Sales Chart"
+                            showAction={true}
+                            showInfo={true}
+                            showRefresh={true} >
                         </BarChart>
                     </div>
                 </div>
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
                         <BarChart data={barChartData}
-                                showLines={false}
-                                chartTitle="Coupons Redeemed"
-                                showAction={true}
-                                noXLine={true} >
+                            showLines={false}
+                            chartTitle="Coupons Redeemed"
+                            showAction={true}
+                            noXLine={true} >
                         </BarChart>
                     </div>
                 </div>
                 <div className="w-50 float-left clearfix l-v-chart-box-outer">
                     <div className="l-v-chart-box">
                         <DoughnutChart data={doughnutChartData}
-                                    chartTitle="Top performing Games" 
-                                    showAction={true}
-                                    showInfo={true}
-                                    showRefresh={true} >
+                            chartTitle="Top performing Games"
+                            showAction={true}
+                            showInfo={true}
+                            showRefresh={true} >
                         </DoughnutChart>
                     </div>
                 </div>
@@ -280,7 +293,7 @@ export default function LiveView(props) {
                         <div className="l-v-i-t-box-t">
                             <div className="w-50 float-left clearfix h-100 c-center f-d-c">
                                 <div className="text-center">
-                                    <span className="l-v-i-t-box-t-h">1254</span>
+                                    <span className="l-v-i-t-box-t-h">1,254</span>
                                     <span className="l-v-i-t-box-t-h-c">+54%</span>
                                 </div>
                                 <div className="l-v-i-t-box-t-desc">High Value Customers</div>

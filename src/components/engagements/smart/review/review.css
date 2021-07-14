@@ -12,7 +12,7 @@
 .c-e-r-left-c-n {
     height: 26px;
     color: #3F4045;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     letter-spacing: 0;
     line-height: 26px;
@@ -48,6 +48,9 @@
     border-radius: 4px;
     background-color: #FFFFFF;
     margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px;
 }
 .c-e-r-left-d-j-box {
     height: 94px;

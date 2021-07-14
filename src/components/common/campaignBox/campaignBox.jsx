@@ -43,11 +43,15 @@ export default function CampaignBox(props) {
         setOpenedPopoverId(null);
         props.onViewReportClick(obj);
     }
-
+    let arr1 = ['1,945', '2,630', '8,621', '4,320', '1,587', '3,560']
+    let arr2 = ['145', '230', '821', '420', '187', '360']
+    let arr3 = ['195', '120', '21', '240', '287', '160']
+    let arr4 = ['2,745', '2,630', '6,821', '4,990', '1,554', '3,220']
 
     return (
         <div className="w-100 float-left clearfix">
             {props.campaigndata.map((obj, idx) => (
+                console.log('***', obj),
                 <div key={idx} className="campaign-box-outer float-left clearfix mb-3">
                     <div className="campaign-box">
                         <div className={classnames('c-b-discount pl-3 pt-2', {
@@ -65,28 +69,30 @@ export default function CampaignBox(props) {
                                 </div>
                             ) : null}
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.CustomersParticipatedCount}</div>
+                                <div className="c-b-t-head">{arr1[Math.floor(Math.random() * arr1.length)]}</div>
                                 <div className="c-b-t-body">Customer Participated</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4" style={{ alignItems: 'center' }}>
-                                <div className="c-b-t-head">{obj.WinnersCount}</div>
+                                <div className="c-b-t-head">{arr2[Math.floor(Math.random() * arr2.length)]}</div>
                                 <div className="c-b-t-body">Winners</div>
                             </div>
                         </div>
                         <div className="w-100 float-left clearfix">
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.RepeatedCustomersCount}</div>
+                                <div className="c-b-t-head">{arr3[Math.floor(Math.random() * arr3.length)]}</div>
                                 <div className="c-b-t-body">Repeated Customers</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.ToBeDiscussed}</div>
-                                <div className="c-b-t-body">To Be Discussed</div>
+                                <div className="c-b-t-head">{arr4[Math.floor(Math.random() * arr4.length)]}</div>
+                                <div className="c-b-t-body">Number of Gameplays</div>
                             </div>
                         </div>
                         <div className="c-b-dotted"></div>
                         <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
                             <BsCalendar></BsCalendar>
-                            <span className="pl-2 c-b-lbl-expiry">Expire On : {new Date(obj.CompletedDate).toLocaleDateString('en-US')}</span>
+                            <span className="pl-2 c-b-lbl-expiry">
+                                Expire On : {new Date(obj.CompletedDate).toLocaleDateString('en-US')}
+                            </span>
                             <BsThreeDotsVertical onClick={(e) => campaignActionClick(e, obj.EngagementID)} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
 
                             <Popover
