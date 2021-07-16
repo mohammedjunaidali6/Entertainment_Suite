@@ -1,0 +1,42 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-managementapp-dev-141302-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568375208006:role/amplify-managementapp-dev-141302-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568375208006:role/amplify-managementapp-dev-141302-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-managementapp-dev-141302-deployment",
+      "UnauthRoleName": "amplify-managementapp-dev-141302-unauthRole",
+      "StackName": "amplify-managementapp-dev-141302",
+      "StackId": "arn:aws:cloudformation:ap-south-1:568375208006:stack/amplify-managementapp-dev-141302/ad662290-e548-11eb-a12d-0a6577ba1b58",
+      "AmplifyAppId": "d2ypnpxof4fq85"
+    },
+    "categories": {
+      "function": {
+        "managementauthCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-managementapp-dev-141302-deployment",
+          "s3Key": "amplify-builds/managementauthCreateAuthChallenge-32616755376d58534b33-build.zip"
+        },
+        "managementauthCustomMessage": {
+          "REDIRECTURL": "",
+          "EMAILSUBJECT": "confirmed mail",
+          "EMAILMESSAGE": "Welcome",
+          "deploymentBucketName": "amplify-managementapp-dev-141302-deployment",
+          "s3Key": "amplify-builds/managementauthCustomMessage-35496e534e5846334d6d-build.zip"
+        },
+        "managementauthDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-managementapp-dev-141302-deployment",
+          "s3Key": "amplify-builds/managementauthDefineAuthChallenge-377055796e367a346267-build.zip"
+        },
+        "managementauthVerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": "",
+          "deploymentBucketName": "amplify-managementapp-dev-141302-deployment",
+          "s3Key": "amplify-builds/managementauthVerifyAuthChallengeResponse-49674e6832356732696d-build.zip"
+        }
+      },
+      "auth": {
+        "managementauth": {}
+      }
+    }
+  }
+}

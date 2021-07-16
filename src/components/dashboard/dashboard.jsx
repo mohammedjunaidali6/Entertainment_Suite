@@ -56,16 +56,9 @@ export default function Dashboard(props) {
     };
 
     useEffect(() => {
-        let logged = localStorage.getItem('loggedIn');
-        console.log('**** LoggedIn', logged);
-        if (logged === 'true') {
-
-        } else {
+        let jwtToken = localStorage.getItem('jwtToken');
+        if (!jwtToken) {
             props.history.push('/login');
-        }
-        return () => {
-            localStorage.setItem('loggedIn', false);
-            console.log('****', 'LoggedOut');
         }
     })
 

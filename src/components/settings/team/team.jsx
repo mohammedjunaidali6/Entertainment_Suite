@@ -2,13 +2,26 @@ import React, { useState, useEffect, Fragment } from 'react';
 import SearchBar from '../../common/searchBar/searchBar';
 import Table from '../../common/reactTable/table';
 import './team.css';
+import TextField from '@material-ui/core/TextField';
 import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
+import validator from 'validator';
+import Amplify, { Auth } from 'aws-amplify';
+import AWS from 'aws-sdk';
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
+
 
 export default function Team(props) {
+    const {
+        REACT_APP_AWS_REGION,
+        REACT_APP_IAM_ACCESS_KEY,
+        REACT_APP_IAM_SECRET,
+        REACT_APP_POOL_ID
+    } = process.env;
     const [visible, setVisible] = useState(false);
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [createClick, setCreateClick] = useState(false);
@@ -17,6 +30,10 @@ export default function Team(props) {
     const [phoneNumber, setPhoneNumber] = useState();
     const [group, setGroup] = useState();
     const [message, setMessage] = useState('');
+    var smallChars = 'abcdefghijklmnopqrstuvwxyz';
+    var numbers = '0123456789';
+    var bigChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var specialChars = '@#$&!';
 
     const onActionClick = (e, rowData) => {
         if (e.target.outerText === 'Edit') {
@@ -187,51 +204,92 @@ export default function Team(props) {
         let group = e.target.value;
         setGroup(group);
     }
-    const IsEmailValid = (mail) => {
-        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
-            return (true)
-        }
-        //alert("You have entered an invalid email address!")
-        return (false)
-    }
     const IsPhoneNumberValid = number => {
         return number?.length === 10 ? true : false;
     }
+    const randomString = () => {
+        var result = '';
+        for (var i = 2; i > 0; --i) result += smallChars[Math.floor(Math.random() * smallChars.length)];
+        for (var i = 2; i > 0; --i) result += bigChars[Math.floor(Math.random() * bigChars.length)];
+        for (var i = 2; i > 0; --i) result += numbers[Math.floor(Math.random() * numbers.length)];
+        for (var i = 2; i > 0; --i) result += specialChars[Math.floor(Math.random() * specialChars.length)];
+        return result;
+    }
     const onSaveClick = () => {
-        if (!IsEmailValid(email)) {
-            handleMessageBox('error', 'Email is invalid. Please check and try again');
-        } else if (!IsPhoneNumberValid(phoneNumber)) {
-            handleMessageBox('error', 'Phone number is invalid. Please check and try again');
-        } else if (!group) {
-            handleMessageBox('error', 'Please select atleast one role');
-        } else {
-            let postObj = {};
-            postObj.email = email;
-            postObj.mobile_number = phoneNumber;
-            postObj.user_groups = [];
-            postObj.user_groups.push(group);
-            postObj.message = message;
-            setVisible(true);
-            postData('/idty/admin/inviteuser', postObj)
-                .then(response => {
-                    if (response && response.data && response.data.data) {
-                        let data = response.data.data;
-                        if (typeof data === 'string') {
-                            console.error('***', data);
-                            handleMessageBox('error', data);
-                        } else {
-                            setCreateClick(false);
-                            setGroup();
-                            setPhoneNumber();
-                            setEmail();
-                            handleMessageBox('success', 'Invitation sent succesfully');
-                        }
-                    } else {
-                        //Invitation sent failed
+        if (validator.isEmail(email)) {
+            var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+            AWS.config.update({
+                region: REACT_APP_AWS_REGION,
+                accessKeyId: REACT_APP_IAM_ACCESS_KEY,
+                secretAccessKey: REACT_APP_IAM_SECRET
+            })
+            var params = {
+                UserPoolId: REACT_APP_POOL_ID,
+                Username: email,
+                DesiredDeliveryMediums: ['EMAIL'],
+                ForceAliasCreation: true || false,
+                TemporaryPassword: email.substring(0, 4) + randomString(),
+                UserAttributes: [
+                    {
+                        Name: 'email',
+                        Value: email,
+                    },
+                    {
+                        Name: 'custom:tenant_key',
+                        Value: 'TENANT#KEY'
                     }
-                    setVisible(false);
-                })
+                ],
+                ValidationData: [
+                    {
+                        Name: 'email',
+                        Value: email,
+                    },
+                    {
+                        Name: 'custom:tenant_key',
+                        Value: 'TENANT#KEY'
+                    }
+                ]
+            };
+            cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
+                if (err) {
+                    console.error('*adminCreateUser ', err);
+                    handleMessageBox('error', 'Invitattion failed');
+                } else {
+                    console.log('**adminCreateUser ', data);
+                    handleMessageBox('success', 'Invitation sent succesfully');
+                    setCreateClick(false);
+                }
+            });
+        } else {
+            alert('Email is Invalid');
         }
+        // let postObj = {};
+        // postObj.email = email;
+        // postObj.mobile_number = phoneNumber;
+        // postObj.user_groups = [];
+        // postObj.user_groups.push(group);
+        // postObj.message = message;
+        // setVisible(true);
+        // postData('/idty/admin/inviteuser', postObj)
+        //     .then(response => {
+        //         if (response && response.data && response.data.data) {
+        //             let data = response.data.data;
+        //             if (typeof data === 'string') {
+        //                 console.error('***', data);
+        //                 handleMessageBox('error', data);
+        //             } else {
+        //                 setCreateClick(false);
+        //                 setGroup();
+        //                 setPhoneNumber();
+        //                 setEmail();
+        //                 handleMessageBox('success', 'Invitation sent succesfully');
+        //             }
+        //         } else {
+        //             //Invitation sent failed
+        //         }
+        //         setVisible(false);
+        //     })
+        // }
     }
     const onUpdateClick = () => {
         var postObj = { ...updateUser };
@@ -273,7 +331,7 @@ export default function Team(props) {
                 : <div id="team-container">
                     <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
                     {!createClick ? (
-                        <div style={{ padding: '30px' }}>
+                        <div style={{ padding: '3%' }}>
                             <div className='team-management-header'>
                                 <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
                                 <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
@@ -291,17 +349,17 @@ export default function Team(props) {
                         </div>
                     ) : (
                         <Fragment>
-                            <div style={{ padding: '30px' }}>
-                                <div className='invite-user-block'>
+                            <div style={{ padding: '3%' }}>
+                                <div>
                                     <div className='t-m-title'>{updateUser ? 'Update Role' : 'Invite User'}</div>
                                     <div className='t-m-input-block'>
-                                        <div className='t-m-input disp-inline-block'>
+                                        <div className='t-m-input disp-inline-block' style={{ height: '50px' }}>
                                             <div className='t-m-input-label'>E-mail*</div>
                                             <input
                                                 type="email"
                                                 className='t-m-input-field'
                                                 placeholder='richard322@gmail.com'
-                                                maxLength={20}
+                                                maxLength={50}
                                                 onChange={onEmailChange}
                                                 value={email}
                                                 disabled={updateUser}
