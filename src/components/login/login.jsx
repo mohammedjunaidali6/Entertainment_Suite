@@ -80,7 +80,7 @@ export default function POC(props) {
                         var refreshToken = user.signInUserSession.refreshToken.token;
                         localStorage.setItem('jwtToken', jwtToken);
                         localStorage.setItem('refreshToken', refreshToken);
-                        window.location.href = '/';
+                        window.location.href = '/loading';
                     }
                 })
                 .catch(err => {

@@ -2,8 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import './sideMenu.css';
 import { containerHeightCalcFn } from "../global";
-import default_user from "../../../assets/img/default_user.png";
-import admin_src from "../../../assets/img/Admin.svg";
 import overview_src from "../../../assets/img/overview.svg";
 import engagements_src from "../../../assets/img/Engagements.svg";
 import liveview_src from "../../../assets/img/Liveview.svg";
@@ -12,7 +10,6 @@ import manage_src from "../../../assets/img/Manage.svg";
 import segment_src from "../../../assets/img/Segment.svg";
 
 export default function SideMenu(props) {
-
     let history = useHistory();
     const [selectedSM, setSelectedSM] = useState(1);
     const [engagementSM, setEngagementSM] = useState(1);

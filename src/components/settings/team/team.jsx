@@ -8,6 +8,7 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
+import { Identity_Host_URI, INVITE_USER, USER_BY_MAIL } from '../../../api/apiConstants';
 import validator from 'validator';
 import Amplify, { Auth } from 'aws-amplify';
 import AWS from 'aws-sdk';
@@ -217,79 +218,89 @@ export default function Team(props) {
     }
     const onSaveClick = () => {
         if (validator.isEmail(email)) {
-            var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-            AWS.config.update({
-                region: REACT_APP_AWS_REGION,
-                accessKeyId: REACT_APP_IAM_ACCESS_KEY,
-                secretAccessKey: REACT_APP_IAM_SECRET
-            })
-            var params = {
-                UserPoolId: REACT_APP_POOL_ID,
-                Username: email,
-                DesiredDeliveryMediums: ['EMAIL'],
-                ForceAliasCreation: true || false,
-                TemporaryPassword: email.substring(0, 4) + randomString(),
-                UserAttributes: [
-                    {
-                        Name: 'email',
-                        Value: email,
-                    },
-                    {
-                        Name: 'custom:tenant_key',
-                        Value: 'TENANT#KEY'
+            //Check email existane in User table
+            getData(`${Identity_Host_URI}${USER_BY_MAIL}${email}`)
+                .then(res => {
+                    if (!res) {
+                        var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+                        AWS.config.update({
+                            region: REACT_APP_AWS_REGION,
+                            accessKeyId: REACT_APP_IAM_ACCESS_KEY,
+                            secretAccessKey: REACT_APP_IAM_SECRET
+                        })
+                        var params = {
+                            UserPoolId: REACT_APP_POOL_ID,
+                            Username: email,
+                            DesiredDeliveryMediums: ['EMAIL'],
+                            ForceAliasCreation: true || false,
+                            TemporaryPassword: email.substring(0, 4) + randomString(),
+                            UserAttributes: [
+                                {
+                                    Name: 'email',
+                                    Value: email,
+                                },
+                                {
+                                    Name: 'custom:tenant_key',
+                                    Value: 'TENANT#KEY'
+                                }
+                            ],
+                            ValidationData: [
+                                {
+                                    Name: 'email',
+                                    Value: email,
+                                },
+                                {
+                                    Name: 'custom:tenant_key',
+                                    Value: 'TENANT#KEY'
+                                }
+                            ]
+                        };
+
+                        cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
+                            if (err) {
+                                console.error('*adminCreateUser ', err);
+                                //Save user data in local
+                                handleMessageBox('error', 'Invitation failed');
+                            } else {
+                                handleMessageBox('success', 'Invitation sent succesfully');
+                                let postObj = {};
+                                postObj.email = email;
+                                postObj.mobile_number = phoneNumber;
+                                postObj.user_groups = [];
+                                postObj.user_groups.push(group);
+                                postObj.message = message;
+                                setVisible(true);
+                                postData(`${Identity_Host_URI}${INVITE_USER}`, postObj)
+                                    .then(response => {
+                                        if (response && response.data && response.data.data) {
+                                            let data = response.data.data;
+                                            if (typeof data === 'string') {
+                                                handleMessageBox('error', data);
+                                            } else {
+                                                setCreateClick(false);
+                                                setGroup();
+                                                setPhoneNumber();
+                                                setEmail();
+                                                handleMessageBox('success', 'User Data Saved succesfully');
+                                            }
+                                        } else {
+                                            handleMessageBox('error', 'User Data Saving failed;');
+                                        }
+                                        setVisible(false);
+                                    })
+                            }
+                            setCreateClick(false);
+                        });
+
+                    } else {
+                        console.log('**', "Given EMail is already exists.")
                     }
-                ],
-                ValidationData: [
-                    {
-                        Name: 'email',
-                        Value: email,
-                    },
-                    {
-                        Name: 'custom:tenant_key',
-                        Value: 'TENANT#KEY'
-                    }
-                ]
-            };
-            cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
-                if (err) {
-                    console.error('*adminCreateUser ', err);
-                    handleMessageBox('error', 'Invitattion failed');
-                } else {
-                    console.log('**adminCreateUser ', data);
-                    handleMessageBox('success', 'Invitation sent succesfully');
-                    setCreateClick(false);
-                }
-            });
+                })
+                .catch(err => console.error(err));
         } else {
             alert('Email is Invalid');
         }
-        // let postObj = {};
-        // postObj.email = email;
-        // postObj.mobile_number = phoneNumber;
-        // postObj.user_groups = [];
-        // postObj.user_groups.push(group);
-        // postObj.message = message;
-        // setVisible(true);
-        // postData('/idty/admin/inviteuser', postObj)
-        //     .then(response => {
-        //         if (response && response.data && response.data.data) {
-        //             let data = response.data.data;
-        //             if (typeof data === 'string') {
-        //                 console.error('***', data);
-        //                 handleMessageBox('error', data);
-        //             } else {
-        //                 setCreateClick(false);
-        //                 setGroup();
-        //                 setPhoneNumber();
-        //                 setEmail();
-        //                 handleMessageBox('success', 'Invitation sent succesfully');
-        //             }
-        //         } else {
-        //             //Invitation sent failed
-        //         }
-        //         setVisible(false);
-        //     })
-        // }
+
     }
     const onUpdateClick = () => {
         var postObj = { ...updateUser };

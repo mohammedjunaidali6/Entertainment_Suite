@@ -19,18 +19,16 @@ import VerifyContatiner from "../containers/verify/verifyContainer";
 import POCContainer from '../containers/poc/pocContainer';
 import AlertDialog from '../components/common/alertBox/dialogBox';
 import Loader from '../components/common/Spinner/spinner';
-import store from '../store/store';
-
+import Loading from '../components/loading/loading';
 
 export default function AppRoute(props) {
   let history = useHistory();
-
 
   return (
     <ThemeProvider>
       <div id="app-route-container">
         <BrowserRouter>
-          {(window.location.href && !window.location.href.includes('/login') && !window.location.href.includes('/register') && !window.location.href.includes('/verify')) ? (
+          {(window.location.href && !window.location.href.includes('/loading') && !window.location.href.includes('/login') && !window.location.href.includes('/register') && !window.location.href.includes('/verify')) ? (
             <HeaderContainer />
           ) : null}
           <Home>
@@ -51,6 +49,7 @@ export default function AppRoute(props) {
               <Route exact path="/admin" component={AdminContatiner} />
               <Route exact path="/settings" component={SettingsContatiner} />
               <Route exact path="/login" component={LoginContatiner} />
+              <Route exact path="/loading" component={Loading} />
               <Route exact path="/register" component={RegisterContatiner} />
               <Route exact path="/verify" component={VerifyContatiner} />
               <Route exact path="/poc" component={POCContainer} />

@@ -9,6 +9,7 @@ export const headers = {
 }
 
 export const USER_BY_FILTERS = "/idty/userbyfilter";
+export const USER_BY_MAIL = "/idty/isemailexists?email=";
 export const INVITE_USER = "/idty/admin/inviteuser";
 export const UPDATE_USER = "/idty/updateuser";
 export const DELETE_USER = "/idty/deleteuser";

@@ -19,7 +19,7 @@ export default function Home(props) {
 
     return (
         <div id="home-container">
-            {window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
+            {window.location.pathname !== '/loading' && window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
                 <Fragment>
                     {sideMenuFlag ? (
                         <SideMenu></SideMenu>
