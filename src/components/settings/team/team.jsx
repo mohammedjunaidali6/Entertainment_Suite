@@ -8,7 +8,7 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
-import { Identity_Host_URI, INVITE_USER, USER_BY_MAIL } from '../../../api/apiConstants';
+import { GROUP_ALL, Identity_Host_URI, INVITE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
 import validator from 'validator';
 import Amplify, { Auth } from 'aws-amplify';
 import AWS from 'aws-sdk';
@@ -109,10 +109,10 @@ export default function Team(props) {
     const fetchRolesData = () => {
         try {
             setVisible(true);
-            getData('/idty/group/all')
+            getData(`${Identity_Host_URI}${GROUP_ALL}`)
                 .then(response => {
-                    if (response && response.data && response.data.data && typeof response.data.data !== 'string') {
-                        let rolesArr = response.data.data?.sort((a, b) => a.name < b.name ? -1 : 1);
+                    if (response) {
+                        let rolesArr = response.sort((a, b) => a.name < b.name ? -1 : 1);
                         props.teamActionHandler.get_Roles(rolesArr);
                     } else {
 
@@ -126,11 +126,11 @@ export default function Team(props) {
     const fetchUsersData = () => {
         try {
             setVisible(true);
-            getData('/idty/userbyfilter?pagesize=100')
+            getData(`${Identity_Host_URI}${USER_BY_FILTERS}${100}`)
                 .then(response => {
-                    if (response && response.data.data && typeof response.data.data !== 'string') {
+                    if (response) {
                         let usersArr = [];
-                        response.data.data?.forEach(obj => {
+                        Array.isArray(response) && response?.forEach(obj => {
                             let userObj = {};
                             userObj.user_id = obj.user_id;
                             userObj.userName = obj.user_name;
@@ -159,11 +159,11 @@ export default function Team(props) {
     const fetchUsersByUserName = async (username) => {
         try {
             setVisible(true);
-            getData(`/idty/userbyusername?user_name=${username}`)
+            getData(`${Identity_Host_URI}/idty/userbyusername?user_name=${username}`)
                 .then(response => {
-                    if (response && response.data && response.data.data && typeof response.data.data !== 'string') {
+                    if (response) {
                         let usersArr = [];
-                        response.data.data?.forEach(obj => {
+                        Array.isArray(response) && response?.forEach(obj => {
                             let userObj = {};
                             userObj.user_id = obj.user_id;
                             userObj.userName = obj.user_name;
@@ -204,9 +204,6 @@ export default function Team(props) {
     const onGroupSelect = e => {
         let group = e.target.value;
         setGroup(group);
-    }
-    const IsPhoneNumberValid = number => {
-        return number?.length === 10 ? true : false;
     }
     const randomString = () => {
         var result = '';
@@ -255,25 +252,27 @@ export default function Team(props) {
                                 }
                             ]
                         };
-
                         cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
                             if (err) {
                                 console.error('*adminCreateUser ', err);
-                                //Save user data in local
                                 handleMessageBox('error', 'Invitation failed');
                             } else {
+                                console.log('***', data.User);
                                 handleMessageBox('success', 'Invitation sent succesfully');
                                 let postObj = {};
                                 postObj.email = email;
                                 postObj.mobile_number = phoneNumber;
                                 postObj.user_groups = [];
                                 postObj.user_groups.push(group);
+                                postObj.status = data.User.UserStatus;
                                 postObj.message = message;
                                 setVisible(true);
-                                postData(`${Identity_Host_URI}${INVITE_USER}`, postObj)
+                                var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
+                                var headers = { 'tenant_key': tenantKey }
+                                postData(`${Identity_Host_URI}${INVITE_USER}`, postObj, headers)
                                     .then(response => {
-                                        if (response && response.data && response.data.data) {
-                                            let data = response.data.data;
+                                        if (response) {
+                                            let data = response;
                                             if (typeof data === 'string') {
                                                 handleMessageBox('error', data);
                                             } else {
@@ -294,9 +293,9 @@ export default function Team(props) {
 
                     } else {
                         console.log('**', "Given EMail is already exists.")
+                        handleMessageBox('error', 'Given EMail is already exists.');
                     }
                 })
-                .catch(err => console.error(err));
         } else {
             alert('Email is Invalid');
         }

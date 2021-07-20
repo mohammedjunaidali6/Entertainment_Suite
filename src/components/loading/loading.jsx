@@ -1,26 +1,37 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import LinearProgressBar from '../common/progressBar/linearProgressBar';
+import { getData, postData } from '../../api/ApiHelper';
+import { Identity_Host_URI, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
+
 
 export default function Loading(props) {
   console.log('***', props)
   const [perc, setPerc] = useState(1);
 
-
-  setTimeout(() => {
-    //props.history.push('/rewardzone');
-
-  }, 3000);
   useEffect(() => {
     const timer = setInterval(() => {
-      setPerc(perc + 33)
-    }, 1000);
+      setPerc((oldProgress) => oldProgress + 10);
+    }, 300);
 
-  }, [])
+    setTimeout(() => {
+      clearInterval(timer);
+      props.history.push('/engagements/smart');
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    var email = localStorage.getItem('email');
+    console.log('***', email);
+    getData(`${Identity_Host_URI}${USER_ROLES_PERMISSIONS}${email}`)
+      .then(data => {
+        console.log('***', data);
+      });
+  });
 
 
   return (
-    <div style={{ marginTop: '50%', alignContent: 'center' }}>
-      <LinearProgressBar />
+    <div>
+      <LinearProgressBar value={perc} />
     </div>
   )
 

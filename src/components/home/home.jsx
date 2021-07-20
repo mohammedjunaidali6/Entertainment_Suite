@@ -9,7 +9,12 @@ export default function Home(props) {
     const [sideMenuFlag, setSideMenuFlag] = useState(true);
 
     useEffect(() => {
-        if (path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings') {
+        if (path.pathname.endsWith('/') ||
+            path.pathname === '/login' ||
+            path.pathname === '/loading' ||
+            path.pathname === '/register' ||
+            path.pathname === '/verify' ||
+            path.pathname === '/settings') {
             setSideMenuFlag(false);
         } else {
             setSideMenuFlag(true);
@@ -19,14 +24,10 @@ export default function Home(props) {
 
     return (
         <div id="home-container">
-            {window.location.pathname !== '/loading' && window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/verify' ? (
-                <Fragment>
-                    {sideMenuFlag ? (
-                        <SideMenu></SideMenu>
-                    ) : null}
-                </Fragment>
-            ) : null}
-            <div id="home-content" className={`float-left clearfix ${path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings' ? `` : `pt-4 pl-4 pb-4 pr-2`} ${sideMenuFlag ? `w-80` : `w-100`}`} style={{ height: path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' ? `100vh` : containerHeightCalcFn() }}>
+            {sideMenuFlag ? <SideMenu /> : null}
+            <div id="home-content"
+                className={`float-left clearfix ${path.pathname === '/login' || path.pathname === '/loading' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings' ? `` : `pt-4 pl-4 pb-4 pr-2`} ${sideMenuFlag ? `w-80` : `w-100`}`}
+                style={{ height: path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' ? `100vh` : containerHeightCalcFn() }}>
                 {props.children}
             </div>
         </div>

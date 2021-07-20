@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Recaptcha from 'react-recaptcha';
 import logo_src from '../../assets/img/blaash-logo.png';
 import './login.css';
 import Button from '@material-ui/core/Button';
@@ -15,6 +16,7 @@ import Container from '@material-ui/core/Container';
 import validator from 'validator';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
+import { useRef } from 'react';
 Amplify.configure(awsconfig);
 
 function Copyright() {
@@ -49,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function POC(props) {
     const classes = useStyles();
-    const { REACT_APP_IAM_SECRET, REACT_APP_IAM_ACCESS_KEY, REACT_APP_AWS_REGION } = process.env;
+    const { REACT_APP_RECAPTCHA_SITE_KEY } = process.env;
     const [logIn, setLogIn] = useState({ email: '', password: '' });
     const [emailError, setEmailError] = useState('')
+    const [signInProcessing, setSignInProcessing] = useState(false);
     const [newPasswordRequired, setNewPasswordRequired] = useState(false);
     const [newUserSignIn, setNewUserSignIn] = useState({
         firstName: '',
@@ -61,14 +64,24 @@ export default function POC(props) {
         confirmPassword: ''
     });
     const [cognitoUser, setCognitoUser] = useState();
+    const [captchaVerified, setCaptchaVerified] = useState(false);
+    let recaptchaInstance;
 
-
-    function registerOpenFn() {
-        //props.history.push('/register');
+    const onVerifyCaptcha = response => {
+        if (response) {
+            setCaptchaVerified(true);
+        } else {
+            setCaptchaVerified(false);
+        }
+    }
+    const onExpireCaptcha = () => {
+        recaptchaInstance.reset();
+        alert('Captcha Expired')
     }
 
     const onSignIn = (e) => {
         if (validator.isEmail(logIn.email)) {
+            setSignInProcessing(true);
             Auth.signIn({ username: logIn.email, password: logIn.password })
                 .then(user => {
                     console.log('*', user);
@@ -78,14 +91,17 @@ export default function POC(props) {
                     } else {
                         var jwtToken = user.signInUserSession.accessToken.jwtToken;
                         var refreshToken = user.signInUserSession.refreshToken.token;
+                        localStorage.setItem('email', logIn.email);
                         localStorage.setItem('jwtToken', jwtToken);
                         localStorage.setItem('refreshToken', refreshToken);
                         window.location.href = '/loading';
                     }
+                    setSignInProcessing(false);
                 })
                 .catch(err => {
                     console.log('**', err);
                     alert(err.message);
+                    setSignInProcessing(false);
                 });
         }
         e.preventDefault();
@@ -159,6 +175,7 @@ export default function POC(props) {
                                             variant="contained"
                                             color="primary"
                                             className={classes.submit}
+                                            disabled={signInProcessing || !captchaVerified}
                                         >Sign In
                                         </Button>
                                         <Grid container>
@@ -167,11 +184,18 @@ export default function POC(props) {
                                             </Grid>
                                         </Grid>
                                     </form>
+
                                 </div>
-                                <Box mt={5}>
-                                    <Copyright />
-                                </Box>
+                                <Recaptcha
+                                    ref={e => recaptchaInstance = e}
+                                    sitekey={REACT_APP_RECAPTCHA_SITE_KEY}
+                                    render="explicit"
+                                    verifyCallback={onVerifyCaptcha}
+                                    expiredCallback={onExpireCaptcha}
+                                />
+                                <Box mt={5}><Copyright /></Box>
                             </Container>
+
                         </div>
                     </div>
                     :
@@ -249,6 +273,7 @@ export default function POC(props) {
                         </div>
                     </div>
             }
+
         </div>
     )
 }

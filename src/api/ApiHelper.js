@@ -11,11 +11,15 @@ export const getData = async (resource) => {
     }
 };
 
-export const postData = async (resource, postData) => {
+export const postData = async (resource, postData, headers) => {
     try {
-        const response = await axiosInstance.post(resource, postData);
-
-        return handleResponse(response);
+        if (headers) {
+            const response = await axiosInstance.post(resource, postData, { headers: headers });
+            return handleResponse(response);
+        } else {
+            const response = await axiosInstance.post(resource, postData);
+            return handleResponse(response);
+        }
 
     } catch (error) {
         return handleError(error);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import NotFound from '../components/common/notFound';
@@ -24,13 +24,21 @@ import Loading from '../components/loading/loading';
 export default function AppRoute(props) {
   let history = useHistory();
 
+  if (window.location.href.endsWith('/')) {
+    window.location.href = '/login'
+  }
+
   return (
     <ThemeProvider>
       <div id="app-route-container">
         <BrowserRouter>
-          {(window.location.href && !window.location.href.includes('/loading') && !window.location.href.includes('/login') && !window.location.href.includes('/register') && !window.location.href.includes('/verify')) ? (
-            <HeaderContainer />
-          ) : null}
+          {(!window.location.href.endsWith('/') &&
+            !window.location.href.includes('/loading') &&
+            !window.location.href.includes('/login') &&
+            !window.location.href.includes('/register') &&
+            !window.location.href.includes('/verify'))
+            ? <HeaderContainer /> : null
+          }
           <Home>
             <Loader show={props.showLoader} />
             <AlertDialog
@@ -40,7 +48,7 @@ export default function AppRoute(props) {
               handleClose={(bool) => props.alertDialog.handleClose(bool)}
             />
             <Switch>
-              <Route exact path="/" component={DashboardContatiner} />
+              <Route exact path="/dashboard" component={DashboardContatiner} />
               <Route exact path="/engagements/:tabname" component={EngagementsContatiner} />
               <Route exact path="/liveview" component={LiveViewContatiner} />
               <Route exact path="/analytics/:tabname" component={AnalyticsContatiner} />

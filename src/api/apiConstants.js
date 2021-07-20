@@ -8,7 +8,7 @@ export const headers = {
     secret: 'XsrRvPkMHmXkkFeW',
 }
 
-export const USER_BY_FILTERS = "/idty/userbyfilter";
+export const USER_BY_FILTERS = "/idty/userbyfilter?pagesize=";
 export const USER_BY_MAIL = "/idty/isemailexists?email=";
 export const INVITE_USER = "/idty/admin/inviteuser";
 export const UPDATE_USER = "/idty/updateuser";
@@ -16,6 +16,7 @@ export const DELETE_USER = "/idty/deleteuser";
 export const GROUP_ADDEDIT = "/idty/groupaddedit";
 export const DELETE_GROUP = "/idty/deletegroup";
 export const GROUP_ALL = "/idty/group/all";
+export const USER_ROLES_PERMISSIONS = "/idty/userRolesAndPermissions?email=";
 export const PERMISSION_ALL = "/idty/permission/all";
 export const ADD_USER_TO_GROUP = "/idty/addusertogroup";
 export const REMOVE_USER_TO_GROUP = "/idty/removeusertogroup";

@@ -19,8 +19,8 @@
     display: flex;
     justify-content: center;
     background-color: #FFFFFF;
-    margin-top: 10%;
-    margin-bottom: 7%;
+    margin-top: 6%;
+    margin-bottom: 4%;
 }
 .login-container{
     height: auto;
@@ -36,4 +36,9 @@
 .reset-password-container{
   height: auto;
   box-shadow: 0 2px 9px 0 rgba(40,44,51,0.26);
+}
+
+#g-recaptcha{
+  margin-top: 2%;
+  margin-left: 16%;
 }
