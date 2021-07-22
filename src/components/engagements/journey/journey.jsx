@@ -162,7 +162,6 @@ export default function EngagementsJourney(props) {
         getData(JOURNEYS)
             .then(journeysData => {
                 if (journeysData) {
-                    console.log('****', journeysData)
                     setGroupedJourneys(journeysData.JourneysResponse);
                     setJourneysCount({ usedInEngagements: journeysData.UsedJourneysCount, Total: journeysData.TotalJourneysCount });
                 } else {

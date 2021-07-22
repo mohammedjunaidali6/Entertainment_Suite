@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { Gateway_Host_URI, Identity_Host_URI, Engagement_Host_URI, Prod_Base_URI, headers } from './apiConstants';
+import { ENGT_PROD_BASE_URI } from './apiConstants';
 
 export const isHandlerEnabled = (config = {}) => {
     return config.hasOwnProperty('handlerEnabled') && !config.handlerEnabled ? false : true
@@ -30,14 +30,10 @@ export const successHandler = (response) => {
 
 const { useState, useCallback, useMemo, useEffect } = React;
 
-console.log('env', process.env);
+// export this and use it in all your components
 export const axiosInstance = axios.create({
-    baseURL: Prod_Base_URI,
-    headers: {
-        'client_id': headers.client_id,
-        'secret': headers.secret
-    }
-}); // export this and use it in all your components
+    baseURL: ENGT_PROD_BASE_URI
+});
 
 export const useAxiosLoader = () => {
     const [counter, setCounter] = useState(0);

@@ -8,7 +8,7 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
-import { GROUP_ALL, Identity_Host_URI, INVITE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
+import { GROUP_ALL, IDTY_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
 import validator from 'validator';
 import Amplify, { Auth } from 'aws-amplify';
 import AWS from 'aws-sdk';
@@ -103,13 +103,13 @@ export default function Team(props) {
     }
     const handleMessageBox = (messageType, textToDisplay) => {
         setMessageBox({ display: true, type: messageType, text: textToDisplay });
-        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
+        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 5000)
     }
 
     const fetchRolesData = () => {
         try {
             setVisible(true);
-            getData(`${Identity_Host_URI}${GROUP_ALL}`)
+            getData(`${IDTY_HOST_URI}${GROUP_ALL}`)
                 .then(response => {
                     if (response) {
                         let rolesArr = response.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -126,7 +126,7 @@ export default function Team(props) {
     const fetchUsersData = () => {
         try {
             setVisible(true);
-            getData(`${Identity_Host_URI}${USER_BY_FILTERS}${100}`)
+            getData(`${IDTY_HOST_URI}${USER_BY_FILTERS}${100}`)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -159,7 +159,7 @@ export default function Team(props) {
     const fetchUsersByUserName = async (username) => {
         try {
             setVisible(true);
-            getData(`${Identity_Host_URI}/idty/userbyusername?user_name=${username}`)
+            getData(`${IDTY_HOST_URI}/idty/userbyusername?user_name=${username}`)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -214,91 +214,95 @@ export default function Team(props) {
         return result;
     }
     const onSaveClick = () => {
-        if (validator.isEmail(email)) {
-            //Check email existane in User table
-            getData(`${Identity_Host_URI}${USER_BY_MAIL}${email}`)
-                .then(res => {
-                    if (!res) {
-                        var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-                        AWS.config.update({
-                            region: REACT_APP_AWS_REGION,
-                            accessKeyId: REACT_APP_IAM_ACCESS_KEY,
-                            secretAccessKey: REACT_APP_IAM_SECRET
-                        })
-                        var params = {
-                            UserPoolId: REACT_APP_POOL_ID,
-                            Username: email,
-                            DesiredDeliveryMediums: ['EMAIL'],
-                            ForceAliasCreation: true || false,
-                            TemporaryPassword: email.substring(0, 4) + randomString(),
-                            UserAttributes: [
-                                {
-                                    Name: 'email',
-                                    Value: email,
-                                },
-                                {
-                                    Name: 'custom:tenant_key',
-                                    Value: 'TENANT#KEY'
-                                }
-                            ],
-                            ValidationData: [
-                                {
-                                    Name: 'email',
-                                    Value: email,
-                                },
-                                {
-                                    Name: 'custom:tenant_key',
-                                    Value: 'TENANT#KEY'
-                                }
-                            ]
-                        };
-                        cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
-                            if (err) {
-                                console.error('*adminCreateUser ', err);
-                                handleMessageBox('error', 'Invitation failed');
-                            } else {
-                                console.log('***', data.User);
-                                handleMessageBox('success', 'Invitation sent succesfully');
-                                let postObj = {};
-                                postObj.email = email;
-                                postObj.mobile_number = phoneNumber;
-                                postObj.user_groups = [];
-                                postObj.user_groups.push(group);
-                                postObj.status = data.User.UserStatus;
-                                postObj.message = message;
-                                setVisible(true);
-                                var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
-                                var headers = { 'tenant_key': tenantKey }
-                                postData(`${Identity_Host_URI}${INVITE_USER}`, postObj, headers)
-                                    .then(response => {
-                                        if (response) {
-                                            let data = response;
-                                            if (typeof data === 'string') {
-                                                handleMessageBox('error', data);
-                                            } else {
-                                                setCreateClick(false);
-                                                setGroup();
-                                                setPhoneNumber();
-                                                setEmail();
-                                                handleMessageBox('success', 'User Data Saved succesfully');
-                                            }
-                                        } else {
-                                            handleMessageBox('error', 'User Data Saving failed;');
-                                        }
-                                        setVisible(false);
-                                    })
-                            }
-                            setCreateClick(false);
-                        });
-
-                    } else {
-                        console.log('**', "Given EMail is already exists.")
-                        handleMessageBox('error', 'Given EMail is already exists.');
-                    }
-                })
-        } else {
-            alert('Email is Invalid');
+        if (!validator.isEmail(email)) {
+            handleMessageBox('error', 'Please enter a valid email.');
+            return;
         }
+        if (!group) {
+            handleMessageBox('error', 'Please select a Role');
+            return;
+        }
+        //Check email existane in User table
+        getData(`${IDTY_HOST_URI}${USER_BY_MAIL}${email}`)
+            .then(res => {
+                if (res) {
+                    handleMessageBox('error', 'Given Email is already exists.');
+                    return;
+                }
+                var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+                AWS.config.update({
+                    region: REACT_APP_AWS_REGION,
+                    accessKeyId: REACT_APP_IAM_ACCESS_KEY,
+                    secretAccessKey: REACT_APP_IAM_SECRET
+                })
+                var params = {
+                    UserPoolId: REACT_APP_POOL_ID,
+                    Username: email,
+                    DesiredDeliveryMediums: ['EMAIL'],
+                    ForceAliasCreation: true || false,
+                    TemporaryPassword: email.substring(0, 4) + randomString(),
+                    UserAttributes: [
+                        {
+                            Name: 'email',
+                            Value: email,
+                        },
+                        {
+                            Name: 'custom:tenant_key',
+                            Value: 'TENANT#KEY'
+                        },
+                        {
+                            Name: 'email_verified',
+                            Value: 'true'
+                        }
+                    ],
+                    ValidationData: [
+                        {
+                            Name: 'email',
+                            Value: email,
+                        },
+                        {
+                            Name: 'custom:tenant_key',
+                            Value: 'TENANT#KEY'
+                        }
+                    ]
+                };
+                cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
+                    if (err) {
+                        console.error('*adminCreateUser ', err);
+                        handleMessageBox('error', 'Invitation failed');
+                    } else {
+                        handleMessageBox('success', 'Invitation sent succesfully');
+                        let postObj = {};
+                        postObj.email = email;
+                        postObj.mobile_number = phoneNumber;
+                        postObj.user_groups = [];
+                        postObj.user_groups.push(group);
+                        postObj.status = data.User.UserStatus;
+                        postObj.message = message;
+                        setVisible(true);
+                        var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
+                        postData(`${IDTY_HOST_URI}${INVITE_USER}`, postObj)
+                            .then(response => {
+                                if (response) {
+                                    let data = response;
+                                    if (typeof data === 'string') {
+                                        handleMessageBox('error', data);
+                                    } else {
+                                        setCreateClick(false);
+                                        setGroup();
+                                        setPhoneNumber();
+                                        setEmail();
+                                        handleMessageBox('success', 'User Data Saved succesfully');
+                                    }
+                                } else {
+                                    handleMessageBox('error', 'User Data Saving failed;');
+                                }
+                                setVisible(false);
+                            })
+                    }
+                    setCreateClick(false);
+                });
+            })
 
     }
     const onUpdateClick = () => {
@@ -306,7 +310,7 @@ export default function Team(props) {
         postObj.groups = [];
         postObj.groups.push(group);
         setVisible(true);
-        postData('/idty/updateuser', postObj)
+        postData(`${IDTY_HOST_URI}${UPDATE_USER}`, postObj)
             .then(response => {
                 if (response && response.data && response.data.data) {
                     let data = response.data.data;
@@ -414,11 +418,19 @@ export default function Team(props) {
                                         <div className='r-c-btn-text'>Cancel</div>
                                     </div>
                                     {!updateUser ?
-                                        <div className='role-save-btn disp-inline-block' role="button" onClick={onSaveClick}>
+                                        <div
+                                            className='role-save-btn disp-inline-block'
+                                            role="button"
+                                            onClick={onSaveClick}
+                                        >
                                             <div className='r-s-btn-text'>Invite</div>
                                         </div>
                                         :
-                                        <div className='role-save-btn disp-inline-block' role="button" onClick={onUpdateClick}>
+                                        <div
+                                            className='role-save-btn disp-inline-block'
+                                            role="button"
+                                            onClick={onUpdateClick}
+                                        >
                                             <div className='r-s-btn-text'>Update</div>
                                         </div>
                                     }

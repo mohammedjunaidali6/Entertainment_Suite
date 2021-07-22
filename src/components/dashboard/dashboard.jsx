@@ -15,6 +15,7 @@ import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
 import { useEffect } from 'react';
+import { JWT_TOKEN } from '../../api/apiConstants';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -56,7 +57,7 @@ export default function Dashboard(props) {
     };
 
     useEffect(() => {
-        let jwtToken = localStorage.getItem('jwtToken');
+        let jwtToken = sessionStorage.getItem(JWT_TOKEN);
         if (!jwtToken) {
             props.history.push('/login');
         }

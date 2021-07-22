@@ -8,8 +8,8 @@ export function dispatchLoaderData(data) {
         });
     };
 }
-
 export function dispatchAlertDialogData(data) {
+    console.log('***', data)
     return (dispatch) => {
         dispatch({
             type: SET_OPEN_ALERT_DIALOG,

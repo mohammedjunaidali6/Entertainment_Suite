@@ -14,6 +14,8 @@ import support_src from '../../assets/img/support.svg';
 import settings_src from '../../assets/img/Property_Settings.svg';
 import help_src from '../../assets/img/User Guide.svg';
 import logout_src from '../../assets/img/logout.svg';
+import { Auth } from 'aws-amplify';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -50,22 +52,23 @@ export default function Header(props) {
     const handleChange = (event) => {
         setCompany(event.target.value);
     };
-    const logOutFn = () => {
-        window.location.href = '/login';
-    }
-
     function redirectFn(param) {
-        history.push(param);
+        window.location.href = param;
+    }
+    const logOutFn = () => {
+        Auth.signOut().then(res => {
+            redirectFn('/login');
+        }).catch(err => console.error(err));
     }
     function settingsRedirectFn(param) {
         setAnchorEl(null);
-        redirectFn(param);
+        redirectFn('/settings');
     }
 
     return (
         <div id="header-container">
             <div className="w-50 float-left clearfix">
-                <img src={logo_src} alt="Divanor" className="h-logo" onClick={() => redirectFn('/')} />
+                <img src={logo_src} alt="Divanor" className="h-logo" onClick={() => redirectFn('/dashboard')} />
                 <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
@@ -100,7 +103,7 @@ export default function Header(props) {
                 >
                     <Typography className={classes.typography}>
                         <div className="h-logger-user-options p-0">
-                            <div onClick={() => settingsRedirectFn('/settings')}>
+                            <div onClick={settingsRedirectFn}>
                                 <img src={settings_src} alt="Settings" />
                                 <span className="pl-2 pt-2">Settings</span>
                             </div>

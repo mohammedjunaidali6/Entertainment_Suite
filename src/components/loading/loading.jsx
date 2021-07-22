@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import LinearProgressBar from '../common/progressBar/linearProgressBar';
 import { getData, postData } from '../../api/ApiHelper';
-import { Identity_Host_URI, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
+import { EMAIL, IDTY_HOST_URI, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
 
 
 export default function Loading(props) {
-  console.log('***', props)
   const [perc, setPerc] = useState(1);
 
   useEffect(() => {
@@ -20,13 +19,12 @@ export default function Loading(props) {
   }, []);
 
   useEffect(() => {
-    var email = localStorage.getItem('email');
-    console.log('***', email);
-    getData(`${Identity_Host_URI}${USER_ROLES_PERMISSIONS}${email}`)
+    var email = localStorage.getItem(EMAIL);
+    getData(`${IDTY_HOST_URI}${USER_ROLES_PERMISSIONS}${email}`)
       .then(data => {
         console.log('***', data);
       });
-  });
+  }, []);
 
 
   return (

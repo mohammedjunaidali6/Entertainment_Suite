@@ -1,12 +1,11 @@
 export const Gateway_Host_URI = "http://localhost:806/api";
-export const Identity_Host_URI = "http://localhost:807/api";
+export const IDTY_HOST_URI = "http://localhost:807/api";
 //export const Engagement_Host_URI = "http://localhost:815/api";
-export const Prod_Base_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
+export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
 
-export const headers = {
-    client_id: 'identity_mgt_tenant_2',//'client_1_engagement', //
-    secret: 'XsrRvPkMHmXkkFeW',
-}
+export const EMAIL = 'Email'
+export const JWT_TOKEN = 'JwtToken'
+export const REFRESH_TOKEN = 'RefreshToken'
 
 export const USER_BY_FILTERS = "/idty/userbyfilter?pagesize=";
 export const USER_BY_MAIL = "/idty/isemailexists?email=";

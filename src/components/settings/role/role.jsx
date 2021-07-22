@@ -219,7 +219,6 @@ export default function Role(props) {
                             roleArr.push(roleObj);
                         })
                         roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
-                        console.log('***', roleArr)
                         props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
                     } else {
 

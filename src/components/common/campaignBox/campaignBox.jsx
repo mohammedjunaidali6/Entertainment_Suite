@@ -51,7 +51,6 @@ export default function CampaignBox(props) {
     return (
         <div className="w-100 float-left clearfix">
             {props.campaigndata.map((obj, idx) => (
-                console.log('***', obj),
                 <div key={idx} className="campaign-box-outer float-left clearfix mb-3">
                     <div className="campaign-box">
                         <div className={classnames('c-b-discount pl-3 pt-2', {

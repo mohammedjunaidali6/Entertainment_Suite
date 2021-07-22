@@ -6,6 +6,7 @@ import * as actionsHandler from '../../actions/route/routeActionHandler';
 const mapStateToProps = state => ({
     showLoader: state.RouteReducer.showLoader,
     alertDialog: state.RouteReducer.alertDialog,
+    authenticated: state.RouteReducer.authenticated
 });
 
 const mapDispatchToProps = dispatch => ({

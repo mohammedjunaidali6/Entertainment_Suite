@@ -12,6 +12,7 @@ export default function Home(props) {
         if (path.pathname.endsWith('/') ||
             path.pathname === '/login' ||
             path.pathname === '/loading' ||
+            path.pathname === '/forgotPassword' ||
             path.pathname === '/register' ||
             path.pathname === '/verify' ||
             path.pathname === '/settings') {
@@ -26,8 +27,8 @@ export default function Home(props) {
         <div id="home-container">
             {sideMenuFlag ? <SideMenu /> : null}
             <div id="home-content"
-                className={`float-left clearfix ${path.pathname === '/login' || path.pathname === '/loading' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings' ? `` : `pt-4 pl-4 pb-4 pr-2`} ${sideMenuFlag ? `w-80` : `w-100`}`}
-                style={{ height: path.pathname === '/login' || path.pathname === '/register' || path.pathname === '/verify' ? `100vh` : containerHeightCalcFn() }}>
+                className={`float-left clearfix ${path.pathname === '/login' || path.pathname === '/forgotPassword' || path.pathname === '/loading' || path.pathname === '/register' || path.pathname === '/verify' || path.pathname === '/settings' ? `` : `pt-4 pl-4 pb-4 pr-2`} ${sideMenuFlag ? `w-80` : `w-100`}`}
+                style={{ height: path.pathname === '/login' || path.pathname === '/forgotPassword' || path.pathname === '/register' || path.pathname === '/verify' ? `100vh` : containerHeightCalcFn() }}>
                 {props.children}
             </div>
         </div>

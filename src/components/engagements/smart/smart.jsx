@@ -19,6 +19,7 @@ import { getData, postData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
+import store from '../../../store/store';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -30,8 +31,6 @@ export default function EngagementsSmart(props) {
     const [active, setActive] = useState('all');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
     const [step, setStep] = useState('setGoals');
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
@@ -191,18 +190,15 @@ export default function EngagementsSmart(props) {
 
             engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
             engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
-            console.log('****UPDATED', engagementObj);
 
             postData(SAVE_ENGAGEMENT, engagementObj)
                 .then(engagementDbObj => {
                     if (engagementDbObj) {
                         setOpenEngagementWizard(false);
                         handleMessageBox('success', 'Engagement Saved Succesfully');
-                        console.log('***', 'Engagement saved Succesfully');
                         fetchEngagements();
                         createEngagementDataClear();
                     } else {
-                        console.log('**** Engagement Saving FAILED')
                         handleMessageBox('error', 'Engagement Saving failed');
                     }
                     handleLoader(false);
