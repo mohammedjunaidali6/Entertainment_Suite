@@ -50,7 +50,7 @@ export default function ForgotPassword(props) {
   const classes = useStyles();
   const { REACT_APP_RECAPTCHA_SITE_KEY } = process.env;
   const [forgotPassword, setPassword] = useState({ email: '', code: '', newPassword: '', confirmPassword: '' });
-  const [enableVerification, setEnableVerification] = useState(true);
+  const [enableVerification, setEnableVerification] = useState(false);
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [error, setError] = useState('')
   let recaptchaInstance;
@@ -211,6 +211,7 @@ export default function ForgotPassword(props) {
               verifyCallback={onVerifyCaptcha}
               expiredCallback={onExpireCaptcha}
             />
+            <Link href='/login' style={{ fontSize: '10px' }}>&larr; SignIn</Link>
             <Box mt={5}>
               <Copyright />
             </Box>

@@ -14,6 +14,7 @@ export default function Loading(props) {
 
     setTimeout(() => {
       clearInterval(timer);
+      console.log('***', props);
       props.history.push('/engagements/smart');
     }, 3000);
   }, []);

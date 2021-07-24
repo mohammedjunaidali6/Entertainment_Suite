@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LogIn(props) {
-    console.log('**', props);
     const classes = useStyles();
     const { REACT_APP_RECAPTCHA_SITE_KEY } = process.env;
     const [logIn, setLogIn] = useState({ email: '', password: '' });
@@ -77,7 +76,6 @@ export default function LogIn(props) {
     }
     const onExpireCaptcha = () => {
         recaptchaInstance.reset();
-        alert('Captcha Expired')
     }
 
     const onSignIn = (e) => {
@@ -108,18 +106,37 @@ export default function LogIn(props) {
                     setSignInProcessing(false);
                 })
                 .catch(err => {
-                    alert(err.message);
                     setSignInProcessing(false);
+                    setError({ ...error, password: err.message })
                 });
         }
         e.preventDefault();
     }
     const setNewUser = e => {
         setNewUserSignIn({ ...newUserSignIn, [e.target.name]: e.target.value })
+        setError({ ...error, [e.target.name]: e.target.value });
+    }
+    const onChangeNewPassword = (e) => {
+        if (!new RegExp("^(?=.{8,})").test(e.target.value)) {
+            setError({ ...error, newPassword: 'Password should be atleast 8 characters length' });
+        } else if (!new RegExp("^(?=.*[a-z])").test(e.target.value)) {
+            setError({ ...error, newPassword: 'Password should contain atleast 1 lowerCase alphabet' });
+        } else if (!new RegExp("^(?=.*[A-Z])").test(e.target.value)) {
+            setError({ ...error, newPassword: 'Password should contain atleast 1 upperCase alphabet' });
+        } else if (!new RegExp("^(?=.*[0-9])").test(e.target.value)) {
+            setError({ ...error, newPassword: 'Password should contain atleast 1 number' });
+        } else if (!new RegExp("^(?=.*[!@#\$%\^&\*])").test(e.target.value)) {
+            setError({ ...error, newPassword: 'Password should contain atleast 1 special character' });
+        } else {
+            setError({ ...error, newPassword: '' });
+            setNewUserSignIn({ ...newUserSignIn, newPassword: e.target.value })
+        }
     }
     const onResetPassword = e => {
-        if (newUserSignIn.newPassword !== newUserSignIn.confirmPassword) {
-            alert('Confirm password is not matching with New password');
+        if (!error.email || !error.newPassword || !error.confirmPassword) {
+            console.error('error', error);
+        } else if (newUserSignIn.newPassword !== newUserSignIn.confirmPassword) {
+            setError({ ...error, confirmPassword: 'Confirm password is not matching with New password' });
         } else {
             Auth.completeNewPassword(
                 cognitoUser,
@@ -132,7 +149,7 @@ export default function LogIn(props) {
                 setCaptchaVerified(false);
             }).catch(err => {
                 console.error('*', err);
-                alert(err.message);
+                setError({ ...error, confirmPassword: err.message });
             });
         }
         e.preventDefault();
@@ -150,6 +167,7 @@ export default function LogIn(props) {
                                     <Typography component="h1" variant="h5">Login to Your Account</Typography>
                                     <form className={classes.form} noValidate onSubmit={onSignIn}>
                                         <TextField
+                                            id='email'
                                             label="Email"
                                             variant="outlined"
                                             margin="normal"
@@ -252,28 +270,29 @@ export default function LogIn(props) {
                                             name="email"
                                             autoComplete="email"
                                             autoFocus
+                                            error={error.email}
+                                            helperText={error.email}
                                             onChange={setNewUser}
                                         />
                                         <TextField
+                                            type="password"
                                             margin="normal"
                                             required
                                             fullWidth
-                                            name="newPassword"
                                             label="New Password"
-                                            type="password"
-                                            id="newPassword"
-                                            autoComplete="current-password"
-                                            onChange={setNewUser}
+                                            error={error.newPassword}
+                                            helperText={error.newPassword}
+                                            onChange={onChangeNewPassword}
                                         />
                                         <TextField
+                                            type="password"
                                             margin="normal"
                                             required
                                             fullWidth
-                                            name="confirmPassword"
                                             label="Confirm Password"
-                                            type="password"
-                                            id="confirmPassword"
-                                            autoComplete="current-password"
+                                            name='confirmPassword'
+                                            error={error.confirmPassword}
+                                            helperText={error.confirmPassword}
                                             onChange={setNewUser}
                                         />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>

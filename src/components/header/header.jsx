@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,14 +53,15 @@ export default function Header(props) {
         setCompany(event.target.value);
     };
     function redirectFn(param) {
-        window.location.href = param;
+        history.push(param);
     }
     const logOutFn = () => {
-        Auth.signOut().then(res => {
-            redirectFn('/login');
-        }).catch(err => console.error(err));
+        setAnchorEl(null);
+        Auth.signOut()
+            .then(res => redirectFn('/login'))
+            .catch(err => console.error(err));
     }
-    function settingsRedirectFn(param) {
+    function settingsRedirectFn() {
         setAnchorEl(null);
         redirectFn('/settings');
     }
@@ -68,7 +69,7 @@ export default function Header(props) {
     return (
         <div id="header-container">
             <div className="w-50 float-left clearfix">
-                <img src={logo_src} alt="Divanor" className="h-logo" onClick={() => redirectFn('/dashboard')} />
+                <img src={logo_src} alt="Divanor" className="h-logo" onClick={() => redirectFn('/')} />
                 <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
@@ -105,15 +106,15 @@ export default function Header(props) {
                         <div className="h-logger-user-options p-0">
                             <div onClick={settingsRedirectFn}>
                                 <img src={settings_src} alt="Settings" />
-                                <span className="pl-2 pt-2">Settings</span>
+                                <Link className="pl-2 pt-2">Settings</Link>
                             </div>
                             <div>
                                 <img src={help_src} alt="Help" />
-                                <span className="pl-2 pt-2">Help</span>
+                                <Link className="pl-2 pt-2">Help</Link>
                             </div>
                             <div style={{ borderBottom: "1px solid #DBDDDE" }} onClick={logOutFn}>
                                 <img src={logout_src} alt="logout" />
-                                <span className="pl-2 pt-2">Logout</span>
+                                <Link className="pl-2 pt-2">Logout</Link>
                             </div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
                         </div>
