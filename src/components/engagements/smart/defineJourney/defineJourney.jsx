@@ -2,18 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { getData, postData } from '../../../../api/ApiHelper';
 import './defineJourney.css';
 import _ from 'lodash';
-import Loader from '../../../common/Spinner/spinner'
 import { JOURNEY_BY_FILTERS } from '../../../../api/apiConstants';
 
-
-const tempArray = [
-    { id: 1, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
-    { id: 2, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
-    { id: 3, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
-    { id: 4, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
-    { id: 5, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false },
-    { id: 6, tags: ['login', 'Add 5 products to cart', 'Add 2 products to Wishlist'], isActive: false }
-];
 
 export default function DefineJourney(props) {
     const [journeyBoxes, setJourneyBoxes] = useState();

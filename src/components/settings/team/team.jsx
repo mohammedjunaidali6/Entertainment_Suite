@@ -2,18 +2,14 @@ import React, { useState, useEffect, Fragment } from 'react';
 import SearchBar from '../../common/searchBar/searchBar';
 import Table from '../../common/reactTable/table';
 import './team.css';
-import TextField from '@material-ui/core/TextField';
 import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
-import { GROUP_ALL, IDTY_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
+import { GROUP_ALL, IDTY_PROD_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
 import validator from 'validator';
-import Amplify, { Auth } from 'aws-amplify';
 import AWS from 'aws-sdk';
-import awsconfig from '../../../aws-exports';
-Amplify.configure(awsconfig);
 
 
 export default function Team(props) {
@@ -44,16 +40,10 @@ export default function Team(props) {
             setUpdateUser(rowData);
         } else if (e.target.outerText === 'Delete') {
             setVisible(true);
-            getData('/idty/deleteuser?user_id=' + rowData.user_id)
-                .then(response => {
-                    if (response && response.data.data && response.data.data.length) {
-                        let data = response.data.data;
-                        if (typeof data === 'string') {
-                            console.error('***', data);
-                            handleMessageBox('error', data);
-                        } else {
-                            handleMessageBox('success', 'User is deleted succesfully');
-                        }
+            getData(`${IDTY_PROD_HOST_URI}/idty/deleteuser?user_id=` + rowData.user_id)
+                .then(data => {
+                    if (data) {
+                        handleMessageBox('success', 'User is deleted succesfully');
                     } else {
                         handleMessageBox('error', 'Deleting user is failed');
                     }
@@ -109,7 +99,7 @@ export default function Team(props) {
     const fetchRolesData = () => {
         try {
             setVisible(true);
-            getData(`${IDTY_HOST_URI}${GROUP_ALL}`)
+            getData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`)
                 .then(response => {
                     if (response) {
                         let rolesArr = response.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -126,7 +116,7 @@ export default function Team(props) {
     const fetchUsersData = () => {
         try {
             setVisible(true);
-            getData(`${IDTY_HOST_URI}${USER_BY_FILTERS}${100}`)
+            getData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -159,7 +149,7 @@ export default function Team(props) {
     const fetchUsersByUserName = async (username) => {
         try {
             setVisible(true);
-            getData(`${IDTY_HOST_URI}/idty/userbyusername?user_name=${username}`)
+            getData(`${IDTY_PROD_HOST_URI}/idty/userbyusername?user_name=${username}`)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -223,7 +213,7 @@ export default function Team(props) {
             return;
         }
         //Check email existane in User table
-        getData(`${IDTY_HOST_URI}${USER_BY_MAIL}${email}`)
+        getData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`)
             .then(res => {
                 if (res) {
                     handleMessageBox('error', 'Given Email is already exists.');
@@ -281,19 +271,14 @@ export default function Team(props) {
                         postObj.message = message;
                         setVisible(true);
                         var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
-                        postData(`${IDTY_HOST_URI}${INVITE_USER}`, postObj)
-                            .then(response => {
-                                if (response) {
-                                    let data = response;
-                                    if (typeof data === 'string') {
-                                        handleMessageBox('error', data);
-                                    } else {
-                                        setCreateClick(false);
-                                        setGroup();
-                                        setPhoneNumber();
-                                        setEmail();
-                                        handleMessageBox('success', 'User Data Saved succesfully');
-                                    }
+                        postData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj)
+                            .then(data => {
+                                if (data) {
+                                    setCreateClick(false);
+                                    setGroup();
+                                    setPhoneNumber();
+                                    setEmail();
+                                    handleMessageBox('success', 'User Data Saved succesfully');
                                 } else {
                                     handleMessageBox('error', 'User Data Saving failed;');
                                 }
@@ -310,18 +295,12 @@ export default function Team(props) {
         postObj.groups = [];
         postObj.groups.push(group);
         setVisible(true);
-        postData(`${IDTY_HOST_URI}${UPDATE_USER}`, postObj)
-            .then(response => {
-                if (response && response.data && response.data.data) {
-                    let data = response.data.data;
-                    if (typeof data === 'string') {
-                        console.error('***', data);
-                        handleMessageBox('error', data);
-                    } else {
-                        setCreateClick(false);
-                        setUpdateUser(false);
-                        handleMessageBox('success', 'User Group is Updated succesfully');
-                    }
+        postData(`${IDTY_PROD_HOST_URI}${UPDATE_USER}`, postObj)
+            .then(data => {
+                if (data) {
+                    setCreateClick(false);
+                    setUpdateUser(false);
+                    handleMessageBox('success', 'User Group is Updated succesfully');
                 } else {
                     //User Updated failed
                     setCreateClick(false);

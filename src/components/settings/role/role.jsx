@@ -7,6 +7,7 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getData, postData } from '../../../api/ApiHelper';
+import { IDTY_PROD_HOST_URI } from '../../../api/apiConstants';
 
 export default function Role(props) {
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
@@ -70,21 +71,15 @@ export default function Role(props) {
             setCreateClick(true);
             setUpdateRole(rowData)
             setRoleName(rowData.role);
-            getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
-                .then(response => {
-                    if (response && response.data.data && response.data.data.length) {
-                        let data = response.data.data;
-                        if (typeof data === 'string') {
-                            console.error('***', data);
-                            handleMessageBox('error', data);
-                        } else {
-                            let permissionsArr = [...permissions];
-                            permissionsArr = permissionsArr.map(prm => {
-                                prm.isAssigned = !!(_.find(data, p => prm.permission_id == p.permission_id))
-                                return prm;
-                            });
-                            setPermissions(permissionsArr);
-                        }
+            getData(`${IDTY_PROD_HOST_URI}/idty/permissionsbygroup?group_id=` + rowData.groupID)
+                .then(data => {
+                    if (data) {
+                        let permissionsArr = [...permissions];
+                        permissionsArr = permissionsArr.map(prm => {
+                            prm.isAssigned = !!(_.find(data, p => prm.permission_id == p.permission_id))
+                            return prm;
+                        });
+                        setPermissions(permissionsArr);
                     } else {
                         handleMessageBox('error', 'Group Permission fetch is failed');
                     }
@@ -97,17 +92,11 @@ export default function Role(props) {
     }
     const onViewClick = (e, rowData) => {
         setVisible(true);
-        getData('/idty/permissionsbygroup?group_id=' + rowData.groupID)
-            .then(response => {
-                if (response && response.data.data && response.data.data.length) {
-                    let data = response.data.data;
-                    if (typeof data === 'string') {
-                        console.error('***', data);
-                        handleMessageBox('error', data);
-                    } else {
-                        handleMessageBox('success', 'Group Permission fetched succesfully');
-                        setGroupPermissions(data);
-                    }
+        getData(`${IDTY_PROD_HOST_URI}/idty/permissionsbygroup?group_id=` + rowData.groupID)
+            .then(data => {
+                if (data) {
+                    handleMessageBox('success', 'Group Permission fetched succesfully');
+                    setGroupPermissions(data);
                 } else {
                     handleMessageBox('error', 'Group Permission fetch is failed');
                     setGroupPermissions();
@@ -137,11 +126,11 @@ export default function Role(props) {
     const fetchRolesWithPermissionsCount = async () => {
         try {
             setVisible(true);
-            getData('/idty/getgroups')
-                .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
+            getData(`${IDTY_PROD_HOST_URI}/idty/getgroups`)
+                .then(data => {
+                    if (data) {
                         let roleArr = [];
-                        response.data.data.forEach(r => {
+                        data.forEach(r => {
                             let roleObj = {};
                             roleObj.groupID = r.GroupID;
                             roleObj.role = r.GroupName;
@@ -162,11 +151,11 @@ export default function Role(props) {
     const fetchPermissions = async () => {
         try {
             setVisible(true);
-            getData('/idty/permission/all')
-                .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
-                        props.notificationActionHandler.setPermissions(response.data.data);
-                        setPermissions(response.data.data)
+            getData(`${IDTY_PROD_HOST_URI}/idty/permission/all`)
+                .then(data => {
+                    if (data) {
+                        props.notificationActionHandler.setPermissions(data);
+                        setPermissions(data)
                     } else {
 
                     }
@@ -179,9 +168,9 @@ export default function Role(props) {
     const updateRoles = async (postObj) => {
         try {
             setVisible(true);
-            postData('/idty/updategroup', postObj)
-                .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
+            postData(`${IDTY_PROD_HOST_URI}/idty/updategroup`, postObj)
+                .then(data => {
+                    if (data) {
                         setCreateClick(false);
                         setUpdateRole();
                         let roleObj = {};
@@ -206,10 +195,9 @@ export default function Role(props) {
     const searchRoleByRoleName = async (rolename) => {
         try {
             setVisible(true);
-            getData(`/idty/groupbygroupname?group_name=${rolename}`)
-                .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
-                        let data = response.data.data;
+            getData(`${IDTY_PROD_HOST_URI}/idty/groupbygroupname?group_name=${rolename}`)
+                .then(data => {
+                    if (data) {
                         let roleArr = [];
                         data.forEach(r => {
                             let roleObj = {};
@@ -232,11 +220,10 @@ export default function Role(props) {
     const addRole = async (postObj) => {
         try {
             setVisible(true);
-            postData('/idty/addnewgroup', postObj)
-                .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
+            postData(`${IDTY_PROD_HOST_URI}/idty/addnewgroup`, postObj)
+                .then(data => {
+                    if (data) {
                         setCreateClick(false);
-                        let data = response.data.data;
                         let rolesArr = props.roleData;
                         let roleObj = {};
                         roleObj.groupID = data.group_id;
@@ -258,9 +245,9 @@ export default function Role(props) {
     const deleteRole = async (id) => {
         try {
             setVisible(true);
-            getData('/idty/deletegroup?group_id=' + id)
+            getData(`${IDTY_PROD_HOST_URI}/idty/deletegroup?group_id=` + id)
                 .then(response => {
-                    if (response && typeof response.data.data !== 'string') {
+                    if (response) {
                         let tempRoles = [...props.roleData];
                         tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)

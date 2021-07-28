@@ -26,7 +26,6 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
     <Route {...rest}
       render={props => {
         if (isAuthenticated) {
-          debugger;
           if (rest.path === '/login') {
             return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
           } else {

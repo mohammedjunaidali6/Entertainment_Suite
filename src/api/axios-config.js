@@ -32,7 +32,11 @@ const { useState, useCallback, useMemo, useEffect } = React;
 
 // export this and use it in all your components
 export const axiosInstance = axios.create({
-    baseURL: ENGT_PROD_BASE_URI
+    baseURL: ENGT_PROD_BASE_URI,
+    headers: {
+        'x-api-key': 'MXqO3cDcr492OTPGZZAot7akPvLmfKbA4bKt5Ryr',
+        'x-tenant-key': 'TENANT#KEY'
+    }
 });
 
 export const useAxiosLoader = () => {

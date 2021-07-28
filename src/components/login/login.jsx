@@ -87,7 +87,6 @@ export default function LogIn(props) {
             setSignInProcessing(true);
             Auth.signIn({ username: logIn.email, password: logIn.password })
                 .then(user => {
-                    console.log('*', user);
                     if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
                         setCognitoUser(user);
                         setForcePasswordChange(true);
@@ -96,7 +95,7 @@ export default function LogIn(props) {
                         var refreshToken = user.signInUserSession.refreshToken.token;
                         var tenantKey = user.attributes['custom:tenant_key'];
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
-                        axiosInstance.defaults.headers.common['tenant_key'] = tenantKey;
+                        axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey;
                         localStorage.setItem(EMAIL, logIn.email);
                         sessionStorage.setItem(JWT_TOKEN, jwtToken);
                         sessionStorage.setItem(REFRESH_TOKEN, refreshToken);

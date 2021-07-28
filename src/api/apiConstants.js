@@ -1,7 +1,9 @@
-export const Gateway_Host_URI = "http://localhost:806/api";
-export const IDTY_HOST_URI = "http://localhost:807/api";
+//export const Gateway_Host_URI = "http://localhost:806/api";
+//export const IDTY_HOST_URI = "http://localhost:807/api";
 //export const Engagement_Host_URI = "http://localhost:815/api";
+export const IDTY_PROD_HOST_URI = "https://frg6g6wml9.execute-api.ap-south-1.amazonaws.com/Prod/api";
 export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
+export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.amazonaws.com/Prod/api';
 
 export const EMAIL = 'Email'
 export const JWT_TOKEN = 'JwtToken'
