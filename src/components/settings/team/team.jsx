@@ -238,7 +238,7 @@ export default function Team(props) {
                         },
                         {
                             Name: 'custom:tenant_key',
-                            Value: 'TENANT#KEY'
+                            Value: 'TENANT1234'
                         },
                         {
                             Name: 'email_verified',
@@ -252,7 +252,7 @@ export default function Team(props) {
                         },
                         {
                             Name: 'custom:tenant_key',
-                            Value: 'TENANT#KEY'
+                            Value: 'TENANT1234'
                         }
                     ]
                 };

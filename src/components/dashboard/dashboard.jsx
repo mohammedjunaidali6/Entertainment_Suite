@@ -56,13 +56,6 @@ export default function Dashboard(props) {
         setcoFilterEl(null);
     };
 
-    useEffect(() => {
-        let jwtToken = sessionStorage.getItem(JWT_TOKEN);
-        if (!jwtToken) {
-            props.history.push('/login');
-        }
-    })
-
     return (
         <Fragment>
             <div id="dashboard-container" className="p-2">

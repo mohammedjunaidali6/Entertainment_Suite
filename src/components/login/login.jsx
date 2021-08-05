@@ -87,6 +87,7 @@ export default function LogIn(props) {
             setSignInProcessing(true);
             Auth.signIn({ username: logIn.email, password: logIn.password })
                 .then(user => {
+                    console.log('***', user);
                     if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
                         setCognitoUser(user);
                         setForcePasswordChange(true);
@@ -95,7 +96,7 @@ export default function LogIn(props) {
                         var refreshToken = user.signInUserSession.refreshToken.token;
                         var tenantKey = user.attributes['custom:tenant_key'];
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
-                        axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey;
+                        axiosInstance.defaults.headers.common['x-tenant-key'] = 'TENANT1234';
                         localStorage.setItem(EMAIL, logIn.email);
                         sessionStorage.setItem(JWT_TOKEN, jwtToken);
                         sessionStorage.setItem(REFRESH_TOKEN, refreshToken);
@@ -105,6 +106,7 @@ export default function LogIn(props) {
                     setSignInProcessing(false);
                 })
                 .catch(err => {
+                    alert(err.message);
                     setSignInProcessing(false);
                     setError({ ...error, password: err.message })
                 });
@@ -113,7 +115,7 @@ export default function LogIn(props) {
     }
     const setNewUser = e => {
         setNewUserSignIn({ ...newUserSignIn, [e.target.name]: e.target.value })
-        setError({ ...error, [e.target.name]: e.target.value });
+        setError({ ...error, [e.target.name]: '' });
     }
     const onChangeNewPassword = (e) => {
         if (!new RegExp("^(?=.{8,})").test(e.target.value)) {
@@ -132,7 +134,7 @@ export default function LogIn(props) {
         }
     }
     const onResetPassword = e => {
-        if (!error.email || !error.newPassword || !error.confirmPassword) {
+        if (error.email || error.newPassword || error.confirmPassword) {
             console.error('error', error);
         } else if (newUserSignIn.newPassword !== newUserSignIn.confirmPassword) {
             setError({ ...error, confirmPassword: 'Confirm password is not matching with New password' });

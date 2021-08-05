@@ -14,12 +14,13 @@ export default function Loading(props) {
 
     setTimeout(() => {
       clearInterval(timer);
-      //props.history.push('/engagements/smart');
+      props.history.push('/engagements/smart');
     }, 3000);
   }, []);
 
   useEffect(() => {
     var email = localStorage.getItem(EMAIL);
+
     getData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${email}`)
       .then(data => {
         console.log('***', data);
