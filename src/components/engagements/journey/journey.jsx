@@ -9,12 +9,14 @@ import SearchBar from "../../common/searchBar/searchBar";
 import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
-import { getData, postData } from '../../../api/ApiHelper';
+import { getAuthAndData, getData, postData } from '../../../api/ApiHelper';
 import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
+import { useHistory } from 'react-router-dom';
 
 
 export default function EngagementsJourney(props) {
+    var history = useHistory();
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [createFlag, setCreateFlag] = useState(false);
@@ -159,7 +161,7 @@ export default function EngagementsJourney(props) {
     }
     const getAllJourneys = () => {
         handleLoader(true);
-        getData(JOURNEYS)
+        getAuthAndData(JOURNEYS, history)
             .then(journeysData => {
                 if (journeysData) {
                     setGroupedJourneys(journeysData.JourneysResponse);

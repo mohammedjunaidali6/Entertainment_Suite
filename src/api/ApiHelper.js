@@ -1,11 +1,24 @@
 import { axiosInstance } from './axios-config';
+import { Auth } from 'aws-amplify';
+
+export const getAuthAndData = async (resource, history) => {
+    try {
+        await Auth.currentSession();
+        try {
+            const response = await axiosInstance.get(resource);
+            return handleResponse(response);
+        } catch (error) {
+            return handleError(error);
+        }
+    } catch (error) {
+        history.push('/login');
+    }
+};
 
 export const getData = async (resource) => {
     try {
         const response = await axiosInstance.get(resource);
-
         return handleResponse(response);
-
     } catch (error) {
         return handleError(error);
     }

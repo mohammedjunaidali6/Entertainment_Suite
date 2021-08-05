@@ -9,25 +9,28 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
   const path = useLocation();
 
   useEffect(() => {
-    // alert('isAuthenticating: ' + isAuthenticating + ', isAuthenticated: ' + isAuthenticated)
-    Auth.currentSession()
-      .then((userData) => {
-        setIsAuthenticated(true);
-        setIsAuthenticating(false);
-      })
-      .catch((err) => {
-        setIsAuthenticated(false);
-        setIsAuthenticating(false);
-      });
-  }, [path.pathname]);
+    onLoad();
+  }, [rest.path]);
+
+  async function onLoad() {
+    try {
+      await Auth.currentSession();
+      setIsAuthenticated(true);
+    }
+    catch (e) {
+      setIsAuthenticated(false);
+    }
+    setIsAuthenticating(false);
+  }
 
   return (
     !isAuthenticating &&
     <Route {...rest}
       render={props => {
+        debugger;
         if (isAuthenticated) {
           if (rest.path === '/login') {
-            return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+            return <Redirect to={{ pathname: '/loading', state: { from: props.location } }} />
           } else {
             return <Component {...props} />;
           }

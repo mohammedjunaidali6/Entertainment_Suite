@@ -18,6 +18,7 @@ import POCContainer from '../containers/poc/pocContainer';
 import AlertDialog from '../components/common/alertBox/dialogBox';
 import Loader from '../components/common/Spinner/spinner';
 import Loading from '../components/loading/loading';
+import dummy from '../components/loading/dummy';
 import ForgotPassword from '../components/login/forgotPassword';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
@@ -43,6 +44,7 @@ export default function AppRoute(props) {
               <ProtectedRoute exact path="/login" component={LoginContatiner} />
               <Route exact path="/forgotPassword" component={ForgotPassword} />
               <ProtectedRoute exact path="/loading" component={Loading} />
+              <ProtectedRoute exact path="/dummy" component={dummy} />
               <ProtectedRoute exact path="/" component={DashboardContatiner} />
               <ProtectedRoute exact path="/engagements/:tabname" component={EngagementsContatiner} />
               <ProtectedRoute exact path="/liveview" component={LiveViewContatiner} />
