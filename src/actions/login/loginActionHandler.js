@@ -1,9 +1,18 @@
-import { ACTION_TYPE} from '../../constants/actionTypes';
+import { SET_JWT_DATA, SET_USER_DATA } from '../../constants/actionTypes';
 
-export function dispatchData(data) {
+export function dispatchUserData(data) {
   return (dispatch) => {
     dispatch({
-      type: ACTION_TYPE,
+      type: SET_USER_DATA,
+      payload: data,
+    });
+  };
+}
+
+export function dispatchJwtTokenData(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_JWT_DATA,
       payload: data,
     });
   };

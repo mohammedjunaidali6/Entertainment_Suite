@@ -102,6 +102,7 @@ export default function LogIn(props) {
                         sessionStorage.setItem(JWT_TOKEN, jwtToken);
                         sessionStorage.setItem(REFRESH_TOKEN, refreshToken);
 
+
                         props.history.push('/dummy');
                     }
                     setSignInProcessing(false);

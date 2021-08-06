@@ -5,7 +5,8 @@ import * as actionsHandler from '../../actions/login/loginActionHandler';
 import * as routeActionHandler from '../../actions/route/routeActionHandler';
 
 const mapStateToProps = state => ({
-
+    userData: state.LoginReducer.userData,
+    jwtToken: state.LoginReducer.jwtToken,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,6 +1,9 @@
 // Store Action Types
 export const ACTION_TYPE = 'ACTION_TYPE';
 
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const SET_JWT_DATA = 'SET_JWT_DATA';
+
 export const SET_SHOW_LOADER = "SET_SHOW_LOADER";
 export const SET_OPEN_ALERT_DIALOG = "SET_OPEN_ALERT_DIALOG";
 
