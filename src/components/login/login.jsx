@@ -100,9 +100,11 @@ export default function LogIn(props) {
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
                         axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey ?? DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
-
+                        debugger;
                         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${logIn.email}`)
                             .then(userData => {
+                                debugger;
+                                setSignInProcessing(false);
                                 if (userData) {
                                     props.loginActionHandler.dispatchUserData(userData);
                                     if (!tenantKey) {
@@ -122,7 +124,6 @@ export default function LogIn(props) {
                                 }
                             });
                     }
-                    setSignInProcessing(false);
                 })
                 .catch(err => {
                     alert(err.message);
