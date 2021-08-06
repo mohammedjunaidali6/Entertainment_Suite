@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import LinearProgressBar from '../common/progressBar/linearProgressBar';
-import { getData, postData } from '../../api/ApiHelper';
+import { getAuthAndData, getData, postData } from '../../api/ApiHelper';
 import { EMAIL, IDTY_PROD_HOST_URI, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
 
 
@@ -21,7 +21,7 @@ export default function Loading(props) {
   useEffect(() => {
     var email = localStorage.getItem(EMAIL);
 
-    getData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${email}`)
+    getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${email}`, props.history)
       .then(data => {
         console.log('***', data);
       });

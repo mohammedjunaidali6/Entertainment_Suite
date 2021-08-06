@@ -3,6 +3,7 @@ import Recaptcha from 'react-recaptcha';
 import logo_src from '../../assets/img/blaash-logo.png';
 import './login.css';
 import Button from '@material-ui/core/Button';
+import { BsArrowRepeat } from "react-icons/bs";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -206,9 +207,11 @@ export default function LogIn(props) {
                                             fullWidth
                                             variant="contained"
                                             color="primary"
-                                            className={classes.submit}
+                                            className={`${classes.submit} LoaderButton`}
                                             disabled={signInProcessing}
-                                        >Sign In
+                                        >
+                                            {signInProcessing && <BsArrowRepeat className="spinning" />}
+                                            Sign In
                                         </Button>
                                         <Grid container>
                                             <Grid item xs>

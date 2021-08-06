@@ -14,6 +14,26 @@ export const getAuthAndData = async (resource, history) => {
         history.push('/login');
     }
 };
+export const postAuthAndData = async (resource, postData, history, headers) => {
+    try {
+        await Auth.currentSession();
+        try {
+            if (headers) {
+                const response = await axiosInstance.post(resource, postData, { headers: headers });
+                return handleResponse(response);
+            } else {
+                const response = await axiosInstance.post(resource, postData);
+                return handleResponse(response);
+            }
+
+        } catch (error) {
+            return handleError(error);
+        }
+    } catch (error) {
+        history.push('/login');
+    }
+};
+
 
 export const getData = async (resource) => {
     try {

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
-import { getData, postData } from '../../../../api/ApiHelper';
+import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
 import { CUSTOMERS_BY_FILTERS } from '../../../../api/apiConstants';
 import TreeMap, { transformData } from 'react-canvas-treemap';
 import BasicTreeMap from '../../../common/map/treemap';
+import { useHistory } from 'react-router-dom';
 
 
 const options = [
@@ -30,6 +31,7 @@ const DaysTypeOptions = [
 ]
 
 export default function TargetAudience(props) {
+    var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
     const [customerSegments, setCustomerSegments] = useState();
     const [selectedSegment, setSelectedSegment] = useState();
@@ -72,7 +74,7 @@ export default function TargetAudience(props) {
     const fetchCustomerSegments = () => {
         try {
             props.handleLoader(true);
-            getData(CUSTOMERS_BY_FILTERS)
+            getAuthAndData(CUSTOMERS_BY_FILTERS, history)
                 .then(customerSegments => {
                     if (customerSegments && Array.isArray(customerSegments)) {
                         const data = {

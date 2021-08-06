@@ -9,7 +9,7 @@ import SearchBar from "../../common/searchBar/searchBar";
 import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
-import { getAuthAndData, getData, postData } from '../../../api/ApiHelper';
+import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
 import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import { useHistory } from 'react-router-dom';
@@ -112,7 +112,7 @@ export default function EngagementsJourney(props) {
                 }
             })
         }
-        postData(`${ADD_JOURNEY_DETAILS}`, journeyData)
+        postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
             .then(response => {
                 if (response) {
                     getAllJourneys();
@@ -139,7 +139,7 @@ export default function EngagementsJourney(props) {
                 }
             })
         }
-        postData(`${UPDATE_JOURNEY_DETAILS}`, journeyData)
+        postAuthAndData(`${UPDATE_JOURNEY_DETAILS}`, journeyData, history)
             .then(journeyDetails => {
                 if (journeyDetails) {
                     getAllJourneys();
@@ -174,7 +174,7 @@ export default function EngagementsJourney(props) {
     }
     const searchJourneyByName = (searchText) => {
         if (searchText) {
-            getData(`${JOURNEYS_BY_SEARCH}${searchText}`)
+            getAuthAndData(`${JOURNEYS_BY_SEARCH}${searchText}`, history)
                 .then(journeys => {
                     setGroupedJourneys(journeys);
                 });
@@ -215,7 +215,7 @@ export default function EngagementsJourney(props) {
 
     const getAllJourneyTasks = () => {
         handleLoader(true);
-        getData(JOURNEY_TASKS)
+        getAuthAndData(JOURNEY_TASKS, history)
             .then(journeyTasks => {
                 if (journeyTasks) {
                     setJourneyTasks(journeyTasks);
@@ -244,7 +244,7 @@ export default function EngagementsJourney(props) {
             });
             setDroppedItems(tasks);
         } else if (action === 'Delete') {
-            getData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`)
+            getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
                 .then(response => {
                     getAllJourneys();
                     setUpdateFlag(false);

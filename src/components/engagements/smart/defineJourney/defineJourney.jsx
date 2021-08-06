@@ -1,11 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { getData, postData } from '../../../../api/ApiHelper';
+import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
 import './defineJourney.css';
 import _ from 'lodash';
 import { JOURNEY_BY_FILTERS } from '../../../../api/apiConstants';
+import { useHistory } from 'react-router-dom';
 
 
 export default function DefineJourney(props) {
+    var history = useHistory();
     const [journeyBoxes, setJourneyBoxes] = useState();
 
     function journeyBoxClick(boxData) {
@@ -19,7 +21,7 @@ export default function DefineJourney(props) {
     }
     const fetchJourneyData = () => {
         props.handleLoader(true);
-        getData(JOURNEY_BY_FILTERS)
+        getAuthAndData(JOURNEY_BY_FILTERS, history)
             .then(journeys => {
                 if (journeys) {
                     let journeyArr = [];

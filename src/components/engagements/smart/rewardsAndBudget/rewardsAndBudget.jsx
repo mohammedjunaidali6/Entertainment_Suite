@@ -10,10 +10,11 @@ import trash_src from "../../../../assets/img/trash.png";
 import _ from "lodash";
 import Resizer from "../../../common/resizer/resizer";
 import './rewardsAndBudget.css';
-import { getData, postData } from '../../../../api/ApiHelper';
+import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
 import Select from 'react-select';
 import { REWARD_TYPES, REWARD_BY_FILTERS, REWARDS } from '../../../../api/apiConstants';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
@@ -105,6 +106,7 @@ const arrayRewards = [
 ]
 
 export default function RewardsAndBudget(props) {
+    var history = useHistory();
     const rewardsAndBudgetData = props.props.rewardsAndBudget;
     const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards || arrayRewards);
     const [rewardTypes, setRewardTypes] = useState([]);
@@ -116,7 +118,7 @@ export default function RewardsAndBudget(props) {
 
     const fetchRewards = () => {
         props.handleLoader(true);
-        getData(REWARD_BY_FILTERS)
+        getAuthAndData(REWARD_BY_FILTERS, history)
             .then(response => {
                 if (response && Array.isArray(response.data?.data)) {
                     let rewardArr = [];
@@ -139,20 +141,21 @@ export default function RewardsAndBudget(props) {
     }
     const fetchRewardTypes = () => {
         props.handleLoader(true);
-        getData(REWARD_TYPES).then(rewardTypes => {
-            var rewardTypeOptions = [];
-            if (rewardTypes?.length) {
-                rewardTypes.forEach(rewType => {
-                    let option = {
-                        value: rewType.reward_type_id,
-                        label: rewType.reward_type
-                    }
-                    rewardTypeOptions.push(option);
-                })
-                setRewardTypes(rewardTypeOptions);
-            }
-            props.handleLoader(false);
-        })
+        getAuthAndData(REWARD_TYPES, history)
+            .then(rewardTypes => {
+                var rewardTypeOptions = [];
+                if (rewardTypes?.length) {
+                    rewardTypes.forEach(rewType => {
+                        let option = {
+                            value: rewType.reward_type_id,
+                            label: rewType.reward_type
+                        }
+                        rewardTypeOptions.push(option);
+                    })
+                    setRewardTypes(rewardTypeOptions);
+                }
+                props.handleLoader(false);
+            })
     }
 
     const onRewardRowChange = (e, obj) => {
@@ -177,7 +180,7 @@ export default function RewardsAndBudget(props) {
     }
     const onRewardTypeSelect = (e, obj) => {
         props.handleLoader(true);
-        getData(`${REWARDS}${e.value}`)
+        getAuthAndData(`${REWARDS}${e.value}`, history)
             .then(rewards => {
                 if (Array.isArray(rewards)) {
                     obj.rewardName = rewards[0].reward_name;

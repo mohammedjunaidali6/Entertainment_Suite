@@ -6,13 +6,15 @@ import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
-import { getData, postData } from '../../../api/ApiHelper';
-import { GROUP_ALL, IDTY_PROD_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL } from '../../../api/apiConstants';
+import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
+import { DELETE_USER, GROUP_ALL, IDTY_PROD_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL, USER_BY_USERNAME } from '../../../api/apiConstants';
 import validator from 'validator';
 import AWS from 'aws-sdk';
+import { useHistory } from 'react-router-dom';
 
 
 export default function Team(props) {
+    var history = useHistory();
     const {
         REACT_APP_AWS_REGION,
         REACT_APP_IAM_ACCESS_KEY,
@@ -40,7 +42,7 @@ export default function Team(props) {
             setUpdateUser(rowData);
         } else if (e.target.outerText === 'Delete') {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/deleteuser?user_id=` + rowData.user_id)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_USER}${rowData.user_id}`, history)
                 .then(data => {
                     if (data) {
                         handleMessageBox('success', 'User is deleted succesfully');
@@ -99,7 +101,7 @@ export default function Team(props) {
     const fetchRolesData = () => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`, history)
                 .then(response => {
                     if (response) {
                         let rolesArr = response.sort((a, b) => a.name < b.name ? -1 : 1);
@@ -116,7 +118,7 @@ export default function Team(props) {
     const fetchUsersData = () => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`, history)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -149,7 +151,7 @@ export default function Team(props) {
     const fetchUsersByUserName = async (username) => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/userbyusername?user_name=${username}`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_USERNAME}${username}`, history)
                 .then(response => {
                     if (response) {
                         let usersArr = [];
@@ -213,7 +215,7 @@ export default function Team(props) {
             return;
         }
         //Check email existane in User table
-        getData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`)
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
             .then(res => {
                 if (res) {
                     handleMessageBox('error', 'Given Email is already exists.');
@@ -271,7 +273,7 @@ export default function Team(props) {
                         postObj.message = message;
                         setVisible(true);
                         var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
-                        postData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj)
+                        postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
                             .then(data => {
                                 if (data) {
                                     setCreateClick(false);
@@ -295,7 +297,7 @@ export default function Team(props) {
         postObj.groups = [];
         postObj.groups.push(group);
         setVisible(true);
-        postData(`${IDTY_PROD_HOST_URI}${UPDATE_USER}`, postObj)
+        postAuthAndData(`${IDTY_PROD_HOST_URI}${UPDATE_USER}`, postObj, history)
             .then(data => {
                 if (data) {
                     setCreateClick(false);

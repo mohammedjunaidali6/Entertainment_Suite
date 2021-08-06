@@ -15,11 +15,12 @@ import EStepper from "./stepper/stepper";
 import Review from "./review/review";
 import './smart.css';
 import _ from 'lodash';
-import { getData, postData } from '../../../api/ApiHelper';
+import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import store from '../../../store/store';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EngagementsSmart(props) {
+    var history = useHistory();
     const [active, setActive] = useState('all');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
@@ -191,7 +193,7 @@ export default function EngagementsSmart(props) {
             engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
             engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
 
-            postData(SAVE_ENGAGEMENT, engagementObj)
+            postAuthAndData(SAVE_ENGAGEMENT, engagementObj, history)
                 .then(engagementDbObj => {
                     if (engagementDbObj) {
                         setOpenEngagementWizard(false);
@@ -228,7 +230,7 @@ export default function EngagementsSmart(props) {
     const fetchEngagements = () => {
         try {
             handleLoader(true);
-            getData(ENGAGEMENTS_BY_FILTERS)
+            getAuthAndData(ENGAGEMENTS_BY_FILTERS, history)
                 .then(engagementsData => {
                     if (engagementsData && Array.isArray(engagementsData)) {
                         props.engagementsSmartActionHandler.dispatchEngagementsData(engagementsData);
@@ -244,7 +246,7 @@ export default function EngagementsSmart(props) {
     }
     const fetchEngagementsByStatus = (id => {
         handleLoader(true);
-        getData(`${ENGAGEMENT_BY_STATUS_ID}${id}`)
+        getAuthAndData(`${ENGAGEMENT_BY_STATUS_ID}${id}`, history)
             .then(engagements => {
                 if (engagements && Array.isArray(engagements)) {
                     props.engagementsSmartActionHandler.dispatchEngagementsData(engagements);
@@ -273,7 +275,7 @@ export default function EngagementsSmart(props) {
 
     const onPauseClick = (engmt, status) => {
         handleLoader(true);
-        getData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`)
+        getAuthAndData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`, history)
             .then((response) => {
                 if (response) {
                     tabClick(active);
@@ -285,7 +287,7 @@ export default function EngagementsSmart(props) {
     }
     const onEditClick = (engmt) => {
         handleLoader(true);
-        getData(`${ENGAGEMENTS_DETAILS_BY_ID}${engmt.EngagementID}`)
+        getAuthAndData(`${ENGAGEMENTS_DETAILS_BY_ID}${engmt.EngagementID}`, history)
             .then(engagements => {
                 if (engagements) {
                     let setGoals = {
@@ -353,7 +355,7 @@ export default function EngagementsSmart(props) {
                 handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
                 if (bool) {
                     handleLoader(true);
-                    getData(`${DELETE_ENGAGEMENT}${engmt.EngagementID}`)
+                    getAuthAndData(`${DELETE_ENGAGEMENT}${engmt.EngagementID}`, history)
                         .then(engagement => {
                             if (engagement) {
                                 tabClick(active);

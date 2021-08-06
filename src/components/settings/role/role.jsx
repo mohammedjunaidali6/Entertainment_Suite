@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Table from "../../common/reactTable/table";
 import SearchBar from '../../common/searchBar/searchBar';
 import './role.css';
@@ -6,10 +7,16 @@ import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
-import { getData, postData } from '../../../api/ApiHelper';
-import { IDTY_PROD_HOST_URI } from '../../../api/apiConstants';
+import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
+import {
+    IDTY_PROD_HOST_URI,
+    ADD_NEWGROUP, UPDATE_GROUP, DELETE_GROUP,
+    GET_GROUPS, GROUP_BY_GROUPNAME,
+    PERMISSION_ALL, PERMISSION_BY_GROUP,
+} from '../../../api/apiConstants';
 
 export default function Role(props) {
+    var history = useHistory();
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [visible, setVisible] = useState(false);
     const [updateRole, setUpdateRole] = useState();
@@ -71,7 +78,7 @@ export default function Role(props) {
             setCreateClick(true);
             setUpdateRole(rowData)
             setRoleName(rowData.role);
-            getData(`${IDTY_PROD_HOST_URI}/idty/permissionsbygroup?group_id=` + rowData.groupID)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_BY_GROUP}${rowData.groupID}`, history)
                 .then(data => {
                     if (data) {
                         let permissionsArr = [...permissions];
@@ -92,7 +99,7 @@ export default function Role(props) {
     }
     const onViewClick = (e, rowData) => {
         setVisible(true);
-        getData(`${IDTY_PROD_HOST_URI}/idty/permissionsbygroup?group_id=` + rowData.groupID)
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_BY_GROUP}${rowData.groupID}`, history)
             .then(data => {
                 if (data) {
                     handleMessageBox('success', 'Group Permission fetched succesfully');
@@ -126,7 +133,7 @@ export default function Role(props) {
     const fetchRolesWithPermissionsCount = async () => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/getgroups`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${GET_GROUPS}`, history)
                 .then(data => {
                     if (data) {
                         let roleArr = [];
@@ -151,7 +158,7 @@ export default function Role(props) {
     const fetchPermissions = async () => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/permission/all`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_ALL}`, history)
                 .then(data => {
                     if (data) {
                         props.notificationActionHandler.setPermissions(data);
@@ -168,7 +175,7 @@ export default function Role(props) {
     const updateRoles = async (postObj) => {
         try {
             setVisible(true);
-            postData(`${IDTY_PROD_HOST_URI}/idty/updategroup`, postObj)
+            postAuthAndData(`${IDTY_PROD_HOST_URI}${UPDATE_GROUP}`, postObj, history)
                 .then(data => {
                     if (data) {
                         setCreateClick(false);
@@ -195,7 +202,7 @@ export default function Role(props) {
     const searchRoleByRoleName = async (rolename) => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/groupbygroupname?group_name=${rolename}`)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_BY_GROUPNAME}${rolename}`, history)
                 .then(data => {
                     if (data) {
                         let roleArr = [];
@@ -220,7 +227,7 @@ export default function Role(props) {
     const addRole = async (postObj) => {
         try {
             setVisible(true);
-            postData(`${IDTY_PROD_HOST_URI}/idty/addnewgroup`, postObj)
+            postAuthAndData(`${IDTY_PROD_HOST_URI}${ADD_NEWGROUP}`, postObj, history)
                 .then(data => {
                     if (data) {
                         setCreateClick(false);
@@ -245,7 +252,7 @@ export default function Role(props) {
     const deleteRole = async (id) => {
         try {
             setVisible(true);
-            getData(`${IDTY_PROD_HOST_URI}/idty/deletegroup?group_id=` + id)
+            getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_GROUP}${id}`, history)
                 .then(response => {
                     if (response) {
                         let tempRoles = [...props.roleData];
