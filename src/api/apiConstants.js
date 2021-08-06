@@ -8,6 +8,7 @@ export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.ama
 export const EMAIL = 'Email'
 export const JWT_TOKEN = 'JwtToken'
 export const REFRESH_TOKEN = 'RefreshToken'
+export const DUMM_TENANT_KEY = "BLAASH-SYS-2021";
 
 export const USER_BY_FILTERS = "/idty/userbyfilter?pagesize=";
 export const USER_BY_MAIL = "/idty/isemailexists?email=";

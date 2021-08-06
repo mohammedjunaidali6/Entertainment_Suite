@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import LinearProgressBar from '../common/progressBar/linearProgressBar';
 import { getAuthAndData, getData, postData } from '../../api/ApiHelper';
 import { EMAIL, IDTY_PROD_HOST_URI, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
+import { Auth } from 'aws-amplify';
 
 
 export default function Loading(props) {
@@ -21,10 +22,7 @@ export default function Loading(props) {
   useEffect(() => {
     var email = localStorage.getItem(EMAIL);
 
-    getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${email}`, props.history)
-      .then(data => {
-        console.log('***', data);
-      });
+
   }, []);
 
 

@@ -10,12 +10,9 @@ import {
     lineChartSinglePurpleData, lineChartSingleOrangeData
 } from "../../constants/globalMockdata";
 import SalesOverviewBox from "./salesOverviewBox/salesOverviewBox";
-import h_dots_src from "../../assets/img/dots-icon_horizontal.svg";
 import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
-import { useEffect } from 'react';
-import { JWT_TOKEN } from '../../api/apiConstants';
 
 const useStyles = makeStyles((theme) => ({
     typography: {

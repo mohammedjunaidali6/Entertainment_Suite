@@ -7,10 +7,20 @@ import ActionMenu from '../../common/reactTable/menu';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
-import { DELETE_USER, GROUP_ALL, IDTY_PROD_HOST_URI, INVITE_USER, UPDATE_USER, USER_BY_FILTERS, USER_BY_MAIL, USER_BY_USERNAME } from '../../../api/apiConstants';
 import validator from 'validator';
 import AWS from 'aws-sdk';
 import { useHistory } from 'react-router-dom';
+import store from '../../../store/store';
+import {
+    IDTY_PROD_HOST_URI,
+    INVITE_USER,
+    UPDATE_USER,
+    DELETE_USER,
+    USER_BY_FILTERS,
+    USER_BY_MAIL,
+    USER_BY_USERNAME,
+    GROUP_ALL
+} from '../../../api/apiConstants';
 
 
 export default function Team(props) {
@@ -33,6 +43,8 @@ export default function Team(props) {
     var numbers = '0123456789';
     var bigChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var specialChars = '@#$&!';
+
+    var userData = store.getState().LoginReducer.userData;
 
     const onActionClick = (e, rowData) => {
         if (e.target.outerText === 'Edit') {
@@ -240,7 +252,7 @@ export default function Team(props) {
                         },
                         {
                             Name: 'custom:tenant_key',
-                            Value: 'TENANT1234'
+                            Value: userData.TenantKey
                         },
                         {
                             Name: 'email_verified',
@@ -254,7 +266,7 @@ export default function Team(props) {
                         },
                         {
                             Name: 'custom:tenant_key',
-                            Value: 'TENANT1234'
+                            Value: userData.TenantKey
                         }
                     ]
                 };

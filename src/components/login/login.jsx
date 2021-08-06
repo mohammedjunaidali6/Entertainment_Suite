@@ -17,7 +17,8 @@ import Container from '@material-ui/core/Container';
 import validator from 'validator';
 import { Auth } from 'aws-amplify';
 import { axiosInstance } from '../../api/axios-config';
-import { EMAIL, JWT_TOKEN, REFRESH_TOKEN } from '../../api/apiConstants';
+import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
+import { getAuthAndData } from '../../api/ApiHelper';
 
 
 function Copyright() {
@@ -94,16 +95,32 @@ export default function LogIn(props) {
                         setForcePasswordChange(true);
                     } else {
                         var jwtToken = user.signInUserSession.accessToken.jwtToken;
-                        var refreshToken = user.signInUserSession.refreshToken.token;
+                        props.loginActionHandler.dispatchJwtTokenData(jwtToken);
                         var tenantKey = user.attributes['custom:tenant_key'];
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
-                        axiosInstance.defaults.headers.common['x-tenant-key'] = 'TENANT1234';
+                        axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey ?? DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
-                        sessionStorage.setItem(JWT_TOKEN, jwtToken);
-                        sessionStorage.setItem(REFRESH_TOKEN, refreshToken);
 
-
-                        props.history.push('/dummy');
+                        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${logIn.email}`)
+                            .then(userData => {
+                                if (userData) {
+                                    props.loginActionHandler.dispatchUserData(userData);
+                                    if (!tenantKey) {
+                                        axiosInstance.defaults.headers.common['x-tenant-key'] = userData.TenantKey;
+                                        Auth.currentAuthenticatedUser()
+                                            .then(user => {
+                                                Auth.updateUserAttributes(user, {
+                                                    'custom:tenant_key': userData.TenantKey,
+                                                }).catch(err => console.error(err));
+                                            }).catch(err => {
+                                                console.error(err);
+                                            });
+                                    }
+                                    props.history.push('/dummy');
+                                } else {
+                                    props.history.push('*');
+                                }
+                            });
                     }
                     setSignInProcessing(false);
                 })
@@ -145,7 +162,7 @@ export default function LogIn(props) {
                 cognitoUser,
                 newUserSignIn.newPassword,
                 {
-                    'email': newUserSignIn.email
+                    'email': newUserSignIn.email,
                 }
             ).then(user => {
                 setForcePasswordChange(false);
