@@ -17,7 +17,7 @@ export const UPDATE_USER = "/idty/updateuser";
 export const DELETE_USER = "/idty/deleteuser?user_id=";
 export const GROUP_ADDEDIT = "/idty/groupaddedit";
 export const GROUP_ALL = "/idty/group/all";
-export const USER_ROLES_PERMISSIONS = "/idty/userRolesAndPermissions?email=";
+export const USER_DATA_GROUP_PERMISSIONS = "/idty/userDataAndGroupPermissions?email=";
 export const PERMISSION_ALL = "/idty/permission/all";
 export const PERMISSION_BY_GROUP = '/idty/permissionsbygroup?group_id=';
 export const ADD_USER_TO_GROUP = "/idty/addusertogroup";

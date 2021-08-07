@@ -17,7 +17,7 @@ import Container from '@material-ui/core/Container';
 import validator from 'validator';
 import { Auth } from 'aws-amplify';
 import { axiosInstance } from '../../api/axios-config';
-import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, USER_ROLES_PERMISSIONS } from '../../api/apiConstants';
+import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
 import { getAuthAndData } from '../../api/ApiHelper';
 
 
@@ -101,7 +101,7 @@ export default function LogIn(props) {
                         axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey ?? DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
                         debugger;
-                        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_ROLES_PERMISSIONS}${logIn.email}`)
+                        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${logIn.email}`)
                             .then(userData => {
                                 debugger;
                                 setSignInProcessing(false);

@@ -284,7 +284,6 @@ export default function Team(props) {
                         postObj.status = data.User.UserStatus;
                         postObj.message = message;
                         setVisible(true);
-                        var tenantKey = data.User.Attributes.find(attr => attr.Name == 'custom:tenant_key').Value;
                         postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
                             .then(data => {
                                 if (data) {
