@@ -23,6 +23,7 @@ import ForgotPassword from '../components/login/forgotPassword';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import ProtectedRoute from '../components/protectedRoute';
+import LoadingContatiner from '../components/loading/loadingContainer';
 Amplify.configure(awsconfig);
 
 
@@ -43,7 +44,7 @@ export default function AppRoute(props) {
             <Switch>
               <ProtectedRoute exact path="/login" component={LoginContatiner} />
               <Route exact path="/forgotPassword" component={ForgotPassword} />
-              <ProtectedRoute exact path="/loading" component={Loading} />
+              <ProtectedRoute exact path="/loading" component={LoadingContatiner} />
               <ProtectedRoute exact path="/dummy" component={dummy} />
               <ProtectedRoute exact path="/" component={DashboardContatiner} />
               <ProtectedRoute exact path="/engagements/:tabname" component={EngagementsContatiner} />

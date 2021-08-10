@@ -1,15 +1,15 @@
-import { } from '../../constants/actionTypes';
+import { SET_SUMMARY_TOTALS } from '../../constants/actionTypes';
 
 const initialState = {
-  
+
 };
 const DashboardReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case SAMPLE_TYPE: {
-    //   const newState = { ...state };
-    //   newState.gameDetail = action.payload ? action.payload: null;
-    //   return newState;
-    // }
+    case SET_SUMMARY_TOTALS: {
+      const newState = { ...state };
+      newState.summaryTotals = action.payload ? action.payload : null;
+      return newState;
+    }
     default: {
       return state;
     }

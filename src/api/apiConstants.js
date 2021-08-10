@@ -3,9 +3,11 @@
 //export const Engagement_Host_URI = "http://localhost:815/api";
 export const IDTY_PROD_HOST_URI = "https://frg6g6wml9.execute-api.ap-south-1.amazonaws.com/Prod/api";
 export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
-export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.amazonaws.com/Prod/api';
+// export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.amazonaws.com/Prod/api';
+export const REPT_PROD_HOST_URI = 'http://localhost:818/api';
 
 export const EMAIL = 'Email'
+export const DAYS_7 = 7
 export const JWT_TOKEN = 'JwtToken'
 export const REFRESH_TOKEN = 'RefreshToken'
 export const DUMM_TENANT_KEY = "BLAASH-SYS-2021";
@@ -50,3 +52,6 @@ export const ADD_JOURNEY_DETAILS = '/engt/addjourneydetails';
 export const UPDATE_JOURNEY_DETAILS = '/engt/updatejourneydetails';
 export const DELETE_JOURNEY_DETAILS = '/engt/deletejourney?journey_id=';
 export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName?journey_name=';
+
+
+export const CONSOLIDATION_SUMMARY_BY_FILTER = '/rept/consolidationSummaryByFilter';

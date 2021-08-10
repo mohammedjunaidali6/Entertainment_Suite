@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,12 @@ import SalesOverviewBox from "./salesOverviewBox/salesOverviewBox";
 import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
+import { postAuthAndData } from '../../api/ApiHelper';
+import {
+    REPT_PROD_HOST_URI,
+    CONSOLIDATION_SUMMARY_BY_FILTER,
+    DAYS_7
+} from '../../api/apiConstants';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -21,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard(props) {
-
-    const [soFilterVal, setSOFilterVal] = useState('Current Week');
-    const [coFilterVal, setCOFilterVal] = useState('Current Week');
+    console.log('***', props);
+    const [soFilterVal, setSOFilterVal] = useState('Last Week');
+    const [coFilterVal, setCOFilterVal] = useState('Last Week');
     const classes = useStyles();
 
     const [soFilterEl, setsoFilterEl] = useState(null);
@@ -52,6 +58,25 @@ export default function Dashboard(props) {
         setsoFilterEl(null);
         setcoFilterEl(null);
     };
+    const handleLoader = (showBool) => {
+        props.routeActionHandler.dispatchLoaderData(showBool);
+    }
+    useEffect(() => {
+        console.log('***', props);
+        var postObj = {
+            NumberOfDays:
+                soFilterVal == 'Last Week' ? 7 :
+                    soFilterVal == 'Last Month' ? 30 :
+                        soFilterVal == 'Last Quarter' ? 90 : 0,
+        }
+        console.log('**', postObj);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
+            .then(data => {
+                console.log('**', data);
+                props.dashboardActionHandler.dispatchSummaryTotalsData(data);
+            })
+
+    }, [soFilterVal]);
 
     return (
         <Fragment>
@@ -64,7 +89,9 @@ export default function Dashboard(props) {
                         <div className="w-100 float-right clearfix mb-1">
                             <div className="float-right clearfix mb-1 f-c-box" onClick={soFilterOpenClick} >
                                 <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
-                                <span className="d-dp-lbl pr-1">{soFilterVal}</span>
+                                <span className="d-dp-lbl pr-1">
+                                    {soFilterVal}
+                                </span>
                                 <img src={down_arrow_src} alt="Down Arrow" />
                             </div>
                             <Popover
@@ -83,10 +110,15 @@ export default function Dashboard(props) {
                             >
                                 <Typography className={classes.typography}>
                                     <div className="s-o-f-options p-0">
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Week')}>Last Week</div>
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last 1 Month')}>Last 1 Month</div>
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last 1 Year')}>Last 1 Year</div>
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Current Week')}>Current Week</div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Week')}>
+                                            Last Week
+                                        </div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Month')}>
+                                            Last Month
+                                        </div>
+                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Quarter')}>
+                                            Last Quarter
+                                        </div>
                                     </div>
                                 </Typography>
                             </Popover>
@@ -96,25 +128,41 @@ export default function Dashboard(props) {
                 <div className="w-100 float-left clearfix mb-4 sales-overview">
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleBlueData} header='Active Customers' count={'2,763'} perc='67%'>
+                            <SalesOverviewBox
+                                opt={lineChartSingleBlueData}
+                                header='Active Customers'
+                                count={props.summaryTotals?.FormattedTotalActiveUsers}
+                                perc={props.summaryTotals?.PercentageChangeInActiveUsers}>
                             </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleGreenData} header='Total Sales' count={'3,922'} perc='42%'>
+                            <SalesOverviewBox
+                                opt={lineChartSingleGreenData}
+                                header='Total Sales'
+                                count={props.summaryTotals?.FormattedTotalSales}
+                                perc={props.summaryTotals?.PercentageChangeInSales}>
                             </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSinglePurpleData} header='Repeat Purchases' count={'1,012'} perc='58%'>
+                            <SalesOverviewBox
+                                opt={lineChartSinglePurpleData}
+                                header='Repeat Purchases'
+                                count={props.summaryTotals?.FormattedTotalPayingCustomers}
+                                perc={props.summaryTotals?.PercentageChangeInPayingCustomers}>
                             </SalesOverviewBox>
                         </div>
                     </div>
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
                         <div className="sales-overview-box">
-                            <SalesOverviewBox opt={lineChartSingleOrangeData} header='Game Plays' count={'1,802'} perc='61%'>
+                            <SalesOverviewBox
+                                opt={lineChartSingleOrangeData}
+                                header='Game Plays'
+                                count={props.summaryTotals?.FormattedTotalGamePlays}
+                                perc={props.summaryTotals?.PercentageChangeInGamePlays}>
                             </SalesOverviewBox>
                         </div>
                     </div>
@@ -152,10 +200,15 @@ export default function Dashboard(props) {
                             >
                                 <Typography className={classes.typography}>
                                     <div className="s-o-f-options p-0">
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Week')}>Last Week</div>
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last 1 Month')}>Last 1 Month</div>
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last 1 Year')}>Last 1 Year</div>
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Current Week')}>Current Week</div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Week')}>
+                                            Last Week
+                                        </div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Month')}>
+                                            Last Month
+                                        </div>
+                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Quarter')}>
+                                            Last Quarter
+                                        </div>
                                     </div>
                                 </Typography>
                             </Popover>

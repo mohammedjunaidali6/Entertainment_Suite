@@ -275,7 +275,7 @@ export default function Team(props) {
                         console.error('*adminCreateUser ', err);
                         handleMessageBox('error', 'Invitation failed');
                     } else {
-                        handleMessageBox('success', 'Invitation sent succesfully');
+                        //handleMessageBox('success', 'Invitation sent succesfully');
                         let postObj = {};
                         postObj.email = email;
                         postObj.mobile_number = phoneNumber;
@@ -283,6 +283,7 @@ export default function Team(props) {
                         postObj.user_groups.push(group);
                         postObj.status = data.User.UserStatus;
                         postObj.message = message;
+                        debugger;
                         setVisible(true);
                         postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
                             .then(data => {

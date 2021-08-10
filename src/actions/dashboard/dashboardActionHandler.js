@@ -1,9 +1,9 @@
-import { ACTION_TYPE} from '../../constants/actionTypes';
+import { SET_SUMMARY_TOTALS } from '../../constants/actionTypes';
 
-export function dispatchData(data) {
+export function dispatchSummaryTotalsData(data) {
   return (dispatch) => {
     dispatch({
-      type: ACTION_TYPE,
+      type: SET_SUMMARY_TOTALS,
       payload: data,
     });
   };
