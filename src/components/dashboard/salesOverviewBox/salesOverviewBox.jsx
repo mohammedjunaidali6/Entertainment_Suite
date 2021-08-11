@@ -14,12 +14,12 @@ export default function SalesOverviewBox(props) {
                 <div className="l-v-s-o-box-t-h f-16">{props.header}</div>
                 <div className="mt-3">
                     <span className="l-v-s-o-box-t-c f-40">{props.count}</span>
-                    <span className="l-v-s-o-box-t-c-lbl f-12 pl-2">INR</span>
+                    {/* <span className="l-v-s-o-box-t-c-lbl f-12 pl-2">INR</span> */}
                     <div className="disp-inline-b float-right pr-1">
                         <div className="l-v-s-o-box-t-c-per f-22">
-                            {props.perc.includes('-') ? '+' : '-'}{props.perc.replace('-', '')}%
+                            {props.perc && props.perc.includes('-') ? '+' : '-'}{props.perc && props.perc.replace('-', '')}%
                         </div>
-                        <div className="l-v-s-o-box-t-c-per-lbl">this week</div>
+                        {/* <div className="l-v-s-o-box-t-c-per-lbl">this week</div> */}
                     </div>
                 </div>
             </div>

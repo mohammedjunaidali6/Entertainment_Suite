@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import LineChart from "../common/utils/lineChart";
+import LineCanvasGraph from '../common/graphs/lineCanvasGraph';
 import CustomerOverview from "./customerOverview/customerOverview";
 import GamePlayingOverview from "./gamePlayingOverview/gamePlayingOverview";
 import {
@@ -10,73 +10,187 @@ import {
     lineChartSinglePurpleData, lineChartSingleOrangeData
 } from "../../constants/globalMockdata";
 import SalesOverviewBox from "./salesOverviewBox/salesOverviewBox";
-import calender_src from '../../assets/img/calender.svg';
-import down_arrow_src from '../../assets/img/down_arrow.svg';
 import './dashboard.css';
 import { postAuthAndData } from '../../api/ApiHelper';
 import {
     REPT_PROD_HOST_URI,
     CONSOLIDATION_SUMMARY_BY_FILTER,
-    DAYS_7
+    DAY_WISE_SALES_BY_FILTER,
+    DAY_WISE_ACTIVE_ENGAGED_USERS,
+    MONTH_WISE_ACTIVE_ENGAGED_USERS,
+    DAYS_7,
+    CUSTOMER_OVERVIEW_DETAILS
 } from '../../api/apiConstants';
 
-const useStyles = makeStyles((theme) => ({
-    typography: {
-        padding: theme.spacing(2),
-    },
-}));
 
 export default function Dashboard(props) {
     console.log('***', props);
-    const [soFilterVal, setSOFilterVal] = useState('Last Week');
-    const [coFilterVal, setCOFilterVal] = useState('Last Week');
-    const classes = useStyles();
+    const [filterDurataion, setFilterDuration] = useState(7);
 
-    const [soFilterEl, setsoFilterEl] = useState(null);
-    const soFilterOpen = Boolean(soFilterEl);
-    const soFilterId = soFilterOpen ? 'so-filter-popover' : undefined;
-    const soFilterOpenClick = (event) => {
-        setsoFilterEl(event.currentTarget);
-    };
-    function setSOFilterClick(val) {
-        setSOFilterVal(val);
-        setsoFilterEl(null);
-    };
 
-    const [coFilterEl, setcoFilterEl] = useState(null);
-    const coFilterOpen = Boolean(coFilterEl);
-    const coFilterId = coFilterOpen ? 'co-filter-popover' : undefined;
-    const coFilterOpenClick = (event) => {
-        setcoFilterEl(event.currentTarget);
-    };
-    function setCOFilterClick(val) {
-        setCOFilterVal(val);
-        setcoFilterEl(null);
-    };
-
-    const handleClose = () => {
-        setsoFilterEl(null);
-        setcoFilterEl(null);
-    };
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
     }
-    useEffect(() => {
-        console.log('***', props);
+
+    const getSummaryTotalsOnDateFilterClick = (durationDays) => {
         var postObj = {
-            NumberOfDays:
-                soFilterVal == 'Last Week' ? 7 :
-                    soFilterVal == 'Last Month' ? 30 :
-                        soFilterVal == 'Last Quarter' ? 90 : 0,
+            NumberOfDays: durationDays,
         }
-        console.log('**', postObj);
+        handleLoader(true);
+        setFilterDuration(durationDays);
         postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
             .then(data => {
-                console.log('**', data);
+                // console.log('**', data);
                 props.dashboardActionHandler.dispatchSummaryTotalsData(data);
+                handleLoader(false);
             })
+    }
+    const getSalesOnDateFilterClick = (durationDays) => {
+        var postObj = {
+            NumberOfDays: durationDays,
+        }
+        handleLoader(true);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_SALES_BY_FILTER}`, postObj, props.history)
+            .then(data => {
+                // console.log('**', data);
+                var lineCanvasData = [];
+                var salesObj =
+                {
+                    id: 'Sales',
+                    color: "hsl(147, 100%, 30%)",
+                    data: []
+                };
+                lineCanvasData.push(salesObj);
+                Array.isArray(data?.DayWiseSales) && data.DayWiseSales.forEach(sale => {
+                    let obj = {
+                        "x": sale.StartDateTime.substring(0, 10),
+                        "y": sale.Total
+                    }
+                    lineCanvasData[0].data.push(obj);
+                })
 
-    }, [soFilterVal]);
+                var engagementsCreatedDatesObj =
+                {
+                    id: 'Engagements',
+                    color: "hsl(204, 100%, 50%)",
+                    data: []
+                };
+                lineCanvasData.push(engagementsCreatedDatesObj);
+                Array.isArray(data?.EngagementsCreatedOn) && data.EngagementsCreatedOn.forEach(engt => {
+                    let obj = {
+                        "x": engt.CreatedDateTime.substring(0, 10),
+                        "y": 0
+                    }
+                    lineCanvasData[1].data.push(obj);
+                })
+                props.dashboardActionHandler.dispatchLineCanvasSalesData(lineCanvasData);
+                handleLoader(false);
+
+            });
+    }
+    const getDailyActiveUsersAndEngagedCustomers = (durationDays) => {
+        var postObj = {
+            NumberOfDays: durationDays,
+        }
+        handleLoader(true);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
+            .then(data => {
+                // console.log('**', data);
+                var lineCanvasData = [];
+                var usersObj =
+                {
+                    id: 'Active',
+                    color: "hsl(138, 100%, 50%)",
+                    data: []
+                };
+                lineCanvasData.push(usersObj);
+                Array.isArray(data) && data.forEach(user => {
+                    let obj = {
+                        "x": user.SnapShotDate.substring(0, 10),
+                        "y": user.ActiveUsers
+                    }
+                    lineCanvasData[0].data.push(obj);
+                })
+                var usersObj =
+                {
+                    id: 'Engaged',
+                    color: "hsl(29, 100%, 50%)",
+                    data: []
+                };
+                lineCanvasData.push(usersObj);
+                Array.isArray(data) && data.forEach(user => {
+                    let obj = {
+                        "x": user.SnapShotDate.substring(0, 10),
+                        "y": user.EngagedUsers
+                    }
+                    lineCanvasData[1].data.push(obj);
+                })
+                props.dashboardActionHandler.dispatchLineCanvasDayWiseActiveEngagedUsersData(lineCanvasData);
+                handleLoader(false);
+            });
+    }
+    const getMonthlyActiveUsersAndEngagedCustomers = (durationMonths) => {
+        var postObj = {
+            NumberOfMonths: durationMonths,
+        }
+        handleLoader(true);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${MONTH_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
+            .then(data => {
+                // console.log('**', data);
+                var lineCanvasData = [];
+                var usersObj =
+                {
+                    id: 'Active',
+                    color: "hsl(138, 100%, 50%)",
+                    data: []
+                };
+                lineCanvasData.push(usersObj);
+                Array.isArray(data) && data.forEach(user => {
+                    let obj = {
+                        "x": user.SnapShotDate.substring(0, 10),
+                        "y": user.ActiveUsers
+                    }
+                    lineCanvasData[0].data.push(obj);
+                })
+                var usersObj =
+                {
+                    id: 'Engaged',
+                    color: "hsl(29, 100%, 50%)",
+                    data: []
+                };
+                lineCanvasData.push(usersObj);
+                Array.isArray(data) && data.forEach(user => {
+                    let obj = {
+                        "x": user.SnapShotDate.substring(0, 10),
+                        "y": user.EngagedUsers
+                    }
+                    lineCanvasData[1].data.push(obj);
+                })
+                props.dashboardActionHandler.dispatchLineCanvasMonthWiseActiveEngagedUsersData(lineCanvasData);
+                handleLoader(false);
+            });
+    }
+    const getCustomerOverviewDetails = (durationDays) => {
+        var postObj = {
+            NumberOfDays: durationDays,
+        }
+        handleLoader(true);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${CUSTOMER_OVERVIEW_DETAILS}`, postObj, props.history)
+            .then(data => {
+                console.log('**', data);
+                props.dashboardActionHandler.dispatchCustomerOverviewTotalsData(data);
+            })
+    }
+
+    useEffect(() => {
+        if (!props.summaryTotals) {
+            getSummaryTotalsOnDateFilterClick(7);
+        }
+        getSalesOnDateFilterClick(7);
+        getDailyActiveUsersAndEngagedCustomers(7);
+        getMonthlyActiveUsersAndEngagedCustomers(3);
+        getCustomerOverviewDetails(7)
+    }, []);
 
     return (
         <Fragment>
@@ -87,41 +201,24 @@ export default function Dashboard(props) {
                     </div>
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
-                            <div className="float-right clearfix mb-1 f-c-box" onClick={soFilterOpenClick} >
-                                <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
-                                <span className="d-dp-lbl pr-1">
-                                    {soFilterVal}
-                                </span>
-                                <img src={down_arrow_src} alt="Down Arrow" />
-                            </div>
-                            <Popover
-                                id={soFilterId}
-                                open={soFilterOpen}
-                                anchorEl={soFilterEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <Typography className={classes.typography}>
-                                    <div className="s-o-f-options p-0">
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Week')}>
-                                            Last Week
-                                        </div>
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Month')}>
-                                            Last Month
-                                        </div>
-                                        <div className="s-o-f-option" onClick={() => setSOFilterClick('Last Quarter')}>
-                                            Last Quarter
-                                        </div>
-                                    </div>
-                                </Typography>
-                            </Popover>
+                            <Button variant="outlined"
+                                className="float-right mb-1 mr-3 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 7 ? '#60b3f7' : '' }}
+                                onClick={() => getSummaryTotalsOnDateFilterClick(7)}>
+                                Last 7 Days
+                            </Button>
+                            <Button variant="outlined"
+                                className="float-right mb-1 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 30 ? '#60b3f7' : '' }}
+                                onClick={() => getSummaryTotalsOnDateFilterClick(30)}>
+                                Last 30 Days
+                            </Button>
+                            <Button variant="outlined"
+                                className="float-right mb-1 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 90 ? '#60b3f7' : '' }}
+                                onClick={() => getSummaryTotalsOnDateFilterClick(90)}>
+                                Last 90 Days
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -150,7 +247,7 @@ export default function Dashboard(props) {
                         <div className="sales-overview-box">
                             <SalesOverviewBox
                                 opt={lineChartSinglePurpleData}
-                                header='Repeat Purchases'
+                                header='Paying Customers'
                                 count={props.summaryTotals?.FormattedTotalPayingCustomers}
                                 perc={props.summaryTotals?.PercentageChangeInPayingCustomers}>
                             </SalesOverviewBox>
@@ -167,11 +264,31 @@ export default function Dashboard(props) {
                         </div>
                     </div>
                 </div>
+                <div className="w-100 float-left clearfix mb-2">
+                    <div className="overview-heading float-left clearfix mt-2">Sales & Revenue</div>
+                </div>
                 <div className="w-100 float-left clearfix p-4 mb-4 chart-container">
-                    <LineChart data={lineChartData}
-                        chartTitle="Sales Chart"
-                        showAction={true} >
-                    </LineChart>
+                    <LineCanvasGraph
+                        data={props.lineCanvasSalesData}
+                        yName={'Total Sales'}>
+                    </LineCanvasGraph>
+                </div>
+                <div className="w-100 float-left clearfix mb-2">
+                    <div className="overview-heading float-left clearfix mt-2">Engagement & Entertainment</div>
+                </div>
+                <div className="w-50 float-left clearfix p-4 mb-4 chart-container">
+                    <div>Daily Active and Engaged Customers Chart</div>
+                    <LineCanvasGraph
+                        data={props.lineCanvasDayWiseActiveAndEngagedCustomers}
+                        yName={'Customers'}>
+                    </LineCanvasGraph>
+                </div>
+                <div className="w-50 float-left clearfix p-4 mb-4 chart-container">
+                    <div>Monthly Active and Engaged Customers Chart</div>
+                    <LineCanvasGraph
+                        data={props.lineCanvasDayWiseActiveAndEngagedCustomers}
+                        yName={'Customers'}>
+                    </LineCanvasGraph>
                 </div>
                 <div className="w-100 float-left clearfix">
                     <div className="w-50 float-left clearfix">
@@ -179,43 +296,25 @@ export default function Dashboard(props) {
                     </div>
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
-                            <div className="float-right clearfix mb-1 f-c-box" onClick={coFilterOpenClick}>
-                                <img src={calender_src} alt="Calender" className="mr-2" style={{ width: '16px' }} />
-                                <span className="d-dp-lbl pr-1">{coFilterVal}</span>
-                                <img src={down_arrow_src} alt="Down Arrow" />
-                            </div>
-                            <Popover
-                                id={coFilterId}
-                                open={coFilterOpen}
-                                anchorEl={coFilterEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <Typography className={classes.typography}>
-                                    <div className="s-o-f-options p-0">
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Week')}>
-                                            Last Week
-                                        </div>
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Month')}>
-                                            Last Month
-                                        </div>
-                                        <div className="s-o-f-option" onClick={() => setCOFilterClick('Last Quarter')}>
-                                            Last Quarter
-                                        </div>
-                                    </div>
-                                </Typography>
-                            </Popover>
+                            <Button variant="outlined"
+                                className="float-right mb-1 mr-3 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 7 ? '#60b3f7' : '' }}>
+                                Last 7 Days
+                            </Button>
+                            <Button variant="outlined"
+                                className="float-right mb-1 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 30 ? '#60b3f7' : '' }}>
+                                Last 30 Days
+                            </Button>
+                            <Button variant="outlined"
+                                className="float-right mb-1 f-c-box"
+                                style={{ backgroundColor: filterDurataion == 90 ? '#60b3f7' : '' }}>
+                                Last 90 Days
+                            </Button>
                         </div>
                     </div>
                 </div>
-                <CustomerOverview></CustomerOverview>
+                <CustomerOverview data={props.customerOverviewTotals}></CustomerOverview>
                 <GamePlayingOverview></GamePlayingOverview>
             </div>
         </Fragment>

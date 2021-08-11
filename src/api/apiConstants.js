@@ -55,3 +55,7 @@ export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName?journey_name=';
 
 
 export const CONSOLIDATION_SUMMARY_BY_FILTER = '/rept/consolidationSummaryByFilter';
+export const DAY_WISE_SALES_BY_FILTER = '/rept/dayWiseSalesByFilter';
+export const DAY_WISE_ACTIVE_ENGAGED_USERS = '/rept/dayWiseActiveAndEngagedUsers';
+export const MONTH_WISE_ACTIVE_ENGAGED_USERS = '/rept/monthWiseActiveAndEngagedUsers';
+export const CUSTOMER_OVERVIEW_DETAILS = '/rept/customerOverviewDetails';
