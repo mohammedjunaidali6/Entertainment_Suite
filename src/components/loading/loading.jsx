@@ -5,7 +5,7 @@ import {
   REPT_PROD_HOST_URI,
   CONSOLIDATION_SUMMARY_BY_FILTER,
   EMAIL,
-  DAYS_7,
+  DEFAULT_FILTER_DAYS,
 } from '../../api/apiConstants';
 
 
@@ -27,11 +27,11 @@ export default function Loading(props) {
   useEffect(() => {
     var email = localStorage.getItem(EMAIL);
     var postObj = {
-      NumberOfDays: DAYS_7,
+      NumberOfDays: DEFAULT_FILTER_DAYS,
     }
     postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
       .then(data => {
-        console.log('***', data);
+        // console.log('***', data);
         props.dashboardActionHandler.dispatchSummaryTotalsData(data);
       })
 

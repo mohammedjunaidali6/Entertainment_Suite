@@ -6,7 +6,9 @@ import * as routeActionHandler from '../../actions/route/routeActionHandler';
 
 const mapStateToProps = state => ({
     summaryTotals: state.DashboardReducer.summaryTotals,
-    customerOverviewTotals: state.DashboardReducer.customerOverviewTotals,
+    incrementalSalesTotals: state.DashboardReducer.incrementalSalesTotals,
+    brandHealthTotals: state.DashboardReducer.brandHealthTotals,
+    barCanvasDayWiseBrandHealthData: state.DashboardReducer.barCanvasDayWiseBrandHealthData,
     lineCanvasSalesData: state.DashboardReducer.lineCanvasSalesData,
     lineCanvasDayWiseActiveAndEngagedCustomers: state.DashboardReducer.lineCanvasDayWiseActiveAndEngagedCustomers,
     lineCanvasMonthWiseActiveAndEngagedCustomers: state.DashboardReducer.lineCanvasMonthWiseActiveAndEngagedCustomers,

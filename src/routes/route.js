@@ -17,7 +17,6 @@ import VerifyContatiner from "../containers/verify/verifyContainer";
 import POCContainer from '../containers/poc/pocContainer';
 import AlertDialog from '../components/common/alertBox/dialogBox';
 import Loader from '../components/common/Spinner/spinner';
-import Loading from '../components/loading/loading';
 import dummy from '../components/loading/dummy';
 import ForgotPassword from '../components/login/forgotPassword';
 import Amplify, { Auth } from 'aws-amplify';

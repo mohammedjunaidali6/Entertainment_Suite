@@ -3,12 +3,16 @@ import {
   SET_LINE_CANVAS_SALES,
   SET_LINE_CANVAS_DAY_WISE_ACTIVE_ENGAGED,
   SET_LINE_CANVAS_MONTH_WISE_ACTIVE_ENGAGED,
-  SET_CUSTOMER_OVERVIEW_TOTALS
+  SET_INCREMENTAL_SALES_TOTALS,
+  SET_BRAND_HEALTH_TOTALS,
+  SET_BAR_CANVAS_BRAND_HEALTH_DATA,
 } from '../../constants/actionTypes';
 
 const initialState = {
   summaryTotals: null,
   lineCanvasSalesData: null,
+  funnelIncrementalSalesData: null,
+  barCanvasDayWiseBrandHealthData: null,
 };
 const DashboardReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,9 +21,19 @@ const DashboardReducer = (state = initialState, action) => {
       newState.summaryTotals = action.payload ? action.payload : null;
       return newState;
     }
-    case SET_CUSTOMER_OVERVIEW_TOTALS: {
+    case SET_INCREMENTAL_SALES_TOTALS: {
       const newState = { ...state };
-      newState.customerOverviewTotals = action.payload ? action.payload : null;
+      newState.incrementalSalesTotals = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_BRAND_HEALTH_TOTALS: {
+      const newState = { ...state };
+      newState.brandHealthTotals = action.payload ? action.payload : null;
+      return newState;
+    }
+    case SET_BAR_CANVAS_BRAND_HEALTH_DATA: {
+      const newState = { ...state };
+      newState.barCanvasDayWiseBrandHealthData = action.payload ? action.payload : null;
       return newState;
     }
     case SET_LINE_CANVAS_SALES: {

@@ -7,7 +7,8 @@ export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.ama
 export const REPT_PROD_HOST_URI = 'http://localhost:818/api';
 
 export const EMAIL = 'Email'
-export const DAYS_7 = 7
+export const DEFAULT_FILTER_DAYS = 7;
+export const DEFAULT_FILTER_MONTHS = 3;
 export const JWT_TOKEN = 'JwtToken'
 export const REFRESH_TOKEN = 'RefreshToken'
 export const DUMM_TENANT_KEY = "BLAASH-SYS-2021";
@@ -58,4 +59,6 @@ export const CONSOLIDATION_SUMMARY_BY_FILTER = '/rept/consolidationSummaryByFilt
 export const DAY_WISE_SALES_BY_FILTER = '/rept/dayWiseSalesByFilter';
 export const DAY_WISE_ACTIVE_ENGAGED_USERS = '/rept/dayWiseActiveAndEngagedUsers';
 export const MONTH_WISE_ACTIVE_ENGAGED_USERS = '/rept/monthWiseActiveAndEngagedUsers';
-export const CUSTOMER_OVERVIEW_DETAILS = '/rept/customerOverviewDetails';
+export const CONSOLIDATED_BRAND_HEALTH = '/rept/conslidatedBrandHealth';
+export const CONSOLIDATED_INCREMENTAL_SALES = '/rept/consolidatedIncrementalSales';
+export const DAY_WISE_BRAND_HEALTH_DATA = '/rept/dayWiseBrandHealthData';
