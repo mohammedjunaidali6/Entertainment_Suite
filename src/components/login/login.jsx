@@ -126,7 +126,7 @@ export default function LogIn(props) {
                     }
                 })
                 .catch(err => {
-                    alert(err.message);
+                    // alert(err.message);
                     setSignInProcessing(false);
                     setError({ ...error, password: err.message })
                 });

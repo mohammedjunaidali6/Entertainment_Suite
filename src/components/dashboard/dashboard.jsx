@@ -206,20 +206,20 @@ export default function Dashboard(props) {
         postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_BRAND_HEALTH_DATA}`, postObj, props.history)
             .then(data => {
                 console.log('**', data);
-                // var barCanvasData = [];
-                // Array.isArray(data) && data.forEach(obj => {
-                //     var obj = {
-                //         date: obj.StartDate,
-                //         socialShares: obj.SocialShares,
-                //         socialSharesColor: "hsl(213, 70%, 50%)",
-                //         customerReviews: obj.CustomerReviews,
-                //         customerReviewsColor: "hsl(138, 100%, 50%)",
-                //         customerReferrals: obj.CustomerReferrals,
-                //         customerReferralsColor: "hsl(43, 70%, 50%)",
-                //     };
-                //     barCanvasData.push(obj);
-                // })
-                // props.dashboardActionHandler.dispatchBarCanvasBrandHealthData(barCanvasData);
+                var barCanvasData = [];
+                Array.isArray(data) && data.forEach(obj => {
+                    var obj = {
+                        date: obj.StartDate,
+                        socialShares: obj.SocialShares,
+                        socialSharesColor: "hsl(213, 70%, 50%)",
+                        customerReviews: obj.CustomerReviews,
+                        customerReviewsColor: "hsl(138, 100%, 50%)",
+                        customerReferrals: obj.CustomerReferrals,
+                        customerReferralsColor: "hsl(43, 70%, 50%)",
+                    };
+                    barCanvasData.push(obj);
+                })
+                props.dashboardActionHandler.dispatchBarCanvasBrandHealthData(barCanvasData);
                 handleLoader(false);
             });
     }
@@ -246,7 +246,7 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix">
                         <div className="w-100 float-right clearfix mb-1">
                             <Link href="#"
-                                className="float-right mb-1 mr-3 f-c-box"
+                                className="float-right mb-1 mr-3"
                                 style={{ color: filterDurataion == 7 ? '#60b3f7' : '' }}
                                 onClick={() => getSummaryTotalsOnDateFilterClick(7)}>
                                 Last 7 Days

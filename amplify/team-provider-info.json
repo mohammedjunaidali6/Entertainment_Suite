@@ -38,5 +38,35 @@
         "managementauth": {}
       }
     }
+  },
+  "default": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-managementapp-default-141630-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568375208006:role/amplify-managementapp-default-141630-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568375208006:role/amplify-managementapp-default-141630-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-managementapp-default-141630-deployment",
+      "UnauthRoleName": "amplify-managementapp-default-141630-unauthRole",
+      "StackName": "amplify-managementapp-default-141630",
+      "StackId": "arn:aws:cloudformation:us-east-1:568375208006:stack/amplify-managementapp-default-141630/213ca7c0-fcdc-11eb-a0cf-0ef6ea180c89",
+      "AmplifyAppId": "d2xvodjo67h93g"
+    },
+    "categories": {
+      "auth": {
+        "managementauth": {}
+      },
+      "function": {
+        "managementauthCreateAuthChallenge": {},
+        "managementauthCustomMessage": {
+          "REDIRECTURL": "",
+          "EMAILSUBJECT": "",
+          "EMAILMESSAGE": "Wel come"
+        },
+        "managementauthDefineAuthChallenge": {},
+        "managementauthVerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": ""
+        }
+      }
+    }
   }
 }
