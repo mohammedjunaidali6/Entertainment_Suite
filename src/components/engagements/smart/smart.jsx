@@ -160,7 +160,7 @@ export default function EngagementsSmart(props) {
             const rewardsAndBudget = props.rewardsAndBudget;
 
             let engagementObj = {};
-            engagementObj.EngagementID = goalsData.EngagementId ?? 0;
+            engagementObj.EngagementID = goalsData.EngagementId || 0;
             engagementObj.CampaignName = goalsData.campaignName;
             engagementObj.DisplayName = goalsData.displayName;
             engagementObj.StatusID = 1;
@@ -174,7 +174,7 @@ export default function EngagementsSmart(props) {
                 let durationNum = parseInt(targetAudienceData.durationNum);
                 let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
                 engagementObj.PurchaseRule.NumberOfDays = days;
-                engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId ?? 0
+                engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId || 0
             }
 
             engagementObj.Rewards = [];
@@ -190,8 +190,8 @@ export default function EngagementsSmart(props) {
                 engagementObj.Rewards.push(rewardObj);
             })
 
-            engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget ?? '0');
-            engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration ?? '0');
+            engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget || '0');
+            engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration || '0');
 
             postAuthAndData(SAVE_ENGAGEMENT, engagementObj, history)
                 .then(engagementDbObj => {

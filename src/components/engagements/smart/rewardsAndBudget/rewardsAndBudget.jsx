@@ -112,8 +112,8 @@ export default function RewardsAndBudget(props) {
     const [rewardTypes, setRewardTypes] = useState([]);
     const [rewardInfo, setRewardInfo] = useState({ reward_code: '', description: '', expiry_date: '' });
     const [rewardsData, setRewardsData] = useState(rewardsAndBudgetData?.rewards || []);
-    const [budget, setBudget] = useState(rewardsAndBudgetData?.budget ?? BUDGET_DEFAULT);
-    const [budgetDuration, setBudgetDuration] = useState(rewardsAndBudgetData?.budgetDuration ?? BUDGET_DURATION_DEFAULT);
+    const [budget, setBudget] = useState(rewardsAndBudgetData?.budget || BUDGET_DEFAULT);
+    const [budgetDuration, setBudgetDuration] = useState(rewardsAndBudgetData?.budgetDuration || BUDGET_DURATION_DEFAULT);
 
 
     const fetchRewards = () => {

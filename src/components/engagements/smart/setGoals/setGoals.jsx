@@ -43,7 +43,7 @@ export default function SetGoals(props) {
         });
         boxData.isActive = true;
         setGoalForm.patchValue({
-            campaignName: setGoalForm.controls.campaignName?.value ?? props.props.setGoals.campaignName,
+            campaignName: setGoalForm.controls.campaignName?.value || props.props.setGoals.campaignName,
             displayName: setGoalForm.controls.displayName?.value,
             goal: boxData
         });

@@ -5,6 +5,8 @@ import { lineChartSingleBlueData } from "../../../constants/globalMockdata";
 import h_dots_src from "../../../assets/img/dots-icon_horizontal.svg";
 
 export default function SalesOverviewBox(props) {
+    console.log('****',props);
+
     return (
         <Fragment>
             <div className="l-v-s-o-box-t">
@@ -13,7 +15,7 @@ export default function SalesOverviewBox(props) {
                 </div>
                 <div className="l-v-s-o-box-t-h f-16">{props.header}</div>
                 <div className="mt-3">
-                    <span className="l-v-s-o-box-t-c f-40">{props.count}</span>
+                    <span className="l-v-s-o-box-t-c f-40">{props.count||0}</span>
                     {/* <span className="l-v-s-o-box-t-c-lbl f-12 pl-2">INR</span> */}
                     <div className="disp-inline-b float-right pr-1">
                         <div className="l-v-s-o-box-t-c-per f-22">

@@ -105,7 +105,7 @@ export default function TargetAudience(props) {
     useEffect(() => {
         return () => {
             let targetAudience = {
-                purchaseRuleId: targetAudienceData?.purchaseRuleId ?? 0,
+                purchaseRuleId: targetAudienceData?.purchaseRuleId || 0,
                 targetAudience: selectedSegment,
                 purchaseValue: purchaseValue,
                 durationNum: durationNum,

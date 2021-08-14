@@ -8,7 +8,7 @@ const TeamReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_USERS: {
       const newState = { ...state };
-      newState.users = payload ?? null;
+      newState.users = payload || null;
       return newState;
     }
     case GET_ROLES: {

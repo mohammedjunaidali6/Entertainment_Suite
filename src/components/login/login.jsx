@@ -98,7 +98,7 @@ export default function LogIn(props) {
                         props.loginActionHandler.dispatchJwtTokenData(jwtToken);
                         var tenantKey = user.attributes['custom:tenant_key'];
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
-                        axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey ?? DUMM_TENANT_KEY;
+                        axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
                         debugger;
                         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${logIn.email}`)

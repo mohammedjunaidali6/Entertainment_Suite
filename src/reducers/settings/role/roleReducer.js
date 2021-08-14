@@ -8,12 +8,12 @@ const RoleReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_ROLES_WITH_PERMISSION_COUNT: {
       const newState = { ...state };
-      newState.roleData = payload ?? null;
+      newState.roleData = payload || null;
       return newState;
     }
     case SET_PERMISSIONS: {
       const newState = { ...state };
-      newState.permissions = payload ?? null;
+      newState.permissions = payload || null;
       return newState;
     }
     default: {

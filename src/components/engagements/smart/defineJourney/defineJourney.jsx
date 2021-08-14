@@ -33,7 +33,7 @@ export default function DefineJourney(props) {
                             let journObj = {};
                             journObj.id = journey.JourneyID;
                             journObj.name = journey.JourneyName;
-                            journObj.isActive = props.props.journeyBox?.id == journey.JourneyID ?? false;
+                            journObj.isActive = props.props.journeyBox?.id == journey.JourneyID || false;
                             journObj.tags = [];
                             journObj.tags.push(journey.EventDisplayName);
                             journeyArr.push(journObj);

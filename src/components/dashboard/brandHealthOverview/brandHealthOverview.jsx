@@ -7,18 +7,18 @@ export default function BrandHealthView({ data }) {
     const customizedData = [
         {
             id: 1, title: 'Social Shares',
-            count: data?.FormattedSocialSharesTotal ?? 0,
-            perc: data?.PerentageChangeInSocialShares ?? 0
+            count: data?.FormattedSocialSharesTotal || 0,
+            perc: data?.PerentageChangeInSocialShares || 0
         },
         {
             id: 2, title: 'Customers Referrals',
-            count: data?.FormattedReferralsTotal ?? 0,
-            perc: data?.PerentageChangeInReferrals ?? 0
+            count: data?.FormattedReferralsTotal || 0,
+            perc: data?.PerentageChangeInReferrals || 0
         },
         {
             id: 3, title: 'Customer Reviews',
-            count: data?.FormattedReviewsTotal ?? 0,
-            perc: data?.PerentageChangeInReviews ?? 0
+            count: data?.FormattedReviewsTotal || 0,
+            perc: data?.PerentageChangeInReviews || 0
         }
     ];
 
