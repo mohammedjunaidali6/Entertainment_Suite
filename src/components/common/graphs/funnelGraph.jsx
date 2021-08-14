@@ -7,17 +7,17 @@ export default function FunnelGraph({ data }) {
   var customizedData = [{
     id: 1,
     label: 'Customers Engaged',
-    value: data?.EngagedCustomersTotal ?? 0,
+    value: data?.EngagedCustomersTotal || 0,
   },
   {
     id: 2,
     label: 'Coupons Redeemed',
-    value: data?.CouponsRedeemedTotal ?? 0,
+    value: data?.CouponsRedeemedTotal || 0,
   },
   {
     id: 3,
     label: 'Customers Awarded',
-    value: data?.WinnersTotal ?? 0,
+    value: data?.WinnersTotal || 0,
   }]
 
   return (
@@ -25,7 +25,7 @@ export default function FunnelGraph({ data }) {
       <ResponsiveFunnel
         data={customizedData}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        valueFormat=">-.3s"
+        valueFormat=">-.5s"
         colors={{ scheme: 'spectral' }}
         borderWidth={20}
         labelColor={{ from: 'color', modifiers: [['darker', 3]] }}
@@ -36,6 +36,7 @@ export default function FunnelGraph({ data }) {
         currentPartSizeExtension={10}
         currentBorderWidth={40}
         motionConfig="wobbly"
+        isInteractive={false}
       />
     </div>
   )
