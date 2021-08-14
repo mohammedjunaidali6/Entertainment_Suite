@@ -1,12 +1,18 @@
 .overview-heading {
     height: 16px;
     color: #808A8F;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.48px;
     line-height: 16px;
     text-transform: uppercase;
 }
+.section-sub-heading{
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.48px;
+}
+
 .sales-overview-box-outer {
     padding: 0px 10px 10px 0;
     /* text-align: center; */

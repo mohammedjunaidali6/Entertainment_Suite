@@ -7,7 +7,7 @@ export default function LineCanvasGraph({ data, yName }) {
   return (
     <div className="App" style={{ height: '280px', width: '100%' }}>
       {
-        data && data[0].data && data[0].data.length &&
+        data && data[0].data && data[0].data.length>0 &&
         <ResponsiveLine
           data={data}
           margin={{ top: 50, right: 40, bottom: 40, left: 50 }}
