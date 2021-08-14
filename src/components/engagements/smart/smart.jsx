@@ -408,9 +408,9 @@ export default function EngagementsSmart(props) {
                         <div className="btn-create-engagement float-right text-center pt-2 mr-3" onClick={createClick}>
                             <span className="btn-c-e-text">+ Create Engagements</span>
                         </div>
-                        {gridFlag ? (
+                        {gridFlag ? 
                             <div className="w-100 float-left clearfix mt-3">
-                                {props.campaignsData && props.campaignsData.length > 0 ?
+                                {props.campaignsData && props.campaignsData.length > 0 &&
                                     <CampaignBox
                                         campaigndata={props.campaignsData}
                                         onPauseClick={(engmt, status) => onPauseClick(engmt, status)}
@@ -419,10 +419,9 @@ export default function EngagementsSmart(props) {
                                         onDeleteClick={(engmt) => onDeleteClick(engmt)}
                                     >
                                     </CampaignBox>
-                                    :
-                                    <div className="e-s-heading ml-4">No campaigns found!</div>}
+                                }
                             </div>
-                        ) : (
+                            : 
                             <div className="mt-4" id="e-s-table-sec">
                                 <Table columns={CampaignTableColumns}
                                     data={props.campaignsData}
@@ -435,7 +434,7 @@ export default function EngagementsSmart(props) {
                                     subHeader={true}
                                 />
                             </div>
-                        )}
+                        }
                     </div>
                 </Fragment>
             ) : (

@@ -283,15 +283,18 @@ export default function EngagementsJourney(props) {
                     <div className='btn-create-journey float-right text-center pt-2' onClick={createClick}>
                         <span className="btn-c-j-text">+ Create Journey</span>
                     </div>
-
                     <div className='journey-table-block'>
-                        <Table columns={journeyColumns}
-                            data={journeysData}
-                            pagination={true}
-                            subHeaderComponent={
-                                <SearchBar placeHolder="Search journey" onSearch={(searchStr) => searchJourneyByName(searchStr)} fromJourney={true} searchFilter="All Jouneys" />
-                            }
-                            subHeader={true} />
+                        {journeysData && journeysData.length > 0 && journeyColumns && journeyColumns.length > 0 &&
+                            <Table 
+                                columns={journeyColumns}
+                                data={journeysData}
+                                pagination={true}
+                                subHeaderComponent={
+                                    <SearchBar placeHolder="Search journey" onSearch={(searchStr) => searchJourneyByName(searchStr)} fromJourney={true} searchFilter="All Jouneys" />
+                                }
+                                subHeader={true} 
+                            />
+                        }
                     </div>
                 </Fragment>
                 :

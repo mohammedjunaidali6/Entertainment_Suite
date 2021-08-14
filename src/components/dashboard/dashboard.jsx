@@ -223,12 +223,12 @@ export default function Dashboard(props) {
                 var barCanvasData = [];
                 Array.isArray(data) && data.forEach(obj => {
                     var obj = {
-                        date: obj.StartDate,
-                        socialShares: obj.SocialShares,
+                        date: obj.StartDate.substring(0,10),
+                        'Social Shares': obj.SocialShares,
                         socialSharesColor: "hsl(213, 70%, 50%)",
-                        customerReviews: obj.CustomerReviews,
+                        'Customer Reviews': obj.CustomerReviews,
                         customerReviewsColor: "hsl(138, 100%, 50%)",
-                        customerReferrals: obj.CustomerReferrals,
+                        'Customer Referrals': obj.CustomerReferrals,
                         customerReferralsColor: "hsl(43, 70%, 50%)",
                     };
                     barCanvasData.push(obj);
@@ -453,9 +453,9 @@ export default function Dashboard(props) {
                     <BarCanvasGraph
                         data={props.barCanvasDayWiseBrandHealthData}
                         keys={[
-                            'socialShares',
-                            'customerReviews',
-                            'customerReferrals',
+                            'Social Shares',
+                            'Customer Reviews',
+                            'Customer Referrals',
                         ]}>
                     </BarCanvasGraph>
                 </div>
