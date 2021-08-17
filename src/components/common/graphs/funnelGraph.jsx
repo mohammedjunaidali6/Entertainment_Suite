@@ -25,15 +25,12 @@ export default function FunnelGraph({ data }) {
       <ResponsiveFunnel
         data={customizedData}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        valueFormat=">-.5s"
-        colors={{ scheme: 'spectral' }}
+        valueFormat=">-.3s"
+        colors={{ scheme: 'nivo' }}
         borderWidth={20}
-        labelColor={{ from: 'color', modifiers: [['darker', 3]] }}
-        beforeSeparatorLength={100}
-        beforeSeparatorOffset={20}
-        afterSeparatorLength={100}
-        afterSeparatorOffset={20}
-        currentPartSizeExtension={10}
+        labelColor={{ from: 'color', modifiers: [['darker', 30]] }}
+        enableAfterSeparators={false}
+        enableBeforeSeparators={false}
         currentBorderWidth={40}
         motionConfig="wobbly"
         isInteractive={false}

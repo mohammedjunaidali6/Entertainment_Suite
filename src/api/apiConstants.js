@@ -8,7 +8,7 @@ export const REPT_PROD_HOST_URI = 'http://localhost:818/api';
 
 export const EMAIL = 'Email'
 export const DEFAULT_FILTER_DAYS = 7;
-export const DEFAULT_FILTER_MONTHS = 3;
+export const DEFAULT_FILTER_MONTHS = 2;
 export const JWT_TOKEN = 'JwtToken'
 export const REFRESH_TOKEN = 'RefreshToken'
 export const DUMM_TENANT_KEY = "BLAASH-SYS-2021";

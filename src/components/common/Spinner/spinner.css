@@ -14,3 +14,10 @@
   margin-top: 24%;
   border-width: 10px;
 }
+
+small-loader{
+  position: relative;
+  margin: auto;
+  background-color: rgb(221, 220, 220);
+  opacity: 0.6;
+}

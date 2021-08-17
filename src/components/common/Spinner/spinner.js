@@ -10,3 +10,13 @@ export default function Loader(props) {
         </div>
     );
 }
+
+
+export function SmallLoader(props){
+
+    return(
+        <div style={{ display: props.show ? 'block' : 'none' }} className='small-loader'>
+            <Spinner className='spinner' radius={30} color={"#007BFF"} stroke={2} visible={true} />
+        </div>
+    )
+}

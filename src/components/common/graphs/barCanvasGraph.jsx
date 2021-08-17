@@ -22,8 +22,8 @@ export default function BarCanvasGraph({ data, keys }) {
           reverse={false}
           valueScale={{ type: 'linear' }}
           indexScale={{ type: 'band', round: true }}
-          valueFormat={{ format: ' >-', enabled: false }}
-          colors={{ scheme: 'spectral' }}
+          valueFormat={{ format: ' >-.3s', enabled: true }}
+          colors={{ scheme: 'nivo' }}
           colorBy="id"
           borderWidth={0}
           borderRadius={0}
@@ -45,7 +45,7 @@ export default function BarCanvasGraph({ data, keys }) {
             legendOffset: -40
           }}
           enableGridX={false}
-          enableGridY={true}
+          enableGridY={false}
           enableLabel={true}
           labelSkipWidth={12}
           labelSkipHeight={12}

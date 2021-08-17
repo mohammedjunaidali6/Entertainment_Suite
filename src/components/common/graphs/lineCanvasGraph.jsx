@@ -1,8 +1,8 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
-export default function LineCanvasGraph({ data, yName }) {
-  // console.log('**', data);
+export default function LineCanvasGraph({ data, yName,pointsEnabled}) {
+  console.log('**', pointsEnabled);
 
   return (
     <div className="App" style={{ height: '280px', width: '100%' }}>
@@ -12,15 +12,18 @@ export default function LineCanvasGraph({ data, yName }) {
           data={data}
           margin={{ top: 50, right: 40, bottom: 40, left: 50 }}
           curve="monotoneX"
-          // colors={{ scheme: 'spectral' }}
+          colors={{ scheme: 'nivo' }}
           lineWidth={4}
+          enablePoints={pointsEnabled}
           pointSize={10}
           pointColor={{ theme: 'background' }}
           pointBorderWidth={1}
           pointBorderColor={{ from: 'serieColor' }}
           pointLabelYOffset={-12}
           enableArea={true}
-          useMesh={true}
+          enableGridX={false}
+          enableGridY={false}
+          pointSize={10}
           axisLeft={{
             tickSize: 4,
             tickPadding: 2,

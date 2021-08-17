@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import Loader from '../common/Spinner/spinner';
+import SmallLoader from '../common/Spinner/spinner';
 import LineChart from "../common/utils/lineChart";
 import LineCanvasGraph from '../common/graphs/lineCanvasGraph';
 import FunnelGraph from '../common/graphs/funnelGraph';
@@ -27,13 +27,15 @@ import {
     CONSOLIDATED_BRAND_HEALTH,
     DAY_WISE_BRAND_HEALTH_DATA
 } from '../../api/apiConstants';
+import  DateFilter from '../common/dateFilter';
 
 
 export default function Dashboard(props) {
     console.log('***', props);
     const [salesOverviewFilter, setSalesOverviewFilter] = useState(7);
     const [salesRevenueFilter, setSalesRevenueFilter] = useState(7);
-    const [engagementFilter, setEngagementFilter] = useState(7);
+    const [dayEngagementFilter, setDayEngagementFilter] = useState(7);
+    const [monthEngagementFilter, setMonthEngagementFilter] = useState(1);
     const [incrementalSalesFilter, setIncrementalSalesFilter] = useState(7);
     const [brandHealthFilter, setBrandHealthFilter] = useState(7);
 
@@ -74,7 +76,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(salesObj);
                 Array.isArray(data?.DayWiseSales) && data.DayWiseSales.forEach(sale => {
                     let obj = {
-                        "x": sale.StartDateTime.substring(0, 10),
+                        "x": sale.FormattedDate,
                         "y": sale.Total
                     }
                     lineCanvasData[0].data.push(obj);
@@ -89,7 +91,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(engagementsCreatedDatesObj);
                 Array.isArray(data?.EngagementsCreatedOn) && data.EngagementsCreatedOn.forEach(engt => {
                     let obj = {
-                        "x": engt.CreatedDateTime.substring(0, 10),
+                        "x": engt.FormattedDate,
                         "y": 0
                     }
                     lineCanvasData[1].data.push(obj);
@@ -104,7 +106,7 @@ export default function Dashboard(props) {
             NumberOfDays: durationDays,
         }
         handleLoader(true);
-        setEngagementFilter(durationDays);
+        setDayEngagementFilter(durationDays);
         postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
             .then(data => {
                 // console.log('**', data);
@@ -118,7 +120,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(usersObj);
                 Array.isArray(data) && data.forEach(user => {
                     let obj = {
-                        "x": user.SnapShotDate.substring(0, 10),
+                        "x": user.FormattedDate,
                         "y": user.ActiveUsers
                     }
                     lineCanvasData[0].data.push(obj);
@@ -132,7 +134,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(usersObj);
                 Array.isArray(data) && data.forEach(user => {
                     let obj = {
-                        "x": user.SnapShotDate.substring(0, 10),
+                        "x": user.FormattedDate,
                         "y": user.EngagedUsers
                     }
                     lineCanvasData[1].data.push(obj);
@@ -146,6 +148,7 @@ export default function Dashboard(props) {
             NumberOfMonths: durationMonths,
         }
         handleLoader(true);
+        setMonthEngagementFilter(durationMonths);
         postAuthAndData(`${REPT_PROD_HOST_URI}${MONTH_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
             .then(data => {
                 // console.log('**', data);
@@ -159,7 +162,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(usersObj);
                 Array.isArray(data) && data.forEach(user => {
                     let obj = {
-                        "x": user.SnapShotDate.substring(0, 10),
+                        "x": user.FormattedDate,
                         "y": user.ActiveUsers
                     }
                     lineCanvasData[0].data.push(obj);
@@ -173,7 +176,7 @@ export default function Dashboard(props) {
                 lineCanvasData.push(usersObj);
                 Array.isArray(data) && data.forEach(user => {
                     let obj = {
-                        "x": user.SnapShotDate.substring(0, 10),
+                        "x": user.FormattedDate,
                         "y": user.EngagedUsers
                     }
                     lineCanvasData[1].data.push(obj);
@@ -191,6 +194,7 @@ export default function Dashboard(props) {
         postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATED_INCREMENTAL_SALES}`, postObj, props.history)
             .then(data => {
                 // console.log('**', data);
+                handleLoader(false);
                 props.dashboardActionHandler.dispatchIncrementalSalesTotalsData(data);
             })
     }
@@ -223,7 +227,7 @@ export default function Dashboard(props) {
                 var barCanvasData = [];
                 Array.isArray(data) && data.forEach(obj => {
                     var obj = {
-                        date: obj.StartDate.substring(0,10),
+                        date: obj.FormattedDate,
                         'Social Shares': obj.SocialShares,
                         socialSharesColor: "hsl(213, 70%, 50%)",
                         'Customer Reviews': obj.CustomerReviews,
@@ -244,7 +248,7 @@ export default function Dashboard(props) {
         }
         getSalesOnDateFilterClick(DEFAULT_FILTER_DAYS);
         getDailyActiveUsersAndEngagedCustomers(DEFAULT_FILTER_DAYS);
-        // getMonthlyActiveUsersAndEngagedCustomers(DEFAULT_FILTER_MONTHS);
+        getMonthlyActiveUsersAndEngagedCustomers(DEFAULT_FILTER_MONTHS);
         getIncrementalSalesTotals(DEFAULT_FILTER_DAYS);
         getBrandHealthData(DEFAULT_FILTER_DAYS);
     }, []);
@@ -255,29 +259,10 @@ export default function Dashboard(props) {
             <div id="dashboard-container" className="p-2">
                 {/* Sales Overview */} 
                 <div className="w-100 float-left clearfix">
-                    <div className="w-50 float-left clearfix">
+                    <div className="w-50 float-left clearfix mb-2">
                         <div className="overview-heading float-left clearfix mt-2">Sales Overview</div>
                     </div>
-                    <div className="w-50 float-left clearfix mb-1">
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-3 f-c-box"
-                            onClick={()=>getSummaryTotalsOnDateFilterClick(90)}
-                            style={{ backgroundColor: salesOverviewFilter == 90 ? '#60b3f7' : '' }}>
-                            Last 90 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getSummaryTotalsOnDateFilterClick(30)}
-                            style={{ backgroundColor: salesOverviewFilter == 30 ? '#60b3f7' : '' }}>
-                            Last 30 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getSummaryTotalsOnDateFilterClick(7)}
-                            style={{ backgroundColor: salesOverviewFilter == 7 ? '#60b3f7' : '' }}>
-                            Last 7 Days
-                        </Button>
-                    </div>
+                    <DateFilter onFilterClick={(days)=>getSummaryTotalsOnDateFilterClick(days)} selected={salesOverviewFilter}/>
                 </div>
                 <div className="w-100 float-left clearfix mb-4 sales-overview">
                     <div className="w-50 float-left clearfix sales-overview-box-outer">
@@ -326,63 +311,47 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix mb-2">
                         <div className="overview-heading float-left clearfix mt-2">Sales & Revenue</div>
                     </div>
-                    <div className="w-50 float-left clearfix mb-1">
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-3 f-c-box"
-                            onClick={()=>getSalesOnDateFilterClick(90)}
-                            style={{ backgroundColor: salesRevenueFilter == 90 ? '#60b3f7' : '' }}>
-                            Last 90 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getSalesOnDateFilterClick(30)}
-                            style={{ backgroundColor: salesRevenueFilter == 30 ? '#60b3f7' : '' }}>
-                            Last 30 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getSalesOnDateFilterClick(7)}
-                            style={{ backgroundColor: salesRevenueFilter == 7 ? '#60b3f7' : '' }}>
-                            Last 7 Days
-                        </Button>
-                    </div>
+                    <DateFilter onFilterClick={(days)=>getSalesOnDateFilterClick(days)} selected={salesRevenueFilter}/>
                 </div>
                 <div className="w-100 float-left clearfix p-4 mb-4 chart-container">
                     <LineCanvasGraph
                         data={props.lineCanvasSalesData}
+                        pointsEnabled={true}
                         yName={'Total Sales'}>
                     </LineCanvasGraph>
                 </div>
                 {/* Engagement and Entertainment */}
                 <div className="w-100 float-left clearfix">
-                    <div className="w-50 float-left clearfix mb-2">
+                    <div className="w-100 float-left clearfix mb-2">
                         <div className="overview-heading float-left clearfix mt-2">Engagement & Entertainment</div>
                     </div>
+                    <DateFilter onFilterClick={(days)=>getDailyActiveUsersAndEngagedCustomers(days)} selected={dayEngagementFilter}/>
                     <div className="w-50 float-left clearfix mb-1">
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-3 f-c-box"
-                            onClick={()=>getDailyActiveUsersAndEngagedCustomers(90)}
-                            style={{ backgroundColor: engagementFilter == 90 ? '#60b3f7' : '' }}>
-                            Last 90 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getDailyActiveUsersAndEngagedCustomers(30)}
-                            style={{ backgroundColor: engagementFilter == 30 ? '#60b3f7' : '' }}>
-                            Last 30 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getDailyActiveUsersAndEngagedCustomers(7)}
-                            style={{ backgroundColor: engagementFilter == 7 ? '#60b3f7' : '' }}>
-                            Last 7 Days
-                        </Button>
+                        <Link href="#"
+                            className="float-right mb-1 mr-4"
+                            onClick={()=>getMonthlyActiveUsersAndEngagedCustomers(6)}
+                            style={{ color: monthEngagementFilter == 6 ? '#60b3f7' : '',fontSize:'12px'  }}>
+                            Last 6 Months
+                        </Link>
+                        <Link href="#"
+                            className="float-right mb-1 mr-3"
+                            onClick={()=>getMonthlyActiveUsersAndEngagedCustomers(4)}
+                            style={{ color: monthEngagementFilter == 4 ? '#60b3f7' : '',fontSize:'12px'  }}>
+                            Last 4 Months
+                        </Link>
+                        <Link href="#"
+                            className="float-right mb-1 mr-3"
+                            onClick={()=>getMonthlyActiveUsersAndEngagedCustomers(2)}
+                            style={{ color: monthEngagementFilter == 2 ? '#60b3f7' : '',fontSize:'12px'  }}>
+                            Last 2 Months
+                        </Link>
                     </div>
                 </div>
                 <div className="w-50 float-left clearfix p-4 mb-4 chart-container">
                     <div className='section-sub-heading'>Daily Active and Engaged Customers</div>
                     <LineCanvasGraph
                         data={props.lineCanvasDayWiseActiveAndEngagedCustomers}
+                        pointsEnabled={false}
                         yName={'Customers'}>
                     </LineCanvasGraph>
                 </div>
@@ -390,6 +359,7 @@ export default function Dashboard(props) {
                     <div className='section-sub-heading'>Monthly Active and Engaged Customers</div>
                     <LineCanvasGraph
                         data={props.lineCanvasMonthWiseActiveAndEngagedCustomers}
+                        pointsEnabled={false}
                         yName={'Customers'}>
                     </LineCanvasGraph>
                 </div>
@@ -398,26 +368,7 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix">
                         <div className="overview-heading float-left clearfix mt-2">Incremental Sales</div>
                     </div>
-                    <div className="w-50 float-left clearfix mb-1">
-                        <Button variant="outlined"
-                            className="float-right mr-3 mb-1 f-c-box"
-                            onClick={()=>getIncrementalSalesTotals(90)}
-                            style={{ backgroundColor: incrementalSalesFilter == 90 ? '#60b3f7' : '' }}>
-                            Last 90 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getIncrementalSalesTotals(30)}
-                            style={{ backgroundColor: incrementalSalesFilter == 30 ? '#60b3f7' : '' }}>
-                            Last 30 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getIncrementalSalesTotals(7)}
-                            style={{ backgroundColor: incrementalSalesFilter == 7 ? '#60b3f7' : '' }}>
-                            Last 7 Days
-                        </Button>
-                    </div>
+                    <DateFilter onFilterClick={(days)=>getIncrementalSalesTotals(days)} selected={incrementalSalesFilter}/>
                 </div>
                 <CustomerOverview data={props.incrementalSalesTotals}></CustomerOverview>
                 <div className="w-100 float-left clearfix p-4 mb-4 chart-container">
@@ -427,26 +378,7 @@ export default function Dashboard(props) {
                     <div className="w-50 float-left clearfix mb-2">
                         <div className="overview-heading float-left clearfix mt-2">Brand Health</div>
                     </div>
-                    <div className="w-50 float-left clearfix mb-1">
-                        <Button variant="outlined"
-                            className="float-right mr-3 mb-1 f-c-box"
-                            onClick={()=>getBrandHealthData(90)}
-                            style={{ backgroundColor: brandHealthFilter == 90 ? '#60b3f7' : '' }}>
-                            Last 90 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getBrandHealthData(30)}
-                            style={{ backgroundColor: brandHealthFilter == 30 ? '#60b3f7' : '' }}>
-                            Last 30 Days
-                        </Button>
-                        <Button variant="outlined"
-                            className="float-right mb-1 mr-1 f-c-box"
-                            onClick={()=>getBrandHealthData(7)}
-                            style={{ backgroundColor: brandHealthFilter == 7 ? '#60b3f7' : '' }}>
-                            Last 7 Days
-                        </Button>
-                    </div>
+                    <DateFilter onFilterClick={(days)=>getBrandHealthData(days)} selected={brandHealthFilter}/>
                 </div>
                 <BrandHealthOverview data={props.brandHealthTotals}></BrandHealthOverview>
                 <div className="w-100 float-left clearfix p-4 mb-4 chart-container">
