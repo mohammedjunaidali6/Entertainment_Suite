@@ -56,7 +56,7 @@
 }
 .c-e-campaign-goal-box-inner-logo {
     text-align: center;
-    padding: 30px;
+    padding: 10px;
 }
 div.checkmark .checkmark-circle {
     font-size: 12px;
@@ -133,6 +133,6 @@ div.checkmark .unmark-circle:after {
 
 .grayed-goals{
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.8;
     background-color: rgb(224, 220, 220);
 }

@@ -174,8 +174,12 @@
     width: 100%;
 }
 .css-yk16xz-control {
-    min-height: 30px !important;
+    /* min-height: 30px !important; */
 }
 .css-tlfecz-indicatorContainer {
     padding: 4px !important;
+}
+
+.font12px{
+    font-size: '12px';
 }

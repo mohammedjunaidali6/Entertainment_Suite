@@ -88,14 +88,15 @@
     cursor: pointer;
 }
 .r-b-ar-i-h {
-    height: 16px;
+    /* height: 16px; */
     opacity: 0.5;
     color: #616263;
     font-size: 12px;
     font-weight: bold;
+    text-align: center;
     letter-spacing: 0;
     line-height: 16px;
-    margin-bottom: 7px;
+    /* margin-bottom: 7px; */
 }
 .r-b-ar-i {
     box-sizing: border-box;
@@ -121,4 +122,8 @@
 }
 .r-b-addreward-top {
     margin-bottom: 18px;
+}
+
+.font12px{
+    font-size: '12px';
 }

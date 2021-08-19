@@ -15,7 +15,7 @@ import store from '../../../../store/store';
 import './setGoals.css';
 
 const tempArray = [
-    { id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
+    { id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: true },
     { id: 2, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
     { id: 3, heading: "Bring New Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
     { id: 4, heading: "Increase Referral", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
@@ -53,6 +53,7 @@ export default function SetGoals(props) {
 
     }
 
+
     return (
         <div id="set-goals-container" >
             <div className="c-e-campaign-sec">
@@ -89,7 +90,7 @@ export default function SetGoals(props) {
                         <Fragment>
                             {goalBoxes.map((obj, indx) => (
                                 <div className={`c-e-campaign-goal-box w-33 float-left clearfix p-relative`} key={obj.id} onClick={() => goalBoxClick(obj)}>
-                                    <div className={`c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}  ${indx == 0 ? '' : 'grayed-goals'}`}>
+                                    <div className={`c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}  ${indx == 0 ? '' : 'grayed-goals'}`} style={{pointerEvents:indx==0?'':'none'}}>
                                         {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
                                         <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive} onChange={sgChange}></input>
                                         <div className="c-e-campaign-goal-box-inner-logo">
@@ -165,8 +166,8 @@ export default function SetGoals(props) {
                                                 </Fragment>
                                             )}
                                         </div>
-                                        <div className="c-e-campaign-goal-box-inner-h">{obj.heading}</div>
-                                        <div className="c-e-campaign-goal-box-inner-desc">{obj.desc}</div>
+                                        <div className="c-e-campaign-goal-box-inner-h" style={{fontSize:'18px'}}>{obj.heading}</div>
+                                        <div className="c-e-campaign-goal-box-inner-desc" style={{fontSize:'12px'}}>{obj.desc}</div>
                                     </div>
                                 </div>
                             ))}

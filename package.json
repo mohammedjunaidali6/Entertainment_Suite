@@ -37,6 +37,7 @@
     "react-hook-google-maps": "0.0.3",
     "react-icons": "^4.2.0",
     "react-input-tags-hooks": "0.0.2",
+    "react-notifications": "^1.7.2",
     "react-reactive-form": "^1.0.32",
     "react-recaptcha": "^2.3.10",
     "react-redux": "^7.2.2",

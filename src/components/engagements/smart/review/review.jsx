@@ -113,7 +113,7 @@ export default function Review(props) {
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Buget </div>
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">1,000 INR/Day</div>
                 </div>
-                <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
+                {/* <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected number of sales projection</div>
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">40</div>
                 </div>
@@ -124,7 +124,7 @@ export default function Review(props) {
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected Number of Engagement </div>
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2,000 with a ROI of 1000%</div>
-                </div>
+                </div> */}
             </div>
         </div >
     )

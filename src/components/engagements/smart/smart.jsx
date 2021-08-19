@@ -19,24 +19,22 @@ import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
-import store from '../../../store/store';
 import { useHistory } from 'react-router-dom';
+import createNotification from '../../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
-const useStyles = makeStyles((theme) => ({
-    typography: {
-        padding: theme.spacing(2),
-    },
-}));
 
 export default function EngagementsSmart(props) {
     var history = useHistory();
-    const [active, setActive] = useState('all');
+    const [active, setActive] = useState('live');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
     const [step, setStep] = useState('setGoals');
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineJourney, setDefineJourney] = useState(null);
+    const [defineRewards, setDefineRewards] = useState(null);
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
 
     const CampaignTableColumns = [
@@ -128,6 +126,8 @@ export default function EngagementsSmart(props) {
                 setStep('targetAudience');
                 goalData.EngagementId = props.setGoals?.EngagementId;
                 props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
+            } else {
+                createNotification('info','Please enter Valid Goal Data')
             }
         } else if (step === 'targetAudience') {
             setStep('defineJourney');
@@ -135,9 +135,23 @@ export default function EngagementsSmart(props) {
             if (defineJourney) {
                 setStep('rewardsAndBudget');
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
+            } else {
+                createNotification('info','Please Select Journey')
             }
         } else if (step === 'rewardsAndBudget') {
-            setStep('review');
+            if(defineRewards){
+                var prob=0;
+                defineRewards.forEach(r=>{
+                    prob+=parseInt(r.probability);
+                })
+                if(prob==100){
+                    setStep('review');
+                } else {
+                    createNotification('info','Total Probability should be equal to 100')
+                }
+            } else {
+                createNotification('info','Please enter atleast one Reward')
+            }
         } else if (step === 'review') {
             handleAlertDialog({
                 open: true, title: 'Save Engagement', text: 'Are you sure? Do you want to save it?', handleClose: (bool) => {
@@ -150,7 +164,7 @@ export default function EngagementsSmart(props) {
             });
         }
     }
-
+    
     const saveEngagement = () => {
         try {
             handleLoader(true);
@@ -197,11 +211,11 @@ export default function EngagementsSmart(props) {
                 .then(engagementDbObj => {
                     if (engagementDbObj) {
                         setOpenEngagementWizard(false);
-                        handleMessageBox('success', 'Engagement Saved Succesfully');
+                        createNotification('success', 'Engagement Saved Succesfully');
                         fetchEngagements();
                         createEngagementDataClear();
                     } else {
-                        handleMessageBox('error', 'Engagement Saving failed');
+                        createNotification('error', 'Engagement Saving failed');
                     }
                     handleLoader(false);
                 });
@@ -375,8 +389,9 @@ export default function EngagementsSmart(props) {
     }
 
     useEffect(() => {
-        fetchEngagements();
-
+        // fetchEngagements();// for all Engagements
+        fetchEngagementsByStatus(1);//1 is for Active Engagements
+    
         return () => {
             createEngagementDataClear();
         }
@@ -389,18 +404,19 @@ export default function EngagementsSmart(props) {
 
     return (
         <div id="engagements-smart-container">
+            <NotificationContainer/>
             <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
             {!openEngagementWizard ? (
                 <Fragment>
                     <div className="mb-4">
-                        <span className="e-s-heading">Active Campaigns</span>
+                        {/* <span className="e-s-heading">Active Campaigns</span> */}
                         <span className="float-right mr-3">
                             <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{ width: "22px", height: "22px" }}></AiOutlineMenu>
                             <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{ width: "22px", height: "22px" }}></BsGrid3X3GapFill>
                         </span>
                     </div>
                     <div>
-                        <div onClick={() => tabClick('all')} className={`e-s-tab ${active === 'all' ? `e-s-tab-active` : ``}`}>All</div>
+                        {/* <div onClick={() => tabClick('all')} className={`e-s-tab ${active === 'all' ? `e-s-tab-active` : ``}`}>All</div> */}
                         <div onClick={() => tabClick('live')} className={`e-s-tab ${active === 'live' ? `e-s-tab-active` : ``}`}>Active</div>
                         <div onClick={() => tabClick('paused')} className={`e-s-tab ${active === 'paused' ? `e-s-tab-active` : ``}`}>Paused</div>
                         <div onClick={() => tabClick('upcoming')} className={`e-s-tab ${active === 'upcoming' ? `e-s-tab-active` : ``}`}>Upcoming</div>
@@ -461,7 +477,7 @@ export default function EngagementsSmart(props) {
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
                                 step === 'targetAudience' ? <TargetAudience props={props} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
-                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
+                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
                                             step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
                                                 null
                             }

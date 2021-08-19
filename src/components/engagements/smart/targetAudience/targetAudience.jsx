@@ -120,7 +120,9 @@ export default function TargetAudience(props) {
             <div className="w-100 float-left clearfix c-e-target-h">Select Target Audience for the Engagement</div>
             <div className="c-e-target-content w-100 float-left clearfix">
                 {customerSegments && <BasicTreeMap data={customerSegments} onSegmentSelection={obj => onSegmentSelection(obj)} />}
-                <div className="w-100 float-left clearfix pl-2 pt-1">Selected Customer Segment : <b>{selectedSegment?.name || 'No Segment selected'}</b></div>
+                <div className="w-100 float-left clearfix pl-2 pt-1" style={{fontSize:'12px'}}>
+                    Selected Customer Segment : <b>{selectedSegment?.name || 'No Segment selected'}</b>
+                </div>
 
                 {/* <div className="w-85 float-left clearfix c-e-target-left-box-con">
                     <div className="w-100 float-left clearfix">

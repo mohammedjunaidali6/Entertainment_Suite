@@ -28,6 +28,8 @@ import {
     DAY_WISE_BRAND_HEALTH_DATA
 } from '../../api/apiConstants';
 import  DateFilter from '../common/dateFilter';
+import createNotification from '../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
 
 
 export default function Dashboard(props) {
@@ -256,6 +258,7 @@ export default function Dashboard(props) {
 
     return (
         <Fragment>
+            <NotificationContainer/>
             <div id="dashboard-container" className="p-2">
                 {/* Sales Overview */} 
                 <div className="w-100 float-left clearfix">

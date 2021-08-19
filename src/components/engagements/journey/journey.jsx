@@ -210,6 +210,7 @@ export default function EngagementsJourney(props) {
         })
 
         props.engagementsJourneyActionHandler.dispatchJourneysData(groupedJourneys);
+        console.log('**',groupedJourneys);
         setJourneysData(groupedJourneys);
     }
 
@@ -334,7 +335,7 @@ export default function EngagementsJourney(props) {
                                     <div className="w-25 float-left clearfix" key={taskObj.JourneyTaskID}>
                                         <div className="u-t-dropped-box w-97 float-left clearfix">
                                             <div className="u-t-dropped-box-h">
-                                                <div className="u-t-dropped-box-h-lbl">{taskObj.JourneyTaskName}</div>
+                                                <div className="u-t-dropped-box-h-lbl">{taskObj.JourneyTaskName.replace('{0}','')}</div>
                                             </div>
                                             <div className="u-t-dropped-box-sub-h">{taskObj.ValueQuestion}</div>
                                             <div>
