@@ -33,6 +33,7 @@ export default function EngagementsSmart(props) {
     const [step, setStep] = useState('setGoals');
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
+    const [defineSegment, setDefineSegment] = useState(null);
     const [defineJourney, setDefineJourney] = useState(null);
     const [defineRewards, setDefineRewards] = useState(null);
     const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
@@ -127,10 +128,14 @@ export default function EngagementsSmart(props) {
                 goalData.EngagementId = props.setGoals?.EngagementId;
                 props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
             } else {
-                createNotification('info','Please enter Valid Goal Data')
+                createNotification('info','Please Enter Campaign Name and Select Goal');
             }
         } else if (step === 'targetAudience') {
-            setStep('defineJourney');
+            if(defineSegment){
+                setStep('defineJourney');
+            } else {
+                createNotification('info','Please Select Customer Segment');
+            }
         } else if (step === 'defineJourney') {
             if (defineJourney) {
                 setStep('rewardsAndBudget');
@@ -475,7 +480,7 @@ export default function EngagementsSmart(props) {
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
-                                step === 'targetAudience' ? <TargetAudience props={props} handleLoader={(bool) => handleLoader(bool)} /> :
+                                step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
                                         step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
                                             step === 'review' ? <Review setStep={txt => setStep(txt)} /> :

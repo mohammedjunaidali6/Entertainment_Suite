@@ -316,7 +316,7 @@ export default function RewardsAndBudget(props) {
                                                 <Fragment>
                                                     <p>{`Coupon code: ${obj.tooltip.reward_code || ''}`}</p>
                                                     <p>{`Description: ${obj.tooltip.description || ''}`}</p>
-                                                    <p>{`Expired on: ${new Date(obj.tooltip.expiry_date).toLocaleDateString()}`}</p>
+                                                    <p>{`Expiry Date: ${new Date(obj.tooltip.expiry_date).toLocaleDateString()}`}</p>
                                                 </Fragment>
                                             }
                                             placement='top'
@@ -330,7 +330,15 @@ export default function RewardsAndBudget(props) {
                                     {i==0&&
                                         <div className="r-b-ar-i-h">Value</div>
                                     }
-                                        <input type="number" name='rewardValue' onChange={(e) => onRewardRowChange(e, obj)} value={obj.rewardValue} disabled={obj.rewardType?.value == 2} placeholder="0" className=" r-b-ar-i" style={{ textAlign: 'center' }} />
+                                        <input 
+                                            type="number" 
+                                            name='rewardValue' 
+                                            onChange={(e) => onRewardRowChange(e, obj)} 
+                                            value={obj.rewardValue} disabled={obj.rewardType?.value == 2} 
+                                            placeholder="0" 
+                                            className=" r-b-ar-i" 
+                                            style={{ textAlign: 'center' }} 
+                                        />
                                     </div>
                                 </div>
                                 <div className="w-8 float-left clearfix mr-1" >

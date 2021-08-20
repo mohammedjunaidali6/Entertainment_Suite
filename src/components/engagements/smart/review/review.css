@@ -30,7 +30,7 @@
     border-radius: 6px;
     background-color: #F2F4F5;
     margin-top: 13px;
-    padding: 18px 30px 26px 30px;
+    padding: 18px 30px 5px 30px;
     margin-bottom: 12px;
 }
 .c-e-r-left-t-a-box-h {
@@ -44,9 +44,9 @@
 .c-e-r-left-t-a-box-i {
     box-sizing: border-box;
     height: 31px;
-    border: 1px solid #DBDDDE;
-    border-radius: 4px;
-    background-color: #FFFFFF;
+    /* border: 1px solid #DBDDDE; */
+    /* border-radius: 4px; */
+    /* background-color: #FFFFFF; */
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: bold;
