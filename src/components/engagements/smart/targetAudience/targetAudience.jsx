@@ -34,7 +34,7 @@ export default function TargetAudience(props) {
     var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
     const [customerSegments, setCustomerSegments] = useState();
-    const [selectedSegment, setSelectedSegment] = useState(targetAudienceData.targetAudience);
+    const [selectedSegment, setSelectedSegment] = useState(targetAudienceData?.targetAudience);
     const [rule1, setRule1] = useState(rule1options[0]);
     const [rule2, setRule2] = useState(rule2options[0]);
     const [purchaseValue, setPurchaseValue] = useState(targetAudienceData?.purchaseValue);
