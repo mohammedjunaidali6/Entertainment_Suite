@@ -21,7 +21,7 @@
 }
 .c-e-journey-box-inner {
     box-sizing: border-box;
-    height: 96px;
+    height: 102px;
     border: 1px solid #E3E7ED;
     border-radius: 4px;
     background-color: #FFFFFF;
@@ -30,7 +30,7 @@
 .c-e-journey-box-inner-h {
     height: 21px;
     color: #3F4045;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0;
     line-height: 21px;
     font-weight: 500;

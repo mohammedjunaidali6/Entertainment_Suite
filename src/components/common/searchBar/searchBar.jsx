@@ -57,8 +57,9 @@ export default function SearchBar(props) {
                 <Fragment>
                     {props.fromRewards || props.fromSettingsTeam ? (
                         <div className="s-b-only-search float-left clearfix">
-                            <input type="text"
-                                maxLength={20}
+                            <input 
+                                type="text"
+                                maxLength={40}
                                 value={value}
                                 onChange={handleChange}
                                 placeholder={props.placeHolder ? props.placeHolder : "Search"}
@@ -75,7 +76,7 @@ export default function SearchBar(props) {
                             </div>
                             <div className="s-b-right float-left clearfix">
                                 <input type="text"
-                                    maxLength={20}
+                                    maxLength={40}
                                     value={value}
                                     onChange={handleChange}
                                     placeholder={props.placeHolder ? props.placeHolder : "Search"}

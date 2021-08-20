@@ -1,15 +1,14 @@
 .searchBar{
     box-sizing: border-box;
     height: 30px;
-    width: 174px;
+    width: 200px;
     border: 1px solid #DBDDDE;
     border-radius: 14.5px;
     background-color: #FFFFFF;
     opacity: 0.4;
     color: #000000;
-    font-family: Lato;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
-    font-weight: bold;
     letter-spacing: 0;
     line-height: 12px;
     padding-left: 12px;
@@ -30,7 +29,7 @@
 .s-b-right {
     box-sizing: border-box;
     height: 30px;
-    width: 174px;
+    width: 200px;
     border: 1px solid #DBDDDE;
     border-radius: 0 19.5px 19.5px 0;
     background-color: #FFFFFF;
@@ -45,7 +44,7 @@
 .s-b-only-search {
     box-sizing: border-box;
     height: 30px;
-    width: 174px;
+    width: 200px;
     border: 1px solid #DBDDDE;
     border-radius: 19.5px;
     background-color: #FFFFFF;

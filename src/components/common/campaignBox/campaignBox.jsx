@@ -62,9 +62,11 @@ export default function CampaignBox(props) {
                             <span className={`c-b-offer ${obj.Status === 4 ? `c-b-offer-upcoming` : ``}`}>{obj.DisplayName}</span>
                         </div>
                         <div className="w-100 float-left clearfix p-relative">
-                            {obj.isRecent ? (
+                            {obj.IsRecent ? (
                                 <div className="c-b-ribbon">
-                                    <span className="c-b-ribbon-inner c-b-ribbon-txt">R<br></br>e<br></br>c<br></br>e<br></br>n<br></br>t</span>
+                                    <span className="c-b-ribbon-inner c-b-ribbon-txt">
+                                        R<br></br>e<br></br>c<br></br>e<br></br>n<br></br>t
+                                    </span>
                                 </div>
                             ) : null}
                             <div className="w-50 float-left clearfix pl-3 pt-4">

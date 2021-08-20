@@ -43,8 +43,8 @@ export default function SetGoals(props) {
         });
         boxData.isActive = true;
         setGoalForm.patchValue({
-            campaignName: setGoalForm.controls.campaignName?.value || props.props.setGoals.campaignName,
-            displayName: setGoalForm.controls.displayName?.value,
+            campaignName: setGoalForm.controls?.campaignName?.value || props.props.setGoals.campaignName,
+            displayName: setGoalForm.controls?.displayName?.value,
             goal: boxData
         });
         props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
@@ -89,8 +89,13 @@ export default function SetGoals(props) {
                     {goalBoxes && goalBoxes.length > 0 ? (
                         <Fragment>
                             {goalBoxes.map((obj, indx) => (
-                                <div className={`c-e-campaign-goal-box w-33 float-left clearfix p-relative`} key={obj.id} onClick={() => goalBoxClick(obj)}>
-                                    <div className={`c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}  ${indx == 0 ? '' : 'grayed-goals'}`} style={{pointerEvents:indx==0?'':'none'}}>
+                                <div 
+                                    className={`c-e-campaign-goal-box w-33 float-left clearfix p-relative`} 
+                                    key={obj.id} 
+                                    onClick={() => goalBoxClick(obj)}
+                                    style={{pointerEvents:indx==0?'':'none'}}
+                                >
+                                    <div className={`c-e-campaign-goal-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}  ${indx == 0 ? '' : 'grayed-goals'}`}>
                                         {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
                                         <input id={`set-goal-chk${obj.id}`} type="checkbox" checked={obj.isActive} onChange={sgChange}></input>
                                         <div className="c-e-campaign-goal-box-inner-logo">

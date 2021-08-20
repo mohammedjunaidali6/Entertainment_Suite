@@ -68,7 +68,7 @@ export default function DefineJourney(props) {
                                     {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
                                     <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive} onChange={djChange}></input>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-h">{obj.name}</div>
-                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-tags">
+                                    <div className="w-100 float-left clearfix c-e-journey-box-inner-tags mt-3">
                                         {obj.tags && obj.tags.length > 0 ? (
                                             <Fragment>
                                                 {obj.tags.map((tagObj) => (

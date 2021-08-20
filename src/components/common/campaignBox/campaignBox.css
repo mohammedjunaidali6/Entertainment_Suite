@@ -118,7 +118,7 @@
     background-color: var(--campaignLive);
 }
 .c-b-ribbon-inner {
-    width: 12px;
+    width: 14px;
     padding: 3px 0;
     position: absolute;
     right: 7px;
@@ -143,9 +143,10 @@
     border-bottom: 7px solid transparent;
 }
 .c-b-ribbon-txt {
-    color: #FFFFFF;
+    color: #000000;
     font-family: "Nunito Sans";
-    font-size: 7px;
+    font-size: 10px;
+    font-weight: bold;
     letter-spacing: 0;
-    line-height: 6px;
+    line-height: 12px;
 }

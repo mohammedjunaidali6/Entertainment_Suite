@@ -33,10 +33,10 @@ export default function AlertDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => props.handleClose(false)} color="primary">
+                    <Button onClick={() => props.handleClose(false)} color="primary" style={{borderColor:'#3390FF',border:'1px'}}>
                         No,Cancel
                     </Button>
-                    <Button onClick={() => props.handleClose(true)} color="primary" autoFocus>
+                    <Button onClick={() => props.handleClose(true)} style={{backgroundColor:'#3390FF',color:'#FFFFFF'}} autoFocus>
                         Yes, Continue
                     </Button>
                 </DialogActions>

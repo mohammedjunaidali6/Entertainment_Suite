@@ -100,15 +100,17 @@ export default function LogIn(props) {
                         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
                         axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
-                        debugger;
                         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${logIn.email}`)
                             .then(userData => {
-                                debugger;
                                 setSignInProcessing(false);
                                 if (userData) {
+                                    debugger;
+                                    console.log('***',userData);
                                     props.loginActionHandler.dispatchUserData(userData);
                                     if (!tenantKey) {
                                         axiosInstance.defaults.headers.common['x-tenant-key'] = userData.TenantKey;
+                                        axiosInstance.defaults.headers.common['x-uid'] = userData.UserID;
+                                        axiosInstance.defaults.headers.common['x-uname'] = userData.FirstName+' '+userData.LastName;
                                         Auth.currentAuthenticatedUser()
                                             .then(user => {
                                                 Auth.updateUserAttributes(user, {

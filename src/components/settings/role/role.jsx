@@ -5,7 +5,6 @@ import SearchBar from '../../common/searchBar/searchBar';
 import './role.css';
 import _ from 'lodash';
 import ActionMenu from '../../common/reactTable/menu';
-import MessageBox from '../../common/MessageBox/MessageBox';
 import Loader from '../../common/Spinner/spinner';
 import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
 import {
@@ -14,10 +13,11 @@ import {
     GET_GROUPS, GROUP_BY_GROUPNAME,
     PERMISSION_ALL, PERMISSION_BY_GROUP,
 } from '../../../api/apiConstants';
+import createNotification from '../../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
 
 export default function Role(props) {
     var history = useHistory();
-    const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [visible, setVisible] = useState(false);
     const [updateRole, setUpdateRole] = useState();
     const [createClick, setCreateClick] = useState(false);
@@ -46,10 +46,6 @@ export default function Role(props) {
             cell: row => <ActionMenu onAction={(e) => onActionClick(e, row)} />
         }
     ]
-    const handleMessageBox = (messageType, textToDisplay) => {
-        setMessageBox({ display: true, type: messageType, text: textToDisplay });
-        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 10000)
-    }
     function clickHandler() {
         setPermissions(permissions.map(p => {
             p.isAssigned = true
@@ -88,7 +84,7 @@ export default function Role(props) {
                         });
                         setPermissions(permissionsArr);
                     } else {
-                        handleMessageBox('error', 'Group Permission fetch is failed');
+                        createNotification('error', 'Group Permission fetch is failed');
                     }
                     setVisible(false);
                 });
@@ -102,10 +98,10 @@ export default function Role(props) {
         getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_BY_GROUP}${rowData.groupID}`, history)
             .then(data => {
                 if (data) {
-                    handleMessageBox('success', 'Group Permission fetched succesfully');
+                    createNotification('success', 'Group Permission fetched succesfully');
                     setGroupPermissions(data);
                 } else {
-                    handleMessageBox('error', 'Group Permission fetch is failed');
+                    createNotification('error', 'Group Permission fetch is failed');
                     setGroupPermissions();
                 }
                 setVisible(false);
@@ -113,7 +109,7 @@ export default function Role(props) {
     }
     const onSaveRole = () => {
         if (!roleName) {
-            handleMessageBox('error', 'Role name is required');
+            createNotification('error', 'Role name is required');
         } else {
             let postObj = {};
             postObj.Name = roleName;
@@ -188,14 +184,14 @@ export default function Role(props) {
                         rolesArr.splice(_.findIndex(rolesArr, r => r.groupID == roleObj.groupID), 1, roleObj);
                         rolesArr = rolesArr.sort((a, b) => a.role < b.role ? -1 : 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
-                        handleMessageBox('success', 'User Group is Updated succesfully');
+                        createNotification('success', 'User Group is Updated succesfully');
                     } else {
-                        handleMessageBox('error', 'User Group Update is failed');
+                        createNotification('error', 'User Group Update is failed');
                     }
                 })
         } catch (error) {
             console.error(error);
-            handleMessageBox('error', error.message);
+            createNotification('error', error.message);
         }
         setVisible(false);
     }
@@ -238,14 +234,14 @@ export default function Role(props) {
                         roleObj.permissions = postObj.Permissions.length + ' Permissions';
                         rolesArr.push(roleObj);
                         props.notificationActionHandler.setRolesWithPermissionCount(rolesArr)
-                        handleMessageBox('success', 'Role added succesfully');
+                        createNotification('success', 'Role added succesfully');
                     } else {
-                        handleMessageBox('error', 'Adding Role is failed');
+                        createNotification('error', 'Adding Role is failed');
                     }
                 })
         } catch (error) {
             console.error(error)
-            handleMessageBox('error', error.message);
+            createNotification('error', error.message);
         }
         setVisible(false);
     }
@@ -258,14 +254,14 @@ export default function Role(props) {
                         let tempRoles = [...props.roleData];
                         tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)
-                        handleMessageBox('success', 'Group is deleted succesfully');
+                        createNotification('success', 'Group is deleted succesfully');
                     } else {
-                        handleMessageBox('error', 'Deleting Group is failed');
+                        createNotification('error', 'Deleting Group is failed');
                     }
                 })
         } catch (error) {
             console.error(error)
-            handleMessageBox('error', error.message);
+            createNotification('error', error.message);
         }
         setVisible(false);
     }
@@ -282,7 +278,7 @@ export default function Role(props) {
                 <Loader />
                 :
                 <div id="role-container">
-                    <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
+                    <NotificationContainer/>
                     {!createClick ?
                         (<Fragment>
                             <div style={{ padding: '35px 45px ' }}>

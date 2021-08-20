@@ -21,6 +21,8 @@ import {
     USER_BY_USERNAME,
     GROUP_ALL
 } from '../../../api/apiConstants';
+import createNotification from '../../common/reactNotification';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 
 export default function Team(props) {
@@ -32,7 +34,6 @@ export default function Team(props) {
         REACT_APP_POOL_ID
     } = process.env;
     const [visible, setVisible] = useState(false);
-    const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [createClick, setCreateClick] = useState(false);
     const [updateUser, setUpdateUser] = useState();
     const [email, setEmail] = useState();
@@ -57,9 +58,9 @@ export default function Team(props) {
             getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_USER}${rowData.user_id}`, history)
                 .then(data => {
                     if (data) {
-                        handleMessageBox('success', 'User is deleted succesfully');
+                        createNotification('success', 'User is deleted succesfully');
                     } else {
-                        handleMessageBox('error', 'Deleting user is failed');
+                        createNotification('error', 'Deleting user is failed');
                     }
                     setVisible(false);
                 })
@@ -104,10 +105,6 @@ export default function Team(props) {
         setUpdateUser();
         setEmail();
         setPhoneNumber();
-    }
-    const handleMessageBox = (messageType, textToDisplay) => {
-        setMessageBox({ display: true, type: messageType, text: textToDisplay });
-        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 5000)
     }
 
     const fetchRolesData = () => {
@@ -219,18 +216,18 @@ export default function Team(props) {
     }
     const onSaveClick = () => {
         if (!validator.isEmail(email)) {
-            handleMessageBox('error', 'Please enter a valid email.');
+            createNotification('error', 'Please enter a valid email.');
             return;
         }
         if (!group) {
-            handleMessageBox('error', 'Please select a Role');
+            createNotification('error', 'Please select a Role');
             return;
         }
         //Check email existane in User table
         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
             .then(res => {
                 if (res) {
-                    handleMessageBox('error', 'Given Email is already exists.');
+                    createNotification('error', 'Given Email is already exists.');
                     return;
                 }
                 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -273,9 +270,9 @@ export default function Team(props) {
                 cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
                     if (err) {
                         console.error('*adminCreateUser ', err);
-                        handleMessageBox('error', 'Invitation failed');
+                        createNotification('error', 'Invitation failed');
                     } else {
-                        //handleMessageBox('success', 'Invitation sent succesfully');
+                        //createNotification('success', 'Invitation sent succesfully');
                         let postObj = {};
                         postObj.email = email;
                         postObj.mobile_number = phoneNumber;
@@ -292,9 +289,9 @@ export default function Team(props) {
                                     setGroup();
                                     setPhoneNumber();
                                     setEmail();
-                                    handleMessageBox('success', 'User Data Saved succesfully');
+                                    createNotification('success', 'User Data Saved succesfully');
                                 } else {
-                                    handleMessageBox('error', 'User Data Saving failed;');
+                                    createNotification('error', 'User Data Saving failed;');
                                 }
                                 setVisible(false);
                             })
@@ -314,11 +311,11 @@ export default function Team(props) {
                 if (data) {
                     setCreateClick(false);
                     setUpdateUser(false);
-                    handleMessageBox('success', 'User Group is Updated succesfully');
+                    createNotification('success', 'User Group is Updated succesfully');
                 } else {
                     //User Updated failed
                     setCreateClick(false);
-                    handleMessageBox('error', 'User Group Update is failed');
+                    createNotification('error', 'User Group Update is failed');
                 }
                 setVisible(false);
             })
@@ -336,7 +333,7 @@ export default function Team(props) {
             {visible ?
                 <Loader />
                 : <div id="team-container">
-                    <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
+                    <NotificationContainer/>
                     {!createClick ? (
                         <div style={{ padding: '3%' }}>
                             <div className='team-management-header'>

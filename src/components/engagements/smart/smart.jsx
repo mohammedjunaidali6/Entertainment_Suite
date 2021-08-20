@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
 import { containerHeightCalcFn } from "../../common/global";
 import CampaignBox from "../../common/campaignBox/campaignBox";
 import SearchBar from "../../common/searchBar/searchBar";
@@ -18,7 +17,6 @@ import _ from 'lodash';
 import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
 import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS } from '../../../api/apiConstants';
-import MessageBox from '../../common/MessageBox/MessageBox';
 import { useHistory } from 'react-router-dom';
 import createNotification from '../../common/reactNotification';
 import { NotificationContainer } from 'react-notifications';
@@ -36,7 +34,6 @@ export default function EngagementsSmart(props) {
     const [defineSegment, setDefineSegment] = useState(null);
     const [defineJourney, setDefineJourney] = useState(null);
     const [defineRewards, setDefineRewards] = useState(null);
-    const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
 
     const CampaignTableColumns = [
         {
@@ -81,10 +78,6 @@ export default function EngagementsSmart(props) {
         }
     ]
 
-    const handleMessageBox = (messageType, textToDisplay) => {
-        setMessageBox({ display: true, type: messageType, text: textToDisplay });
-        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 3000)
-    }
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
     }
@@ -159,7 +152,7 @@ export default function EngagementsSmart(props) {
             }
         } else if (step === 'review') {
             handleAlertDialog({
-                open: true, title: 'Save Engagement', text: 'Are you sure? Do you want to save it?', handleClose: (bool) => {
+                open: true, title: 'Save Engagement', text: 'The Engagement will go Live, Are you sure?', handleClose: (bool) => {
                     handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
                     if (bool) {
                         saveEngagement();
@@ -185,7 +178,7 @@ export default function EngagementsSmart(props) {
             engagementObj.StatusID = 1;
             engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.customer_segment_id;
             engagementObj.JourneyID = journeyData.id;
-
+            engagementObj.StartDate=new Date();
             engagementObj.PurchaseRule = {};
             if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
                 engagementObj.PurchaseRule.Value = parseInt(targetAudienceData.purchaseValue);
@@ -217,7 +210,7 @@ export default function EngagementsSmart(props) {
                     if (engagementDbObj) {
                         setOpenEngagementWizard(false);
                         createNotification('success', 'Engagement Saved Succesfully');
-                        fetchEngagements();
+                        fetchEngagementsByStatus(1);//1 is for Active Engagements
                         createEngagementDataClear();
                     } else {
                         createNotification('error', 'Engagement Saving failed');
@@ -293,16 +286,21 @@ export default function EngagementsSmart(props) {
     }
 
     const onPauseClick = (engmt, status) => {
-        handleLoader(true);
-        getAuthAndData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`, history)
-            .then((response) => {
-                if (response) {
-                    tabClick(active);
-                    console.log(`*** ${engmt.EngagementID} Engagement is Paused succesfully`)
-                } else {
+        handleAlertDialog({
+            open: true, title: 'Pause Engagement', text: 'Do you want to Pause Engagement?', handleClose: (bool) => {
+                handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                if (bool) {
+                    getAuthAndData(`${ENGAGEMENT_UPDATE_STATUS}${engmt.EngagementID}&engagement_status_id=${status}`, history)
+                    .then((response) => {
+                        if (response) {
+                            tabClick(active);
+                        } else {
+                        }
+                        handleLoader(false);
+                    })
                 }
-                handleLoader(false);
-            })
+            }
+        });
     }
     const onEditClick = (engmt) => {
         handleLoader(true);
@@ -410,7 +408,6 @@ export default function EngagementsSmart(props) {
     return (
         <div id="engagements-smart-container">
             <NotificationContainer/>
-            <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
             {!openEngagementWizard ? (
                 <Fragment>
                     <div className="mb-4">

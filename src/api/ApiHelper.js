@@ -1,9 +1,22 @@
 import { axiosInstance } from './axios-config';
 import { Auth } from 'aws-amplify';
+import { DUMM_TENANT_KEY } from './apiConstants';
+
+
+const getCurrentSession=async () => {
+    var session = await Auth.currentSession();
+    
+    var email=session?.idToken?.payload?.email;
+    var tenantKey=session?.idToken?.payload['custom:tenant_key'];
+
+    axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
+    axiosInstance.defaults.headers.common['x-uemail'] = email;
+}
+
 
 export const getAuthAndData = async (resource, history) => {
     try {
-        await Auth.currentSession();
+        await getCurrentSession();
         try {
             const response = await axiosInstance.get(resource);
             return handleResponse(response);
@@ -14,18 +27,12 @@ export const getAuthAndData = async (resource, history) => {
         history.push('/login');
     }
 };
-export const postAuthAndData = async (resource, postData, history, headers) => {
+export const postAuthAndData = async (resource, postData, history) => {
     try {
-        await Auth.currentSession();
+        await getCurrentSession();
         try {
-            if (headers) {
-                const response = await axiosInstance.post(resource, postData, { headers: headers });
-                return handleResponse(response);
-            } else {
-                const response = await axiosInstance.post(resource, postData);
-                return handleResponse(response);
-            }
-
+            const response = await axiosInstance.post(resource, postData);
+            return handleResponse(response);
         } catch (error) {
             return handleError(error);
         }

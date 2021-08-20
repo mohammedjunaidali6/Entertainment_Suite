@@ -13,11 +13,12 @@ import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api
 import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import { useHistory } from 'react-router-dom';
+import createNotification from '../../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
 
 
 export default function EngagementsJourney(props) {
     var history = useHistory();
-    const [messageBox, setMessageBox] = useState({ display: false, type: '', text: '' });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [createFlag, setCreateFlag] = useState(false);
     const [updateFlag, setUpdateFlag] = useState(false);
@@ -30,14 +31,17 @@ export default function EngagementsJourney(props) {
     const journeyColumns = [
         {
             name: "Journey ID",
-            selector: "JourneyID"
+            selector: "JourneyID",
+            width:'10%'
         },
         {
             name: "Journey Name",
-            selector: "JourneyName"
+            selector: "JourneyName",
+            width:'40%'
         },
         {
             name: "Tasks Assigned",
+            width:'20%',
             cell: rowObj =>
                 <div style={{ paddingRight: '5px' }}>
                     <div>{rowObj.JourneyTasks.length && rowObj.JourneyTasks[0].JourneyTaskName}</div>
@@ -50,15 +54,17 @@ export default function EngagementsJourney(props) {
         },
         {
             name: "Created by",
-            selector: "CreatedBy"
+            selector: "CreatedBy",
+            width:'10%'
         },
-        // {
-        //     name: "Status",
-        //     cell: rowObj => rowObj.IsActive ? 'Active' : false
-
-        // },
+        {
+            name: "Created On",
+            selector: "CreatedOn",
+            width:'10%'
+        },
         {
             name: " ",
+            width:'10%',
             cell: rowObj => <ActionMenu onAction={e => onActionClick(e, rowObj)} />
         }
 
@@ -67,10 +73,7 @@ export default function EngagementsJourney(props) {
     const createClick = () => {
         setCreateFlag(true)
     }
-    const handleMessageBox = (messageType, textToDisplay) => {
-        setMessageBox({ display: true, type: messageType, text: textToDisplay });
-        setTimeout(() => setMessageBox({ display: false, type: '', text: '' }), 10000)
-    }
+
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
     }
@@ -93,6 +96,9 @@ export default function EngagementsJourney(props) {
         }
     }
     const onTaskValueChange = (e, taskObj) => {
+        if(e.target.value.length>2){
+            return;
+        }
         taskObj.value = e.target.value;
         let selectedTasks = [...droppedItems];
         let taskIndex = _.findIndex(selectedTasks, t => t.JourneyTaskID == taskObj.JourneyTaskID);
@@ -101,29 +107,42 @@ export default function EngagementsJourney(props) {
     }
 
     const onJourneySave = () => {
-        handleLoader(true);
-        let journeyData = {
-            JourneyName: journey.Name,
-            JourneyTasks: droppedItems.map((task, ndx) => {
-                return {
-                    JourneyTaskID: task.JourneyTaskID,
-                    Value: task.value,
-                    Order: ndx + 1
+        var invalid=false;
+        droppedItems.forEach(itm=>{
+            if(itm.NeedValue){
+                    if(!itm.value||itm.value=='0'){
+                        invalid=true;
+                        return;
+                    }
                 }
-            })
+        })
+        if(invalid){
+            createNotification('error','Please enter values for all required Journey tasks');
+        } else {
+            handleLoader(true);
+            let journeyData = {
+                JourneyName: journey.Name,
+                JourneyTasks: droppedItems.map((task, ndx) => {
+                    return {
+                        JourneyTaskID: task.JourneyTaskID,
+                        Value: task.value,
+                        Order: ndx + 1
+                    }
+                })
+            }
+            postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
+                .then(response => {
+                    if (response) {
+                        getAllJourneys();
+                        onCancel();
+                        handleLoader(false);
+                        createNotification('success', `${response.journey_name} Journey Created Succesfully`)
+                    } else {
+                        handleLoader(false);
+                        createNotification('error', `Journey Creation is failed`)
+                    }
+                });
         }
-        postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
-            .then(response => {
-                if (response) {
-                    getAllJourneys();
-                    onCancel();
-                    handleLoader(false);
-                    handleMessageBox('success', `${response.journey_name} Journey Created Succesfully`)
-                } else {
-                    handleLoader(false);
-                    handleMessageBox('error', `Journey Creation is failed`)
-                }
-            });
     }
 
     const onJourneyUpdate = () => {
@@ -145,10 +164,10 @@ export default function EngagementsJourney(props) {
                     getAllJourneys();
                     onCancel();
                     handleLoader(false);
-                    handleMessageBox('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
+                    createNotification('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
                 } else {
                     handleLoader(false);
-                    handleMessageBox('error', `Journey Updating failed`);
+                    createNotification('error', `Journey Updating failed`);
                 }
             })
     }
@@ -249,7 +268,7 @@ export default function EngagementsJourney(props) {
                 .then(response => {
                     getAllJourneys();
                     setUpdateFlag(false);
-                    handleMessageBox('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+                    createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
                 })
         } else {
 
@@ -274,12 +293,14 @@ export default function EngagementsJourney(props) {
 
     return (
         <div id="engagements-journey-container">
-            <MessageBox display={messageBox.display ? 'block' : 'none'} type={messageBox.type} text={messageBox.text} />
+            <NotificationContainer/>
             {(!createFlag && !updateFlag) ?
                 <Fragment>
                     <div className='manage-journey-block'>
-                        <div className='manage-journey'>Manage journey</div>
-                        <div className='manage-journey-text'>{`${journeysCount.usedInEngagements}/${journeysCount.Total} jouneys are part of running campaign`}</div>
+                        <div className='manage-journey mb-1'>Manage Journey</div>
+                        <div className='manage-journey-text'>
+                            {`${journeysCount.usedInEngagements}/${journeysCount.Total} Journey(s) are part of running Engagement`}
+                        </div>
                     </div>
                     <div className='btn-create-journey float-right text-center pt-2' onClick={createClick}>
                         <span className="btn-c-j-text">+ Create Journey</span>
@@ -291,7 +312,12 @@ export default function EngagementsJourney(props) {
                                 data={journeysData}
                                 pagination={true}
                                 subHeaderComponent={
-                                    <SearchBar placeHolder="Search journey" onSearch={(searchStr) => searchJourneyByName(searchStr)} fromJourney={true} searchFilter="All Jouneys" />
+                                    <SearchBar 
+                                        placeHolder="Search by Journey Name" 
+                                        onSearch={(searchStr) => searchJourneyByName(searchStr)} 
+                                        fromJourney={true} 
+                                        searchFilter="All Jouneys" 
+                                    />
                                 }
                                 subHeader={true} 
                             />
@@ -308,7 +334,7 @@ export default function EngagementsJourney(props) {
                                 className='input-field-c-j w-50 float-left clearfix'
                                 type="text"
                                 placeholder="Enter Journey Name"
-                                onChange={e => e.target.value?.length < 26 && setJourney({ ...journey, Name: e.target.value })}
+                                onChange={e => e.target.value?.length < 41 && setJourney({ ...journey, Name: e.target.value })}
                                 value={journey.Name}
                             />
                         </div>
@@ -344,6 +370,7 @@ export default function EngagementsJourney(props) {
                                                     className="w-100 float-left clearfix"
                                                     styles={{ fontSize: "12px" }}
                                                     disabled={!taskObj.NeedValue}
+                                                    maxLength={'2'}
                                                     onChange={e => onTaskValueChange(e, taskObj)}
                                                     value={taskObj.value || ''}
                                                 />

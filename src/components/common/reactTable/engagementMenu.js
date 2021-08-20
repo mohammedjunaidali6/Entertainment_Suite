@@ -14,7 +14,6 @@ export default function EngagementContextMenu(props) {
         setAnchorEl(null);
     }
 
-    console.log('****', props.status)
 
     return (
         <div>
