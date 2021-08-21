@@ -14,6 +14,8 @@ import validator from 'validator';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
 import { useEffect } from 'react';
+import createNotification from '../common/reactNotification';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 Amplify.configure(awsconfig);
 
 function Copyright() {
@@ -65,7 +67,7 @@ export default function ForgotPassword(props) {
   const onExpireCaptcha = () => {
     console.log('**', recaptchaInstance)
     recaptchaInstance.reset();
-    alert('Captcha Expired')
+    createNotification('info','Recaptcha expired')
   }
   const onSendVerificationCode = () => {
     // Send confirmation code to user's email
@@ -73,12 +75,11 @@ export default function ForgotPassword(props) {
       Auth.forgotPassword(forgotPassword.email)
         .then(data => {
           setEnableVerification(true);
-          console.log('**', data);
-          alert('Verification Code is sent to your mail');
+          createNotification('info','Verification Code is sent to your mail')
         })
         .catch(err => {
           console.log('**', err)
-          alert(err.message);
+          createNotification('error',err)
         });
     } else {
       setError({ ...error, email: 'Email is not valid. Enter a valid email' })
@@ -97,7 +98,11 @@ export default function ForgotPassword(props) {
       setError({ ...error, newPassword: 'Password should contain atleast 1 special character' });
     } else {
       setError({ ...error, newPassword: '' });
+    }
+    if(e.target.value.length<=100){
       setPassword({ ...forgotPassword, newPassword: e.target.value })
+    } else{
+      // setError({ ...error, newPassword:'Password length must be lessthan or equal to 100' });
     }
   }
   const onResetPassword = e => {
@@ -107,7 +112,7 @@ export default function ForgotPassword(props) {
       // Collect confirmation code and new password, then
       Auth.forgotPasswordSubmit(forgotPassword.email, forgotPassword.code, forgotPassword.newPassword)
         .then(data => {
-          alert('Password is changed succesfully');
+          createNotification('success','Password is changed succesfully')
           props.history.push('/login');
         })
         .catch(err => console.log(err));
@@ -126,6 +131,7 @@ export default function ForgotPassword(props) {
   return (
     <div id="login-container" >
       <img src={logo_src} className='login-logo' />
+      <NotificationContainer/>
       <div className='forgot-password-outer-container'>
         <div className='reset-password-container' containerHeightCalcFn={0}>
           <Container component="main" maxWidth="xs">
@@ -142,9 +148,14 @@ export default function ForgotPassword(props) {
                   error={error.email}
                   helperText={error.email}
                   disabled={enableVerification}
+                  value={forgotPassword.email}
                   onChange={e => {
-                    setPassword({ ...forgotPassword, email: e.target.value });
-                    setError({ ...error, email: '' });
+                    if(e.target.value.length<=100){
+                      setPassword({ ...forgotPassword, email: e.target.value });
+                      setError({ ...error, email: '' });
+                    } else{
+                      // setError({ ...error, email: 'Maximum Email length is reached' });
+                    }
                   }}
                 />
                 {!enableVerification ?
@@ -176,6 +187,7 @@ export default function ForgotPassword(props) {
                       autoComplete="current-password"
                       error={error.newPassword}
                       helperText={error.newPassword}
+                      value={forgotPassword.newPassword}
                       onChange={onChangeNewPassword}
                     />
                     <TextField
@@ -187,9 +199,14 @@ export default function ForgotPassword(props) {
                       autoComplete="current-password"
                       error={error.confirmPassword}
                       helperText={error.confirmPassword}
+                      value={forgotPassword.confirmPassword}
                       onChange={e => {
-                        setPassword({ ...forgotPassword, confirmPassword: e.target.value });
-                        setError({ ...error, confirmPassword: '' })
+                        if(e.target.value.length<=100){
+                          setPassword({ ...forgotPassword, confirmPassword: e.target.value });
+                          setError({ ...error, confirmPassword: '' })
+                        } else{
+                          // setError({ ...error, confirmPassword: 'Maximum Password length is reached' });
+                        }
                       }}
                     />
                     <Button

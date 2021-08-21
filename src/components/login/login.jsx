@@ -19,6 +19,8 @@ import { Auth } from 'aws-amplify';
 import { axiosInstance } from '../../api/axios-config';
 import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
 import { getAuthAndData } from '../../api/ApiHelper';
+import createNotification from '../common/reactNotification';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 
 function Copyright() {
@@ -57,6 +59,7 @@ export default function LogIn(props) {
     const [logIn, setLogIn] = useState({ email: '', password: '' });
     const [error, setError] = useState('')
     const [signInProcessing, setSignInProcessing] = useState(false);
+    const [resetProcessing, setResetProcessing] = useState(false);
     const [forcePasswordChange, setForcePasswordChange] = useState(false);
     const [newUserSignIn, setNewUserSignIn] = useState({
         firstName: '',
@@ -92,6 +95,7 @@ export default function LogIn(props) {
                     console.log('***', user);
                     if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
                         setCognitoUser(user);
+                        setNewUserSignIn({ ...newUserSignIn, email: logIn.email })
                         setForcePasswordChange(true);
                     } else {
                         var jwtToken = user.signInUserSession.accessToken.jwtToken;
@@ -128,7 +132,7 @@ export default function LogIn(props) {
                     }
                 })
                 .catch(err => {
-                    // alert(err.message);
+                    // createNotification('error',err.message);
                     setSignInProcessing(false);
                     setError({ ...error, password: err.message })
                 });
@@ -136,8 +140,15 @@ export default function LogIn(props) {
         e.preventDefault();
     }
     const setNewUser = e => {
-        setNewUserSignIn({ ...newUserSignIn, [e.target.name]: e.target.value })
-        setError({ ...error, [e.target.name]: '' });
+        if((e.target.name==='firstName'&&e.target.value.length<=30)||
+            (e.target.name==='lastName'&&e.target.value.length<=30)||
+            (e.target.name==='confirmPassword'&&e.target.value.length<=100)||
+            (e.target.name==='email'&&e.target.value.length<=100)){
+            setNewUserSignIn({ ...newUserSignIn, [e.target.name]: e.target.value })
+            setError({ ...error, [e.target.name]: '' });
+        } else{
+            // setError({ ...error, [e.target.name]:'Maximum length reached' });
+        }
     }
     const onChangeNewPassword = (e) => {
         if (!new RegExp("^(?=.{8,})").test(e.target.value)) {
@@ -150,9 +161,14 @@ export default function LogIn(props) {
             setError({ ...error, newPassword: 'Password should contain atleast 1 number' });
         } else if (!new RegExp("^(?=.*[!@#\$%\^&\*])").test(e.target.value)) {
             setError({ ...error, newPassword: 'Password should contain atleast 1 special character' });
-        } else {
+        }else {
             setError({ ...error, newPassword: '' });
+        }
+        if(e.target.value.length<=100){
             setNewUserSignIn({ ...newUserSignIn, newPassword: e.target.value })
+        }else{
+            // setError({ ...error, newPassword: 'Password length must be lessthan or equal to 100' });
+            // createNotification('info','Password length must be lessthan or equal to 100');
         }
     }
     const onResetPassword = e => {
@@ -161,6 +177,7 @@ export default function LogIn(props) {
         } else if (newUserSignIn.newPassword !== newUserSignIn.confirmPassword) {
             setError({ ...error, confirmPassword: 'Confirm password is not matching with New password' });
         } else {
+            setResetProcessing(true);
             Auth.completeNewPassword(
                 cognitoUser,
                 newUserSignIn.newPassword,
@@ -168,11 +185,16 @@ export default function LogIn(props) {
                     'email': newUserSignIn.email,
                 }
             ).then(user => {
-                setForcePasswordChange(false);
-                setCaptchaVerified(false);
+                createNotification('success','Password changed succesfully')
+                setTimeout(()=>{
+                    setForcePasswordChange(false);
+                    setCaptchaVerified(false);
+                    setResetProcessing(false);
+                },2000)
             }).catch(err => {
                 console.error('*', err);
                 setError({ ...error, confirmPassword: err.message });
+                setResetProcessing(false);
             });
         }
         e.preventDefault();
@@ -181,8 +203,9 @@ export default function LogIn(props) {
     return (
         <div id="login-container" >
             <img src={logo_src} className='login-logo' />
+            <NotificationContainer/>
             {
-                !forcePasswordChange ?
+                forcePasswordChange ?
                     <div className='login-outer-container'>
                         <div className='login-container' containerHeightCalcFn={0}>
                             <Container component="main" maxWidth="xs">
@@ -200,9 +223,14 @@ export default function LogIn(props) {
                                             autoFocus
                                             error={error.email}
                                             helperText={error.email}
+                                            value={logIn.email}
                                             onChange={e => {
-                                                setError({ ...error, email: '' });
-                                                setLogIn({ ...logIn, email: e.target.value });
+                                                if(e.target.value.length<=100){
+                                                    setError({ ...error, email: '' });
+                                                    setLogIn({ ...logIn, email: e.target.value });
+                                                } else{
+                                                    // setError({ ...error, password: 'Maximum Email length is reached' });
+                                                }
                                             }}
                                         />
                                         <TextField
@@ -214,9 +242,14 @@ export default function LogIn(props) {
                                             fullWidth
                                             error={error.password}
                                             helperText={error.password}
+                                            value={logIn.password}
                                             onChange={e => {
-                                                setError({ ...error, password: '' });
-                                                setLogIn({ ...logIn, password: e.target.value })
+                                                if(e.target.value.length<=100){
+                                                    setError({ ...error, password: '' });
+                                                    setLogIn({ ...logIn, password: e.target.value })
+                                                }else{
+                                                    // setError({ ...error, password: 'Maximum Password length is reached' });
+                                                }
                                             }}
                                         />
                                         <FormControlLabel
@@ -272,7 +305,10 @@ export default function LogIn(props) {
                                             label="First Name"
                                             name="firstName"
                                             autoComplete="firstName"
+                                            helperText={error.firstName}
+                                            error={error.firstName}
                                             autoFocus
+                                            value={newUserSignIn.firstName}
                                             onChange={setNewUser}
                                         />
                                         <TextField
@@ -284,6 +320,9 @@ export default function LogIn(props) {
                                             name="lastName"
                                             autoComplete="lastName"
                                             autoFocus
+                                            helperText={error.lastName}
+                                            error={error.lastName}
+                                            value={newUserSignIn.lastName}
                                             onChange={setNewUser}
                                         />
                                         <TextField
@@ -297,6 +336,8 @@ export default function LogIn(props) {
                                             autoFocus
                                             error={error.email}
                                             helperText={error.email}
+                                            disabled={newUserSignIn.email}
+                                            value={newUserSignIn.email}
                                             onChange={setNewUser}
                                         />
                                         <TextField
@@ -307,6 +348,7 @@ export default function LogIn(props) {
                                             label="New Password"
                                             error={error.newPassword}
                                             helperText={error.newPassword}
+                                            value={newUserSignIn.newPassword}
                                             onChange={onChangeNewPassword}
                                         />
                                         <TextField
@@ -318,10 +360,17 @@ export default function LogIn(props) {
                                             name='confirmPassword'
                                             error={error.confirmPassword}
                                             helperText={error.confirmPassword}
+                                            value={newUserSignIn.confirmPassword}
                                             onChange={setNewUser}
                                         />
-                                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                                            Set Password
+                                        <Button 
+                                            type="submit" 
+                                            fullWidth 
+                                            variant="contained" 
+                                            color="primary" 
+                                            className={classes.submit}
+                                            disabled={resetProcessing}
+                                        >Set Password
                                         </Button>
                                     </form>
                                 </div>

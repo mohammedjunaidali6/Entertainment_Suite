@@ -272,7 +272,7 @@ export default function Team(props) {
                         console.error('*adminCreateUser ', err);
                         createNotification('error', 'Invitation failed');
                     } else {
-                        //createNotification('success', 'Invitation sent succesfully');
+                        createNotification('success', 'Invitation sent succesfully');
                         let postObj = {};
                         postObj.email = email;
                         postObj.mobile_number = phoneNumber;
