@@ -10,7 +10,7 @@ import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
 import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
-import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
+import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, SOMETHING_WENT_WRONG, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import MessageBox from '../../common/MessageBox/MessageBox';
 import { useHistory } from 'react-router-dom';
 import createNotification from '../../common/reactNotification';
@@ -107,8 +107,12 @@ export default function EngagementsJourney(props) {
     }
 
     const onJourneySave = () => {
+        if(!journey?.name&&!droppedItems){
+            createNotification('warning','Enter Journey Details');
+            return;
+        }
         var invalid=false;
-        droppedItems.forEach(itm=>{
+        droppedItems?.forEach(itm=>{
             if(itm.NeedValue){
                     if(!itm.value||itm.value=='0'){
                         invalid=true;
@@ -131,12 +135,12 @@ export default function EngagementsJourney(props) {
                 })
             }
             postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
-                .then(response => {
-                    if (response) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         getAllJourneys();
                         onCancel();
                         handleLoader(false);
-                        createNotification('success', `${response.journey_name} Journey Created Succesfully`)
+                        createNotification('success', `${res.data.journey_name} Journey Created Succesfully`)
                     } else {
                         handleLoader(false);
                         createNotification('error', `Journey Creation is failed`)
@@ -159,12 +163,12 @@ export default function EngagementsJourney(props) {
             })
         }
         postAuthAndData(`${UPDATE_JOURNEY_DETAILS}`, journeyData, history)
-            .then(journeyDetails => {
-                if (journeyDetails) {
+            .then(res => {
+                if (handleResponseCode(res)) {
                     getAllJourneys();
                     onCancel();
                     handleLoader(false);
-                    createNotification('success', `${journeyDetails.JourneyName} Journey Updated Succesfully`);
+                    createNotification('success', `${res.data.JourneyName} Journey Updated Succesfully`);
                 } else {
                     handleLoader(false);
                     createNotification('error', `Journey Updating failed`);
@@ -181,12 +185,10 @@ export default function EngagementsJourney(props) {
     const getAllJourneys = () => {
         handleLoader(true);
         getAuthAndData(JOURNEYS, history)
-            .then(journeysData => {
-                if (journeysData) {
-                    setGroupedJourneys(journeysData.JourneysResponse);
-                    setJourneysCount({ usedInEngagements: journeysData.UsedJourneysCount, Total: journeysData.TotalJourneysCount });
-                } else {
-
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    setGroupedJourneys(res.data.JourneysResponse);
+                    setJourneysCount({ usedInEngagements: res.data.UsedJourneysCount, Total: res.data.TotalJourneysCount });
                 }
                 handleLoader(false);
             });
@@ -194,8 +196,10 @@ export default function EngagementsJourney(props) {
     const searchJourneyByName = (searchText) => {
         if (searchText) {
             getAuthAndData(`${JOURNEYS_BY_SEARCH}${searchText}`, history)
-                .then(journeys => {
-                    setGroupedJourneys(journeys);
+                .then(res => {
+                    if (handleResponseCode(res)) {
+                        setGroupedJourneys(res.data);
+                    }
                 });
         } else {
             getAllJourneys();
@@ -229,19 +233,16 @@ export default function EngagementsJourney(props) {
         })
 
         props.engagementsJourneyActionHandler.dispatchJourneysData(groupedJourneys);
-        console.log('**',groupedJourneys);
         setJourneysData(groupedJourneys);
     }
 
     const getAllJourneyTasks = () => {
         handleLoader(true);
         getAuthAndData(JOURNEY_TASKS, history)
-            .then(journeyTasks => {
-                if (journeyTasks) {
-                    setJourneyTasks(journeyTasks);
-                    props.engagementsJourneyActionHandler.dispatchJourneyTasks(journeyTasks);
-                } else {
-
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    setJourneyTasks(res.data);
+                    props.engagementsJourneyActionHandler.dispatchJourneyTasks(res.data);
                 }
                 handleLoader(false);
             });
@@ -265,13 +266,24 @@ export default function EngagementsJourney(props) {
             setDroppedItems(tasks);
         } else if (action === 'Delete') {
             getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
-                .then(response => {
-                    getAllJourneys();
-                    setUpdateFlag(false);
-                    createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+                .then(res => {
+                    if(handleResponseCode(res)){
+                        getAllJourneys();
+                        setUpdateFlag(false);
+                        createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+                    }
                 })
         } else {
 
+        }
+    }
+
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        }else{
+            return true;
         }
     }
 

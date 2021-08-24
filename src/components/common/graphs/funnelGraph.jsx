@@ -2,7 +2,6 @@ import React from 'react';
 import { ResponsiveFunnel } from '@nivo/funnel'
 
 export default function FunnelGraph({ data }) {
-  console.log('**', data);
 
   var customizedData = [{
     id: 1,

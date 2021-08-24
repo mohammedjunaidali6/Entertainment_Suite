@@ -10,9 +10,10 @@ import Resizer from "../../../common/resizer/resizer";
 import './rewardsAndBudget.css';
 import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
 import Select from 'react-select';
-import { REWARD_TYPES, REWARD_BY_FILTERS, REWARDS } from '../../../../api/apiConstants';
+import { REWARD_TYPES, REWARD_BY_FILTERS, REWARDS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import createNotification from '../../../common/reactNotification';
 
 const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
@@ -106,7 +107,7 @@ const arrayRewards = [
 export default function RewardsAndBudget(props) {
     var history = useHistory();
     const rewardsAndBudgetData = props.props.rewardsAndBudget;
-    console.log('**',props)
+    // console.log('**',props)
     const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards || arrayRewards);
     const [rewardTypes, setRewardTypes] = useState([]);
     const [rewardNames, setRewardNames] = useState([]);
@@ -120,10 +121,10 @@ export default function RewardsAndBudget(props) {
     const fetchRewards = () => {
         props.handleLoader(true);
         getAuthAndData(REWARD_BY_FILTERS, history)
-            .then(response => {
-                if (response && Array.isArray(response.data?.data)) {
+            .then(res => {
+                if (handleResponseCode(res)) {
                     let rewardArr = [];
-                    response.data.data.forEach(rew => {
+                    res.data.forEach(rew => {
                         let rewardObj = {}
                         rewardObj.id = rew.reward_master_id;
                         rewardObj.winnerPosition = rew.win_position;
@@ -143,10 +144,10 @@ export default function RewardsAndBudget(props) {
     const fetchRewardTypes = () => {
         props.handleLoader(true);
         getAuthAndData(REWARD_TYPES, history)
-            .then(rewardTypes => {
+            .then(res => {
                 var rewardTypeOptions = [];
-                if (rewardTypes?.length) {
-                    rewardTypes.forEach(rewType => {
+                if (handleResponseCode(res)) {
+                    res.data.forEach(rewType => {
                         let option = {
                             value: rewType.reward_type_id,
                             label: rewType.reward_type
@@ -168,14 +169,14 @@ export default function RewardsAndBudget(props) {
     const onRewardTypeSelect = (e, obj) => {
         props.handleLoader(true);
         getAuthAndData(`${REWARDS}${e.value}`, history)
-            .then(rewards => {
-                if (Array.isArray(rewards)) {
-                    obj.rewardName = rewards[0].reward_name;
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    obj.rewardName = res.data[0].reward_name;
                     obj.rewardType = e
-                    obj.id = rewards[0].reward_master_id;
-                    obj.tooltip.reward_code=rewards[0].reward_code;
-                    obj.tooltip.description=rewards[0].description;
-                    obj.tooltip.expiry_date=rewards[0].expiry_date;
+                    obj.id = res.data[0].reward_master_id;
+                    obj.tooltip.reward_code=res.data[0].reward_code;
+                    obj.tooltip.description=res.data[0].description;
+                    obj.tooltip.expiry_date=res.data[0].expiry_date;
                     var arr = [...rewardRowsData];
                     arr.splice(_.findIndex(arr, obj), 1, obj);
                     setSelectedRewardName({
@@ -236,17 +237,19 @@ export default function RewardsAndBudget(props) {
 
     const fetchAllRewards=()=>{
         getAuthAndData(`/engt/allRewards?reward_type_id=2`, history)
-        .then(data=>{
-            setRewardMaster(data);
-            var rewardNameOptions = [];
-            data.forEach(rew=>{
-                let obj={
-                    value:rew.reward_master_id,
-                    label:rew.reward_name
-                }
-                rewardNameOptions.push(obj);
-            });
-            setRewardNames(rewardNameOptions);
+        .then(res=>{
+            if (handleResponseCode(res)) {
+                setRewardMaster(res.data);
+                var rewardNameOptions = [];
+                res.data.forEach(rew=>{
+                    let obj={
+                        value:rew.reward_master_id,
+                        label:rew.reward_name
+                    }
+                    rewardNameOptions.push(obj);
+                });
+                setRewardNames(rewardNameOptions);
+            }
         });
     }
     useEffect(() => {
@@ -268,7 +271,15 @@ export default function RewardsAndBudget(props) {
             props.props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(rewardsAndBudget)
         }
     }, [budget, budgetDuration, rewardRowsData])
-
+    
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     return (
         <Fragment>

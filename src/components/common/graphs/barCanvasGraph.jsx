@@ -2,7 +2,6 @@ import React from 'react';
 import { ResponsiveBarCanvas } from '@nivo/bar';
 
 export default function BarCanvasGraph({ data, keys }) {
-  console.log('**', data);
 
   return (
     <div className="App" style={{ height: '280px', width: '100%' }}>

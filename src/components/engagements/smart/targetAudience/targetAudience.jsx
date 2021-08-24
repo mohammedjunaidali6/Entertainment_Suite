@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
-import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
-import { CUSTOMERS_BY_FILTERS } from '../../../../api/apiConstants';
-import TreeMap, { transformData } from 'react-canvas-treemap';
+import { getAuthAndData} from '../../../../api/ApiHelper';
+import { CUSTOMERS_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import BasicTreeMap from '../../../common/map/treemap';
 import { useHistory } from 'react-router-dom';
+import createNotification from '../../../common/reactNotification';
 
 
 const options = [
@@ -76,20 +76,18 @@ export default function TargetAudience(props) {
         try {
             props.handleLoader(true);
             getAuthAndData(CUSTOMERS_BY_FILTERS, history)
-                .then(customerSegments => {
-                    if (customerSegments && Array.isArray(customerSegments)) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         const data = {
                             "name": "Target Audience",
                             "color": "hsl(233, 70%, 50%)",
                             "children": []
                         }
-                        customerSegments.map(c => {
+                        res.data.map(c => {
                             c.percentage = (c.customer_segment_id == 6 ? 0.45 : c.customer_segment_id == 1 ? 0.25 : c.customer_segment_id == 2 ? 0.1 : c.customer_segment_id == 4 ? 0.07 : c.customer_segment_id == 5 ? 0.08 : 0.05)
                             data.children.push(c);
                         })
                         setCustomerSegments(data);
-                    } else {
-                        console.log('***', customerSegments)
                     }
                     props.handleLoader(false);
                 })
@@ -98,7 +96,14 @@ export default function TargetAudience(props) {
             console.error(error)
         }
     }
-
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     useEffect(() => {
         fetchCustomerSegments();

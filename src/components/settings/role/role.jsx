@@ -11,7 +11,7 @@ import {
     IDTY_PROD_HOST_URI,
     ADD_NEWGROUP, UPDATE_GROUP, DELETE_GROUP,
     GET_GROUPS, GROUP_BY_GROUPNAME,
-    PERMISSION_ALL, PERMISSION_BY_GROUP,
+    PERMISSION_ALL, PERMISSION_BY_GROUP, SOMETHING_WENT_WRONG,
 } from '../../../api/apiConstants';
 import createNotification from '../../common/reactNotification';
 import { NotificationContainer } from 'react-notifications';
@@ -75,11 +75,11 @@ export default function Role(props) {
             setUpdateRole(rowData)
             setRoleName(rowData.role);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_BY_GROUP}${rowData.groupID}`, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let permissionsArr = [...permissions];
                         permissionsArr = permissionsArr.map(prm => {
-                            prm.isAssigned = !!(_.find(data, p => prm.permission_id == p.permission_id))
+                            prm.isAssigned = !!(_.find(res.data, p => prm.permission_id == p.permission_id))
                             return prm;
                         });
                         setPermissions(permissionsArr);
@@ -96,10 +96,10 @@ export default function Role(props) {
     const onViewClick = (e, rowData) => {
         setVisible(true);
         getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_BY_GROUP}${rowData.groupID}`, history)
-            .then(data => {
-                if (data) {
+            .then(res => {
+                if (handleResponseCode(res)) {
                     createNotification('success', 'Group Permission fetched succesfully');
-                    setGroupPermissions(data);
+                    setGroupPermissions(res.data);
                 } else {
                     createNotification('error', 'Group Permission fetch is failed');
                     setGroupPermissions();
@@ -130,10 +130,10 @@ export default function Role(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${GET_GROUPS}`, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let roleArr = [];
-                        data.forEach(r => {
+                        res.data.forEach(r => {
                             let roleObj = {};
                             roleObj.groupID = r.GroupID;
                             roleObj.role = r.GroupName;
@@ -142,8 +142,6 @@ export default function Role(props) {
                         })
                         roleArr = roleArr.sort((a, b) => a.role < b.role ? -1 : 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(roleArr);
-                    } else {
-
                     }
                 })
         } catch (error) {
@@ -155,12 +153,10 @@ export default function Role(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${PERMISSION_ALL}`, history)
-                .then(data => {
-                    if (data) {
-                        props.notificationActionHandler.setPermissions(data);
-                        setPermissions(data)
-                    } else {
-
+                .then(res => {
+                    if (handleResponseCode(res)) {
+                        props.notificationActionHandler.setPermissions(res.data);
+                        setPermissions(res.data)
                     }
                 })
         } catch (error) {
@@ -172,8 +168,8 @@ export default function Role(props) {
         try {
             setVisible(true);
             postAuthAndData(`${IDTY_PROD_HOST_URI}${UPDATE_GROUP}`, postObj, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         setCreateClick(false);
                         setUpdateRole();
                         let roleObj = {};
@@ -199,10 +195,10 @@ export default function Role(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_BY_GROUPNAME}${rolename}`, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let roleArr = [];
-                        data.forEach(r => {
+                        res.data.forEach(r => {
                             let roleObj = {};
                             roleObj.groupID = r.GroupID;
                             roleObj.role = r.GroupName;
@@ -224,12 +220,12 @@ export default function Role(props) {
         try {
             setVisible(true);
             postAuthAndData(`${IDTY_PROD_HOST_URI}${ADD_NEWGROUP}`, postObj, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         setCreateClick(false);
                         let rolesArr = props.roleData;
                         let roleObj = {};
-                        roleObj.groupID = data.group_id;
+                        roleObj.groupID = res.data.group_id;
                         roleObj.role = postObj.Name;
                         roleObj.permissions = postObj.Permissions.length + ' Permissions';
                         rolesArr.push(roleObj);
@@ -249,8 +245,8 @@ export default function Role(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_GROUP}${id}`, history)
-                .then(response => {
-                    if (response) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let tempRoles = [...props.roleData];
                         tempRoles.splice(_.findIndex(tempRoles, r => r.groupID == id), 1);
                         props.notificationActionHandler.setRolesWithPermissionCount(tempRoles)
@@ -266,6 +262,14 @@ export default function Role(props) {
         setVisible(false);
     }
 
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     useEffect(() => {
         fetchRolesWithPermissionsCount();

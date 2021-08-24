@@ -5,7 +5,7 @@ import { lineChartSingleBlueData } from "../../../constants/globalMockdata";
 import h_dots_src from "../../../assets/img/dots-icon_horizontal.svg";
 
 export default function SalesOverviewBox(props) {
-    console.log('****',props);
+    // console.log('****',props);
 
     return (
         <Fragment>

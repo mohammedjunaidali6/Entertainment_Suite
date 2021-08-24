@@ -17,8 +17,8 @@ import Container from '@material-ui/core/Container';
 import validator from 'validator';
 import { Auth } from 'aws-amplify';
 import { axiosInstance } from '../../api/axios-config';
-import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
-import { getAuthAndData } from '../../api/ApiHelper';
+import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, SOMETHING_WENT_WRONG, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
+import { getAuthAndData, postAuthAndData, postLoginAPIData } from '../../api/ApiHelper';
 import createNotification from '../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
@@ -92,7 +92,7 @@ export default function LogIn(props) {
             setSignInProcessing(true);
             Auth.signIn({ username: logIn.email, password: logIn.password })
                 .then(user => {
-                    console.log('***', user);
+                    // console.log('***', user);
                     if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
                         setCognitoUser(user);
                         setNewUserSignIn({ ...newUserSignIn, email: logIn.email })
@@ -105,20 +105,19 @@ export default function LogIn(props) {
                         axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
                         localStorage.setItem(EMAIL, logIn.email);
                         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${logIn.email}`)
-                            .then(userData => {
+                            .then(res => {
                                 setSignInProcessing(false);
-                                if (userData) {
-                                    debugger;
-                                    console.log('***',userData);
-                                    props.loginActionHandler.dispatchUserData(userData);
+                                if (handleResponseCode(res)) {
+                                    // console.log('***',userData);
+                                    props.loginActionHandler.dispatchUserData(res.data);
                                     if (!tenantKey) {
-                                        axiosInstance.defaults.headers.common['x-tenant-key'] = userData.TenantKey;
-                                        axiosInstance.defaults.headers.common['x-uid'] = userData.UserID;
-                                        axiosInstance.defaults.headers.common['x-uname'] = userData.FirstName+' '+userData.LastName;
+                                        axiosInstance.defaults.headers.common['x-tenant-key'] = res.data.TenantKey;
+                                        axiosInstance.defaults.headers.common['x-uid'] = res.data.UserID;
+                                        axiosInstance.defaults.headers.common['x-uname'] = res.data.FirstName+' '+res.data.LastName;
                                         Auth.currentAuthenticatedUser()
                                             .then(user => {
                                                 Auth.updateUserAttributes(user, {
-                                                    'custom:tenant_key': userData.TenantKey,
+                                                    'custom:tenant_key': res.data.TenantKey,
                                                 }).catch(err => console.error(err));
                                             }).catch(err => {
                                                 console.error(err);
@@ -178,26 +177,52 @@ export default function LogIn(props) {
             setError({ ...error, confirmPassword: 'Confirm password is not matching with New password' });
         } else {
             setResetProcessing(true);
-            Auth.completeNewPassword(
-                cognitoUser,
-                newUserSignIn.newPassword,
-                {
-                    'email': newUserSignIn.email,
-                }
-            ).then(user => {
-                createNotification('success','Password changed succesfully')
-                setTimeout(()=>{
-                    setForcePasswordChange(false);
-                    setCaptchaVerified(false);
-                    setResetProcessing(false);
-                },2000)
-            }).catch(err => {
-                console.error('*', err);
-                setError({ ...error, confirmPassword: err.message });
-                setResetProcessing(false);
-            });
+            // var postData={
+            //     FirstName:newUserSignIn.firstName,
+            //     MiddleName:'',
+            //     LastName:newUserSignIn.lastName,
+            //     Email:newUserSignIn.email,
+            //     MobileNumber:'',
+            //     Status:'PASSWORD_UPDATED'
+            // }
+    
+            // postLoginAPIData(`${IDTY_PROD_HOST_URI}/idty/saveuser`,postData,props.history)
+            // .then(res=>{
+            //     // console.log('**', 'User Details are updated');
+            // });
+            updatePasswordInCognito();
+
         }
         e.preventDefault();
+    }
+
+    const updatePasswordInCognito=()=>{
+        Auth.completeNewPassword(
+            cognitoUser,
+            newUserSignIn.newPassword,
+            {
+                'email': newUserSignIn.email,
+            }
+        ).then(user => {
+            createNotification('success','Password changed succesfully')
+            
+            setForcePasswordChange(false);
+            setCaptchaVerified(false);
+            setResetProcessing(false);
+        }).catch(err => {
+            // console.error('*', err);
+            setError({ ...error, confirmPassword: 'Unable to update password. Please try again' });
+            setResetProcessing(false);
+        });
+    }
+
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        }else{
+            return true;
+        }
     }
 
     return (
@@ -205,7 +230,7 @@ export default function LogIn(props) {
             <img src={logo_src} className='login-logo' />
             <NotificationContainer/>
             {
-                forcePasswordChange ?
+                !forcePasswordChange ?
                     <div className='login-outer-container'>
                         <div className='login-container' containerHeightCalcFn={0}>
                             <Container component="main" maxWidth="xs">
@@ -286,7 +311,6 @@ export default function LogIn(props) {
                                 />
                                 <Box mt={5}><Copyright /></Box>
                             </Container>
-
                         </div>
                     </div>
                     :
@@ -297,7 +321,7 @@ export default function LogIn(props) {
                                 <div className={classes.paper}>
                                     <Typography component="h1" variant="h5">Set Password on First Login </Typography>
                                     <form className={classes.form} validator onSubmit={onResetPassword}>
-                                        <TextField
+                                        {/* <TextField
                                             margin="normal"
                                             required
                                             fullWidth
@@ -324,7 +348,7 @@ export default function LogIn(props) {
                                             error={error.lastName}
                                             value={newUserSignIn.lastName}
                                             onChange={setNewUser}
-                                        />
+                                        /> */}
                                         <TextField
                                             margin="normal"
                                             required

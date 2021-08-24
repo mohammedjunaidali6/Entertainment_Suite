@@ -10,7 +10,6 @@ import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api
 import validator from 'validator';
 import AWS from 'aws-sdk';
 import { useHistory } from 'react-router-dom';
-import store from '../../../store/store';
 import {
     IDTY_PROD_HOST_URI,
     INVITE_USER,
@@ -19,13 +18,16 @@ import {
     USER_BY_FILTERS,
     USER_BY_MAIL,
     USER_BY_USERNAME,
-    GROUP_ALL
+    GROUP_ALL,
+    SOMETHING_WENT_WRONG
 } from '../../../api/apiConstants';
 import createNotification from '../../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import { getUserData } from '../../common/storeFunctions';
 
 
 export default function Team(props) {
+    // console.log('**',props);
     var history = useHistory();
     const {
         REACT_APP_AWS_REGION,
@@ -36,6 +38,7 @@ export default function Team(props) {
     const [visible, setVisible] = useState(false);
     const [createClick, setCreateClick] = useState(false);
     const [updateUser, setUpdateUser] = useState();
+    const [userData, setUserData] = useState();
     const [email, setEmail] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [group, setGroup] = useState();
@@ -45,8 +48,7 @@ export default function Team(props) {
     var bigChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var specialChars = '@#$&!';
 
-    var userData = store.getState().LoginReducer.userData;
-
+    
     const onActionClick = (e, rowData) => {
         if (e.target.outerText === 'Edit') {
             setCreateClick(true);
@@ -56,8 +58,8 @@ export default function Team(props) {
         } else if (e.target.outerText === 'Delete') {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_USER}${rowData.user_id}`, history)
-                .then(data => {
-                    if (data) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         createNotification('success', 'User is deleted succesfully');
                     } else {
                         createNotification('error', 'Deleting user is failed');
@@ -111,12 +113,10 @@ export default function Team(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`, history)
-                .then(response => {
-                    if (response) {
-                        let rolesArr = response.sort((a, b) => a.name < b.name ? -1 : 1);
+                .then(res => {
+                    if (handleResponseCode(res)) {
+                        let rolesArr = res.data.sort((a, b) => a.name < b.name ? -1 : 1);
                         props.teamActionHandler.get_Roles(rolesArr);
-                    } else {
-
                     }
                 })
         } catch (error) {
@@ -128,10 +128,10 @@ export default function Team(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`, history)
-                .then(response => {
-                    if (response) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let usersArr = [];
-                        Array.isArray(response) && response?.forEach(obj => {
+                        Array.isArray(res.data) && res.data?.forEach(obj => {
                             let userObj = {};
                             userObj.user_id = obj.user_id;
                             userObj.userName = obj.user_name;
@@ -147,9 +147,6 @@ export default function Team(props) {
                         });
                         usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
                         props.teamActionHandler.get_Users(usersArr);
-
-                    } else {
-
                     }
                 })
         } catch (error) {
@@ -161,10 +158,10 @@ export default function Team(props) {
         try {
             setVisible(true);
             getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_USERNAME}${username}`, history)
-                .then(response => {
-                    if (response) {
+                .then(res => {
+                    if (handleResponseCode(res)) {
                         let usersArr = [];
-                        Array.isArray(response) && response?.forEach(obj => {
+                        Array.isArray(res.data) && res.data?.forEach(obj => {
                             let userObj = {};
                             userObj.user_id = obj.user_id;
                             userObj.userName = obj.user_name;
@@ -192,6 +189,12 @@ export default function Team(props) {
     useEffect(() => {
         fetchRolesData();
         fetchUsersData();
+
+        getUserData(data=>{
+            console.log('***',data);
+            setUserData(data);
+            props.loginActionHandler.dispatchUserData(data);
+        });
     }, [])
 
     const onEmailChange = e => {
@@ -226,89 +229,97 @@ export default function Team(props) {
         //Check email existane in User table
         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
             .then(res => {
-                if (res) {
-                    createNotification('error', 'Given Email is already exists.');
-                    return;
-                }
-                var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-                AWS.config.update({
-                    region: REACT_APP_AWS_REGION,
-                    accessKeyId: REACT_APP_IAM_ACCESS_KEY,
-                    secretAccessKey: REACT_APP_IAM_SECRET
-                })
-                var params = {
-                    UserPoolId: REACT_APP_POOL_ID,
-                    Username: email,
-                    DesiredDeliveryMediums: ['EMAIL'],
-                    ForceAliasCreation: true || false,
-                    TemporaryPassword: email.substring(0, 4) + randomString(),
-                    UserAttributes: [
-                        {
-                            Name: 'email',
-                            Value: email,
-                        },
-                        {
-                            Name: 'custom:tenant_key',
-                            Value: userData.TenantKey
-                        },
-                        {
-                            Name: 'email_verified',
-                            Value: 'true'
-                        }
-                    ],
-                    ValidationData: [
-                        {
-                            Name: 'email',
-                            Value: email,
-                        },
-                        {
-                            Name: 'custom:tenant_key',
-                            Value: userData.TenantKey
-                        }
-                    ]
-                };
-                cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
-                    if (err) {
-                        console.error('*adminCreateUser ', err);
-                        createNotification('error', 'Invitation failed');
-                    } else {
-                        createNotification('success', 'Invitation sent succesfully');
-                        let postObj = {};
-                        postObj.email = email;
-                        postObj.mobile_number = phoneNumber;
-                        postObj.user_groups = [];
-                        postObj.user_groups.push(group);
-                        postObj.status = data.User.UserStatus;
-                        postObj.message = message;
-                        debugger;
-                        setVisible(true);
-                        postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
-                            .then(data => {
-                                if (data) {
-                                    setCreateClick(false);
-                                    setGroup();
-                                    setPhoneNumber();
-                                    setEmail();
-                                    createNotification('success', 'User Data Saved succesfully');
-                                } else {
-                                    createNotification('error', 'User Data Saving failed;');
-                                }
-                                setVisible(false);
-                            })
+                var responseCode=res.data.code;
+                if (handleResponseCode(res)) {
+                    if(responseCode===2){
+                        createAndSaveUser();
+                    }else{
+                        createNotification('info', `${res.email} Email is already exists.`);
                     }
-                    setCreateClick(false);
-                });
+                } else {
+                    createNotification('error', 'Error in Creating User.');
+                }
             })
-
     }
+
+    const createAndSaveUser=()=>{
+        var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+        AWS.config.region=REACT_APP_AWS_REGION;
+        AWS.config.update({
+            // region: REACT_APP_AWS_REGION,
+            accessKeyId: REACT_APP_IAM_ACCESS_KEY,
+            secretAccessKey: REACT_APP_IAM_SECRET
+        })
+        var params = {
+            UserPoolId: REACT_APP_POOL_ID,
+            Username: email,
+            DesiredDeliveryMediums: ['EMAIL'],
+            ForceAliasCreation: true || false,
+            TemporaryPassword: email.substring(0, 4) + randomString(),
+            UserAttributes: [
+                {
+                    Name: 'email',
+                    Value: email,
+                },
+                {
+                    Name: 'custom:tenant_key',
+                    Value: userData.TenantKey
+                },
+                {
+                    Name: 'email_verified',
+                    Value: 'true'
+                }
+            ],
+            ValidationData: [
+                {
+                    Name: 'email',
+                    Value: email,
+                },
+                {
+                    Name: 'custom:tenant_key',
+                    Value: userData.TenantKey
+                }
+            ]
+        };
+        cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
+            if (err) {
+                createNotification('error', 'Invitation failed');
+            } else {
+                createNotification('success', 'Invitation sent succesfully');
+                let postObj = {};
+                postObj.email = email;
+                postObj.mobile_number = phoneNumber;
+                postObj.user_groups = [];
+                postObj.user_groups.push(group);
+                postObj.status = data.User.UserStatus;
+                postObj.message = message;
+                setVisible(true);
+                postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
+                    .then(res => {
+                        if (handleResponseCode(res)) {
+                            setCreateClick(false);
+                            setGroup();
+                            setPhoneNumber();
+                            setEmail();
+                            createNotification('success', 'User Data Saved succesfully');
+                        } else {
+                            createNotification('error', 'User Data Saving failed;');
+                        }
+                        setVisible(false);
+                    })
+                    setCreateClick(false);
+            }
+        });
+    }
+
     const onUpdateClick = () => {
         var postObj = { ...updateUser };
         postObj.groups = [];
         postObj.groups.push(group);
         setVisible(true);
         postAuthAndData(`${IDTY_PROD_HOST_URI}${UPDATE_USER}`, postObj, history)
-            .then(data => {
-                if (data) {
+            .then(res => {
+                if (handleResponseCode(res)) {
                     setCreateClick(false);
                     setUpdateUser(false);
                     createNotification('success', 'User Group is Updated succesfully');
@@ -327,6 +338,16 @@ export default function Team(props) {
             fetchUsersData();
         }
     }
+
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     return (
         <Fragment>

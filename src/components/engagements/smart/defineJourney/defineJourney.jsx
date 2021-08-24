@@ -2,8 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
 import './defineJourney.css';
 import _ from 'lodash';
-import { JOURNEY_BY_FILTERS } from '../../../../api/apiConstants';
+import { JOURNEY_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import { useHistory } from 'react-router-dom';
+import createNotification from '../../../common/reactNotification';
 
 
 export default function DefineJourney(props) {
@@ -22,10 +23,10 @@ export default function DefineJourney(props) {
     const fetchJourneyData = () => {
         props.handleLoader(true);
         getAuthAndData(JOURNEY_BY_FILTERS, history)
-            .then(journeys => {
-                if (journeys) {
+            .then(res => {
+                if (handleResponseCode(res)) {
                     let journeyArr = [];
-                    journeys.forEach(journey => {
+                    res.data.forEach(journey => {
                         let existedJrny = _.find(journeyArr, j => j.id == journey.JourneyID);
                         if (existedJrny) {
                             existedJrny.tags.push(journey.EventDisplayName);
@@ -50,11 +51,16 @@ export default function DefineJourney(props) {
 
     useEffect(() => {
         fetchJourneyData();
-        return () => {
-            console.log('defineJourney Component Unmount')
-        }
     }, []);
 
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">

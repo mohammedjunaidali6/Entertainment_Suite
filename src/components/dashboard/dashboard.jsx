@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import SmallLoader from '../common/Spinner/spinner';
-import LineChart from "../common/utils/lineChart";
 import LineCanvasGraph from '../common/graphs/lineCanvasGraph';
 import FunnelGraph from '../common/graphs/funnelGraph';
 import BarCanvasGraph from '../common/graphs/barCanvasGraph';
@@ -25,7 +23,8 @@ import {
     DEFAULT_FILTER_MONTHS,
     CONSOLIDATED_INCREMENTAL_SALES,
     CONSOLIDATED_BRAND_HEALTH,
-    DAY_WISE_BRAND_HEALTH_DATA
+    DAY_WISE_BRAND_HEALTH_DATA,
+    SOMETHING_WENT_WRONG
 } from '../../api/apiConstants';
 import  DateFilter from '../common/dateFilter';
 import createNotification from '../common/reactNotification';
@@ -33,7 +32,7 @@ import { NotificationContainer } from 'react-notifications';
 
 
 export default function Dashboard(props) {
-    console.log('***', props);
+    // console.log('***', props);
     const [salesOverviewFilter, setSalesOverviewFilter] = useState(7);
     const [salesRevenueFilter, setSalesRevenueFilter] = useState(7);
     const [dayEngagementFilter, setDayEngagementFilter] = useState(7);
@@ -53,9 +52,10 @@ export default function Dashboard(props) {
         handleLoader(true);
         setSalesOverviewFilter(durationDays);
         postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
-            .then(data => {
-                // console.log('**', data);
-                props.dashboardActionHandler.dispatchSummaryTotalsData(data);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    props.dashboardActionHandler.dispatchSummaryTotalsData(res.data);
+                }
                 handleLoader(false);
             })
     }
@@ -66,41 +66,41 @@ export default function Dashboard(props) {
         handleLoader(true);
         setSalesRevenueFilter(durationDays);
          postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_SALES_BY_FILTER}`, postObj, props.history)
-            .then(data => {
-                // console.log('**', data);
-                var lineCanvasData = [];
-                var salesObj =
-                {
-                    id: 'Sales',
-                    color: "hsl(147, 100%, 30%)",
-                    data: []
-                };
-                lineCanvasData.push(salesObj);
-                Array.isArray(data?.DayWiseSales) && data.DayWiseSales.forEach(sale => {
-                    let obj = {
-                        "x": sale.FormattedDate,
-                        "y": sale.Total
-                    }
-                    lineCanvasData[0].data.push(obj);
-                })
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    var lineCanvasData = [];
+                    var salesObj =
+                    {
+                        id: 'Sales',
+                        color: "hsl(147, 100%, 30%)",
+                        data: []
+                    };
+                    lineCanvasData.push(salesObj);
+                    Array.isArray(res.data?.DayWiseSales) && res.data.DayWiseSales.forEach(sale => {
+                        let obj = {
+                            "x": sale.FormattedDate,
+                            "y": sale.Total
+                        }
+                        lineCanvasData[0].data.push(obj);
+                    })
 
-                var engagementsCreatedDatesObj =
-                {
-                    id: 'Engagements',
-                    color: "hsl(204, 100%, 50%)",
-                    data: []
-                };
-                lineCanvasData.push(engagementsCreatedDatesObj);
-                Array.isArray(data?.EngagementsCreatedOn) && data.EngagementsCreatedOn.forEach(engt => {
-                    let obj = {
-                        "x": engt.FormattedDate,
-                        "y": 0
-                    }
-                    lineCanvasData[1].data.push(obj);
-                })
-                props.dashboardActionHandler.dispatchLineCanvasSalesData(lineCanvasData);
+                    var engagementsCreatedDatesObj =
+                    {
+                        id: 'Engagements',
+                        color: "hsl(204, 100%, 50%)",
+                        data: []
+                    };
+                    lineCanvasData.push(engagementsCreatedDatesObj);
+                    Array.isArray(res.data?.EngagementsCreatedOn) && res.data.EngagementsCreatedOn.forEach(engt => {
+                        let obj = {
+                            "x": engt.FormattedDate,
+                            "y": 0
+                        }
+                        lineCanvasData[1].data.push(obj);
+                    })
+                    props.dashboardActionHandler.dispatchLineCanvasSalesData(lineCanvasData);
+                }
                 handleLoader(false);
-
             });
     }
     const getDailyActiveUsersAndEngagedCustomers = (durationDays) => {
@@ -110,38 +110,39 @@ export default function Dashboard(props) {
         handleLoader(true);
         setDayEngagementFilter(durationDays);
         postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
-            .then(data => {
-                // console.log('**', data);
-                var lineCanvasData = [];
-                var usersObj =
-                {
-                    id: 'Active',
-                    color: "hsl(138, 100%, 50%)",
-                    data: []
-                };
-                lineCanvasData.push(usersObj);
-                Array.isArray(data) && data.forEach(user => {
-                    let obj = {
-                        "x": user.FormattedDate,
-                        "y": user.ActiveUsers
-                    }
-                    lineCanvasData[0].data.push(obj);
-                })
-                var usersObj =
-                {
-                    id: 'Engaged',
-                    color: "hsl(29, 100%, 50%)",
-                    data: []
-                };
-                lineCanvasData.push(usersObj);
-                Array.isArray(data) && data.forEach(user => {
-                    let obj = {
-                        "x": user.FormattedDate,
-                        "y": user.EngagedUsers
-                    }
-                    lineCanvasData[1].data.push(obj);
-                })
-                props.dashboardActionHandler.dispatchLineCanvasDayWiseActiveEngagedUsersData(lineCanvasData);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    var lineCanvasData = [];
+                    var usersObj =
+                    {
+                        id: 'Active',
+                        color: "hsl(138, 100%, 50%)",
+                        data: []
+                    };
+                    lineCanvasData.push(usersObj);
+                    Array.isArray(res.data) && res.data.forEach(user => {
+                        let obj = {
+                            "x": user.FormattedDate,
+                            "y": user.ActiveUsers
+                        }
+                        lineCanvasData[0].data.push(obj);
+                    })
+                    var usersObj =
+                    {
+                        id: 'Engaged',
+                        color: "hsl(29, 100%, 50%)",
+                        data: []
+                    };
+                    lineCanvasData.push(usersObj);
+                    Array.isArray(res.data) && res.data.forEach(user => {
+                        let obj = {
+                            "x": user.FormattedDate,
+                            "y": user.EngagedUsers
+                        }
+                        lineCanvasData[1].data.push(obj);
+                    })
+                    props.dashboardActionHandler.dispatchLineCanvasDayWiseActiveEngagedUsersData(lineCanvasData);
+                }
                 handleLoader(false);
             });
     }
@@ -152,38 +153,39 @@ export default function Dashboard(props) {
         handleLoader(true);
         setMonthEngagementFilter(durationMonths);
         postAuthAndData(`${REPT_PROD_HOST_URI}${MONTH_WISE_ACTIVE_ENGAGED_USERS}`, postObj, props.history)
-            .then(data => {
-                // console.log('**', data);
-                var lineCanvasData = [];
-                var usersObj =
-                {
-                    id: 'Active',
-                    color: "hsl(138, 100%, 50%)",
-                    data: []
-                };
-                lineCanvasData.push(usersObj);
-                Array.isArray(data) && data.forEach(user => {
-                    let obj = {
-                        "x": user.FormattedDate,
-                        "y": user.ActiveUsers
-                    }
-                    lineCanvasData[0].data.push(obj);
-                })
-                var usersObj =
-                {
-                    id: 'Engaged',
-                    color: "hsl(29, 100%, 50%)",
-                    data: []
-                };
-                lineCanvasData.push(usersObj);
-                Array.isArray(data) && data.forEach(user => {
-                    let obj = {
-                        "x": user.FormattedDate,
-                        "y": user.EngagedUsers
-                    }
-                    lineCanvasData[1].data.push(obj);
-                })
-                props.dashboardActionHandler.dispatchLineCanvasMonthWiseActiveEngagedUsersData(lineCanvasData);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    var lineCanvasData = [];
+                    var usersObj =
+                    {
+                        id: 'Active',
+                        color: "hsl(138, 100%, 50%)",
+                        data: []
+                    };
+                    lineCanvasData.push(usersObj);
+                    Array.isArray(res.data) && res.data.forEach(user => {
+                        let obj = {
+                            "x": user.FormattedDate,
+                            "y": user.ActiveUsers
+                        }
+                        lineCanvasData[0].data.push(obj);
+                    })
+                    var usersObj =
+                    {
+                        id: 'Engaged',
+                        color: "hsl(29, 100%, 50%)",
+                        data: []
+                    };
+                    lineCanvasData.push(usersObj);
+                    Array.isArray(res.data) && res.data.forEach(user => {
+                        let obj = {
+                            "x": user.FormattedDate,
+                            "y": user.EngagedUsers
+                        }
+                        lineCanvasData[1].data.push(obj);
+                    })
+                    props.dashboardActionHandler.dispatchLineCanvasMonthWiseActiveEngagedUsersData(lineCanvasData);
+                }
                 handleLoader(false);
             });
     }
@@ -194,11 +196,12 @@ export default function Dashboard(props) {
         handleLoader(true);
         setIncrementalSalesFilter(durationDays);
         postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATED_INCREMENTAL_SALES}`, postObj, props.history)
-            .then(data => {
-                // console.log('**', data);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    props.dashboardActionHandler.dispatchIncrementalSalesTotalsData(res.data);
+                }
                 handleLoader(false);
-                props.dashboardActionHandler.dispatchIncrementalSalesTotalsData(data);
-            })
+            });
     }
 
     const getBrandHealthData=(durationDays)=>{
@@ -212,9 +215,10 @@ export default function Dashboard(props) {
         }
         handleLoader(true);
         postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATED_BRAND_HEALTH}`, postObj, props.history)
-            .then(brandHealthData => {
-                // console.log('**', brandHealthData);
-                props.dashboardActionHandler.dispatchBrandHealthData(brandHealthData);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    props.dashboardActionHandler.dispatchBrandHealthData(res.data);
+                }
                 handleLoader(false);
             });
     }
@@ -224,22 +228,23 @@ export default function Dashboard(props) {
         }
         handleLoader(true);
         postAuthAndData(`${REPT_PROD_HOST_URI}${DAY_WISE_BRAND_HEALTH_DATA}`, postObj, props.history)
-            .then(data => {
-                console.log('**', data);
-                var barCanvasData = [];
-                Array.isArray(data) && data.forEach(obj => {
-                    var obj = {
-                        date: obj.FormattedDate,
-                        'Social Shares': obj.SocialShares,
-                        socialSharesColor: "hsl(213, 70%, 50%)",
-                        'Customer Reviews': obj.CustomerReviews,
-                        customerReviewsColor: "hsl(138, 100%, 50%)",
-                        'Customer Referrals': obj.CustomerReferrals,
-                        customerReferralsColor: "hsl(43, 70%, 50%)",
-                    };
-                    barCanvasData.push(obj);
-                })
-                props.dashboardActionHandler.dispatchBarCanvasBrandHealthData(barCanvasData);
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    var barCanvasData = [];
+                    Array.isArray(res.data) && res.data.forEach(obj => {
+                        var obj = {
+                            date: obj.FormattedDate,
+                            'Social Shares': obj.SocialShares,
+                            socialSharesColor: "hsl(213, 70%, 50%)",
+                            'Customer Reviews': obj.CustomerReviews,
+                            customerReviewsColor: "hsl(138, 100%, 50%)",
+                            'Customer Referrals': obj.CustomerReferrals,
+                            customerReferralsColor: "hsl(43, 70%, 50%)",
+                        };
+                        barCanvasData.push(obj);
+                    })
+                    props.dashboardActionHandler.dispatchBarCanvasBrandHealthData(barCanvasData);
+                }
                 handleLoader(false);
             });
     }
@@ -254,6 +259,15 @@ export default function Dashboard(props) {
         getIncrementalSalesTotals(DEFAULT_FILTER_DAYS);
         getBrandHealthData(DEFAULT_FILTER_DAYS);
     }, []);
+
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        }else{
+            return true;
+        }
+    }
 
 
     return (

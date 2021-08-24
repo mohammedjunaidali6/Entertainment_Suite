@@ -4,7 +4,7 @@ import Resizer from "../../../common/resizer/resizer";
 import './stepper.css';
 
 export default function EStepper(props) {
-    console.log('props', props);
+
     return (
         <div id="e-stepper-container" className={`w-40 ${props.thumbHide ? `thumb-hide` : ``}`}>
             <div className="c-s-stepper-h">{props.stepName ? props.stepName : 'Step Name'}</div>

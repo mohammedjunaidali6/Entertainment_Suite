@@ -10,7 +10,7 @@ const getCurrentSession=async () => {
     var tenantKey=session?.idToken?.payload['custom:tenant_key'];
 
     axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
-    axiosInstance.defaults.headers.common['x-uemail'] = email;
+    axiosInstance.defaults.headers.common['x-umail'] = email;
 }
 
 
@@ -41,46 +41,39 @@ export const postAuthAndData = async (resource, postData, history) => {
     }
 };
 
-
-export const getData = async (resource) => {
-    try {
-        const response = await axiosInstance.get(resource);
-        return handleResponse(response);
-    } catch (error) {
-        return handleError(error);
-    }
-};
-
-export const postData = async (resource, postData, headers) => {
-    try {
-        if (headers) {
-            const response = await axiosInstance.post(resource, postData, { headers: headers });
-            return handleResponse(response);
-        } else {
-            const response = await axiosInstance.post(resource, postData);
-            return handleResponse(response);
-        }
-
-    } catch (error) {
-        return handleError(error);
-    }
-};
+//Current session giving null as user is not yet logged in.//Calling from Reset Password
+//////We are not updating FirstName and LastName from Reset password at this time. So this is commented.
+// export const postLoginAPIData = async (resource, postData, history,tenantKey) => {
+//     try {
+//         axiosInstance.defaults.headers.common['x-tenant-key'] = tenantKey || DUMM_TENANT_KEY;
+//         axiosInstance.defaults.headers.common['x-uemail'] = postData.Email;
+//             try {
+//                 const response = await axiosInstance.post(resource, postData);
+//                 return handleResponse(response);
+//             } catch (error) {
+//                 return handleError(error);
+//             }
+//     } catch (error) {
+//         history.push('/login');
+//     }
+// };
 
 
 function handleResponse(response) {
     if (response.status == 200 && response.data?.message == "SUCCESS") {
-        return response.data.data;
+        return response.data;
     } else {
-        console.error(`*** `, response.data?.data)
-        return null;
+        console.error(`*** `, response.data?.data);
+        var errResponse = {
+            data:{
+                code:-1
+            }
+        }
+        return errResponse;
     }
 }
 
 function handleError(error) {
     console.error(`*** `, error.message)
     return null;
-    if (error.data) {
-        return error.data;
-    }
-    return error;
 }

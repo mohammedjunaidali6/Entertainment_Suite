@@ -65,7 +65,7 @@ export default function ForgotPassword(props) {
     }
   }
   const onExpireCaptcha = () => {
-    console.log('**', recaptchaInstance)
+    // console.log('**', recaptchaInstance)
     recaptchaInstance.reset();
     createNotification('info','Recaptcha expired')
   }

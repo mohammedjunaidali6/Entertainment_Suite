@@ -2,7 +2,6 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
 export default function LineCanvasGraph({ data, yName,pointsEnabled}) {
-  console.log('**', pointsEnabled);
 
   return (
     <div className="App" style={{ height: '280px', width: '100%' }}>

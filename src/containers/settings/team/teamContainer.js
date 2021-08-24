@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Team from '../../../components/settings/team/team';
 import * as actionsHandler from '../../../actions/settings/team/teamActionHandler';
+import * as loginActionHandler from '../../../actions/login/loginActionHandler';
 
 const mapStateToProps = state => ({
     users: state.TeamReducer.users,
@@ -9,7 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    teamActionHandler: bindActionCreators(actionsHandler, dispatch)
+    teamActionHandler: bindActionCreators(actionsHandler, dispatch),
+    loginActionHandler: bindActionCreators(loginActionHandler, dispatch),
 });
 
 const TeamContatiner = connect(mapStateToProps, mapDispatchToProps)(Team);

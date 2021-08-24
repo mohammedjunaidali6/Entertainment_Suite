@@ -6,11 +6,13 @@ import {
   CONSOLIDATION_SUMMARY_BY_FILTER,
   EMAIL,
   DEFAULT_FILTER_DAYS,
+  SOMETHING_WENT_WRONG,
 } from '../../api/apiConstants';
+import createNotification from '../common/reactNotification';
+import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
 
 export default function Loading(props) {
-  console.log('***', props);
   const [perc, setPerc] = useState(1);
 
   useEffect(() => {
@@ -30,16 +32,26 @@ export default function Loading(props) {
       NumberOfDays: DEFAULT_FILTER_DAYS,
     }
     postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
-      .then(data => {
-        // console.log('***', data);
-        props.dashboardActionHandler.dispatchSummaryTotalsData(data);
+      .then(res => {
+        if (handleResponseCode(res)) {
+          props.dashboardActionHandler.dispatchSummaryTotalsData(res.data);
+        }
       })
 
   }, []);
+  const handleResponseCode=(resp)=>{
+    if(!resp || resp.data.code===-1){
+        createNotification('error',SOMETHING_WENT_WRONG);
+        return false;
+    }else{
+        return true;
+    }
+}
 
 
   return (
     <div>
+      <NotificationContainer/>
       <LinearProgressBar value={perc} />
     </div>
   )
