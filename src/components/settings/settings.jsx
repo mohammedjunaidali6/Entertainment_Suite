@@ -1,14 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import './settings.css';
 import Profile from './profile/profile';
-import Team from "./team/team";
-import Role from "./role/role";
 import profile_src from "../../assets/img/profile_setting.svg";
 import team_src from "../../assets/img/team_setting.svg";
 import role_src from "../../assets/img/role_setting.svg";
 import settings_src from '../../assets/img/Property_Settings.svg';
 import close_src from '../../assets/img/close.svg';
-
 import PropertySettings from "./propertySettings/propertySettings";
 import { Tabs, Tab, Content, MyAccountContent, AppSettingContent } from "../common/utils/tab";
 import TeamContatiner from '../../containers/settings/team/teamContainer';
@@ -100,7 +97,7 @@ export default function Settings(props) {
                             </Tabs>
                             <>
                                 <AppSettingContent appSettingActive={appSettingActive === 0}>
-                                    <PropertySettings />
+                                    <PropertySettings parentProps={props}/>
                                 </AppSettingContent>
                                 {/* <AppSettingContent appSettingActive={appSettingActive === 1}>
                                     <h1>Accessibility Content</h1>

@@ -15,8 +15,8 @@ export const getUserData=(handler)=>{
             getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${payLoad.email}`)
                 .then(res => {
                     if (res&&res.data.code!==-1) {
-                        handler(user); //update redux store
                         let user=res.data;
+                        handler(user); //update redux store
                     
                         axiosInstance.defaults.headers.common['x-tenant-key'] = payLoad['custom:tenant_key'];
                         axiosInstance.defaults.headers.common['x-uid'] = user.UserID;
