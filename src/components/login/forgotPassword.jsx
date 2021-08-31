@@ -75,7 +75,7 @@ export default function ForgotPassword(props) {
       Auth.forgotPassword(forgotPassword.email)
         .then(data => {
           setEnableVerification(true);
-          createNotification('info','Verification Code is sent to your mail')
+          createNotification('info','You will receive a Code if you are a registered user in your email.')
         })
         .catch(err => {
           console.log('**', err)

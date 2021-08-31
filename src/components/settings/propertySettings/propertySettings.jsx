@@ -332,7 +332,7 @@ export default function PropertySettings(props) {
                                             <TextField 
                                                 id={obj.settings_template_id}
                                                 name={obj.key_name} 
-                                                label={obj.key_name_display} 
+                                                label={obj.key_name_display}
                                                 variant="outlined" 
                                                 onChange={()=>setIdentityConfiguration(obj)}
                                                 value={identityConfig?.config?.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue}
