@@ -188,16 +188,17 @@ export default function RewardsAndBudget(props) {
                 props.handleLoader(false);
             })
     }
-    const onRewardNameChange=(e)=>{
+    const onRewardNameChange=(e,i)=>{
+        debugger;
         var obj=rewardMaster.find(r=>r.reward_master_id==e.value);
-        var objData=rewardRowsData.find(r=>r.id==e.value);
+        var objData=rewardRowsData[i];
         objData.tooltip.reward_code=obj.reward_code;
         objData.tooltip.description=obj.description;
         objData.tooltip.expiry_date=obj.expiry_date;
         objData.rewardName = e.label;
         objData.id = e.value;
         var arr = [...rewardRowsData];
-        arr.splice(_.findIndex(arr, objData), 1, objData);
+        arr.splice(i, 1, objData);
         setSelectedRewardName({
             value:objData.reward_master_id,
             label:objData.reward_name
@@ -238,6 +239,7 @@ export default function RewardsAndBudget(props) {
     const fetchAllRewards=()=>{
         getAuthAndData(`/engt/allRewards?reward_type_id=2`, history)
         .then(res=>{
+            console.log('***',res);
             if (handleResponseCode(res)) {
                 setRewardMaster(res.data);
                 var rewardNameOptions = [];
@@ -315,7 +317,7 @@ export default function RewardsAndBudget(props) {
                                             options={obj.rewardType?.value==2?rewardNames:[]} 
                                             isDisabled={obj.rewardType?.value!==2} 
                                             name='rewardName' 
-                                            onChange={(e) => onRewardNameChange(e)}
+                                            onChange={(e) => onRewardNameChange(e,i)}
                                             value={{
                                                 label:obj.rewardName,
                                                 value:obj.id

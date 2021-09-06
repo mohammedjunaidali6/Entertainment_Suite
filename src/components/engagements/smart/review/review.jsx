@@ -76,7 +76,7 @@ export default function Review(props) {
                             {/* <div className="c-e-r-left-r-b-box-bd-box w-14 float-left clearfix">{rewObj.winnerPosition}</div> */}
                             {/* <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewObj.rewardType?.label}</div> */}
                             <div className="c-e-r-left-r-b-box-bd-box w-30 float-left clearfix">{rewObj.rewardName}</div>
-                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{parseInt(rewObj.rewardValue).toLocaleString()}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.rewardValue&&parseInt(rewObj.rewardValue).toLocaleString()}</div>
                             <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.probability}</div>
                             <div className="c-e-r-left-r-b-box-bd-box w-40 float-left clearfix">{rewObj.displayName}</div>
                         </div>

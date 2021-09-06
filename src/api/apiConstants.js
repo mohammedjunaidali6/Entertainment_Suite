@@ -1,10 +1,10 @@
 // export const IDTY_PROD_HOST_URI = "http://localhost:807/api";
-// export const ENGT_PROD_BASE_URI = "http://localhost:815/api";
+export const ENGT_PROD_BASE_URI = "http://localhost:815/api";
 // export const REPT_PROD_HOST_URI = 'http://localhost:818/api';
 export const TENT_PROD_HOST_URI = 'http://localhost:880/api';
 
 export const IDTY_PROD_HOST_URI = "https://frg6g6wml9.execute-api.ap-south-1.amazonaws.com/Prod/api";
-export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
+// export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
 export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.amazonaws.com/Prod/api';
 
 export const SOMETHING_WENT_WRONG='Something went wrong';

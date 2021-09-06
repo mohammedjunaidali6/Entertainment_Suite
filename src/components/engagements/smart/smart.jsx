@@ -157,7 +157,6 @@ export default function EngagementsSmart(props) {
                     if (bool) {
                         saveEngagement();
                     }
-                    setStep('setGoals');
                 }
             });
         }
@@ -209,9 +208,11 @@ export default function EngagementsSmart(props) {
                 .then(res => {
                     if (handleResponseCode(res)) {
                         setOpenEngagementWizard(false);
+                        setStep('setGoals');
+                        
+                        createEngagementDataClear();
                         createNotification('success', 'Engagement Saved Succesfully');
                         fetchEngagementsByStatus(1);//1 is for Active Engagements
-                        createEngagementDataClear();
                     } else {
                         createNotification('error', 'Engagement Saving failed');
                     }
@@ -227,7 +228,7 @@ export default function EngagementsSmart(props) {
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
         props.engagementsSmartActionHandler.dispatchTargetAudienceData(null);
         props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
-        props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(null);
+        props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData();
     }
 
     const getSetGoalsFormValues = (val, status) => {
@@ -263,6 +264,7 @@ export default function EngagementsSmart(props) {
                     props.engagementsSmartActionHandler.dispatchEngagementsData(res.data);
                 } else {
                     props.engagementsSmartActionHandler.dispatchEngagementsData();
+                    createNotification('info', 'There are no Engagements found');
                 }
                 handleLoader(false);
             })
@@ -390,7 +392,7 @@ export default function EngagementsSmart(props) {
 
     const handleResponseCode=(resp)=>{
         if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+            // createNotification('error',SOMETHING_WENT_WRONG);
             return false;
         }else{
             return true;

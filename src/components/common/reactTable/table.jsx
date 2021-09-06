@@ -36,28 +36,26 @@ export default function Table(props) {
 
     return (
         <Fragment>
-            {props.data && props.data.length > 0 && props.columns && props.columns.length > 0 ?
-                <Fragment>
-                    {/* want to load subHeaderComponent you must pass 
-               subHeader as well true from the corresponding components */}
-                    <DataTable
-                        noHeader={props.noHeader ? props.noHeader : true}
-                        columns={props.columns}
-                        data={props.data}
-                        striped
-                        action={props.actions ? props.actions : null}
-                        subHeader={props.subHeader ? props.subHeader : false}
-                        subHeaderComponent={props.subHeaderComponent ? props.subHeaderComponent : []}
-                        subHeaderAlign={props.subHeaderAlign ? props.subHeaderAlign : 'left'}
-                        pagination={props.pagination ? props.pagination : false}
-                        paginationPerPage={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT}
-                        customStyles={customStyle}
-                        noTableHead={props.noTableHead ? props.noTableHead : false}
-                        selectableRows={props.selectableRows ? props.selectableRows : false}
-                        onSelectedRowsChange={onSelectedRowsChangeFn}
-                        style={{ borderRadius: "6px", marginBottom: "12px" }}
-                    />
-                </Fragment> : <div>Data Not found</div>}
+            {/* want to load subHeaderComponent you must pass subHeader as well true from the corresponding components */}
+            {props.data && props.data.length > 0 && props.columns && props.columns.length > 0 &&
+                <DataTable
+                    noHeader={props.noHeader ? props.noHeader : true}
+                    columns={props.columns}
+                    data={props.data}
+                    striped
+                    action={props.actions ? props.actions : null}
+                    subHeader={props.subHeader ? props.subHeader : false}
+                    subHeaderComponent={props.subHeaderComponent ? props.subHeaderComponent : []}
+                    subHeaderAlign={props.subHeaderAlign ? props.subHeaderAlign : 'left'}
+                    pagination={props.pagination ? props.pagination : false}
+                    paginationPerPage={props.pageCount ? props.pageCount : TABLE_PAGE_COUNT}
+                    customStyles={customStyle}
+                    noTableHead={props.noTableHead ? props.noTableHead : false}
+                    selectableRows={props.selectableRows ? props.selectableRows : false}
+                    onSelectedRowsChange={onSelectedRowsChangeFn}
+                    style={{ borderRadius: "6px", marginBottom: "12px" }}
+                />
+            }
         </Fragment>
     )
 }
