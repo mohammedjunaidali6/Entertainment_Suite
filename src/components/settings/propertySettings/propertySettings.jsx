@@ -288,24 +288,25 @@ export default function PropertySettings(props) {
     return (
         <div id="property-settings-container">
                 <NotificationContainer/>
-                <div className='p-s-input-container'>
+                {/* <div className='p-s-input-container'>
                     <div className='p-s-url-input-label'>Property Name</div>
                     {!editClick ? (
                     <Fragment>
-                     <div className='disp-inline-block'>   
-                    <input className= 'p-s-url-input' placeholder='Enter a valid url for your website' type="text"/>
-                     <div className='p-s-ex'>Eg: www.yoursite.com</div> 
-                     </div> 
-                    <div className='verify-ownership-btn disp-inline-block'>
-                        <div className='verify-btn-text'>Verify ownership</div>
-                    </div>
-                    <div className='p-s-edit-btn disp-inline-block' onClick={editClickEnabler}>
-                        <div style={{margin:'10px', marginTop:'5px'}}>
-                            <img src={edit_src} className='p-s-edit-btn-symbol disp-inline-block' />
-                            <div className='p-s-edit-btn-text disp-inline-block'>Edit</div>
+                        <div className='disp-inline-block'>   
+                        <input className= 'p-s-url-input' placeholder='Enter a valid url for your website' type="text"/>
+                        <div className='p-s-ex'>Eg: www.yoursite.com</div> 
+                        </div> 
+                        <div className='verify-ownership-btn disp-inline-block'>
+                            <div className='verify-btn-text'>Verify ownership</div>
                         </div>
-                    </div>
-                    </Fragment> ):(
+                        <div className='p-s-edit-btn disp-inline-block' onClick={editClickEnabler}>
+                            <div style={{margin:'10px', marginTop:'5px'}}>
+                                <img src={edit_src} className='p-s-edit-btn-symbol disp-inline-block' />
+                                <div className='p-s-edit-btn-text disp-inline-block'>Edit</div>
+                            </div>
+                        </div>
+                    </Fragment>
+                    : 
                         <Fragment>
                             <div className='disp-inline-block'>
                                 <input className= 'p-s-url-input' placeholder='www.mywebsite.com' type="text"/>
@@ -318,8 +319,8 @@ export default function PropertySettings(props) {
                                 <div className='p-s-save-change-text'>Save Changes</div>
                             </div>
                         </Fragment>
-                    )}
-                </div>
+                    } 
+                </div>*/}
                 <div style={{height: containerHeightCalcFn(825)}}>
                     <div className='email-config-block'>
                         <img className='p-s-block-img disp-inline-block' src={email_config_src} alt=""/>
