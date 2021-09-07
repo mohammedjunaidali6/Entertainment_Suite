@@ -1,6 +1,6 @@
 import { GET_USERS, GET_ROLES } from '../../../constants/actionTypes';
 
-export function get_Users(data) {
+export function dispatchUsersData(data) {
   return (dispatch) => {
     dispatch({
       type: GET_USERS,
@@ -9,7 +9,7 @@ export function get_Users(data) {
   };
 }
 
-export function get_Roles(data) {
+export function dispatchUserRoles(data) {
   return (dispatch) => {
     dispatch({
       type: GET_ROLES,

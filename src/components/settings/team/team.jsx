@@ -4,9 +4,7 @@ import Table from '../../common/reactTable/table';
 import './team.css';
 import user from '../../../assets/img/user.svg';
 import ActionMenu from '../../common/reactTable/menu';
-import MessageBox from '../../common/MessageBox/MessageBox';
-import Loader from '../../common/Spinner/spinner';
-import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
+import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
 import validator from 'validator';
 import AWS from 'aws-sdk';
 import { useHistory } from 'react-router-dom';
@@ -27,7 +25,6 @@ import { getUserData } from '../../common/storeFunctions';
 
 
 export default function Team(props) {
-    // console.log('**',props);
     var history = useHistory();
     const {
         REACT_APP_AWS_REGION,
@@ -35,7 +32,6 @@ export default function Team(props) {
         REACT_APP_IAM_SECRET,
         REACT_APP_POOL_ID
     } = process.env;
-    const [visible, setVisible] = useState(false);
     const [createClick, setCreateClick] = useState(false);
     const [updateUser, setUpdateUser] = useState();
     const [userData, setUserData] = useState();
@@ -48,27 +44,7 @@ export default function Team(props) {
     var bigChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var specialChars = '@#$&!';
 
-    
-    const onActionClick = (e, rowData) => {
-        if (e.target.outerText === 'Edit') {
-            setCreateClick(true);
-            setEmail(rowData.email);
-            //setPhoneNumber(rowData.mobile_number);
-            setUpdateUser(rowData);
-        } else if (e.target.outerText === 'Delete') {
-            setVisible(true);
-            getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_USER}${rowData.user_id}`, history)
-                .then(res => {
-                    if (handleResponseCode(res)) {
-                        createNotification('success', 'User is deleted succesfully');
-                    } else {
-                        createNotification('error', 'Deleting user is failed');
-                    }
-                    setVisible(false);
-                })
-        }
-    }
-
+      
     const columns = [
         {
             name: "User Name",
@@ -79,9 +55,8 @@ export default function Team(props) {
                     marginRight: '10px',
                     borderRadius: '10px',
                     display: 'inline-block'
-                }}
-                    src={row.imgSrc} />
-                <div className='disp-inline-block'>{row.userName}</div>
+                }} src={user} />
+                <div className='disp-inline-block'>{row.user_name}</div>
             </div>
         },
         {
@@ -91,12 +66,12 @@ export default function Team(props) {
         },
         {
             name: "Role",
-            selector: "role",
+            selector: "group",
             width: '20%',
         },
         {
             name: "Status",
-            selector: "status",
+            cell: row => row.is_enabled ? 'Active' : 'Inactive',
             width: '10%',
         },
         {
@@ -106,6 +81,40 @@ export default function Team(props) {
         }
     ]
 
+    const handleLoader = (showBool) => {
+        props.routeActionHandler.dispatchLoaderData(showBool);
+    }
+    const handleAlertDialog = (obj) => {
+        props.routeActionHandler.dispatchAlertDialogData(obj);
+    }
+    const handleResponseCode=(resp)=>{
+        if(!resp || resp.data.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG);
+            return false;
+        } else {
+            return true;
+        }
+    }
+    const cognitoIdentityServiceProvider=()=>{
+        var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+        // AWS.config.region=REACT_APP_AWS_REGION;
+        AWS.config.update({
+            region: REACT_APP_AWS_REGION,
+            accessKeyId: REACT_APP_IAM_ACCESS_KEY,
+            secretAccessKey: REACT_APP_IAM_SECRET
+        })
+        return cognitoidentityserviceprovider;
+    }
+    const randomString = () => {
+        var result = '';
+        for (var i = 2; i > 0; --i) result += smallChars[Math.floor(Math.random() * smallChars.length)];
+        for (var i = 2; i > 0; --i) result += bigChars[Math.floor(Math.random() * bigChars.length)];
+        for (var i = 2; i > 0; --i) result += numbers[Math.floor(Math.random() * numbers.length)];
+        for (var i = 2; i > 0; --i) result += specialChars[Math.floor(Math.random() * specialChars.length)];
+        return result;
+    }
+
+
     function clickHandler() {
         setCreateClick(true);
         setUpdateUser();
@@ -114,92 +123,57 @@ export default function Team(props) {
     }
 
     const fetchRolesData = () => {
-        try {
-            setVisible(true);
-            getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`, history)
-                .then(res => {
-                    if (handleResponseCode(res)) {
-                        let rolesArr = res.data.sort((a, b) => a.name < b.name ? -1 : 1);
-                        props.teamActionHandler.get_Roles(rolesArr);
-                    }
-                })
-        } catch (error) {
-            console.error(error)
-        }
-        setVisible(false);
+        handleLoader(true);
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${GROUP_ALL}`, history)
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    let rolesArr = res.data.sort((a, b) => a.name < b.name ? -1 : 1);
+                    props.teamActionHandler.dispatchUserRoles(rolesArr);
+                }
+            handleLoader(false);
+        })
     }
     const fetchUsersData = () => {
-        try {
-            setVisible(true);
-            getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`, history)
-                .then(res => {
-                    if (handleResponseCode(res)) {
-                        let usersArr = [];
-                        Array.isArray(res.data) && res.data?.forEach(obj => {
-                            let userObj = {};
-                            userObj.user_id = obj.user_id;
-                            userObj.userName = obj.user_name;
-                            userObj.firstName = obj.first_name;
-                            userObj.lastName = obj.last_name;
-                            userObj.middleName = obj.middle_name;
-                            userObj.imgSrc = user;
-                            userObj.email = obj.email;
-                            userObj.mobileNumber = obj.mobile_number;
-                            userObj.role = obj.groups[0]?.name;
-                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                            usersArr.push(userObj);
-                        });
-                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                        props.teamActionHandler.get_Users(usersArr);
-                    }
-                })
-        } catch (error) {
-            console.error(error)
-        }
-        setVisible(false);
+        handleLoader(true);
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_FILTERS}${100}`, history)
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    let usersArr = res.data.sort((a, b) => a.user_name < b.user_name ? -1 : 1);
+                    props.teamActionHandler.dispatchUsersData(usersArr);
+                }
+            handleLoader(false);
+        })
     }
     const fetchUsersByUserName = async (username) => {
-        try {
-            setVisible(true);
-            getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_USERNAME}${username}`, history)
-                .then(res => {
-                    if (handleResponseCode(res)) {
-                        let usersArr = [];
-                        Array.isArray(res.data) && res.data?.forEach(obj => {
-                            let userObj = {};
-                            userObj.user_id = obj.user_id;
-                            userObj.userName = obj.user_name;
-                            userObj.firstName = obj.first_name;
-                            userObj.lastName = obj.last_name;
-                            userObj.middleName = obj.middle_name;
-                            userObj.imgSrc = user;
-                            userObj.email = obj.email;
-                            userObj.mobileNumber = obj.mobile_number;
-                            userObj.role = obj.groups[0]?.name;
-                            userObj.status = obj.is_enabled ? 'Active' : 'Inactive';
-                            usersArr.push(userObj);
-                        });
-                        usersArr = usersArr.sort((a, b) => a.userName < b.userName ? -1 : 1);
-                        props.teamActionHandler.get_Users(usersArr);
-                    } else {
-
-                    }
-                })
-        } catch (error) {
-            console.error(error)
-        }
-        setVisible(false);
+        handleLoader(true);
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_USERNAME}${username}`, history)
+            .then(res => {
+                if (handleResponseCode(res)) {
+                    let usersArr = res.data.sort((a, b) => a.user_name < b.user_name ? -1 : 1);
+                    console.log('***',usersArr)
+                    props.teamActionHandler.dispatchUsersData(usersArr);
+                }
+            handleLoader(false);
+        })
     }
-    useEffect(() => {
-        fetchRolesData();
-        fetchUsersData();
 
-        getUserData(data=>{
-            console.log('***',data);
-            setUserData(data);
-            props.loginActionHandler.dispatchUserData(data);
-        });
-    }, [])
+    const onActionClick = (e, rowData) => {
+        if (e.target.outerText === 'Edit') {
+            setCreateClick(true);
+            setEmail(rowData.email);
+            setPhoneNumber(rowData.mobileNumber);
+            setUpdateUser(rowData);
+        } else if (e.target.outerText === 'Delete') {
+            handleAlertDialog({
+                open: true, title: 'Delete User', text: 'Are you sure, Do you want to delete User?', handleClose: (bool) => {
+                    handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                    if (bool) {
+                        deleteUser(rowData);
+                    }
+                }
+            });
+        }
+    }
 
     const onEmailChange = e => {
         let mail = e.target.value;
@@ -213,47 +187,9 @@ export default function Team(props) {
         let group = e.target.value;
         setGroup(group);
     }
-    const randomString = () => {
-        var result = '';
-        for (var i = 2; i > 0; --i) result += smallChars[Math.floor(Math.random() * smallChars.length)];
-        for (var i = 2; i > 0; --i) result += bigChars[Math.floor(Math.random() * bigChars.length)];
-        for (var i = 2; i > 0; --i) result += numbers[Math.floor(Math.random() * numbers.length)];
-        for (var i = 2; i > 0; --i) result += specialChars[Math.floor(Math.random() * specialChars.length)];
-        return result;
-    }
-    const onSaveClick = () => {
-        if (!validator.isEmail(email)) {
-            createNotification('error', 'Please enter a valid email.');
-            return;
-        }
-        if (!group) {
-            createNotification('error', 'Please select a Role');
-            return;
-        }
-        //Check email existane in User table
-        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
-            .then(res => {
-                var responseCode=res.data.code;
-                if (handleResponseCode(res)) {
-                    if(responseCode===2){
-                        createAndSaveUser();
-                    }else{
-                        createNotification('info', `${res.email} Email is already exists.`);
-                    }
-                } else {
-                    createNotification('error', 'Error in Creating User.');
-                }
-            })
-    }
 
-    const createAndSaveUser=()=>{
-        var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-        AWS.config.region=REACT_APP_AWS_REGION;
-        AWS.config.update({
-            // region: REACT_APP_AWS_REGION,
-            accessKeyId: REACT_APP_IAM_ACCESS_KEY,
-            secretAccessKey: REACT_APP_IAM_SECRET
-        })
+    const inviteAndSaveUser=()=>{
+        var cognitoISP=cognitoIdentityServiceProvider();
         var params = {
             UserPoolId: REACT_APP_POOL_ID,
             Username: email,
@@ -285,7 +221,7 @@ export default function Team(props) {
                 }
             ]
         };
-        cognitoidentityserviceprovider.adminCreateUser(params, function (err, data) {
+        cognitoISP.adminCreateUser(params, function (err, data) {
             if (err) {
                 createNotification('error', 'Invitation failed');
             } else {
@@ -297,7 +233,7 @@ export default function Team(props) {
                 postObj.user_groups.push(group);
                 postObj.status = data.User.UserStatus;
                 postObj.message = message;
-                setVisible(true);
+                handleLoader(true);
                 postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
                     .then(res => {
                         if (handleResponseCode(res)) {
@@ -309,30 +245,79 @@ export default function Team(props) {
                         } else {
                             createNotification('error', 'User Data Saving failed;');
                         }
-                        setVisible(false);
+                        handleLoader(false);
                     })
                     setCreateClick(false);
             }
         });
     }
-
-    const onUpdateClick = () => {
+    const saveUser = () => {
+        if (!validator.isEmail(email)) {
+            createNotification('error', 'Please enter a valid email.');
+            return;
+        }
+        if (!group) {
+            createNotification('error', 'Please select a Role');
+            return;
+        }
+        //Check email existane in User table
+        getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
+            .then(res => {
+                var responseCode=res.data.code;
+                if (handleResponseCode(res)) {
+                    if(responseCode===2){
+                        inviteAndSaveUser();
+                    }else{
+                        createNotification('info', `${res.email} Email is already exists.`);
+                    }
+                } else {
+                    createNotification('error', 'Error in Creating User.');
+                }
+            })
+    }
+    const deleteUser=(rowData)=>{
+        handleLoader(true);
+        var cognitoISP=cognitoIdentityServiceProvider();
+        var params = {
+            UserPoolId: REACT_APP_POOL_ID,
+            Username:rowData.email
+        }
+        cognitoISP.adminDeleteUser(params,(err,data)=>{
+            if(data){
+                getAuthAndData(`${IDTY_PROD_HOST_URI}${DELETE_USER}${rowData.user_id}`, history)
+                    .then(res => {
+                        if (handleResponseCode(res)) {
+                            createNotification('success', 'User deleted succesfully');
+                            fetchUsersData();
+                        } else {
+                            createNotification('error', 'Deleting user is failed');
+                        }
+                        handleLoader(false);
+                    })
+            } else {
+                createNotification('error',err);
+                handleLoader(false);
+            }
+        })
+    }
+    const updateUserRole = () => {
         var postObj = { ...updateUser };
         postObj.groups = [];
         postObj.groups.push(group);
-        setVisible(true);
+        handleLoader(true);
         postAuthAndData(`${IDTY_PROD_HOST_URI}${UPDATE_USER}`, postObj, history)
             .then(res => {
+                handleLoader(false);
                 if (handleResponseCode(res)) {
+                    fetchUsersData(); // fetch users again
                     setCreateClick(false);
-                    setUpdateUser(false);
+                    setUpdateUser();
                     createNotification('success', 'User Group is Updated succesfully');
                 } else {
                     //User Updated failed
                     setCreateClick(false);
                     createNotification('error', 'User Group Update is failed');
                 }
-                setVisible(false);
             })
     }
     const onSearch = (username) => {
@@ -343,119 +328,109 @@ export default function Team(props) {
         }
     }
 
-    const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
-            return false;
-        } else {
-            return true;
-        }
-    }
+    useEffect(() => {
+        fetchRolesData();
+        fetchUsersData();
+
+        getUserData(data=>{
+            console.log('***',data);
+            setUserData(data);
+            props.loginActionHandler.dispatchUserData(data);
+        });
+    }, [])
 
 
     return (
-        <Fragment>
-            {visible ?
-                <Loader />
-                : <div id="team-container">
-                    <NotificationContainer/>
-                    {!createClick ? (
-                        <div style={{ padding: '3%' }}>
-                            <div className='team-management-header'>
-                                <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
-                                <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
-                                    <div className='t-m-create-btn-text'>+  Invite User</div>
+        <div id="team-container">
+            <NotificationContainer/>
+            {!createClick ? 
+                <div style={{ padding: '3%' }}>
+                    <div className='team-management-header'>
+                        <div className='t-m-title disp-inline-block'>TEAM MANAGEMENT</div>
+                        <div className='t-m-create-btn disp-inline-block' onClick={clickHandler}>
+                            <div className='t-m-create-btn-text'>+  Invite User</div>
+                        </div>
+                        <Table columns={columns}
+                            data={props.users}
+                            pagination={true}
+                            subHeaderComponent={
+                                <SearchBar placeHolder="Search User" fromSettingsTeam={true} onSearch={(uname) => onSearch(uname)} />
+                            }
+                            subHeader={true}
+                        />
+                    </div>
+                </div>
+            :
+                <Fragment>
+                    <div style={{ padding: '3%' }}>
+                        <div>
+                            <div className='t-m-title'>{updateUser ? 'Update Role' : 'Invite User'}</div>
+                            <div className='t-m-input-block'>
+                                <div className='t-m-input disp-inline-block' style={{ height: '50px' }}>
+                                    <div className='t-m-input-label'>E-mail*</div>
+                                    <input
+                                        type="email"
+                                        className='t-m-input-field'
+                                        placeholder='richard322@gmail.com'
+                                        maxLength={50}
+                                        onChange={onEmailChange}
+                                        value={email}
+                                        disabled={updateUser}
+                                    />
                                 </div>
-                                <Table columns={columns}
-                                    data={props.users}
-                                    pagination={true}
-                                    subHeaderComponent={
-                                        <SearchBar placeHolder="Search User" fromSettingsTeam={true} onSearch={(uname) => onSearch(uname)} />
-                                    }
-                                    subHeader={true}
-                                />
+                                {/* <div className='t-m-input disp-inline-block'>
+                                    <div className='t-m-input-label'>Mobile</div>
+                                    <input
+                                        type="text"
+                                        className='t-m-input-field'
+                                        placeholder='+91-9876545665'
+                                        minLength={10}
+                                        maxLength={10}
+                                        onChange={onPhoneNumberChange}
+                                        value={phoneNumber}
+                                    />
+                                </div> */}
+                                <div className='t-m-input disp-inline-block'>
+                                    <div className='t-m-input-label'>Role</div>
+                                    <select className='t-m-input-field' placeholder="Select" onChange={onGroupSelect}>
+                                        <option value={updateUser && props.roles.find(r=>r.name===updateUser.group)?.group_id}>
+                                            {updateUser ? updateUser.group:'Select Role'}
+                                        </option>
+                                        {props.roles && props.roles.map(obj =>
+                                            <option value={obj.group_id}>{obj.name}</option>
+                                        )}
+                                    </select>
+                                </div>
+                                {/* <div className='t-m-message-block'>
+                                    <div className='t-m-input-label'>Message</div>
+                                    <textarea
+                                        className='t-m-message-box'
+                                        placeholder="You’ve been invited to join Divinor Luckyme Dashbord. "
+                                        maxLength={200}
+                                        onChange={e => setMessage(e.target.value)}
+                                    />
+                                </div> */}
                             </div>
                         </div>
-                    ) : (
-                        <Fragment>
-                            <div style={{ padding: '3%' }}>
-                                <div>
-                                    <div className='t-m-title'>{updateUser ? 'Update Role' : 'Invite User'}</div>
-                                    <div className='t-m-input-block'>
-                                        <div className='t-m-input disp-inline-block' style={{ height: '50px' }}>
-                                            <div className='t-m-input-label'>E-mail*</div>
-                                            <input
-                                                type="email"
-                                                className='t-m-input-field'
-                                                placeholder='richard322@gmail.com'
-                                                maxLength={50}
-                                                onChange={onEmailChange}
-                                                value={email}
-                                                disabled={updateUser}
-                                            />
-                                        </div>
-                                        <div className='t-m-input disp-inline-block'>
-                                            <div className='t-m-input-label'>Mobile</div>
-                                            <input
-                                                type="text"
-                                                className='t-m-input-field'
-                                                placeholder='+91-9876545665'
-                                                minLength={10}
-                                                maxLength={10}
-                                                onChange={onPhoneNumberChange}
-                                                value={phoneNumber}
-                                            />
-                                        </div>
-                                        <div className='t-m-input disp-inline-block'>
-                                            <div className='t-m-input-label'>Role</div>
-                                            <select className='t-m-input-field' placeholder="Select" onChange={onGroupSelect}>
-                                                <option value=''>Select Role</option>
-                                                {props.roles && props.roles.map(role =>
-                                                    <option value={role.group_id}>{role.name}</option>
-                                                )}
-                                            </select>
-                                        </div>
-                                        <div className='t-m-message-block'>
-                                            <div className='t-m-input-label'>Message</div>
-                                            <textarea
-                                                className='t-m-message-box'
-                                                placeholder="You’ve been invited to join Divinor Luckyme Dashbord. "
-                                                maxLength={200}
-                                                onChange={e => setMessage(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                    <div className='role-actions  clearfix'>
+                        <div className='role-act-btn'>
+                            <div className='role-cancel-btn disp-inline-block' role="button" onClick={() => { setCreateClick(false) }}>
+                                <div className='r-c-btn-text'>Cancel</div>
                             </div>
-                            <div className='role-actions  clearfix'>
-                                <div className='role-act-btn'>
-                                    <div className='role-cancel-btn disp-inline-block' role="button" onClick={() => { setCreateClick(false) }}>
-                                        <div className='r-c-btn-text'>Cancel</div>
-                                    </div>
-                                    {!updateUser ?
-                                        <div
-                                            className='role-save-btn disp-inline-block'
-                                            role="button"
-                                            onClick={onSaveClick}
-                                        >
-                                            <div className='r-s-btn-text'>Invite</div>
-                                        </div>
-                                        :
-                                        <div
-                                            className='role-save-btn disp-inline-block'
-                                            role="button"
-                                            onClick={onUpdateClick}
-                                        >
-                                            <div className='r-s-btn-text'>Update</div>
-                                        </div>
-                                    }
+                            {!updateUser ?
+                                <div className='role-save-btn disp-inline-block' role="button" onClick={saveUser}>
+                                    <div className='r-s-btn-text'>Invite</div>
                                 </div>
-                            </div>
-                        </Fragment>
-                    )
-                    }
-                </div>
+                                :
+                                <div className='role-save-btn disp-inline-block' role="button" onClick={updateUserRole}>
+                                    <div className='r-s-btn-text'>Update</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </Fragment>
             }
-        </Fragment>
+        </div>
     )
 }
