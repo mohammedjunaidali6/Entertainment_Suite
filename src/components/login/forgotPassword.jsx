@@ -75,7 +75,7 @@ export default function ForgotPassword(props) {
       Auth.forgotPassword(forgotPassword.email)
         .then(data => {
           setEnableVerification(true);
-          createNotification('info','You will receive a Code if you are a registered user in your email.')
+          createNotification('info','You will receive a Code if you are a registered user.')
         })
         .catch(err => {
           console.log('**', err)
@@ -115,7 +115,9 @@ export default function ForgotPassword(props) {
           createNotification('success','Password is changed succesfully')
           props.history.push('/login');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          createNotification('error',err.message)
+        });
     }
     e.preventDefault();
   }

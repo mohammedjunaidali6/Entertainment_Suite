@@ -300,7 +300,6 @@ export default function LogIn(props) {
                                             </Grid>
                                         </Grid>
                                     </form>
-
                                 </div>
                                 <Recaptcha
                                     ref={e => recaptchaInstance = e}
