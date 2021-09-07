@@ -75,7 +75,7 @@ export default function Settings(props) {
                             </Tabs>
                             <>
                                 <MyAccountContent myAccountActive={myAccountActive === 0}>
-                                    <Profile />
+                                    <Profile parentProps={props}/>
                                 </MyAccountContent>
                                 <MyAccountContent myAccountActive={myAccountActive === 1}>
                                     <TeamContatiner></TeamContatiner>

@@ -72,10 +72,10 @@ export default function Team(props) {
     const columns = [
         {
             name: "User Name",
+            width: '30%',
             cell: row => <div>
                 <img style={{
                     height: '36px',
-                    width: '36px',
                     marginRight: '10px',
                     borderRadius: '10px',
                     display: 'inline-block'
@@ -86,18 +86,22 @@ export default function Team(props) {
         },
         {
             name: "Email",
-            selector: "email"
+            selector: "email",
+            width: '25%',
         },
         {
             name: "Role",
-            selector: "role"
+            selector: "role",
+            width: '20%',
         },
         {
             name: "Status",
-            selector: "status"
+            selector: "status",
+            width: '10%',
         },
         {
             name: "Actions",
+            width: '15%',
             cell: row => <ActionMenu onAction={(e) => onActionClick(e, row)} />
         }
     ]

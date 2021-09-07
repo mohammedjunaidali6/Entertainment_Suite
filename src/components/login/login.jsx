@@ -108,7 +108,7 @@ export default function LogIn(props) {
                             .then(res => {
                                 setSignInProcessing(false);
                                 if (handleResponseCode(res)) {
-                                    // console.log('***',userData);
+                                    console.log('***',res.data);
                                     props.loginActionHandler.dispatchUserData(res.data);
                                     if (!tenantKey) {
                                         axiosInstance.defaults.headers.common['x-tenant-key'] = res.data.TenantKey;

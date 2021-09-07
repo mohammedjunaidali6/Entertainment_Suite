@@ -9,22 +9,21 @@
 }
 
 .g-i-heading{
-    margin: 35px 0px 25px auto ;
+    margin: 35px 0px 8px auto ;
     height: 15px;
-  color: #5F6165;
-  font-family: Roboto;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 15px;
-
+    color: #5F6165;
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 15px;
 }
 
 .g-i-divider{
     box-sizing: border-box;
-  height: 1px;
-  width: 440px;
-  border: 0.7px solid #D9DFE2;
+    height: 1px;
+    width: 440px;
+    border: 0.7px solid #D9DFE2;
 }
 
 .g-i-edit-block{
@@ -62,9 +61,9 @@
 }
 
 .g-i-discard-text{
-  height: 15px;
+  height: 26px;
   width: 42px;
-  margin: 3px 8px;
+  margin: 5px 8px;
   color: #6A6976;
   font-family: Roboto;
   font-size: 12px;
@@ -74,9 +73,9 @@
 }
 
 .g-i-save-text{
-  height: 15px;
-  width: 27px;
-  margin: 3px 15px;
+  height: 26px;
+  width: 42px;
+  margin: 5px 10px;
   color: #FFFFFF;
   font-family: Roboto;
   font-size: 12px;
@@ -147,16 +146,19 @@
   border: 1px solid #DBDDDE;
   border-radius: 6px;
   background-color: white;
- 
+  padding-left: 10px;
 }
 .g-i-input-details-input{
   box-sizing: border-box;
   margin-bottom: 15px;
+  padding-left: 10px;
   height: 38px;
   width: 210px;
   border: 1px solid #DBDDDE;
   border-radius: 6px;
   background-color: #F2F4F5;
+  font-family: Roboto;
+  font-size: 14px;
 }
 
 .g-i-input-details-input::placeholder{
@@ -167,6 +169,7 @@
   font-size: 14px;
   letter-spacing: 0;
   line-height: 19px;
+  padding-left: 10px;
 }
 .r-p-heading{
   height: 15px;

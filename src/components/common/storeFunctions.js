@@ -7,7 +7,6 @@ import store from "../../store/store";
 
 export const getUserData=(handler)=>{
     var userData = store.getState().LoginReducer.userData;
-    console.log('***',userData);
     if(!userData){
         Auth.currentSession()
         .then(session=>{
@@ -19,8 +18,8 @@ export const getUserData=(handler)=>{
                         handler(user); //update redux store
                     
                         axiosInstance.defaults.headers.common['x-tenant-key'] = payLoad['custom:tenant_key'];
-                        axiosInstance.defaults.headers.common['x-uid'] = user.UserID;
-                        axiosInstance.defaults.headers.common['x-uname'] = user.FirstName+' '+user.LastName;
+                        // axiosInstance.defaults.headers.common['x-uid'] = user.UserID;
+                        // axiosInstance.defaults.headers.common['x-uname'] = user.FirstName+' '+user.LastName;
                     } else {
                         handler(null); //update redux store
                     }
@@ -29,6 +28,6 @@ export const getUserData=(handler)=>{
             handler(null); //update redux store
         })
     } else{
-        handler(null); //update redux store
+        handler(userData); //update redux store
     }
 }
