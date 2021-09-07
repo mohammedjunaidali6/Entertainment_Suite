@@ -1,14 +1,15 @@
-export const IDTY_PROD_HOST_URI = "http://localhost:807/api";
+// export const IDTY_PROD_HOST_URI = "http://localhost:807/api";
 // export const ENGT_PROD_BASE_URI = "http://localhost:815/api";
 // export const REPT_PROD_HOST_URI = 'http://localhost:818/api';
 // export const TENT_PROD_HOST_URI = 'http://localhost:880/api';
 
-// export const IDTY_PROD_HOST_URI = "https://frg6g6wml9.execute-api.ap-south-1.amazonaws.com/Prod/api";
+export const IDTY_PROD_HOST_URI = "https://frg6g6wml9.execute-api.ap-south-1.amazonaws.com/Prod/api";
 export const ENGT_PROD_BASE_URI = 'https://fxojmluid9.execute-api.ap-south-1.amazonaws.com/Prod/api';
 export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.amazonaws.com/Prod/api';
 export const TENT_PROD_HOST_URI = 'https://i5dwhd96xi.execute-api.ap-south-1.amazonaws.com/Prod/api';
-export const SOMETHING_WENT_WRONG='Something went wrong';
 
+
+export const SOMETHING_WENT_WRONG='Something went wrong';
 export const EMAIL = 'Email'
 export const DEFAULT_FILTER_DAYS = 7;
 export const DEFAULT_FILTER_MONTHS = 2;
@@ -49,7 +50,6 @@ export const ENGAGEMENTS_BY_ID = '/engt/engagementbyid?engagement_id=';
 export const ENGAGEMENTS_DETAILS_BY_ID = '/engt/engagementdetailsbyid?engagement_id=';
 export const ENGAGEMENT_UPDATE_STATUS = '/engt/updateengagementstatus?engagement_id=';
 export const ENGAGEMENT_BY_STATUS_ID = '/engt/engagementsbystatus?engagement_status_id=';
-
 export const JOURNEYS = '/engt/AllJourneys'
 export const JOURNEY_TASKS = '/engt/journeyTasks'
 export const ADD_JOURNEY_DETAILS = '/engt/addjourneydetails';
@@ -65,3 +65,7 @@ export const MONTH_WISE_ACTIVE_ENGAGED_USERS = '/rept/monthWiseActiveAndEngagedU
 export const CONSOLIDATED_BRAND_HEALTH = '/rept/conslidatedBrandHealth';
 export const CONSOLIDATED_INCREMENTAL_SALES = '/rept/consolidatedIncrementalSales';
 export const DAY_WISE_BRAND_HEALTH_DATA = '/rept/dayWiseBrandHealthData';
+
+export const SETTINGS_TEMPLATE='/tenm/settingsTemplate';
+export const GET_TENANT_SETTINGS='/tenm/getTenantSettings';
+export const SAVE_TENANT_SETTINGS='/tenm/saveTenantSettings';

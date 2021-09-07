@@ -16,6 +16,7 @@ import awsconfig from '../../aws-exports';
 import { useEffect } from 'react';
 import createNotification from '../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import { BsArrowRepeat } from 'react-icons/bs';
 Amplify.configure(awsconfig);
 
 function Copyright() {
@@ -52,6 +53,7 @@ export default function ForgotPassword(props) {
   const classes = useStyles();
   const { REACT_APP_RECAPTCHA_SITE_KEY } = process.env;
   const [forgotPassword, setPassword] = useState({ email: '', code: '', newPassword: '', confirmPassword: '' });
+  const [processing, setProcessing] = useState(false);
   const [enableVerification, setEnableVerification] = useState(false);
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [error, setError] = useState('')
@@ -72,14 +74,17 @@ export default function ForgotPassword(props) {
   const onSendVerificationCode = () => {
     // Send confirmation code to user's email
     if (validator.isEmail(forgotPassword.email)) {
+      setProcessing(true);
       Auth.forgotPassword(forgotPassword.email)
         .then(data => {
           setEnableVerification(true);
           createNotification('info','You will receive a Code if you are a registered user.')
+          setProcessing(false);
         })
         .catch(err => {
           console.log('**', err)
-          createNotification('error',err)
+          createNotification('error',err.message)
+          setProcessing(false);
         });
     } else {
       setError({ ...error, email: 'Email is not valid. Enter a valid email' })
@@ -101,8 +106,6 @@ export default function ForgotPassword(props) {
     }
     if(e.target.value.length<=100){
       setPassword({ ...forgotPassword, newPassword: e.target.value })
-    } else{
-      // setError({ ...error, newPassword:'Password length must be lessthan or equal to 100' });
     }
   }
   const onResetPassword = e => {
@@ -110,13 +113,18 @@ export default function ForgotPassword(props) {
       setError({ ...error, confirmPassword: 'Confirm password is not matching with New password.' });
     } else {
       // Collect confirmation code and new password, then
+      setProcessing(true);
       Auth.forgotPasswordSubmit(forgotPassword.email, forgotPassword.code, forgotPassword.newPassword)
         .then(data => {
           createNotification('success','Password is changed succesfully')
-          props.history.push('/login');
+          setTimeout(()=>{
+            props.history.push('/login');
+            setProcessing(false);
+          },5000)
         })
         .catch(err => {
           createNotification('error',err.message)
+          setProcessing(false);
         });
     }
     e.preventDefault();
@@ -155,8 +163,6 @@ export default function ForgotPassword(props) {
                     if(e.target.value.length<=100){
                       setPassword({ ...forgotPassword, email: e.target.value });
                       setError({ ...error, email: '' });
-                    } else{
-                      // setError({ ...error, email: 'Maximum Email length is reached' });
                     }
                   }}
                 />
@@ -165,9 +171,12 @@ export default function ForgotPassword(props) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    className={classes.submit}
+                    className={`${classes.submit} LoaderButton`}
                     onClick={onSendVerificationCode}
-                  >Send Verification Code
+                    disabled={processing}
+                  >
+                    {processing && <BsArrowRepeat className="spinning" />}
+                    Send Verification Code
                   </Button>
                   :
                   <>
@@ -206,8 +215,6 @@ export default function ForgotPassword(props) {
                         if(e.target.value.length<=100){
                           setPassword({ ...forgotPassword, confirmPassword: e.target.value });
                           setError({ ...error, confirmPassword: '' })
-                        } else{
-                          // setError({ ...error, confirmPassword: 'Maximum Password length is reached' });
                         }
                       }}
                     />
@@ -215,9 +222,12 @@ export default function ForgotPassword(props) {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      className={classes.submit}
+                      className={`${classes.submit} LoaderButton`}
                       onClick={onResetPassword}
-                    >Reset Password
+                      disabled={processing}
+                    >
+                      {processing && <BsArrowRepeat className="spinning" />}
+                      Reset Password
                     </Button>
                   </>
                 }
@@ -231,9 +241,7 @@ export default function ForgotPassword(props) {
               expiredCallback={onExpireCaptcha}
             />
             <Link href='/login' style={{ fontSize: '10px' }}>&larr; SignIn</Link>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
+            <Box mt={5}><Copyright /></Box>
           </Container>
         </div>
       </div>

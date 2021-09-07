@@ -6,7 +6,7 @@ import email_config_src from '../../../assets/img/Email_Configurations.svg';
 import { containerHeightCalcFn } from '../../common/global';
 import './propertySettings.css';
 import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
-import { SOMETHING_WENT_WRONG, TENT_PROD_HOST_URI } from '../../../api/apiConstants';
+import { GET_TENANT_SETTINGS, SAVE_TENANT_SETTINGS, SETTINGS_TEMPLATE, SOMETHING_WENT_WRONG, TENT_PROD_HOST_URI } from '../../../api/apiConstants';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import createNotification from '../../common/reactNotification';
 import { makeStyles } from '@material-ui/core/styles';
@@ -202,7 +202,7 @@ export default function PropertySettings(props) {
     const saveTenantSettings=(data)=>{
         console.log('***',data);
         handleLoader(true);
-        postAuthAndData(`${TENT_PROD_HOST_URI}/tenm/saveTenantSettings`,data,history)
+        postAuthAndData(`${TENT_PROD_HOST_URI}${SAVE_TENANT_SETTINGS}`,data,history)
         .then(res=>{
             if(handleResponseCode(res)){
                 createNotification('success','Configuration Saved Succesfully');
@@ -215,7 +215,7 @@ export default function PropertySettings(props) {
 
     useEffect(()=>{
         handleLoader(true);
-        getAuthAndData(`${TENT_PROD_HOST_URI}/tenm/settingsTemplate`)
+        getAuthAndData(`${TENT_PROD_HOST_URI}${SETTINGS_TEMPLATE}`)
         .then(res=>{
             if(handleResponseCode(res)){
                 // console.log('***',res.data);
@@ -224,7 +224,7 @@ export default function PropertySettings(props) {
             }
         })
 
-        getAuthAndData(`${TENT_PROD_HOST_URI}/tenm/getTenantSettings`)
+        getAuthAndData(`${TENT_PROD_HOST_URI}${GET_TENANT_SETTINGS}`)
         .then(res=>{
             if(handleResponseCode(res)){
                 // console.log('***',res.data);
@@ -332,6 +332,7 @@ export default function PropertySettings(props) {
                                         {identitySecondaryGroups.Identity.map(obj=>
                                             <TextField 
                                                 id={obj.settings_template_id}
+                                                className='settings-text-box'
                                                 name={obj.key_name} 
                                                 label={obj.key_name_display}
                                                 variant="outlined" 

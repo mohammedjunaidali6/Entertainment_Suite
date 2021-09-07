@@ -13,7 +13,7 @@
     padding-left: 24px;
 }
 #settings-container input[type="text"], #settings-container input[type="password"], #settings-container select {
-    padding: 0 16px;
+    padding: 12px 10px 12px 10px;
     opacity: 0.5;
     color: #5F6165;
     font-size: 14px;
