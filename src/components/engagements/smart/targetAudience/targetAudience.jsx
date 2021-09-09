@@ -198,20 +198,18 @@ export default function TargetAudience(props) {
                 {/* <Checkbox checked={purchaseRuleEnable} onChange={e=>setPurchaseRuleEnable(e.target.checked)} defaultChecked color="primary" inputProps={{ 'aria-label': 'secondary checkbox' }}/> */}
             </div>
 
-            <div className="w-100 float-left clearfix c-e-target-p-rule-opt">
+            <div className={`w-100 float-left clearfix c-e-target-p-rule-opt ${purchaseRuleEnable?'':'disable-purchase-rule'}`}>
                 <Select 
                     options={rule1options} 
                     value={rule1} 
                     onChange={rule1Change} 
                     className="w-20 p-r-10 float-left clearfix"
-                    disabled={!purchaseRuleEnable}
                 />
                 <Select 
                     options={rule2options} 
                     value={rule2} 
                     onChange={rule2Change} 
                     className="w-22 p-r-10 float-left clearfix" 
-                    disabled={!purchaseRuleEnable}
                 />
                 <div className="w-15 m-r-10 float-left clearfix">
                     <div className="w-30 float-left clearfix p-rule-value-left">
@@ -220,7 +218,6 @@ export default function TargetAudience(props) {
                     <div className="w-70 float-left clearfix p-rule-value-right">
                         <input 
                             type="number"
-                            disabled={!purchaseRuleEnable}
                             value={purchaseValue}
                             onChange={rule3Change}
                             className='p-rule-input'
@@ -234,7 +231,6 @@ export default function TargetAudience(props) {
                     <input 
                         type="number"
                         id="t-a-r-5"
-                        disabled={!purchaseRuleEnable}
                         value={durationNum}
                         onChange={rule5Change}
                         max={90}
@@ -247,7 +243,6 @@ export default function TargetAudience(props) {
                     value={daysType} 
                     onChange={rule6Change} 
                     className="w-10 p-r-10 float-left clearfix" 
-                    disabled={!purchaseRuleEnable}
                 />
             </div>
         </div>

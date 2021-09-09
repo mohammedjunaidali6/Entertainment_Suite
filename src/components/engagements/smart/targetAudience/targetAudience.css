@@ -237,6 +237,10 @@
     justify-content: center;
     align-items: center;
 }
+.disable-purchase-rule{
+    opacity: 0.4;
+    pointer-events: none;
+}
 .dropdown{
     z-index: 999 !important;
     position: fixed;
