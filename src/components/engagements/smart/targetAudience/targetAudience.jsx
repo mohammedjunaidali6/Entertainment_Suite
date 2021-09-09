@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
+import Checkbox from '@material-ui/core/Checkbox';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
 import { getAuthAndData} from '../../../../api/ApiHelper';
 import { CUSTOMERS_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import BasicTreeMap from '../../../common/map/treemap';
-import { useHistory } from 'react-router-dom';
 import createNotification from '../../../common/reactNotification';
 
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
 const rule1options = [
     { value: 'Has Purchased', label: 'Has Purchased' }
 ]
@@ -33,6 +29,7 @@ const DaysTypeOptions = [
 export default function TargetAudience(props) {
     var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
+    console.log('***',props.props);
     const [customerSegments, setCustomerSegments] = useState();
     const [selectedSegment, setSelectedSegment] = useState(targetAudienceData?.targetAudience);
     const [rule1, setRule1] = useState(rule1options[0]);
@@ -41,7 +38,7 @@ export default function TargetAudience(props) {
     const [rule4, setRule4] = useState(rule4options[0]);
     const [durationNum, setDurationNum] = useState(targetAudienceData?.durationNum || "2");
     const [daysType, setDaysType] = useState(targetAudienceData ? { value: targetAudienceData?.daysType, label: targetAudienceData?.daysType } : DaysTypeOptions[0]);
-    const [selectedTABox, setSelectedTABox] = useState("All");
+    const [purchaseRuleEnable, setPurchaseRuleEnable] = useState(targetAudienceData?.purchaseRuleId?true:false);
 
     const rule1Change = (event) => {
         setRule1(event);
@@ -61,9 +58,6 @@ export default function TargetAudience(props) {
     }
     const rule6Change = (event) => {
         setDaysType(event);
-    }
-    function taBoxSelect(val) {
-        setSelectedTABox(val);
     }
 
     const onSegmentSelection = (obj) => {
@@ -197,37 +191,64 @@ export default function TargetAudience(props) {
                     ) : null}
                 </div> */}
             </div>
-            <div className="w-100 float-left clearfix c-e-target-p-rule">
+            <div className="w-100 float-left clearfix c-e-target-p-rule pb-4">
                 <img src={p_rule_src} alt="Purchase Rule" className="mr-1" />
-                Purchase Rule
+                Purchase Rule&nbsp;&nbsp;&nbsp;
+                <input type='checkbox' checked={purchaseRuleEnable} onChange={e=>setPurchaseRuleEnable(e.target.checked)} />
+                {/* <Checkbox checked={purchaseRuleEnable} onChange={e=>setPurchaseRuleEnable(e.target.checked)} defaultChecked color="primary" inputProps={{ 'aria-label': 'secondary checkbox' }}/> */}
             </div>
+
             <div className="w-100 float-left clearfix c-e-target-p-rule-opt">
-                <Select options={rule1options} value={rule1} onChange={rule1Change} className="w-30 p-r-10 float-left clearfix" />
-                <Select options={rule2options} value={rule2} onChange={rule2Change} className="w-12 p-r-10 float-left clearfix" />
+                <Select 
+                    options={rule1options} 
+                    value={rule1} 
+                    onChange={rule1Change} 
+                    className="w-20 p-r-10 float-left clearfix"
+                    disabled={!purchaseRuleEnable}
+                />
+                <Select 
+                    options={rule2options} 
+                    value={rule2} 
+                    onChange={rule2Change} 
+                    className="w-22 p-r-10 float-left clearfix" 
+                    disabled={!purchaseRuleEnable}
+                />
                 <div className="w-15 m-r-10 float-left clearfix">
-                    <div className="w-30 s-b-left float-left clearfix text-center">
-                        <span className="w-100 s-b-l-txt">$</span>
+                    <div className="w-30 float-left clearfix p-rule-value-left">
+                        <span className="w-100 p-rule-value-txt">$</span>
                     </div>
-                    <div className="w-70 s-b-right float-left clearfix">
-                        <input type="text"
+                    <div className="w-70 float-left clearfix p-rule-value-right">
+                        <input 
+                            type="number"
+                            disabled={!purchaseRuleEnable}
                             value={purchaseValue}
                             onChange={rule3Change}
-                            className='searchBar'
+                            className='p-rule-input'
                             placeholder="Value"
+                            maxLength={6}
                         />
                     </div>
                 </div>
-                <Select options={rule4options} value={rule4} className="w-10 p-r-10 float-left clearfix" />
-                <div className="w-5 m-r-10 float-left clearfix s-b-only-search t-a-r-5">
-                    <input type="number" id="t-a-r-5"
+                <Select options={rule4options} value={rule4} className="w-10 p-r-10 float-left clearfix "/>
+                <div className="w-5 m-r-10 float-left clearfix t-a-r-5 p-rule-duration">
+                    <input 
+                        type="number"
+                        id="t-a-r-5"
+                        disabled={!purchaseRuleEnable}
                         value={durationNum}
                         onChange={rule5Change}
-                        max={99}
+                        max={90}
                         min={1}
-                        className='searchBar'
+                        className='p-rule-input'
                     />
                 </div>
-                <Select options={DaysTypeOptions} value={daysType} onChange={rule6Change} className="w-10 p-r-10 float-left clearfix" />
+                <Select 
+                    options={DaysTypeOptions} 
+                    value={daysType} 
+                    onChange={rule6Change} 
+                    className="w-10 p-r-10 float-left clearfix" 
+                    disabled={!purchaseRuleEnable}
+                />
             </div>
         </div>
     )

@@ -95,8 +95,7 @@
     color: #5F6165;
     font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0;
-    line-height: 15px;
+    font-family: Roboto;
     margin: 30px 0 16px 6px;
     text-transform: uppercase;
 }
@@ -109,8 +108,9 @@
 }
 .c-e-target-p-rule-opt {
     color: #5F6165;
-    font-family: "Nunito Sans";
+    font-family: "Roboto";
     font-size: 12px;
+    font-family: Roboto;
     font-weight: 600;
     letter-spacing: 0;
     line-height: 15px;
@@ -139,7 +139,7 @@
 .c-r-t-box-per {
     height: 21px;
     color: #FFFFFF;
-    font-family: Lato;
+    font-family: Roboto;
     font-size: 17px;
     letter-spacing: 0;
     line-height: 28px;
@@ -160,12 +160,12 @@
     height: 30px;
     border: 1px solid #DBDDDE;
     border-radius: 15px;
-    background-color: #F2F4F5;
+    background-color: #FFFFFF;
 }
 #t-a-r-5 {
-    opacity: 0.5;
-    color: #5F6165;
-    font-size: 12px;
+    opacity: 0.4;
+    color: #000000;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 15px;
@@ -179,7 +179,65 @@
 .css-tlfecz-indicatorContainer {
     padding: 4px !important;
 }
-
-.font12px{
-    font-size: '12px';
+.p-rule-input{
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #DBDDDE;
+    border-radius: 14.5px;
+    background-color: #FFFFFF;
+    opacity: 0.4;
+    color: #000000;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    padding-left: 2px;
+    text-align: center;
+}
+.p-rule-value-left {
+    box-sizing: border-box;
+    height: 36px;
+    border: 1px solid #DBDDDE;
+    border-radius: 19.5px 0 0 19.5px;
+    background-color: #F2F4F5;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: Roboto;
+}
+.p-rule-value-right {
+    box-sizing: border-box;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #DBDDDE;
+    border-radius: 0 19.5px 19.5px 0;
+    background-color: #FFFFFF;
+    font-family: Roboto;
+}
+.p-rule-value-txt {
+    height: 36px;
+    color: #808A8F;
+    font-size: 14px;
+    font-family: Roboto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.p-rule-duration {
+    height: 36px;
+    font-family: Roboto;
+    box-sizing: border-box;
+    border: 1px solid #DBDDDE;
+    border-radius: 14.5px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dropdown{
+    z-index: 999 !important;
+    position: fixed;
 }
