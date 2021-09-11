@@ -258,7 +258,7 @@ export default function PropertySettings(props) {
                     }
                     smtp.push(obj);
                 })
-                commerceSecondGroups?.Loyality?.map(comm=>{
+                commerceSecondGroups?.Commerce?.map(comm=>{
                     let obj={
                         KeyName:comm.key_name,
                         KeyValue:comm.key_value,
@@ -266,10 +266,6 @@ export default function PropertySettings(props) {
                     }
                     commerce.push(obj);
                 })
-                console.log('***',idty);
-                console.log('***',gmail);
-                console.log('***',smtp);
-                console.log('***',commerce);
                 setIdentityConfig({...identityConfig,config:idty});
                 setGmailConfig({...gmailConfig,config:gmail});
                 setSmtpConfig({...smtpConfig,config:smtp});
@@ -403,9 +399,9 @@ export default function PropertySettings(props) {
                         <div className='p-s-headers disp-inline-block'>Commerce Configuration</div>
                             <form className={classes.root} noValidate autoComplete="off">
                             <div style={{fontSize:'12px'}}><b>Commerce</b></div>
-                                {commerceSecondaryGroups?.Loyality&&commerceSecondaryGroups.Loyality.length>0?
+                                {commerceSecondaryGroups?.Commerce&&commerceSecondaryGroups.Commerce.length>0?
                                     <>
-                                        {commerceSecondaryGroups.Loyality.map(obj=>
+                                        {commerceSecondaryGroups.Commerce.map(obj=>
                                         <TextField
                                             id={obj.settings_template_id}
                                             name={obj.key_name} 
