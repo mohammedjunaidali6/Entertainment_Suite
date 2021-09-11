@@ -107,7 +107,7 @@ const arrayRewards = [
 export default function RewardsAndBudget(props) {
     var history = useHistory();
     const rewardsAndBudgetData = props.props.rewardsAndBudget;
-    // console.log('**',props)
+    console.log('**',rewardsAndBudgetData)
     const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards || arrayRewards);
     const [rewardTypes, setRewardTypes] = useState([]);
     const [rewardNames, setRewardNames] = useState([]);
@@ -174,9 +174,11 @@ export default function RewardsAndBudget(props) {
                     obj.rewardName = res.data[0].reward_name;
                     obj.rewardType = e
                     obj.id = res.data[0].reward_master_id;
-                    obj.tooltip.reward_code=res.data[0].reward_code;
-                    obj.tooltip.description=res.data[0].description;
-                    obj.tooltip.expiry_date=res.data[0].expiry_date;
+                    obj.tooltip={
+                        reward_code:res.data[0].reward_code,
+                        description:res.data[0].description,
+                        expiry_date:res.data[0].expiry_date,
+                    }
                     var arr = [...rewardRowsData];
                     arr.splice(_.findIndex(arr, obj), 1, obj);
                     setSelectedRewardName({
@@ -239,7 +241,6 @@ export default function RewardsAndBudget(props) {
     const fetchAllRewards=()=>{
         getAuthAndData(`/engt/allRewards?reward_type_id=2`, history)
         .then(res=>{
-            console.log('***',res);
             if (handleResponseCode(res)) {
                 setRewardMaster(res.data);
                 var rewardNameOptions = [];
@@ -327,9 +328,9 @@ export default function RewardsAndBudget(props) {
                                         <HtmlTooltip
                                             title={
                                                 <Fragment>
-                                                    <p>{`Coupon code: ${obj.tooltip.reward_code || ''}`}</p>
-                                                    <p>{`Description: ${obj.tooltip.description || ''}`}</p>
-                                                    <p>{`Expiry Date: ${new Date(obj.tooltip.expiry_date).toLocaleDateString()}`}</p>
+                                                    <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
+                                                    <p>{`Description: ${obj.tooltip?.description || ''}`}</p>
+                                                    <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
                                                 </Fragment>
                                             }
                                             placement='top'

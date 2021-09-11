@@ -32,6 +32,7 @@ export default function EngagementsSmart(props) {
     const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineSegment, setDefineSegment] = useState(null);
+    const [definePurchaseRule, setDefinePurchaseRule] = useState(null);
     const [defineJourney, setDefineJourney] = useState(null);
     const [defineRewards, setDefineRewards] = useState(null);
 
@@ -125,7 +126,11 @@ export default function EngagementsSmart(props) {
             }
         } else if (step === 'targetAudience') {
             if(defineSegment){
-                setStep('defineJourney');
+                if((definePurchaseRule.enable&&definePurchaseRule.value)||!definePurchaseRule.enable){
+                    setStep('defineJourney');
+                }else{
+                createNotification('info','Please Enter Purchase value');
+                }
             } else {
                 createNotification('info','Please Select Customer Segment');
             }
@@ -184,7 +189,7 @@ export default function EngagementsSmart(props) {
                 let daysType = targetAudienceData.daysType;
                 let durationNum = parseInt(targetAudienceData.durationNum);
                 let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
-                engagementObj.PurchaseRule.NumberOfDays = days;
+                engagementObj.PurchaseRule.LastNumberOfDays = days;
                 engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId || 0
             }
 
@@ -238,7 +243,6 @@ export default function EngagementsSmart(props) {
     const getDefineJourney = (data) => {
         setDefineJourney(data);
     }
-
 
     const fetchEngagements = () => {
         try {
@@ -303,6 +307,7 @@ export default function EngagementsSmart(props) {
         });
     }
     const onEditClick = (engmt) => {
+        console.log('***',engmt)
         handleLoader(true);
         getAuthAndData(`${ENGAGEMENTS_DETAILS_BY_ID}${engmt.EngagementID}`, history)
             .then(res => {
@@ -324,8 +329,8 @@ export default function EngagementsSmart(props) {
                     let targetAudience = {
                         targetAudience: engagements.CustomerSegmentID,
                         purchaseRuleId: engagements.PurchaseRule?.PurchaseRuleID,
-                        purchaseValue: engagements.PurchaseRule?.Value,
-                        durationNum: engagements.PurchaseRule?.NumberOfDays,
+                        purchaseValue: engagements.PurchaseRule?.PurchaseValue,
+                        durationNum: engagements.PurchaseRule?.LastNumberOfDays,
                         daysType: 'days'
                     }
                     let journeyObj = {
@@ -485,7 +490,7 @@ export default function EngagementsSmart(props) {
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
                             {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
-                                step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} handleLoader={(bool) => handleLoader(bool)} /> :
+                                step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} setDefinePurchaseRule={data=>setDefinePurchaseRule(data)} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
                                         step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
                                             step === 'review' ? <Review setStep={txt => setStep(txt)} /> :

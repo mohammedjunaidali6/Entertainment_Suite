@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
 import edit_src from '../../../../assets/img/edit.svg'
 import './review.css';
 import store from '../../../../../src/store/store';
 
-const tempArray = [
-    { id: 1, winnerPosition: 'First Prize', rewardType: 'Point Coupons', noOfAwards: 500, probability: '20%', displayName: 'Get 500 Points', rewards: 5000 },
-    { id: 2, winnerPosition: 'Second Prize', rewardType: 'Point Coupons', noOfAwards: 300, probability: '20%', displayName: 'Get 300 Points', rewards: 3000 },
-    { id: 3, winnerPosition: 'Third Prize', rewardType: 'Coupons', noOfAwards: 200, probability: '20%', displayName: 'Get 200 Points', rewards: 5000 },
-    { id: 4, winnerPosition: 'Fourth Prize', rewardType: 'Point Coupons', noOfAwards: 100, probability: '20%', displayName: 'Get 100 Points', rewards: 1000 },
-    { id: 5, winnerPosition: 'Fifth Prize', rewardType: 'Coupons', noOfAwards: 50, probability: '20%', displayName: 'Get 50 Points', rewards: 2000 },
-]
 
 export default function Review(props) {
     const engagement = store.getState().EngagementsSmartReducer;
@@ -19,6 +11,7 @@ export default function Review(props) {
     const goalsData = engagement.setGoals;
     const journeyData = engagement.journeyBox;
     const rewardsAndBudgetData = engagement.rewardsAndBudget;
+
 
     return (
         <div id="review-container" >
@@ -37,7 +30,9 @@ export default function Review(props) {
                     <div className="c-e-r-left-t-a-box-i pl-2">{targetAudience?.targetAudience?.name}</div>
                     {/* <div className="c-e-r-left-t-a-box-i"></div> */}
                     <div className="c-e-r-left-t-a-box-h">Rule</div>
-                    <div className="c-e-r-left-t-a-box-i"></div>
+                    <div className="c-e-r-left-t-a-box-i">
+                        {targetAudience.purchaseValue&&`Purchase value should be greaterthan or equal to ${targetAudience.purchaseValue} in last ${targetAudience.durationNum} Days`}
+                    </div>
                 </div>
 
                 <div className="c-e-r-left-h">

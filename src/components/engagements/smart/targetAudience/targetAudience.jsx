@@ -29,7 +29,7 @@ const DaysTypeOptions = [
 export default function TargetAudience(props) {
     var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
-    console.log('***',props.props);
+    console.log('***',targetAudienceData);
     const [customerSegments, setCustomerSegments] = useState();
     const [selectedSegment, setSelectedSegment] = useState(targetAudienceData?.targetAudience);
     const [rule1, setRule1] = useState(rule1options[0]);
@@ -38,7 +38,7 @@ export default function TargetAudience(props) {
     const [rule4, setRule4] = useState(rule4options[0]);
     const [durationNum, setDurationNum] = useState(targetAudienceData?.durationNum || "2");
     const [daysType, setDaysType] = useState(targetAudienceData ? { value: targetAudienceData?.daysType, label: targetAudienceData?.daysType } : DaysTypeOptions[0]);
-    const [purchaseRuleEnable, setPurchaseRuleEnable] = useState(targetAudienceData?.purchaseRuleId?true:false);
+    const [purchaseRuleEnable, setPurchaseRuleEnable] = useState(targetAudienceData?.purchaseValue||targetAudienceData?.purchaseRuleId?true:false);
 
     const rule1Change = (event) => {
         setRule1(event);
@@ -48,6 +48,7 @@ export default function TargetAudience(props) {
     }
     const rule3Change = (event) => {
         setPurchaseValue(event.target.value);
+        props.setDefinePurchaseRule({enable:true,value:event.target.value})
     }
     const rule4Change = (event) => {
         setRule4(event);
@@ -64,7 +65,14 @@ export default function TargetAudience(props) {
         setSelectedSegment(obj.data);
         props.setDefineSegment(obj.data);
     }
-
+const onCheckBox=e=>{
+    setPurchaseRuleEnable(e.target.checked);
+    if(!e.target.checked){
+        setPurchaseValue();
+        setDurationNum();
+        props.setDefinePurchaseRule({enable:false,value:null});
+    }
+}
 
     const fetchCustomerSegments = () => {
         try {
@@ -101,6 +109,7 @@ export default function TargetAudience(props) {
 
     useEffect(() => {
         fetchCustomerSegments();
+        props.setDefinePurchaseRule({enable:true,value:targetAudienceData?.purchaseValue})
     }, []);
     useEffect(() => {
         return () => {
@@ -113,7 +122,7 @@ export default function TargetAudience(props) {
             };
             props.props.engagementsSmartActionHandler.dispatchTargetAudienceData(targetAudience);
         }
-    }, [selectedSegment, purchaseValue, durationNum, daysType]);
+    }, [selectedSegment, purchaseValue, durationNum, daysType,purchaseRuleEnable]);
 
     return (
         <div id="target-audience-container" className="c-e-target-sec w-100 float-left clearfix">
@@ -194,7 +203,7 @@ export default function TargetAudience(props) {
             <div className="w-100 float-left clearfix c-e-target-p-rule pb-4">
                 <img src={p_rule_src} alt="Purchase Rule" className="mr-1" />
                 Purchase Rule&nbsp;&nbsp;&nbsp;
-                <input type='checkbox' checked={purchaseRuleEnable} onChange={e=>setPurchaseRuleEnable(e.target.checked)} />
+                <input type='checkbox' checked={purchaseRuleEnable} onChange={onCheckBox} />
                 {/* <Checkbox checked={purchaseRuleEnable} onChange={e=>setPurchaseRuleEnable(e.target.checked)} defaultChecked color="primary" inputProps={{ 'aria-label': 'secondary checkbox' }}/> */}
             </div>
 
