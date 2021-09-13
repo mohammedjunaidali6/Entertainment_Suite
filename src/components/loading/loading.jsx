@@ -27,10 +27,10 @@ export default function Loading(props) {
   }, []);
 
   useEffect(() => {
-    var email = localStorage.getItem(EMAIL);
     var postObj = {
       NumberOfDays: DEFAULT_FILTER_DAYS,
     }
+    debugger;
     postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
       .then(res => {
         if (handleResponseCode(res)) {

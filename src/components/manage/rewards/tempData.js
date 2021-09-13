@@ -10,113 +10,58 @@ const targetCategoryStyle= {
     borderRadius: '4px',
     backgroundColor: '#FFFFFF',
     textAlign:'center',
-    float: 'left'
+    float: 'left',
+    fontSize:'10px'
 }
 
 export const columns =[
     {
         name:"ID",
-        selector:"id"
+        width:'5%',
+        selector:"RewardMasterId"
     },
     {
         name:"Coupon Name ",
-        selector:"couponName"
+        width:'20%',
+        selector:"RewardName"
     },
     {
         name:"Coupon Code ",
-        selector:"couponCode"
+        width:'15%',
+        selector:"RewardCode"
     },
     {
         name:"Category ",
-        width: "200px",
-        cell:row =><div>
-            <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.category[0]}</div>
-            <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.category[1]}</div>
-            {row.category && row.category.length > 2 ? (
-                <CustomTooltip tooltipText={row.category[2]+" , "+ row.category[3]+" , "+ row.category[4]}>
-                    <div className='clearfix c-center' style={targetCategoryStyle}>{row.category.length - 2}+</div>
-                </CustomTooltip>
-                 ):null
-            }
-            
+        width: '20%',
+        cell:row =>
+            <div>
+                <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.Categories.length>0&&row.Categories[0].CategoryName}</div>
+                <div style={targetCategoryStyle} className='clearfix c-center mr-1'>{row.Categories.length>1&&row.Categories[1].CategoryName}</div>
+                {row.Categories && row.Categories.length > 2 &&
+                    <CustomTooltip tooltipText={row.Categories[2].CategoryName+" , "+ row.Categories.length>3&&row.Categories[3].CategoryName+" , "+ row.Categories.length>4&&row.Categories[4].CategoryName}>
+                        <div className='clearfix c-center' style={targetCategoryStyle}>{row.Categories.length - 2}+</div>
+                    </CustomTooltip>
+                }
             </div>
     },
     {
-        name:"Usage/Coustomer",
-        selector:"usage"
+        name:"Usage",
+        width:'10%',
+        selector:"PerPersonUsage"
     },
     {
         name:"Amount",
-        selector:"amount"
-    },
-    {
-        name:"Added On",
-        selector:"addedOn"
+        width:'10%',
+        selector:"DiscountValue"
     },
     {
         name:"Expiring On",
-        selector:"expiringOn"
+        width:'15%',
+        selector:"expiryDate"
     },
     {
         name:" ",
+        width:'5%',
         cell: row=> <ActionMenu />
-    }
-]
-    
-export const data =[
-    {
-        id:"677823790",
-        couponName:"Point Coupons",
-        couponCode:"NEWYEAR1000",
-        category:["Shoes", "Dress"],
-        usage:"1",
-        amount:"2000",
-        addedOn:"05/02/21",
-        expiringOn:"05/02/21",
-
-    },
-    {
-        id:"377823790",
-        couponName:"Point Coupons",
-        couponCode:"NEWYEAR1000",
-        category:["Shoes", "Dress","Watch", "Bags", "Stationary Items"],
-        usage:"2",
-        amount:"5000",
-        addedOn:"05/02/21",
-        expiringOn: "05/02/21",
-
-    },
-    {
-        id:"377853790",
-        couponName:"Coupons",
-        couponCode:"NEWYEAR1000",
-        category:["Shoes", "Dress","Watch", "Bags", "Stationary Items"],
-        usage:"1",
-        amount:"10000",
-        addedOn:"05/02/21",
-        expiringOn: "05/02/21",
-
-    },
-    {
-        id:"345823790",
-        couponName:"Coupons",
-        couponCode:"NEWYEAR1000",
-        category:["Shoes", "Dress","Watch", "Bags", "Stationary Items"],
-        usage:"2",
-        amount:"7500",
-        addedOn:"05/02/21",
-        expiringOn: "05/02/21",
-
-    },
-    {
-        id:"434523790",
-        couponName:"Point Coupons",
-        couponCode:"NEWYEAR1000",
-        category:["Shoes", "Dress","Watch", "Bags", "Stationary Items"],
-        usage:"1",
-        amount:"3000",
-        addedOn:"05/02/21",
-        expiringOn: "05/02/21",
-
     }
 ]

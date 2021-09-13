@@ -56,6 +56,10 @@ export const ADD_JOURNEY_DETAILS = '/engt/addjourneydetails';
 export const UPDATE_JOURNEY_DETAILS = '/engt/updatejourneydetails';
 export const DELETE_JOURNEY_DETAILS = '/engt/deletejourney?journey_id=';
 export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName?journey_name=';
+export const MASTER_REWARDS='/engt/masterRewards';
+export const CREATE_REWARD_MASTER='/engt/CreateRewardMaster';
+export const UPDATE_REWARD_MATER='/engt/updateRewardMaster';
+export const TENANT_CATEGORIES='/engt/tenantCategories';
 
 
 export const CONSOLIDATION_SUMMARY_BY_FILTER = '/rept/consolidationSummaryByFilter';

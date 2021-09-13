@@ -1,9 +1,9 @@
-import { ACTION_TYPE} from '../../../constants/actionTypes';
+import { SET_MASTER_REWARDS} from '../../../constants/actionTypes';
 
-export function dispatchData(data) {
+export function dispatchMasterRewards(data) {
   return (dispatch) => {
     dispatch({
-      type: ACTION_TYPE,
+      type: SET_MASTER_REWARDS,
       payload: data,
     });
   };

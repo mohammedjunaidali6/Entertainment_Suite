@@ -13,6 +13,8 @@ export const E_S_SET_TARGET_AUDIENCE = 'E_S_SET_TARGET_AUDIENCE';
 export const E_S_DEFINE_JOURNEY = 'E_S_DEFINE_JOURNEY';
 export const E_S_SET_JOURNEY_BOX = 'E_S_SET_JOURNEY_BOX';
 export const E_S_SET_REWARDS_AND_BUDGET = "E_S_SET_REWARDS_AND_BUDGET";
+export const SET_MASTER_REWARDS="SET_MASTER_REWARDS";
+
 // Application URL's 
 export const ACTION_TYPE_URL = '';
 
