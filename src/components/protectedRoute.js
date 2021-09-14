@@ -14,7 +14,6 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
 
   async function onLoad() {
     try {
-      debugger;
       var session=await Auth.currentSession();
       console.log('***',session);
       setIsAuthenticated(true);

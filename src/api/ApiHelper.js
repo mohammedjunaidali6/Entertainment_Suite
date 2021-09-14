@@ -63,7 +63,6 @@ function handleResponse(response) {
     if (response.status == 200 && response.data?.message == "SUCCESS") {
         return response.data;
     } else {
-        console.error(`*** `, response.data?.data);
         var errResponse = {
             data:{
                 code:-1

@@ -191,7 +191,6 @@ export default function RewardsAndBudget(props) {
             })
     }
     const onRewardNameChange=(e,i)=>{
-        debugger;
         var obj=rewardMaster.find(r=>r.reward_master_id==e.value);
         var objData=rewardRowsData[i];
         objData.tooltip.reward_code=obj.reward_code;

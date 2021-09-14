@@ -59,7 +59,8 @@ export const JOURNEYS_BY_SEARCH = '/engt/JourneysByName?journey_name=';
 export const MASTER_REWARDS='/engt/masterRewards';
 export const CREATE_REWARD_MASTER='/engt/CreateRewardMaster';
 export const UPDATE_REWARD_MATER='/engt/updateRewardMaster';
-export const TENANT_CATEGORIES='/engt/tenantCategories';
+export const MASTER_CATEGORIES='/engt/masterCategories';
+export const UPDATE_REWARD_MASTER_STATUS_BY_ID='/engt/updateRewardStatus?reward_master_id=';
 
 
 export const CONSOLIDATION_SUMMARY_BY_FILTER = '/rept/consolidationSummaryByFilter';
