@@ -24,7 +24,7 @@ import {
     CONSOLIDATED_INCREMENTAL_SALES,
     CONSOLIDATED_BRAND_HEALTH,
     DAY_WISE_BRAND_HEALTH_DATA,
-    SOMETHING_WENT_WRONG
+    SOMETHING_WENT_WRONG,
 } from '../../api/apiConstants';
 import  DateFilter from '../common/dateFilter';
 import createNotification from '../common/reactNotification';
@@ -261,8 +261,8 @@ export default function Dashboard(props) {
     }, []);
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG +' in Dashboard');
             return false;
         }else{
             return true;

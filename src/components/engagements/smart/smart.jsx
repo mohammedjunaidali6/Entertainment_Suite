@@ -268,7 +268,6 @@ export default function EngagementsSmart(props) {
                     props.engagementsSmartActionHandler.dispatchEngagementsData(res.data);
                 } else {
                     props.engagementsSmartActionHandler.dispatchEngagementsData();
-                    createNotification('info', 'There are no Engagements found');
                 }
                 handleLoader(false);
             })
@@ -396,8 +395,8 @@ export default function EngagementsSmart(props) {
     }
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            // createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+ ' in Smart Engagements');
             return false;
         }else{
             return true;

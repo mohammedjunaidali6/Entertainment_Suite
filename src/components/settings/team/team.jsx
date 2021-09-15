@@ -17,7 +17,8 @@ import {
     USER_BY_MAIL,
     USER_BY_USERNAME,
     GROUP_ALL,
-    SOMETHING_WENT_WRONG
+    SOMETHING_WENT_WRONG,
+    serverResponse
 } from '../../../api/apiConstants';
 import createNotification from '../../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
@@ -88,8 +89,8 @@ export default function Team(props) {
         props.routeActionHandler.dispatchAlertDialogData(obj);
     }
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+' Teams');
             return false;
         } else {
             return true;
@@ -179,11 +180,8 @@ export default function Team(props) {
         let mail = e.target.value;
         setEmail(mail)
     }
-    const onPhoneNumberChange = e => {
-        let phone = e.target.value;
-        setPhoneNumber(phone)
-    }
     const onGroupSelect = e => {
+        debugger;
         let group = e.target.value;
         setGroup(group);
     }
@@ -223,23 +221,21 @@ export default function Team(props) {
         };
         cognitoISP.adminCreateUser(params, function (err, data) {
             if (err) {
+                //UsernameExistsException
                 createNotification('error', 'Invitation failed');
             } else {
                 createNotification('success', 'Invitation sent succesfully');
                 let postObj = {};
                 postObj.email = email;
-                postObj.mobile_number = phoneNumber;
                 postObj.user_groups = [];
                 postObj.user_groups.push(group);
                 postObj.status = data.User.UserStatus;
-                postObj.message = message;
                 handleLoader(true);
                 postAuthAndData(`${IDTY_PROD_HOST_URI}${INVITE_USER}`, postObj, history)
                     .then(res => {
                         if (handleResponseCode(res)) {
                             setCreateClick(false);
                             setGroup();
-                            setPhoneNumber();
                             setEmail();
                             createNotification('success', 'User Data Saved succesfully');
                         } else {
@@ -263,12 +259,12 @@ export default function Team(props) {
         //Check email existane in User table
         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_BY_MAIL}${email}`, history)
             .then(res => {
-                var responseCode=res.data.code;
+                var responseCode=res.code;
                 if (handleResponseCode(res)) {
-                    if(responseCode===2){
-                        inviteAndSaveUser();
+                    if(responseCode===serverResponse.USER_ALREADY_EXISTS){
+                        createNotification('warning', `User with ${email} already exists.`);
                     }else{
-                        createNotification('info', `${res.email} Email is already exists.`);
+                        inviteAndSaveUser();
                     }
                 } else {
                     createNotification('error', 'Error in Creating User.');
@@ -393,7 +389,7 @@ export default function Team(props) {
                                 <div className='t-m-input disp-inline-block'>
                                     <div className='t-m-input-label'>Role</div>
                                     <select className='t-m-input-field' placeholder="Select" onChange={onGroupSelect}>
-                                        <option value={updateUser && props.roles.find(r=>r.name===updateUser.group)?.group_id}>
+                                        <option value={updateUser ? props.roles.find(r=>r.name===updateUser.group)?.group_id:''}>
                                             {updateUser ? updateUser.group:'Select Role'}
                                         </option>
                                         {props.roles && props.roles.map(obj =>

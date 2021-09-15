@@ -54,8 +54,8 @@ export default function DefineJourney(props) {
     }, []);
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+ 'in Define Journey');
             return false;
         } else {
             return true;

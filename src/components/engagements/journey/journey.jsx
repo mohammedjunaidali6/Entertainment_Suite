@@ -10,8 +10,7 @@ import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
 import './journey.css';
 import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
-import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS, SOMETHING_WENT_WRONG, UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
-import MessageBox from '../../common/MessageBox/MessageBox';
+import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS,SOMETHING_WENT_WRONG,UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
 import { useHistory } from 'react-router-dom';
 import createNotification from '../../common/reactNotification';
 import { NotificationContainer } from 'react-notifications';
@@ -279,8 +278,8 @@ export default function EngagementsJourney(props) {
     }
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+ 'in Journeys');
             return false;
         }else{
             return true;

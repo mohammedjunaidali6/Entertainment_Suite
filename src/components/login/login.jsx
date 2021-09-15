@@ -17,8 +17,8 @@ import Container from '@material-ui/core/Container';
 import validator from 'validator';
 import { Auth } from 'aws-amplify';
 import { axiosInstance } from '../../api/axios-config';
-import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, JWT_TOKEN, SOMETHING_WENT_WRONG, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
-import { getAuthAndData, postAuthAndData, postLoginAPIData } from '../../api/ApiHelper';
+import { DUMM_TENANT_KEY, EMAIL, IDTY_PROD_HOST_URI, serverResponse, SOMETHING_WENT_WRONG, USER_DATA_GROUP_PERMISSIONS } from '../../api/apiConstants';
+import { getAuthAndData } from '../../api/ApiHelper';
 import createNotification from '../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 
@@ -98,6 +98,7 @@ export default function LogIn(props) {
                         setCognitoUser(user);
                         setNewUserSignIn({ ...newUserSignIn, email: logIn.email })
                         setForcePasswordChange(true);
+                        setSignInProcessing(false);
                     } else {
                         var jwtToken = user.signInUserSession.accessToken.jwtToken;
                         props.loginActionHandler.dispatchJwtTokenData(jwtToken);
@@ -111,21 +112,26 @@ export default function LogIn(props) {
                                 setSignInProcessing(false);
                                 if (handleResponseCode(res)) {
                                     console.log('***',res.data);
-                                    props.loginActionHandler.dispatchUserData(res.data);
-                                    if (!tenantKey) {
-                                        axiosInstance.defaults.headers.common['x-tenant-key'] = res.data.TenantKey;
-                                        axiosInstance.defaults.headers.common['x-uid'] = res.data.UserID;
-                                        axiosInstance.defaults.headers.common['x-uname'] = res.data.FirstName+' '+res.data.LastName;
-                                        Auth.currentAuthenticatedUser()
-                                            .then(user => {
-                                                Auth.updateUserAttributes(user, {
-                                                    'custom:tenant_key': res.data.TenantKey,
-                                                }).catch(err => console.error(err));
-                                            }).catch(err => {
-                                                console.error(err);
-                                            });
+                                    if(res.code===serverResponse.USER_EMAIL_NOT_FOUND){
+                                        createNotification('warning','User details not found.')
+                                        Auth.signOut();
+                                    }else{
+                                        props.loginActionHandler.dispatchUserData(res.data);
+                                        if (!tenantKey) {
+                                            axiosInstance.defaults.headers.common['x-tenant-key'] = res.data.TenantKey;
+                                            axiosInstance.defaults.headers.common['x-uid'] = res.data.UserID;
+                                            axiosInstance.defaults.headers.common['x-uname'] = res.data.FirstName+' '+res.data.LastName;
+                                            Auth.currentAuthenticatedUser()
+                                                .then(user => {
+                                                    Auth.updateUserAttributes(user, {
+                                                        'custom:tenant_key': res.data.TenantKey,
+                                                    }).catch(err => console.error(err));
+                                                }).catch(err => {
+                                                    console.error(err);
+                                                });
+                                        }
+                                        props.history.push('/dummy');
                                     }
-                                    props.history.push('/dummy');
                                 }else{
                                     Auth.signOut();
                                 }
@@ -219,8 +225,8 @@ export default function LogIn(props) {
     }
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG +' in Login');
             return false;
         }else{
             return true;

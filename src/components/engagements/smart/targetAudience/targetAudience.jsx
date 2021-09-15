@@ -99,8 +99,8 @@ const onCheckBox=e=>{
         }
     }
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+ 'in Target Audience');
             return false;
         }else{
             return true;

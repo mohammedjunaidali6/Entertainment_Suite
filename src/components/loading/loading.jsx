@@ -32,6 +32,7 @@ export default function Loading(props) {
     }
     postAuthAndData(`${REPT_PROD_HOST_URI}${CONSOLIDATION_SUMMARY_BY_FILTER}`, postObj, props.history)
       .then(res => {
+        debugger;
         if (handleResponseCode(res)) {
           props.dashboardActionHandler.dispatchSummaryTotalsData(res.data);
         }
@@ -39,8 +40,8 @@ export default function Loading(props) {
 
   }, []);
   const handleResponseCode=(resp)=>{
-    if(!resp || resp.data.code===-1){
-        createNotification('error',SOMETHING_WENT_WRONG);
+    if(!resp || resp.code===-1){
+        createNotification('error',SOMETHING_WENT_WRONG +' in Loading');
         return false;
     }else{
         return true;

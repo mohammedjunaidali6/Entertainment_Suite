@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import { CustomDatePickerEL } from "../../common/global";
 import './rewards.css';
 import {getAuthAndData, postAuthAndData} from '../../../api/ApiHelper';
-import {CREATE_REWARD_MASTER, ENGT_PROD_BASE_URI, MASTER_REWARDS, MASTER_CATEGORIES,UPDATE_REWARD_MASTER_STATUS_BY_ID, UPDATE_REWARD_MATER} from '../../../api/apiConstants';
+import {CREATE_REWARD_MASTER, ENGT_PROD_BASE_URI, MASTER_REWARDS, MASTER_CATEGORIES,UPDATE_REWARD_MASTER_STATUS_BY_ID, UPDATE_REWARD_MATER, SOMETHING_WENT_WRONG} from '../../../api/apiConstants';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
 import createNotification from '../../common/reactNotification';
 import Button from '@material-ui/core/Button';
@@ -19,7 +19,7 @@ export default function ManageRewards(props) {
     const [createFlag, setCreateFlag] =useState(false);
     const [updateFlag, setUpdateFlag] =useState();
     const [error, setError] =useState({});
-    const [masterRewards, setMasterRewards] = useState(props.masterRewards||[]);
+    const [masterRewards, setMasterRewards] = useState([]);
     const [categoryTags, setCategoryTags] = useState([]);
     const [selectedCategories,setSelectedCategories]=useState([]);
     const [coupon,setCoupon]=useState({couponType:'fixedAmount'});
@@ -146,8 +146,8 @@ export default function ManageRewards(props) {
     }
 
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            // createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG +' in Rewards');
             return false;
         }else{
             return true;
@@ -274,7 +274,9 @@ export default function ManageRewards(props) {
         getMasterRewards();
         getMasterCategories();
     },[])
-    
+    useEffect(()=>{
+        setMasterRewards(props.masterRewards);
+    },[props.masterRewards])
 
     return (
         <div id="manage-rewards-container" className="w-99 float-left clearfix">

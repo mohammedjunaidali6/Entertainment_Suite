@@ -275,8 +275,8 @@ export default function RewardsAndBudget(props) {
     }, [budget, budgetDuration, rewardRowsData])
     
     const handleResponseCode=(resp)=>{
-        if(!resp || resp.data.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG);
+        if(!resp || resp.code===-1){
+            createNotification('error',SOMETHING_WENT_WRONG+ 'in Rewards and Budget');
             return false;
         }else{
             return true;

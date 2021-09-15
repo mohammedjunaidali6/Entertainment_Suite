@@ -10,6 +10,14 @@ export const TENT_PROD_HOST_URI = 'https://i5dwhd96xi.execute-api.ap-south-1.ama
 
 
 export const SOMETHING_WENT_WRONG='Something went wrong';
+
+export const serverResponse={
+     SUCCESS:1,
+     USER_EMAIL_NOT_FOUND:2,
+     INVALID_TOKEN:3,
+     USER_ALREADY_EXISTS:4,
+}
+
 export const EMAIL = 'Email'
 export const DEFAULT_FILTER_DAYS = 7;
 export const DEFAULT_FILTER_MONTHS = 2;

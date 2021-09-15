@@ -60,15 +60,17 @@ export const postAuthAndData = async (resource, postData, history) => {
 
 
 function handleResponse(response) {
-    if (response.status == 200 && response.data?.message == "SUCCESS") {
+    let responseCode=response.data.code;
+    if (responseCode == 1||responseCode == 2||responseCode == 3||responseCode == 4) {
         return response.data;
-    } else {
-        var errResponse = {
-            data:{
-                code:-1
-            }
+    } else{
+        var resp={
+                data : {
+                    code:-1,
+                    data:null,
+                }
         }
-        return errResponse;
+        return resp.data;
     }
 }
 
