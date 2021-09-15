@@ -440,7 +440,7 @@ export default function EngagementsSmart(props) {
                         </div>
                         {gridFlag ? 
                             <div className="w-100 float-left clearfix mt-3">
-                                {props.campaignsData && props.campaignsData.length > 0 &&
+                                {(props.campaignsData && props.campaignsData.length > 0)?
                                     <CampaignBox
                                         campaigndata={props.campaignsData}
                                         onPauseClick={(engmt, status) => onPauseClick(engmt, status)}
@@ -449,6 +449,8 @@ export default function EngagementsSmart(props) {
                                         onDeleteClick={(engmt) => onDeleteClick(engmt)}
                                     >
                                     </CampaignBox>
+                                    :
+                                    <h4 claassName='no-engagements'></h4>
                                 }
                             </div>
                             : 

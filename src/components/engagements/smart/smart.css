@@ -101,3 +101,10 @@
 #e-s-table-sec input[type="checkbox"] {
     border-radius: 15%;
 }
+.no-engagements{
+    margin: 10%;
+    display: flex;
+    justify-content: center;
+    color: #6a6fe5;
+    font-size: 15px;
+}
