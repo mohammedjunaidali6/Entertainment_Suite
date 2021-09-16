@@ -133,8 +133,10 @@ export default function EngagementsJourney(props) {
                     }
                 })
             }
+            debugger;
             postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
                 .then(res => {
+                    debugger;
                     if (handleResponseCode(res)) {
                         getAllJourneys();
                         onCancel();
@@ -356,7 +358,7 @@ export default function EngagementsJourney(props) {
                                     {journeyTasks.map((taskObj) => (
                                         <div className="w-25 float-left clearfix" key={taskObj.JourneyTaskID} draggable={true} onDragOver={(event) => onDragOver(event)} onDragStart={(event) => onDragStart(event, taskObj)}>
                                             <div className="u-t-box w-97 float-left clearfix">
-                                                <span className="u-t-box-h">{taskObj.JourneyTaskName}</span>
+                                                <span className="u-t-box-h">{taskObj.JourneyTaskName.replace('{0}','')}</span>
                                                 <img src={three_dot_src} alt={taskObj.JourneyTaskName} />
                                                 <img src={three_dot_src} alt={taskObj.JourneyTaskName} />
                                             </div>

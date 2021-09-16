@@ -181,7 +181,6 @@ export default function Team(props) {
         setEmail(mail)
     }
     const onGroupSelect = e => {
-        debugger;
         let group = e.target.value;
         setGroup(group);
     }

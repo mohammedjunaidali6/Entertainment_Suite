@@ -93,7 +93,6 @@ export default function LogIn(props) {
             Auth.signIn({ username: logIn.email, password: logIn.password })
                 .then(user => {
                     // console.log('***', user);
-                    debugger;
                     if (user.challengeName == "NEW_PASSWORD_REQUIRED") {
                         setCognitoUser(user);
                         setNewUserSignIn({ ...newUserSignIn, email: logIn.email })
@@ -108,7 +107,6 @@ export default function LogIn(props) {
                         localStorage.setItem(EMAIL, logIn.email);
                         getAuthAndData(`${IDTY_PROD_HOST_URI}${USER_DATA_GROUP_PERMISSIONS}${logIn.email}`)
                             .then(res => {
-                                debugger;
                                 setSignInProcessing(false);
                                 if (handleResponseCode(res)) {
                                     console.log('***',res.data);
