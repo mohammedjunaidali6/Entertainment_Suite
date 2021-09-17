@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { FormBuilder, FieldGroup, FieldControl, Validators } from "react-reactive-form";
 import { TextInput } from "../../../common/utils/textInput";
+import { TextField } from '@material-ui/core';
 import icon_src from "../../../../assets/img/Engagements.svg";
 import i_s_src from "../../../../assets/img/Goal_icon1.svg";
 import i_s_selected_src from "../../../../assets/img/Goal_icon1_hover.svg";
@@ -10,11 +11,9 @@ import b_n_c_src from "../../../../assets/img/newcustomers.svg";
 import b_n_c_selected_src from "../../../../assets/img/newcustomers_hover.svg";
 import i_r_src from "../../../../assets/img/referral.svg";
 import i_r_selected_src from "../../../../assets/img/referral_hover.svg";
-import { storeDataFn } from "../../../common/global";
-import store from '../../../../store/store';
 import './setGoals.css';
 
-const tempArray = [
+const preDefinedGoals = [
     { id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: true },
     { id: 2, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
     { id: 3, heading: "Bring New Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
@@ -22,66 +21,60 @@ const tempArray = [
     { id: 5, heading: "Boost Inactive Customers", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false },
     { id: 6, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: false }
 ];
-const setGoalForm = FormBuilder.group({
-    campaignName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['campaignName'] : "TEST", Validators.required],
-    displayName: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['displayName'] : "TEST DISPLAY", Validators.required],
-    goal: [storeDataFn('EngagementsSmartReducer', 'setGoals') ? storeDataFn('EngagementsSmartReducer', 'setGoals')['goal'] : "", Validators.required]
-});
 
 export default function SetGoals(props) {
-    const [goalBoxes, setGoalBoxes] = useState(tempArray);
-    if (props.props.setGoals) {
-        setGoalForm.patchValue({
-            campaignName: props.props.setGoals.campaignName,
-            displayName: props.props.setGoals.displayName,
-            goal: props.props.goal
-        });
-    }
+    console.log('***',props);
+    const [goalBoxes, setGoalBoxes] = useState(preDefinedGoals);
+    const [campaign,setCampaign]=useState(props?.props?.setGoals||{});
+    const [error, setError] = useState({});
+
     function goalBoxClick(boxData) {
         goalBoxes.forEach((obj) => {
             obj.isActive = false;
         });
         boxData.isActive = true;
-        setGoalForm.patchValue({
-            campaignName: setGoalForm.controls?.campaignName?.value || props.props.setGoals.campaignName,
-            displayName: setGoalForm.controls?.displayName?.value,
-            goal: boxData
-        });
-        props.getSetGoalsFormValues(setGoalForm.value, setGoalForm.status);
     }
-    const sgChange = () => {
-
+    const onTextChange = e => {
+        setCampaign({...campaign,[e.target.name]:e.target.value});
+        let obj={...campaign};
+        campaign[e.target.name]=e.target.value;
+        props.getSetGoalsData(campaign);
     }
-
+    const sgChange=()=>{
+        
+    }
 
     return (
         <div id="set-goals-container" >
-            <div className="c-e-campaign-sec">
-                <FieldGroup
-                    control={setGoalForm}
-                    render={({ get, invalid }) => (
-                        <form>
-                            <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                {/* <span className="setGoalForm-input-lbl">Campaign Name*</span> */}
-                                <FieldControl
-                                    name="campaignName"
-                                    className="pt-0"
-                                    render={TextInput}
-                                    meta={{ label: "Campaign Name", maxlen: 100, showError: true, placeholder: false }}
-                                />
-                            </div>
-                            <div className="w-50 float-left clearfix setGoalForm-input-sec">
-                                {/* <span className="setGoalForm-input-lbl">Display Name*</span> */}
-                                <FieldControl
-                                    name="displayName"
-                                    className="pt-0"
-                                    render={TextInput}
-                                    meta={{ label: "Display Name", maxlen: 300, showError: true, placeholder: false }}
-                                />
-                            </div>
-                        </form>
-                    )}
+            <div className='ml-5 w-95 row'>
+                <div className="w-45">
+                    <TextField
+                        name='campaignName'
+                        label="Campaign Name"
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        error={error.campaignName}
+                        helperText={error.campaignName}
+                        value={campaign.campaignName}
+                        onChange={onTextChange}
+                    />
+                </div>
+                <div className="ml-3 w-45">
+                <TextField
+                    name='displayName'
+                    label="Display Name"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    error={error.displayName}
+                    helperText={error.displayName}
+                    value={campaign.displayName}
+                    onChange={onTextChange}
                 />
+                </div>
             </div>
             <div className="c-e-campaign-goal-sec w-100 float-left clearfix">
                 <div className="c-e-campaign-goal-h">Set Goal for the Campaign</div>
