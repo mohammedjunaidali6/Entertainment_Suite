@@ -5,7 +5,7 @@ import './resizer.css';
 
 export default function Resizer(props) {
     const [ballSize, setBallSize] = useState(props.initialSize);
-
+    const [formattedBallSize,setFormattedBallSize]=useState();
     const handleChange = (e) => {
         if (e.target.id === 'budgetResizer') {
             props.updateBudget(e.target.value)
@@ -13,6 +13,7 @@ export default function Resizer(props) {
             props.updateBudgetDuration(e.target.value)
         }
         setBallSize(e.target.value);
+        setFormattedBallSize(parseInt(e.target.value).toLocaleString())
         calculateFn(e.target);
     }
 
@@ -46,7 +47,7 @@ export default function Resizer(props) {
                 <div className="w-20 float-left clearfix">
                     <div className="v-box w-80">
                         {/* <input className='v-box-t' value={ballSize}/> */}
-                        <span className="v-box-t">{ballSize} {props.valText}</span>
+                        <span className="v-box-t">{formattedBallSize} {props.valText}</span>
                     </div>
                 </div>
             ) : null}

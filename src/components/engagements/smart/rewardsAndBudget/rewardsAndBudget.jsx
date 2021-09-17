@@ -12,8 +12,9 @@ import plus_src from "../../../../assets/img/add_gray.svg";
 import trash_src from "../../../../assets/img/trash.png";
 import Resizer from "../../../common/resizer/resizer";
 import { getAuthAndData } from '../../../../api/ApiHelper';
-import { BUDGET_MIN, BUDGET_DEFAULT, BUDGET_MAX, BUDGET_DURATION_DEFAULT, BUDGET_DURATION_MIN, BUDGET_DURATION_MAX } from "../../../../constants/globalConstants";
+import { BUDGET_MIN, BUDGET_DEFAULT, BUDGET_MAX, BUDGET_DURATION_DEFAULT, BUDGET_DURATION_MIN, BUDGET_DURATION_MAX, BUDGET_CURRENCY } from "../../../../constants/globalConstants";
 import { REWARD_TYPES, SOMETHING_WENT_WRONG, REWARDS_BY_REWARD_TYPE } from '../../../../api/apiConstants';
+import CustomTooltip from '../../../common/tooltip/tooltip';
 
 const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
@@ -267,11 +268,14 @@ export default function RewardsAndBudget(props) {
         }
     }
 
+    const disableEditRewards=rewardsAndBudgetData?.rewards?.length>0
+        &&rewardsAndBudgetData?.rewards.filter(r=>{if(r.engagementRewardId)return r})?.length>0;
+
     return (
         <Fragment>
             <div id="rewards-budget-container" >
                 <Fragment>
-                    <div className="add-reward-sec w-100 float-left clearfix" style={{pointerEvents:rewardsAndBudgetData?.rewards?.length>0?'none':''}}>
+                    <div className="add-reward-sec w-100 float-left clearfix" style={{pointerEvents:disableEditRewards?'none':''}}>
                         {rewardRowsData.map((obj, i) =>
                             <div id={i} className="r-b-addreward-top w-100 float-left clearfix">
                                 <div className="w-10 float-left clearfix mr-1">
@@ -280,7 +284,7 @@ export default function RewardsAndBudget(props) {
                                             <input type="number" name='winnerPosition' onChange={(e) => onRewardRowChange(e, obj)} value={obj.winnerPosition} placeholder="0" className=" r-b-ar-i" style={{ textAlign: 'center' }} />
                                     </div>
                                 </div>
-                                <div className="w-15 float-left clearfix">
+                                <div className="w-15 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix mr-1" style={{fontSize:'12px'}}>
                                         {i==0&&<div className="r-b-ar-i-h">Reward Type</div>}
                                         <Select 
@@ -308,7 +312,18 @@ export default function RewardsAndBudget(props) {
                                             }}
                                             style={{lineHeight:'28px'}}
                                         />
-                                        <HtmlTooltip
+                                        <CustomTooltip 
+                                            tooltipText={
+                                                <Fragment>
+                                                    <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
+                                                    <p>{`Description: ${obj.tooltip?.description || ''}`}</p>
+                                                    <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
+                                                </Fragment>
+                                            }
+                                        >
+                                            <img src={info} style={{ height: '14px', width: '14px' }} />
+                                        </CustomTooltip>
+                                        {/* <HtmlTooltip
                                             title={
                                                 <Fragment>
                                                     <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
@@ -319,7 +334,7 @@ export default function RewardsAndBudget(props) {
                                             placement='top'
                                         >
                                             <img src={info} style={{ height: '14px', width: '14px' }} />
-                                        </HtmlTooltip>
+                                        </HtmlTooltip> */}
                                     </div>
                                 </div>
                                 <div className="w-8 float-left clearfix mr-1">
@@ -353,14 +368,14 @@ export default function RewardsAndBudget(props) {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-28 float-left clearfix mr-1">
+                                <div className="w-30 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                     {i==0&&<div className="r-b-ar-i-h">Display To Customer</div>}
                                         <input type="text" name='displayName' onChange={(e) => onRewardRowChange(e, obj)} value={obj.displayName} placeholder="Display Name" className=" r-b-ar-i" />
                                     </div>
                                 </div>
                                 <div className="w-4 float-left clearfix" onClick={() => removeRow(i,obj.rewardType)}>
-                                    <div className="r-b-ar-i-h mb-2">             </div>
+                                    <div className="r-b-ar-i-h mb-2"></div>
                                     <img src={trash_src} alt='Remove' style={{ height: '14px', width: '14px' }} />
                                 </div>
                             </div>
@@ -378,9 +393,9 @@ export default function RewardsAndBudget(props) {
             </div >
             <div className="b-d-sec w-100 float-left clearfix">
                 <div className="w-45 float-left clearfix">
-                    <div className="b-d-h w-100 float-left clearfix">Budget</div>
+                    <div className="b-d-h w-100 float-left clearfix">Budget (In {BUDGET_CURRENCY})</div>
                     <div className="b-d-content w-100 float-left clearfix">
-                        <div className="b-d-content-h w-100 float-left clearfix">Daily Budget</div>
+                        {/* <div className="b-d-content-h w-100 float-left clearfix">Daily Budget</div> */}
                         <div className="w-100 float-left clearfix">
                             <Resizer
                                 minSize={BUDGET_MIN}
@@ -395,9 +410,9 @@ export default function RewardsAndBudget(props) {
                 </div>
                 <div className="w-10 float-left clearfix"></div>
                 <div className="w-45 float-right clearfix">
-                    <div className="b-d-h">Duration</div>
+                    <div className="b-d-h">Duration (In Days)</div>
                     <div className="b-d-content">
-                        <div className="b-d-content-h">Number of Days</div>
+                        {/* <div className="b-d-content-h">Number of Days</div> */}
                         <div className="w-100 float-left clearfix">
                             <Resizer
                                 minSize={BUDGET_DURATION_MIN}

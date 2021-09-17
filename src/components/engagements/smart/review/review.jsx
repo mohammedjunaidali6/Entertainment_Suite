@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import edit_src from '../../../../assets/img/edit.svg'
 import './review.css';
 import store from '../../../../../src/store/store';
