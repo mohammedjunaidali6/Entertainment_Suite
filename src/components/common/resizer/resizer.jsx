@@ -45,6 +45,7 @@ export default function Resizer(props) {
             {props.valText !== undefined ? (
                 <div className="w-20 float-left clearfix">
                     <div className="v-box w-80">
+                        {/* <input className='v-box-t' value={ballSize}/> */}
                         <span className="v-box-t">{ballSize} {props.valText}</span>
                     </div>
                 </div>

@@ -16,10 +16,6 @@ export default function DefineJourney(props) {
         boxData.isActive = true;
         props.getDefineJourney(boxData);
     }
-
-    const djChange = () => {
-
-    }
     const fetchJourneyData = () => {
         props.handleLoader(true);
         getAuthAndData(JOURNEY_BY_FILTERS, history)
@@ -72,7 +68,7 @@ export default function DefineJourney(props) {
                             <div className="c-e-journey-box w-33 float-left clearfix p-relative" key={obj.id} onClick={() => journeyBoxClick(obj)}>
                                 <div className={`c-e-journey-box-inner w-100 float-left clearfix checkmark ${obj.isActive ? `selectedBox` : ``}`}>
                                     {/* <div className={`${obj.isActive ? `checkmark-circle`: `unmark-circle`}`}></div> */}
-                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive} onChange={djChange}></input>
+                                    <input id={`define-journey-chk${obj.id}`} className="define-journey-chk" type="checkbox" checked={obj.isActive}></input>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-h">{obj.name}</div>
                                     <div className="w-100 float-left clearfix c-e-journey-box-inner-tags mt-3">
                                         {obj.tags && obj.tags.length > 0 ? (

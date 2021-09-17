@@ -29,7 +29,6 @@ const DaysTypeOptions = [
 export default function TargetAudience(props) {
     var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
-    console.log('***',targetAudienceData);
     const [customerSegments, setCustomerSegments] = useState();
     const [selectedSegment, setSelectedSegment] = useState(targetAudienceData?.targetAudience);
     const [rule1, setRule1] = useState(rule1options[0]);
@@ -54,7 +53,9 @@ export default function TargetAudience(props) {
         setRule4(event);
     }
     const rule5Change = (event) => {
-        if (event.target.value && (event.target.value > 99 || event.target.value < 1)) { return false }
+        if (event.target.value && (event.target.value > 99 || event.target.value < 1)) { 
+            return false 
+        }
         setDurationNum(event.target.value);
     }
     const rule6Change = (event) => {
@@ -70,8 +71,8 @@ const onCheckBox=e=>{
     if(!e.target.checked){
         setPurchaseValue();
         setDurationNum();
-        props.setDefinePurchaseRule({enable:false,value:null});
     }
+    props.setDefinePurchaseRule({enable:e.target.checked,value:purchaseValue});
 }
 
     const fetchCustomerSegments = () => {
@@ -109,7 +110,6 @@ const onCheckBox=e=>{
 
     useEffect(() => {
         fetchCustomerSegments();
-        props.setDefinePurchaseRule({enable:true,value:targetAudienceData?.purchaseValue})
     }, []);
     useEffect(() => {
         return () => {

@@ -29,7 +29,6 @@ export default function EngagementsSmart(props) {
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
     const [step, setStep] = useState('setGoals');
-    const [goalDataForm, setGoalDataForm] = useState(null);
     const [goalData, setGoalData] = useState({});
     const [defineSegment, setDefineSegment] = useState(null);
     const [definePurchaseRule, setDefinePurchaseRule] = useState(null);
@@ -117,7 +116,7 @@ export default function EngagementsSmart(props) {
     }
     const stepsNextfn = () => {
         if (step === 'setGoals') {
-            if (goalDataForm === 'VALID') {
+            if (goalData.campaignName&&goalData.displayName) {
                 setStep('targetAudience');
                 goalData.EngagementId = props.setGoals?.EngagementId;
                 props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
@@ -125,23 +124,21 @@ export default function EngagementsSmart(props) {
                 createNotification('info','Please Enter Campaign Name and Select Goal');
             }
         } else if (step === 'targetAudience') {
+            console.log('***',definePurchaseRule)
             if(defineSegment){
-                if((definePurchaseRule.enable&&definePurchaseRule.value)||!definePurchaseRule.enable){
+                if(!definePurchaseRule||!definePurchaseRule.enable||(definePurchaseRule.enable&&definePurchaseRule.value)){
                     setStep('defineJourney');
                 }else{
-                createNotification('info','Please Enter Purchase value');
+                    createNotification('info','Please Enter Purchase value');
                 }
             } else {
                 createNotification('info','Please Select Customer Segment');
             }
         } else if (step === 'defineJourney') {
-            if (defineJourney) {
                 setStep('rewardsAndBudget');
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
-            } else {
-                createNotification('info','Please Select Journey')
-            }
         } else if (step === 'rewardsAndBudget') {
+            console.log('***',defineRewards);
             if(defineRewards){
                 var prob=0;
                 defineRewards.forEach(r=>{
@@ -181,7 +178,7 @@ export default function EngagementsSmart(props) {
             engagementObj.DisplayName = goalsData.displayName;
             engagementObj.StatusID = 1;
             engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.customer_segment_id;
-            engagementObj.JourneyID = journeyData.id;
+            engagementObj.JourneyID = journeyData?.id||0;
             engagementObj.StartDate=new Date();
             engagementObj.PurchaseRule = {};
             if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
@@ -189,7 +186,7 @@ export default function EngagementsSmart(props) {
                 let daysType = targetAudienceData.daysType;
                 let durationNum = parseInt(targetAudienceData.durationNum);
                 let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
-                engagementObj.PurchaseRule.LastNumberOfDays = days;
+                engagementObj.PurchaseRule.NumberOfDays = days;
                 engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId || 0
             }
 
@@ -206,7 +203,7 @@ export default function EngagementsSmart(props) {
                 engagementObj.Rewards.push(rewardObj);
             })
 
-            engagementObj.DailyBudget = parseInt(rewardsAndBudget.budget || '0');
+            engagementObj.Budget = parseInt(rewardsAndBudget.budget || '0');
             engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration || '0');
 
             postAuthAndData(SAVE_ENGAGEMENT, engagementObj, history)
@@ -236,9 +233,8 @@ export default function EngagementsSmart(props) {
         props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData();
     }
 
-    const getSetGoalsFormValues = (val, status) => {
-        setGoalDataForm(status);
-        setGoalData(val);
+    const getSetGoalsData = data => {
+        setGoalData(data);
     }
     const getDefineJourney = (data) => {
         setDefineJourney(data);
@@ -267,6 +263,7 @@ export default function EngagementsSmart(props) {
                 if (handleResponseCode(res)) {
                     props.engagementsSmartActionHandler.dispatchEngagementsData(res.data);
                 } else {
+                    createNotification('info','There are No Campaigns')
                     props.engagementsSmartActionHandler.dispatchEngagementsData();
                 }
                 handleLoader(false);
@@ -310,6 +307,7 @@ export default function EngagementsSmart(props) {
         handleLoader(true);
         getAuthAndData(`${ENGAGEMENTS_DETAILS_BY_ID}${engmt.EngagementID}`, history)
             .then(res => {
+                console.log('***',res);
                 if (handleResponseCode(res)) {
                     let engagements=res.data;
                     let setGoals = {
@@ -324,7 +322,6 @@ export default function EngagementsSmart(props) {
                         }
                     }
                     setGoalData(setGoals);
-                    setGoalDataForm('VALID');
                     let targetAudience = {
                         targetAudience: engagements.CustomerSegmentID,
                         purchaseRuleId: engagements.PurchaseRule?.PurchaseRuleID,
@@ -355,7 +352,7 @@ export default function EngagementsSmart(props) {
                     }
                     let rewardsAndBudget = {
                         rewards: rewardArr,
-                        budget: engagements.DailyBudget,
+                        budget: engagements.Budget,
                         budgetDuration: engagements.BudgetDays
                     }
 
@@ -420,7 +417,7 @@ export default function EngagementsSmart(props) {
     return (
         <div id="engagements-smart-container">
             <NotificationContainer/>
-            {!openEngagementWizard ? (
+            {!openEngagementWizard ?
                 <Fragment>
                     <div className="mb-4">
                         {/* <span className="e-s-heading">Active Campaigns</span> */}
@@ -469,7 +466,7 @@ export default function EngagementsSmart(props) {
                         }
                     </div>
                 </Fragment>
-            ) : (
+                :
                 <Fragment>
                     <div style={{ height: containerHeightCalcFn(192), overflowY: "auto" }}>
                         <div id="c-s-breadcrum">
@@ -490,7 +487,7 @@ export default function EngagementsSmart(props) {
 
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
-                            {step === 'setGoals' ? <SetGoals getSetGoalsFormValues={getSetGoalsFormValues} props={props} /> :
+                            {step === 'setGoals' ? <SetGoals getSetGoalsData={getSetGoalsData} props={props} /> :
                                 step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} setDefinePurchaseRule={data=>setDefinePurchaseRule(data)} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
                                         step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
@@ -506,7 +503,6 @@ export default function EngagementsSmart(props) {
                         <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
                     </div>
                 </Fragment>
-            )
             }
         </div>
     )

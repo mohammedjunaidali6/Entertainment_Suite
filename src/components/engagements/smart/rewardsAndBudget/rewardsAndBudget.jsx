@@ -1,19 +1,19 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { BUDGET_MIN, BUDGET_DEFAULT, BUDGET_MAX, BUDGET_DURATION_DEFAULT, BUDGET_DURATION_MIN, BUDGET_DURATION_MAX } from "../../../../constants/globalConstants";
+import { useHistory } from 'react-router-dom';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Select from 'react-select';
+import _ from "lodash";
+import './rewardsAndBudget.css';
+import createNotification from '../../../common/reactNotification';
 import ActionMenu from "../../../common/reactTable/menu";
 import info from '../../../../assets/img/info.png';
-import Tooltip from '@material-ui/core/Tooltip';
 import plus_src from "../../../../assets/img/add_gray.svg";
 import trash_src from "../../../../assets/img/trash.png";
-import _ from "lodash";
 import Resizer from "../../../common/resizer/resizer";
-import './rewardsAndBudget.css';
-import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
-import Select from 'react-select';
-import { REWARD_TYPES, REWARD_BY_FILTERS, REWARDS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import createNotification from '../../../common/reactNotification';
+import { getAuthAndData } from '../../../../api/ApiHelper';
+import { BUDGET_MIN, BUDGET_DEFAULT, BUDGET_MAX, BUDGET_DURATION_DEFAULT, BUDGET_DURATION_MIN, BUDGET_DURATION_MAX } from "../../../../constants/globalConstants";
+import { REWARD_TYPES, SOMETHING_WENT_WRONG, REWARDS_BY_REWARD_TYPE } from '../../../../api/apiConstants';
 
 const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
@@ -108,7 +108,7 @@ export default function RewardsAndBudget(props) {
     var history = useHistory();
     const rewardsAndBudgetData = props.props.rewardsAndBudget;
     console.log('**',rewardsAndBudgetData)
-    const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards || arrayRewards);
+    const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards?.length>0 ?rewardsAndBudgetData?.rewards: arrayRewards);
     const [rewardTypes, setRewardTypes] = useState([]);
     const [rewardNames, setRewardNames] = useState([]);
     const [rewardMaster, setRewardMaster] = useState([]);
@@ -117,30 +117,6 @@ export default function RewardsAndBudget(props) {
     const [budget, setBudget] = useState(rewardsAndBudgetData?.budget || BUDGET_DEFAULT);
     const [budgetDuration, setBudgetDuration] = useState(rewardsAndBudgetData?.budgetDuration || BUDGET_DURATION_DEFAULT);
 
-
-    const fetchRewards = () => {
-        props.handleLoader(true);
-        getAuthAndData(REWARD_BY_FILTERS, history)
-            .then(res => {
-                if (handleResponseCode(res)) {
-                    let rewardArr = [];
-                    res.data.forEach(rew => {
-                        let rewardObj = {}
-                        rewardObj.id = rew.reward_master_id;
-                        rewardObj.winnerPosition = rew.win_position;
-                        rewardObj.rewardType = rew.reward_type;
-                        rewardObj.rewardValue = rew.Value;
-                        rewardObj.probability = rew.probability;
-                        rewardObj.displayName = rew.display_name;
-                        rewardArr.push(rewardObj);
-                    });
-                    setRewardsData(rewardArr);
-                } else {
-                    setRewardsData();
-                }
-                props.handleLoader(false);
-            })
-    }
     const fetchRewardTypes = () => {
         props.handleLoader(true);
         getAuthAndData(REWARD_TYPES, history)
@@ -168,24 +144,26 @@ export default function RewardsAndBudget(props) {
     }
     const onRewardTypeSelect = (e, obj) => {
         props.handleLoader(true);
-        getAuthAndData(`${REWARDS}${e.value}`, history)
+        getAuthAndData(`${REWARDS_BY_REWARD_TYPE}${e.value}`, history)
             .then(res => {
                 if (handleResponseCode(res)) {
-                    obj.rewardName = res.data[0].reward_name;
-                    obj.rewardType = e
-                    obj.id = res.data[0].reward_master_id;
-                    obj.tooltip={
-                        reward_code:res.data[0].reward_code,
-                        description:res.data[0].description,
-                        expiry_date:res.data[0].expiry_date,
+                    if(res.data&&res.data.length){
+                        obj.rewardName = res.data[0].reward_name;
+                        obj.rewardType = e
+                        obj.id = res.data[0].reward_master_id;
+                        obj.tooltip={
+                            reward_code:res.data[0].reward_code,
+                            description:res.data[0].description,
+                            expiry_date:res.data[0].expiry_date,
+                        }
+                        var arr = [...rewardRowsData];
+                        arr.splice(_.findIndex(arr, obj), 1, obj);
+                        setSelectedRewardName({
+                            value:obj.id,
+                            label:obj.rewardName
+                        })
+                        setRewardRowsData(arr);
                     }
-                    var arr = [...rewardRowsData];
-                    arr.splice(_.findIndex(arr, obj), 1, obj);
-                    setSelectedRewardName({
-                        value:obj.id,
-                        label:obj.rewardName
-                    })
-                    setRewardRowsData(arr);
                 }
                 props.handleLoader(false);
             })
@@ -218,17 +196,23 @@ export default function RewardsAndBudget(props) {
         //         }
         //     });
     }
-    const removeRow = index => {
-        props.handleAlertDialog({
-            open: true, text: 'Are you Sure, you want to delete a Reward?', handleClose: (bool) => {
-                props.handleAlertDialog({ open: false, handleClose: (bool) => { } })
-                if(bool){
-                    var array = [...rewardRowsData];
-                    array.splice(index, 1);
-                    setRewardRowsData(array);
+    const removeRow = (index,rewardType) => {
+        if(rewardType.value){
+            props.handleAlertDialog({
+                open: true, text: 'Are you Sure, you want to delete a Reward?', handleClose: (bool) => {
+                    props.handleAlertDialog({ open: false, handleClose: (bool) => { } })
+                    if(bool){
+                        var array = [...rewardRowsData];
+                        array.splice(index, 1);
+                        setRewardRowsData(array);
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            var array = [...rewardRowsData];
+            array.splice(index, 1);
+            setRewardRowsData(array);
+        }
     }
     const addRow = () => {
         var arr = [...rewardRowsData];
@@ -237,8 +221,8 @@ export default function RewardsAndBudget(props) {
         setRewardRowsData(arr);
     }
 
-    const fetchAllRewards=()=>{
-        getAuthAndData(`/engt/allRewards?reward_type_id=2`, history)
+    const fetchAllCouponRewards=()=>{
+        getAuthAndData(`${REWARDS_BY_REWARD_TYPE}2`, history)
         .then(res=>{
             if (handleResponseCode(res)) {
                 setRewardMaster(res.data);
@@ -256,7 +240,7 @@ export default function RewardsAndBudget(props) {
     }
     useEffect(() => {
         fetchRewardTypes();
-        fetchAllRewards();
+        fetchAllCouponRewards();
     }, []);
     useEffect(() => {
 
@@ -287,7 +271,7 @@ export default function RewardsAndBudget(props) {
         <Fragment>
             <div id="rewards-budget-container" >
                 <Fragment>
-                    <div className="add-reward-sec w-100 float-left clearfix">
+                    <div className="add-reward-sec w-100 float-left clearfix" style={{pointerEvents:rewardsAndBudgetData?.rewards?.length>0?'none':''}}>
                         {rewardRowsData.map((obj, i) =>
                             <div id={i} className="r-b-addreward-top w-100 float-left clearfix">
                                 <div className="w-10 float-left clearfix mr-1">
@@ -375,7 +359,7 @@ export default function RewardsAndBudget(props) {
                                         <input type="text" name='displayName' onChange={(e) => onRewardRowChange(e, obj)} value={obj.displayName} placeholder="Display Name" className=" r-b-ar-i" />
                                     </div>
                                 </div>
-                                <div className="w-4 float-left clearfix" onClick={() => removeRow(i)}>
+                                <div className="w-4 float-left clearfix" onClick={() => removeRow(i,obj.rewardType)}>
                                     <div className="r-b-ar-i-h mb-2">             </div>
                                     <img src={trash_src} alt='Remove' style={{ height: '14px', width: '14px' }} />
                                 </div>

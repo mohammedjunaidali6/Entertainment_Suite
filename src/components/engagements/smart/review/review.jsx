@@ -31,7 +31,7 @@ export default function Review(props) {
                     {/* <div className="c-e-r-left-t-a-box-i"></div> */}
                     <div className="c-e-r-left-t-a-box-h">Rule</div>
                     <div className="c-e-r-left-t-a-box-i">
-                        {targetAudience.purchaseValue&&`Purchase value should be greaterthan or equal to ${targetAudience.purchaseValue} in last ${targetAudience.durationNum} Days`}
+                        {targetAudience?.purchaseValue&&`Purchase value should be greaterthan or equal to ${targetAudience.purchaseValue} in last ${targetAudience.durationNum} Days`}
                     </div>
                 </div>
 
