@@ -1,22 +1,30 @@
 import React, { Fragment, useState, useEffect, useReducer } from 'react';
+import { useHistory } from 'react-router-dom';
 import Table from "../../common/reactTable/table";
-import Select from 'react-select';
 import CustomTooltip from "../../common/tooltip/tooltip";
 import ActionMenu from "../../common/reactTable/menu";
+import createNotification from '../../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
 import _ from 'lodash';
+import './journey.css';
 import { containerHeightCalcFn } from "../../common/global";
 import SearchBar from "../../common/searchBar/searchBar";
 import three_dot_src from '../../../assets/img/3dots_verticals.svg';
 import add_gray_src from '../../../assets/img/add_gray.svg';
-import './journey.css';
-import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
-import { ADD_JOURNEY_DETAILS, DELETE_JOURNEY_DETAILS, JOURNEYS, JOURNEYS_BY_SEARCH, JOURNEY_TASKS,SOMETHING_WENT_WRONG,UPDATE_JOURNEY_DETAILS } from '../../../api/apiConstants';
-import { useHistory } from 'react-router-dom';
-import createNotification from '../../common/reactNotification';
-import { NotificationContainer } from 'react-notifications';
+import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
+import { 
+    ADD_JOURNEY_DETAILS, 
+    DELETE_JOURNEY_DETAILS, 
+    JOURNEYS, 
+    JOURNEYS_BY_SEARCH, 
+    JOURNEY_TASKS,
+    SOMETHING_WENT_WRONG,
+    UPDATE_JOURNEY_DETAILS 
+} from '../../../api/apiConstants';
 
 
 export default function EngagementsJourney(props) {
+    // console.log('***',props);
     var history = useHistory();
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [createFlag, setCreateFlag] = useState(false);
@@ -29,18 +37,13 @@ export default function EngagementsJourney(props) {
 
     const journeyColumns = [
         {
-            name: "Journey ID",
-            selector: "JourneyID",
-            width:'10%'
-        },
-        {
             name: "Journey Name",
             selector: "JourneyName",
             width:'40%'
         },
         {
             name: "Tasks Assigned",
-            width:'20%',
+            width:'30%',
             cell: rowObj =>
                 <div style={{ paddingRight: '5px' }}>
                     <div>{rowObj.JourneyTasks.length && rowObj.JourneyTasks[0].JourneyTaskName}</div>
@@ -238,14 +241,12 @@ export default function EngagementsJourney(props) {
     }
 
     const getAllJourneyTasks = () => {
-        handleLoader(true);
         getAuthAndData(JOURNEY_TASKS, history)
             .then(res => {
                 if (handleResponseCode(res)) {
                     setJourneyTasks(res.data);
                     props.engagementsJourneyActionHandler.dispatchJourneyTasks(res.data);
                 }
-                handleLoader(false);
             });
     }
 

@@ -8,6 +8,7 @@ import { getAuthAndData} from '../../../../api/ApiHelper';
 import { CUSTOMERS_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import BasicTreeMap from '../../../common/map/treemap';
 import createNotification from '../../../common/reactNotification';
+import { BUDGET_CURRENCY } from '../../../../constants/globalConstants';
 
 
 const rule1options = [
@@ -27,6 +28,7 @@ const DaysTypeOptions = [
 ]
 
 export default function TargetAudience(props) {
+    console.log('***',props);
     var history = useHistory();
     const targetAudienceData = props.props?.targetAudience;
     const [customerSegments, setCustomerSegments] = useState();
@@ -35,7 +37,7 @@ export default function TargetAudience(props) {
     const [rule2, setRule2] = useState(rule2options[0]);
     const [purchaseValue, setPurchaseValue] = useState(targetAudienceData?.purchaseValue);
     const [rule4, setRule4] = useState(rule4options[0]);
-    const [durationNum, setDurationNum] = useState(targetAudienceData?.durationNum || "2");
+    const [durationNum, setDurationNum] = useState(targetAudienceData?.durationNum || "7");
     const [daysType, setDaysType] = useState(targetAudienceData ? { value: targetAudienceData?.daysType, label: targetAudienceData?.daysType } : DaysTypeOptions[0]);
     const [purchaseRuleEnable, setPurchaseRuleEnable] = useState(targetAudienceData?.purchaseValue||targetAudienceData?.purchaseRuleId?true:false);
 
@@ -46,17 +48,21 @@ export default function TargetAudience(props) {
         setRule2(event);
     }
     const rule3Change = (event) => {
-        setPurchaseValue(event.target.value);
-        props.setDefinePurchaseRule({enable:true,value:event.target.value})
+        let val=event.target.value;
+        if(!val||val?.length<=7){
+            setPurchaseValue(val?parseInt(val.replace(',','')):'');
+            props.setDefinePurchaseRule({enable:true,value:val})
+        }
     }
     const rule4Change = (event) => {
         setRule4(event);
     }
     const rule5Change = (event) => {
-        if (event.target.value && (event.target.value > 99 || event.target.value < 1)) { 
+        let val=event.target.value;
+        if (val && (val > 99 || val < 1)) { 
             return false 
         }
-        setDurationNum(event.target.value);
+        setDurationNum(val);
     }
     const rule6Change = (event) => {
         setDaysType(event);
@@ -68,11 +74,12 @@ export default function TargetAudience(props) {
     }
 const onCheckBox=e=>{
     setPurchaseRuleEnable(e.target.checked);
-    if(!e.target.checked){
+    let checked=e.target.checked;
+    if(!checked){
         setPurchaseValue();
         setDurationNum();
+        props.setDefinePurchaseRule({enable:checked,value:''});
     }
-    props.setDefinePurchaseRule({enable:e.target.checked,value:purchaseValue});
 }
 
     const fetchCustomerSegments = () => {
@@ -221,13 +228,13 @@ const onCheckBox=e=>{
                     className="w-22 p-r-10 float-left clearfix" 
                 />
                 <div className="w-15 m-r-10 float-left clearfix">
-                    <div className="w-30 float-left clearfix p-rule-value-left">
-                        <span className="w-100 p-rule-value-txt">$</span>
+                    <div className="w-34 float-left clearfix p-rule-value-left">
+                        <span className="w-100 p-rule-value-txt">{BUDGET_CURRENCY}</span>
                     </div>
-                    <div className="w-70 float-left clearfix p-rule-value-right">
+                    <div className="w-60 float-left clearfix p-rule-value-right">
                         <input 
-                            type="number"
-                            value={purchaseValue}
+                            type="text"
+                            value={purchaseValue?parseInt(purchaseValue).toLocaleString():''}
                             onChange={rule3Change}
                             className='p-rule-input'
                             placeholder="Value"

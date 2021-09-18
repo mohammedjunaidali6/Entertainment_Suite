@@ -57,7 +57,7 @@ export default function DefineJourney(props) {
             return true;
         }
     }
-
+console.log('***',journeyBoxes)
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">
             <div className="c-e-journey-h">Choose User Journey </div>
@@ -75,7 +75,7 @@ export default function DefineJourney(props) {
                                             <Fragment>
                                                 {obj.tags.map((tagObj) => (
                                                     <div className="c-e-journey-box-tag mt-2" key={tagObj}>
-                                                        <span className="c-e-journey-box-tag-text">{tagObj}</span>
+                                                        <span className="c-e-journey-box-tag-text">{tagObj.replace('{0}','')}</span>
                                                     </div>
                                                 ))}
                                             </Fragment>

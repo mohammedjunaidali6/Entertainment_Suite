@@ -58,11 +58,13 @@ export default function ManageRewards(props) {
                                 {cat.CategoryName}
                             </div>
                     )}
-                    <CustomTooltip tooltipText={row.Categories.length > 2 &&row.Categories.map((cat,i)=>i>=2?cat.CategoryName+' ':'')}>
-                        <div className='clearfix c-center' style={targetCategoryStyle}>
-                            {row.Categories.length - 2}+
-                        </div>
-                    </CustomTooltip>
+                    {row.Categories && row.Categories.length >2 &&
+                        <CustomTooltip tooltipText={row.Categories.length > 2 &&row.Categories.map((cat,i)=>i>=2?cat.CategoryName+' ':'')}>
+                            <div className='clearfix c-center' style={targetCategoryStyle}>
+                                {row.Categories.length - 2}+
+                            </div>
+                        </CustomTooltip>
+                    }
                 </div>
         },
         {
@@ -126,6 +128,11 @@ export default function ManageRewards(props) {
                     }
                 })
                 props.manageRewardsActionHandler.dispatchMasterRewards(arr);
+                if(arr.length<=0){
+                    createNotification('info','There are NO Rewards');
+                }
+            }else{
+                createNotification('error',SOMETHING_WENT_WRONG);
             }
             handleLoader(false);
         })
@@ -234,6 +241,8 @@ export default function ManageRewards(props) {
             if(handleResponseCode(res)){
                 createNotification('success','Reward is succesfully saved');
                 setCreateFlag(false);
+                setSelectedCategories([]);
+                setCoupon({couponType:'fixedAmount'});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward saving is failed.');
@@ -248,6 +257,8 @@ export default function ManageRewards(props) {
             if(handleResponseCode(res)){
                 createNotification('success','Reward is succesfully updated');
                 setUpdateFlag();
+                setSelectedCategories([]);
+                setCoupon({couponType:'fixedAmount'});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward updating is failed.');
