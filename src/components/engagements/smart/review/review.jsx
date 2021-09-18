@@ -2,6 +2,7 @@ import React from 'react';
 import edit_src from '../../../../assets/img/edit.svg'
 import './review.css';
 import store from '../../../../../src/store/store';
+import {BUDGET_CURRENCY } from "../../../../constants/globalConstants";
 
 
 export default function Review(props) {
@@ -83,8 +84,8 @@ export default function Review(props) {
                     </div>
                     <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">
-                            <span className="c-e-r-left-r-b-box-bd-prefix">$</span>
-                            {rewardsAndBudgetData?.budget}
+                            <span className="c-e-r-left-r-b-box-bd-prefix">{BUDGET_CURRENCY}</span>
+                            {rewardsAndBudgetData?.budget&&parseInt(rewardsAndBudgetData?.budget).toLocaleString()}
                         </div>
                         {/* <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div> */}
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewardsAndBudgetData?.budgetDuration} Days</div>
