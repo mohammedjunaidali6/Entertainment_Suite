@@ -78,6 +78,7 @@ export const MONTH_WISE_ACTIVE_ENGAGED_USERS = '/rept/monthWiseActiveAndEngagedU
 export const CONSOLIDATED_BRAND_HEALTH = '/rept/conslidatedBrandHealth';
 export const CONSOLIDATED_INCREMENTAL_SALES = '/rept/consolidatedIncrementalSales';
 export const DAY_WISE_BRAND_HEALTH_DATA = '/rept/dayWiseBrandHealthData';
+export const ENGAGEMENT_STATISTICS='/rept/engagementStatistics';
 
 export const SETTINGS_TEMPLATE='/tenm/settingsTemplate';
 export const GET_TENANT_SETTINGS='/tenm/getTenantSettings';
