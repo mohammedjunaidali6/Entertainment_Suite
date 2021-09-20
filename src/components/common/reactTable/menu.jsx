@@ -48,7 +48,6 @@ export function RewardContextMenu(props) {
     return (
         <div>
             <div role="button" onClick={handleClick}><BsThreeDotsVertical /></div>
-
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}

@@ -26,11 +26,16 @@ export default function SearchBar(props) {
         setValue(event.target.value);
     }
     const onKeyPressInSearch = (e) => {
+        // setTimeout(() => {
+        //     setValue(e.target.value);
+        //     if (e.key === 'Enter') {
+        //         props.onSearch(e.target.value);
+        //     }
+        // }, 1)
         setTimeout(() => {
-            setValue(e.target.value);
-            if (e.key === 'Enter') {
-                props.onSearch(e.target.value);
-            }
+            let val=e.target.value;
+            setValue(val);
+            props.onSearch(val);
         }, 1)
     }
     const onSearchBlur = e => {
@@ -65,7 +70,7 @@ export default function SearchBar(props) {
                                 placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                 className='searchBar'
                                 onKeyPress={onKeyPressInSearch}
-                                onBlur={onSearchBlur}
+                                // onBlur={onSearchBlur}
                             />
                         </div>
                     ) : (
@@ -82,7 +87,7 @@ export default function SearchBar(props) {
                                     placeholder={props.placeHolder ? props.placeHolder : "Search"}
                                     className='searchBar'
                                     onKeyPress={onKeyPressInSearch}
-                                    onBlur={onSearchBlur}
+                                    // onBlur={onSearchBlur}
                                 />
                             </div>
                         </Fragment>

@@ -22,7 +22,7 @@ export default function ManageRewards(props) {
     const [masterRewards, setMasterRewards] = useState([]);
     const [categoryTags, setCategoryTags] = useState([]);
     const [selectedCategories,setSelectedCategories]=useState([]);
-    const [coupon,setCoupon]=useState({couponType:'fixedAmount'});
+    const [coupon,setCoupon]=useState({couponType:'Fixed'});
     
     const targetCategoryStyle= {
         boxSizing: 'border-box',
@@ -163,7 +163,7 @@ export default function ManageRewards(props) {
 
     const onCouponDataChange=(key,value)=>{
         if(key==='couponValue'){
-            if((coupon.couponType==='fixedAmount'&&value.length<=4)||(coupon.couponType==='percentage'&&value.length<=2)){
+            if((coupon.couponType==='Fixed'&&value.length<=4)||(coupon.couponType==='Percentage'&&value.length<=2)){
                 setCoupon({...coupon,'couponValue':value});
             }
         }else{
@@ -242,7 +242,7 @@ export default function ManageRewards(props) {
                 createNotification('success','Reward is succesfully saved');
                 setCreateFlag(false);
                 setSelectedCategories([]);
-                setCoupon({couponType:'fixedAmount'});
+                setCoupon({couponType:'Fixed'});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward saving is failed.');
@@ -258,7 +258,7 @@ export default function ManageRewards(props) {
                 createNotification('success','Reward is succesfully updated');
                 setUpdateFlag();
                 setSelectedCategories([]);
-                setCoupon({couponType:'fixedAmount'});
+                setCoupon({couponType:'Fixed'});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward updating is failed.');
@@ -267,17 +267,18 @@ export default function ManageRewards(props) {
         })
     }
     const onRewardSearch=(searchText)=>{
-        if(searchText){
+        if(searchText.length>3){
             let arr=[...props.masterRewards];
-            let resultArr=arr.filter(r=>{
-                if(r.RewardName.toUpperCase().includes(searchText.toUpperCase()))
-                {
-                    return r;
-                }
-            });
+            let resultArr=arr.filter(r=>r.RewardName.toUpperCase().includes(searchText.toUpperCase()));
+            if(resultArr.length>0){
             setMasterRewards(resultArr);
+            }else{
+                createNotification('info',`No Rewards Found for ${searchText} search.`);
+            }
         }else{
-            setMasterRewards(props.masterRewards);
+            if(!searchText){
+                setMasterRewards(props.masterRewards);
+            }
         }
     }
 
@@ -361,7 +362,10 @@ export default function ManageRewards(props) {
                                     labelId="Select Categories"
                                     multiple
                                     value={selectedCategories}
-                                    onChange={e=>setSelectedCategories(e.target.value)}
+                                    onChange={e=>{
+                                        setSelectedCategories(e.target.value);
+                                        setError({...error,'selectedCategories':''});
+                                    }}
                                     input={<Input />}
                                     renderValue={selected => selected.join(", ")}
                                     style={{width:'600px'}}
@@ -395,8 +399,8 @@ export default function ManageRewards(props) {
                                 <div className='reward-amount w-20 float-left clearfix'>
                                     <div className='rewarded-amount'>Coupon Type</div>
                                     <select className="prize-types w-97" name='couponType' onChange={e=>onCouponDataChange('couponType',e.target.value)}>
-                                        <option className='option-text' value="fixedAmount">Fixed Amount</option>
-                                        <option className='option-text' value="percentage">Percentage</option>
+                                        <option className='option-text' value="Fixed">Fixed Amount</option>
+                                        <option className='option-text' value="Percentage">Percentage</option>
                                     </select>
                                 </div>
                                 <div className='amount-selection-box w-30 mt-3 float-left clearfix'>
@@ -404,7 +408,7 @@ export default function ManageRewards(props) {
                                         name='couponValue'
                                         type='number'
                                         className="amount-input w-100 float-left clearfix" 
-                                        placeholder={coupon.couponType==='fixedAmount'?"Enter Coupon Amount":'Enter Coupon Percentage'}
+                                        placeholder={coupon.couponType==='Fixed'?"Enter Coupon Amount":'Enter Coupon Percentage'}
                                         onChange={e=>onCouponDataChange('couponValue',e.target.value)}
                                         value={coupon?.couponValue}
                                     />

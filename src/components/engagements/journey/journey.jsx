@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 import Table from "../../common/reactTable/table";
 import CustomTooltip from "../../common/tooltip/tooltip";
-import ActionMenu from "../../common/reactTable/menu";
+import {RewardContextMenu} from "../../common/reactTable/menu";
 import createNotification from '../../common/reactNotification';
 import { NotificationContainer } from 'react-notifications';
 import _ from 'lodash';
@@ -67,7 +67,7 @@ export default function EngagementsJourney(props) {
         {
             name: " ",
             width:'10%',
-            cell: rowObj => <ActionMenu onAction={e => onActionClick(e, rowObj)} />
+            cell: rowObj => <RewardContextMenu onAction={e => onActionClick(e, rowObj)} />
         }
 
     ]
@@ -79,7 +79,9 @@ export default function EngagementsJourney(props) {
     const handleLoader = (showBool) => {
         props.routeActionHandler.dispatchLoaderData(showBool);
     }
-
+    const handleAlertDialog = (obj) => {
+        props.routeActionHandler.dispatchAlertDialogData(obj);
+    }
     const onDragStart = (event, data) => {
         event.dataTransfer.setData("draggedTask", JSON.stringify(data));
     }
@@ -109,8 +111,8 @@ export default function EngagementsJourney(props) {
     }
 
     const onJourneySave = () => {
-        if(!journey?.name&&!droppedItems){
-            createNotification('warning','Enter Journey Details');
+        if(!journey?.Name){
+            createNotification('warning','Enter Journey Name');
             return;
         }
         var invalid=false;
@@ -123,7 +125,7 @@ export default function EngagementsJourney(props) {
                 }
         })
         if(invalid){
-            createNotification('error','Please enter values for all required Journey tasks');
+            createNotification('warning','Please enter Tasks and its values for all required tasks');
         } else {
             handleLoader(true);
             let journeyData = {
@@ -136,10 +138,8 @@ export default function EngagementsJourney(props) {
                     }
                 })
             }
-            debugger;
             postAuthAndData(`${ADD_JOURNEY_DETAILS}`, journeyData)
                 .then(res => {
-                    debugger;
                     if (handleResponseCode(res)) {
                         getAllJourneys();
                         onCancel();
@@ -198,15 +198,24 @@ export default function EngagementsJourney(props) {
             });
     }
     const searchJourneyByName = (searchText) => {
-        if (searchText) {
-            getAuthAndData(`${JOURNEYS_BY_SEARCH}${searchText}`, history)
-                .then(res => {
-                    if (handleResponseCode(res)) {
-                        setGroupedJourneys(res.data);
-                    }
-                });
+        if (searchText.length>3) {
+            console.log('***',journeysData,searchText)
+            var arr=journeysData.filter(j=>j.JourneyName.toLowerCase().includes(searchText.toLowerCase()))
+            if(arr.length>0){
+                setJourneysData(arr);
+            }else{
+                createNotification('info',`No Journeys Found for '${searchText}' search`)
+            }
+            // getAuthAndData(`${JOURNEYS_BY_SEARCH}${searchText}`, history)
+            //     .then(res => {
+            //         if (handleResponseCode(res)) {
+            //             setGroupedJourneys(res.data);
+            //         }
+            //     });
         } else {
-            getAllJourneys();
+            if(!searchText){
+                getAllJourneys();
+            }
         }
     }
     const setGroupedJourneys = (journeys) => {
@@ -267,14 +276,22 @@ export default function EngagementsJourney(props) {
             });
             setDroppedItems(tasks);
         } else if (action === 'Delete') {
-            getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
-                .then(res => {
-                    if(handleResponseCode(res)){
-                        getAllJourneys();
-                        setUpdateFlag(false);
-                        createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+            handleAlertDialog({
+                open: true, title: 'Delete Journey', text: 'Are you sure! Do you want to Delete Journey?', handleClose: (bool) => {
+                    handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                    if (bool) {
+                        getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
+                        .then(res => {
+                            if(handleResponseCode(res)){
+                                getAllJourneys();
+                                setUpdateFlag(false);
+                                createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+                            }
+                        })
                     }
-                })
+                }
+            });
+           
         } else {
 
         }

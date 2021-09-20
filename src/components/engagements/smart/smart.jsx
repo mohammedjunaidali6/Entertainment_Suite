@@ -139,7 +139,7 @@ export default function EngagementsSmart(props) {
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
         } else if (step === 'rewardsAndBudget') {
             console.log('***',defineRewards);
-            if(defineRewards){
+            if(defineRewards&&defineRewards.length){
                 var prob=0;
                 defineRewards.forEach(r=>{
                     prob+=parseInt(r.probability);

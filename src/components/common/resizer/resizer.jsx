@@ -5,7 +5,7 @@ import './resizer.css';
 
 export default function Resizer(props) {
     const [ballSize, setBallSize] = useState(props.initialSize);
-    const [formattedBallSize,setFormattedBallSize]=useState();
+    const [formattedBallSize,setFormattedBallSize]=useState(parseInt(props.initialSize).toLocaleString());
     const handleChange = (e) => {
         if (e.target.id === 'budgetResizer') {
             props.updateBudget(e.target.value)
