@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCalendar, BsThreeDotsVertical } from "react-icons/bs";
 import classnames from 'classnames';
 import Popover from '@material-ui/core/Popover';
@@ -8,12 +8,18 @@ import delete_src from "../../../assets/img/delete.svg";
 import pause_src from "../../../assets/img/pause.svg";
 import resume_src from "../../../assets/img/resume.svg";
 import edit_engmt__src from "../../../assets/img/edit_engmt.svg";
+import dots_progress from '../../../assets/img/dots-progress.gif';
+import { REPT_PROD_HOST_URI,ENGAGEMENT_STATISTICS } from '../../../api/apiConstants';
+import {postAuthAndData } from '../../../api/ApiHelper';
 
 export default function CampaignBox(props) {
+    // console.log('***',props.props);
     const [anchorEl, setAnchorEl] = useState(null);
     const [openedPopoverId, setOpenedPopoverId] = useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'campaign-action-popover' : undefined;
+    const [statistics,setStatistics]=useState([]);
+    const [showLoader,setShowLoader]=useState(true);
 
     const campaignActionClick = (event, id) => {
         setAnchorEl(event.currentTarget);
@@ -43,14 +49,28 @@ export default function CampaignBox(props) {
         setOpenedPopoverId(null);
         props.onViewReportClick(obj);
     }
-    let arr1 = ['1,945', '2,630', '8,621', '4,320', '1,587', '3,560']
-    let arr2 = ['145', '230', '821', '420', '187', '360']
-    let arr3 = ['195', '120', '21', '240', '287', '160']
-    let arr4 = ['2,745', '2,630', '6,821', '4,990', '1,554', '3,220']
+
+    const getEngagementStatistics=()=>{
+        let postData=props.campaigndata.map(c=> c.EngagementID);
+        postAuthAndData(`${REPT_PROD_HOST_URI}${ENGAGEMENT_STATISTICS}`,postData,props.props.history)
+        .then(res=>{
+            if(res&&res.code==1){
+                setStatistics(res.data);
+            }
+            setShowLoader(false);
+        })
+    }
+
+    useEffect(()=>{
+        getEngagementStatistics();
+        setStatistics([]);
+        setShowLoader(true);
+    },[props])
+    
 
     return (
         <div className="w-100 float-left clearfix">
-            {props.campaigndata.map((obj, idx) => (
+            {props.campaigndata.map((obj, idx) =>
                 <div key={idx} className="campaign-box-outer float-left clearfix mb-3">
                     <div className="campaign-box">
                         <div className={classnames('c-b-discount pl-3 pt-2', {
@@ -70,22 +90,34 @@ export default function CampaignBox(props) {
                                 </div>
                             ) : null}
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{arr1[Math.floor(Math.random() * arr1.length)]}</div>
-                                <div className="c-b-t-body">Customer Participated</div>
+                                <div className="c-b-t-head">
+                                    {showLoader?
+                                        <img src={dots_progress} height='40%' width='50%'/>
+                                    :
+                                        statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'-'
+                                    }
+                                </div>
+                                <div className="c-b-t-body">Customers Engaged</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4" style={{ alignItems: 'center' }}>
-                                <div className="c-b-t-head">{arr2[Math.floor(Math.random() * arr2.length)]}</div>
-                                <div className="c-b-t-body">Winners</div>
+                                <div className="c-b-t-head">
+                                    {showLoader?
+                                        <img src={dots_progress} height='40%' width='50%'/>
+                                    :
+                                        statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'-'
+                                    }
+                                </div>
+                                <div className="c-b-t-body">Conversions</div>
                             </div>
                         </div>
                         <div className="w-100 float-left clearfix">
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{arr3[Math.floor(Math.random() * arr3.length)]}</div>
-                                <div className="c-b-t-body">Repeated Customers</div>
+                                <div className="c-b-t-head">{obj.FormattedBudgetConsumed}</div>
+                                <div className="c-b-t-body">Amount Saved</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{arr4[Math.floor(Math.random() * arr4.length)]}</div>
-                                <div className="c-b-t-body">Number of Gameplays</div>
+                                <div className="c-b-t-head">{obj.FormattedBudgetRemained}</div>
+                                <div className="c-b-t-body">Budget Remained</div>
                             </div>
                         </div>
                         <div className="c-b-dotted"></div>
@@ -126,8 +158,7 @@ export default function CampaignBox(props) {
                         </div>
                     </div>
                 </div>
-            ))
-            }
+            )}
         </div >
     )
 }

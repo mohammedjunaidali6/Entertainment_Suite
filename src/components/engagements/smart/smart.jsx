@@ -439,6 +439,7 @@ export default function EngagementsSmart(props) {
                             <div className="w-100 float-left clearfix mt-3">
                                 {(props.campaignsData && props.campaignsData.length > 0)?
                                     <CampaignBox
+                                        props={props}
                                         campaigndata={props.campaignsData}
                                         onPauseClick={(engmt, status) => onPauseClick(engmt, status)}
                                         onEditClick={(engmt) => onEditClick(engmt)}

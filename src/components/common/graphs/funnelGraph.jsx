@@ -10,13 +10,13 @@ export default function FunnelGraph({ data }) {
   },
   {
     id: 2,
-    label: 'Coupons Redeemed',
-    value: data?.CouponsRedeemedTotal || 0,
+    label: 'Customers Awarded',
+    value: data?.WinnersTotal || 0,
   },
   {
     id: 3,
-    label: 'Customers Awarded',
-    value: data?.WinnersTotal || 0,
+    label: 'Coupons Converted',
+    value: data?.CouponsRedeemedTotal || 0,
   }]
 
   return (
