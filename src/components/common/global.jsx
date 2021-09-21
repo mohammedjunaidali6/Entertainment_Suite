@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import store from "../../store/store";
-
 import calender_src from '../../assets/img/calender.svg';
 import down_arrow_src from '../../assets/img/down_arrow.svg';
 import { Fragment } from "react";
@@ -55,6 +54,14 @@ export const CustomDatePickerEL = forwardRef(
                 <span className="c-d-p-lbl pr-2">{value ? value : `MM/DD/YYYY`}</span>
                 <img src={down_arrow_src} alt="Down Arrow" />
             </div> </Fragment>)
+    ),
+);
+export const CustomeDatePickerENGT = forwardRef(({ value, onClick }, props, ref) => (
+            <div className="c-d-p-engt-date float-left" onClick={onClick} ref={ref} >
+                <img src={calender_src} alt="Calender" className="mr-2" />
+                <span className="c-d-p-lbl pr-3" style={{fontSize:'14px'}}>{value ? value : `MM/DD/YYYY`}</span>
+                <img src={down_arrow_src} alt="Down Arrow" />
+            </div>
     ),
 );
 

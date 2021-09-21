@@ -136,3 +136,9 @@ div.checkmark .unmark-circle:after {
     opacity: 0.8;
     background-color: rgb(224, 220, 220);
 }
+
+.tooltip-text{
+    font-size:'11px';
+    line-height:'18px';
+    letter-spacing:'0.5px';
+}

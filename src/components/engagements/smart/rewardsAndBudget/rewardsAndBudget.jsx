@@ -1,7 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Select from 'react-select';
 import _ from "lodash";
 import './rewardsAndBudget.css';
@@ -14,17 +13,6 @@ import Resizer from "../../../common/resizer/resizer";
 import { getAuthAndData } from '../../../../api/ApiHelper';
 import { BUDGET_MIN, BUDGET_DEFAULT, BUDGET_MAX, BUDGET_DURATION_DEFAULT, BUDGET_DURATION_MIN, BUDGET_DURATION_MAX, BUDGET_CURRENCY } from "../../../../constants/globalConstants";
 import { REWARD_TYPES, SOMETHING_WENT_WRONG, REWARDS_BY_REWARD_TYPE } from '../../../../api/apiConstants';
-import CustomTooltip from '../../../common/tooltip/tooltip';
-
-const HtmlTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: '#f5f5f9',
-        color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 220,
-        fontSize: theme.typography.pxToRem(10),
-        border: '1px solid #dadde9',
-    },
-}))(Tooltip);
 
 
 export const rbColumns = [
@@ -102,15 +90,14 @@ const arrayRewards = [
 ]
 
 export default function RewardsAndBudget(props) {
+    console.log('**',props.props);
     var history = useHistory();
+    const goalData = props.props.setGoals;
     const rewardsAndBudgetData = props.props.rewardsAndBudget;
-    console.log('**',rewardsAndBudgetData)
     const [rewardRowsData, setRewardRowsData] = useState(rewardsAndBudgetData?.rewards?.length>0 ?rewardsAndBudgetData?.rewards: arrayRewards);
     const [rewardTypes, setRewardTypes] = useState([]);
     const [rewardNames, setRewardNames] = useState([]);
     const [rewardMaster, setRewardMaster] = useState([]);
-    const [selectedRewardName, setSelectedRewardName] = useState([]);
-    const [rewardsData, setRewardsData] = useState(rewardsAndBudgetData?.rewards || []);
     const [budget, setBudget] = useState(rewardsAndBudgetData?.budget || BUDGET_DEFAULT);
     const [budgetDuration, setBudgetDuration] = useState(rewardsAndBudgetData?.budgetDuration || BUDGET_DURATION_DEFAULT);
 
@@ -155,10 +142,6 @@ export default function RewardsAndBudget(props) {
                         }
                         var arr = [...rewardRowsData];
                         arr.splice(_.findIndex(arr, obj), 1, obj);
-                        setSelectedRewardName({
-                            value:obj.id,
-                            label:obj.rewardName
-                        })
                         setRewardRowsData(arr);
                     }
                 }
@@ -175,10 +158,6 @@ export default function RewardsAndBudget(props) {
         objData.id = e.value;
         var arr = [...rewardRowsData];
         arr.splice(i, 1, objData);
-        setSelectedRewardName({
-            value:objData.reward_master_id,
-            label:objData.reward_name
-        })
         setRewardRowsData(arr);
     }
 
@@ -238,6 +217,9 @@ export default function RewardsAndBudget(props) {
     useEffect(() => {
         fetchRewardTypes();
         fetchAllCouponRewards();
+        return ()=>{
+            setRewardRowsData(arrayRewards);
+        }
     }, []);
     useEffect(() => {
 
@@ -310,8 +292,8 @@ export default function RewardsAndBudget(props) {
                                                 />
                                                 </div>
                                                 <div className='w-10'>
-                                                <CustomTooltip 
-                                                    tooltipText={
+                                                <Tooltip 
+                                                    title={
                                                         <Fragment>
                                                             <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
                                                             <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
@@ -319,7 +301,7 @@ export default function RewardsAndBudget(props) {
                                                     }
                                                 >
                                                     <img src={info} className='mt-2' style={{ height: '20px', width: '20px' }} />
-                                                </CustomTooltip>
+                                                </Tooltip>
                                             </div>
                                         </div>
                                     </div>
@@ -340,7 +322,7 @@ export default function RewardsAndBudget(props) {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-8 float-left clearfix mr-1" >
+                                <div className="w-8 float-left clearfix mr-1" style={{display:goalData?.isTournament?'none':''}} >
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                     {i==0&&<div className="r-b-ar-i-h">Probability(%)</div>}
                                         <input 
@@ -371,13 +353,13 @@ export default function RewardsAndBudget(props) {
                             <span className="r-b-add-reward-text">Add Reward</span>
                         </div>
                         {/* <div className="r-b-addreward-btns w-100 float-left text-right clearfix">
-                                    <div className="r-b-addreward-s float-right clearfix" onClick={() => setAddReward(false)}>Add</div>
-                                    <div className="r-b-addreward-c float-right clearfix" onClick={() => setAddReward(false)}>Cancel</div>
-                                </div> */}
+                                <div className="r-b-addreward-s float-right clearfix" onClick={() => setAddReward(false)}>Add</div>
+                                <div className="r-b-addreward-c float-right clearfix" onClick={() => setAddReward(false)}>Cancel</div>
+                            </div> */}
                     </div>
                 </Fragment>
-            </div >
-            <div className="b-d-sec w-100 float-left clearfix">
+            </div>
+            <div className="b-d-sec w-100 float-left clearfix"  style={{display:goalData?.isTournament?'none':''}} >
                 <div className="w-45 float-left clearfix">
                     <div className="b-d-h w-100 float-left clearfix">Budget (In {BUDGET_CURRENCY})</div>
                     <div className="b-d-content w-100 float-left clearfix">

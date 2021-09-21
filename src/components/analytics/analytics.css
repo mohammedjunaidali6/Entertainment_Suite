@@ -161,6 +161,16 @@
     padding: 0 0 7.5px 10px;
     cursor: pointer;
 }
+.c-d-p-engt-date{
+    box-sizing: border-box;
+    height: 32px;
+    width: 150px;
+    border: 1px solid #0478b1;
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 3px 3px 3px 5px;
+    cursor: pointer;
+}
 .c-d-p-lbl {
     height: 14px;
     /* opacity: 0.4; */

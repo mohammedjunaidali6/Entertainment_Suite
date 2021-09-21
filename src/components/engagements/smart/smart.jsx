@@ -1,4 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import createNotification from '../../common/reactNotification';
+import { NotificationContainer } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import _ from 'lodash';
+import './smart.css';
 import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import classnames from 'classnames';
@@ -12,16 +18,17 @@ import DefineJourney from "./defineJourney/defineJourney";
 import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
 import EStepper from "./stepper/stepper";
 import Review from "./review/review";
-import './smart.css';
-import _ from 'lodash';
-import { getAuthAndData, getData, postAuthAndData, postData } from '../../../api/ApiHelper';
+import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
-import { SAVE_ENGAGEMENT, DELETE_ENGAGEMENT, ENGAGEMENTS_DETAILS_BY_ID, ENGAGEMENT_UPDATE_STATUS, ENGAGEMENT_BY_STATUS_ID, ENGAGEMENTS_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../api/apiConstants';
-import { useHistory } from 'react-router-dom';
-import createNotification from '../../common/reactNotification';
-import { NotificationContainer } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
-
+import { 
+    SAVE_ENGAGEMENT, 
+    DELETE_ENGAGEMENT, 
+    ENGAGEMENTS_DETAILS_BY_ID, 
+    ENGAGEMENT_UPDATE_STATUS, 
+    ENGAGEMENT_BY_STATUS_ID, 
+    ENGAGEMENTS_BY_FILTERS, 
+    SOMETHING_WENT_WRONG 
+} from '../../../api/apiConstants';
 
 export default function EngagementsSmart(props) {
     var history = useHistory();
@@ -116,29 +123,45 @@ export default function EngagementsSmart(props) {
     }
     const stepsNextfn = () => {
         if (step === 'setGoals') {
+            console.log('***',goalData);
             if (goalData.campaignName&&goalData.displayName) {
-                setStep('targetAudience');
-                goalData.EngagementId = props.setGoals?.EngagementId;
-                props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
+                if(goalData.isTournament){
+                    let today=new Date();
+                    today.setHours(0,0,0,0);
+                    let start=new Date(goalData.startDate);
+                    let startDT=goalData.startDate&&new Date(start.getFullYear(),start.getMonth(), start.getDate());
+                    let end=new Date(goalData.endDate);
+                    let endDT=goalData.endDate&&new Date(end.getFullYear(),end.getMonth(), end.getDate());
+                    console.log('*',today,startDT,endDT);
+                    if(startDT&&endDT&&startDT>today&&endDT>startDT){
+                        setStep('targetAudience');
+                        goalData.EngagementId = props.setGoals?.EngagementId;
+                        props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
+                    }else{
+                        createNotification('warning','Enter valid Tournament Dates')
+                    }
+                }else{
+                    setStep('targetAudience');
+                    goalData.EngagementId = props.setGoals?.EngagementId;
+                    props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
+                }
             } else {
-                createNotification('info','Please Enter Campaign Name and Select Goal');
+                createNotification('warning','Please Enter Campaign Name and Select Goal');
             }
         } else if (step === 'targetAudience') {
-            console.log('***',definePurchaseRule)
             if(defineSegment){
                 if(!definePurchaseRule||!definePurchaseRule.enable||(definePurchaseRule.enable&&definePurchaseRule.value)){
                     setStep('defineJourney');
                 }else{
-                    createNotification('info','Please Enter Purchase value');
+                    createNotification('warning','Please Enter Purchase value');
                 }
             } else {
-                createNotification('info','Please Select Customer Segment');
+                createNotification('warning','Please Select Customer Segment');
             }
         } else if (step === 'defineJourney') {
                 setStep('rewardsAndBudget');
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
         } else if (step === 'rewardsAndBudget') {
-            console.log('***',defineRewards);
             if(defineRewards&&defineRewards.length){
                 var prob=0;
                 defineRewards.forEach(r=>{
@@ -147,10 +170,10 @@ export default function EngagementsSmart(props) {
                 if(prob==100){
                     setStep('review');
                 } else {
-                    createNotification('info','Total Probability should be equal to 100')
+                    createNotification('warning','Total Probability should be equal to 100')
                 }
             } else {
-                createNotification('info','Please enter atleast one Reward')
+                createNotification('warning','Please enter atleast one Reward details')
             }
         } else if (step === 'review') {
             handleAlertDialog({

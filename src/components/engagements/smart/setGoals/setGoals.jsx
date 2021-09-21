@@ -1,8 +1,7 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { FormBuilder, FieldGroup, FieldControl, Validators } from "react-reactive-form";
-import { TextInput } from "../../../common/utils/textInput";
-import { TextField } from '@material-ui/core';
-import icon_src from "../../../../assets/img/Engagements.svg";
+import React, { Fragment, useState } from 'react';
+import { TextField,Radio,RadioGroup, FormControlLabel,FormControl,FormLabel, Tooltip} from '@material-ui/core';
+import DatePicker from 'react-datepicker';
+import './setGoals.css';
 import i_s_src from "../../../../assets/img/Goal_icon1.svg";
 import i_s_selected_src from "../../../../assets/img/Goal_icon1_hover.svg";
 import b_i_src from "../../../../assets/img/boost_icon2.svg";
@@ -11,7 +10,8 @@ import b_n_c_src from "../../../../assets/img/newcustomers.svg";
 import b_n_c_selected_src from "../../../../assets/img/newcustomers_hover.svg";
 import i_r_src from "../../../../assets/img/referral.svg";
 import i_r_selected_src from "../../../../assets/img/referral_hover.svg";
-import './setGoals.css';
+import info from '../../../../assets/img/info.png';
+import { CustomeDatePickerENGT } from '../../../common/global';
 
 const preDefinedGoals = [
     { id: 1, heading: "Increase sales volume", desc: "This is a campaign to increase sales activity .Lorem Ipsum is simply dummy text of the printing and typesetting industry.", isActive: true },
@@ -23,10 +23,11 @@ const preDefinedGoals = [
 ];
 
 export default function SetGoals(props) {
-    console.log('***',props);
+    // console.log('***',props);
     const [goalBoxes, setGoalBoxes] = useState(preDefinedGoals);
-    const [campaign,setCampaign]=useState(props?.props?.setGoals||{});
+    const [engagement,setEngagement]=useState(props?.props?.setGoals||{});
     const [error, setError] = useState({});
+    const [isTournament,setIsTournament]=useState(false);
 
     function goalBoxClick(boxData) {
         goalBoxes.forEach((obj) => {
@@ -35,10 +36,24 @@ export default function SetGoals(props) {
         boxData.isActive = true;
     }
     const onTextChange = e => {
-        setCampaign({...campaign,[e.target.name]:e.target.value});
-        let obj={...campaign};
-        campaign[e.target.name]=e.target.value;
-        props.getSetGoalsData(campaign);
+        setEngagement({...engagement,[e.target.name]:e.target.value});
+        engagement[e.target.name]=e.target.value;
+        props.getSetGoalsData(engagement);
+    }
+    const onRadio=e=>{
+        let isTourn=(e.target.value==="1");
+        setIsTournament(isTourn);
+        setEngagement({...engagement,'isTournament':isTourn});
+        engagement['isTournament']=isTourn;
+        props.getSetGoalsData(engagement);
+        if(!isTourn){
+            setEngagement({...engagement,startDate:'',endDate:''});
+        }
+    }
+    const onDateSelect=(key,date)=>{
+        setEngagement({...engagement,[key]:date});
+        engagement[key]=date;
+        props.getSetGoalsData(engagement);
     }
     const sgChange=()=>{
         
@@ -57,23 +72,66 @@ export default function SetGoals(props) {
                         fullWidth
                         error={error.campaignName}
                         helperText={error.campaignName}
-                        value={campaign.campaignName}
+                        value={engagement.campaignName}
                         onChange={onTextChange}
                     />
                 </div>
                 <div className="ml-3 w-45">
-                <TextField
-                    name='displayName'
-                    label="Display Name"
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    error={error.displayName}
-                    helperText={error.displayName}
-                    value={campaign.displayName}
-                    onChange={onTextChange}
-                />
+                    <TextField
+                        name='displayName'
+                        label="Display Name"
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        error={error.displayName}
+                        helperText={error.displayName}
+                        value={engagement.displayName}
+                        onChange={onTextChange}
+                    />
+                </div>
+            </div>
+            <div className='ml-5 mt-1 w-95 row'>
+                <div className='w-50'>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Engagement Type</FormLabel>
+                        <RadioGroup row aria-label="engagement-type" name="row-radio-buttons-group">
+                            <FormControlLabel control={<Radio />} label="Normal" onChange={onRadio} value="0" checked={!isTournament}/>
+                            <Tooltip 
+                                title={<div className='tooltip-text'>Runs for a specified durations, and reward Winners based on their Game Performances.</div>}
+                                placement='top'
+                            >
+                                <img src={info} className='mt-2' style={{ height: '20px', width: '20px' }} />
+                            </Tooltip>
+                            <FormControlLabel control={<Radio />} label="Tournament" onChange={onRadio} value="1"/>
+                            <Tooltip 
+                                title={<div className='tooltip-text'>Runs till the specified Budget or Durations, Winners are chooses based on Probability.</div>} 
+                                placement='top'
+                            >
+                                <img src={info} className='mt-2' style={{ height: '20px', width: '20px' }} />
+                            </Tooltip>
+                        </RadioGroup>
+                    </FormControl>
+                </div>
+                <div className='w-40 row' style={{display:isTournament?'':'none'}}>
+                    <div className='w-50'>
+                        <div>Start Date</div>
+                        <DatePicker
+                            minDate={new Date()}
+                            selected={engagement?.startDate||new Date()}
+                            customInput={<CustomeDatePickerENGT/>} 
+                            onChange={(date)=>onDateSelect('startDate',date)}
+                        />
+                    </div>
+                    <div className='w-50'>
+                        <div>End Date</div>
+                        <DatePicker 
+                            minDate={new Date()}
+                            selected={engagement?.endDate||new Date()}
+                            customInput={<CustomeDatePickerENGT/>}
+                            onChange={(date)=>onDateSelect('endDate',date)}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="c-e-campaign-goal-sec w-100 float-left clearfix">
