@@ -273,7 +273,7 @@ export default function RewardsAndBudget(props) {
                 <Fragment>
                     <div className="add-reward-sec w-100 float-left clearfix" style={{pointerEvents:disableEditRewards?'none':''}}>
                         {rewardRowsData.map((obj, i) =>
-                            <div id={i} className="r-b-addreward-top w-100 float-left clearfix">
+                            <div id={i} className="r-b-addreward-top w-100 float-left clearfix row">
                                 <div className="w-10 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                         {i==0&&<div className="r-b-ar-i-h">Reward Number</div>}
@@ -294,40 +294,34 @@ export default function RewardsAndBudget(props) {
                                 </div>
                                 <div className="w-24 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
-                                        {i==0&&<div className="r-b-ar-i-h">Reward Name</div>}
-                                        <Select 
-                                            options={obj.rewardType?.value==2?rewardNames:[]} 
-                                            isDisabled={obj.rewardType?.value!==2} 
-                                            name='rewardName' 
-                                            onChange={(e) => onRewardNameChange(e,i)}
-                                            value={{
-                                                label:obj.rewardName,
-                                                value:obj.id
-                                            }}
-                                            style={{lineHeight:'28px'}}
-                                        />
-                                        <CustomTooltip 
-                                            tooltipText={
-                                                <Fragment>
-                                                    <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
-                                                    <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
-                                                </Fragment>
-                                            }
-                                        >
-                                            <img src={info} style={{ height: '14px', width: '14px' }} />
-                                        </CustomTooltip>
-                                        {/* <HtmlTooltip
-                                            title={
-                                                <Fragment>
-                                                    <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
-                                                    <p>{`Description: ${obj.tooltip?.description || ''}`}</p>
-                                                    <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
-                                                </Fragment>
-                                            }
-                                            placement='top'
-                                        >
-                                            <img src={info} style={{ height: '14px', width: '14px' }} />
-                                        </HtmlTooltip> */}
+                                        {i==0&&<div className="r-b-ar-i-h w-90">Reward Name</div>}
+                                        <div className='ml-1 row'>
+                                            <div className='w-80'>
+                                                <Select 
+                                                    options={obj.rewardType?.value==2?rewardNames:[]} 
+                                                    isDisabled={obj.rewardType?.value!==2} 
+                                                    name='rewardName' 
+                                                    onChange={(e) => onRewardNameChange(e,i)}
+                                                    value={{
+                                                        label:obj.rewardName,
+                                                        value:obj.id
+                                                    }}
+                                                    style={{lineHeight:'28px'}}
+                                                />
+                                                </div>
+                                                <div className='w-10'>
+                                                <CustomTooltip 
+                                                    tooltipText={
+                                                        <Fragment>
+                                                            <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
+                                                            <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
+                                                        </Fragment>
+                                                    }
+                                                >
+                                                    <img src={info} className='mt-2' style={{ height: '20px', width: '20px' }} />
+                                                </CustomTooltip>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="w-8 float-left clearfix mr-1">
@@ -364,12 +358,11 @@ export default function RewardsAndBudget(props) {
                                 <div className="w-30 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                     {i==0&&<div className="r-b-ar-i-h">Display To Customer</div>}
-                                        <input type="text" name='displayName' onChange={(e) => onRewardRowChange(e, obj)} value={obj.displayName} placeholder="Display Name" className=" r-b-ar-i" />
+                                        <input name='displayName' onChange={(e) => onRewardRowChange(e, obj)} value={obj.displayName} placeholder="Display Name" className=" r-b-ar-i" />
                                     </div>
                                 </div>
-                                <div className="w-4 float-left clearfix" onClick={() => removeRow(i,obj.rewardType)}>
-                                    <div className="r-b-ar-i-h mb-2"></div>
-                                    <img src={trash_src} alt='Remove' style={{ height: '14px', width: '14px' }} />
+                                <div className={`w-4 float-left clearfix ${i==0 ? 'mt-4':'mt-2'}`} onClick={() => removeRow(i,obj.rewardType)}>
+                                    <img src={trash_src} alt='trash' style={{ height: '20px', width: '20px' }} />
                                 </div>
                             </div>
                         )}
