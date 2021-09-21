@@ -17,7 +17,7 @@ export default function Review(props) {
     return (
         <div id="review-container" >
             <div className="w-70 float-left clearfix c-e-r-left">
-                <div className="c-e-r-left-h mb-1">Campaign Name</div>
+                <div className="c-e-r-left-h mb-1">Engagement Name</div>
                 <div className="c-e-r-left-c-n">
                     {goalsData?.displayName}
                     <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('setGoals')}>
@@ -46,7 +46,7 @@ export default function Review(props) {
                 <div className="c-e-r-left-d-j-box">
                     <div className="c-e-r-left-t-a-box-h">{journeyData?.name}</div>
                     {journeyData?.tags && journeyData.tags.length && journeyData.tags.map(tag =>
-                        <div className="disp-inline-b c-e-r-left-d-j-tag">{tag}</div>
+                        <div className="disp-inline-b c-e-r-left-d-j-tag">{tag.replace('{0}','')}</div>
                     )}
                 </div>
 
@@ -77,9 +77,9 @@ export default function Review(props) {
                             <div className="c-e-r-left-r-b-box-bd-box w-40 float-left clearfix">{rewObj.displayName}</div>
                         </div>
                     ))}
-                    <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
+                    {/* <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mt-3 mb-2">
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Budget</div>
-                        {/* <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div> */}
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-15"></div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-15">Duration</div>
                     </div>
                     <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
@@ -87,9 +87,9 @@ export default function Review(props) {
                             <span className="c-e-r-left-r-b-box-bd-prefix">{BUDGET_CURRENCY}</span>
                             {rewardsAndBudgetData?.budget&&parseInt(rewardsAndBudgetData?.budget).toLocaleString()}
                         </div>
-                        {/* <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div> */}
+                        <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">Daily Budget</div>
                         <div className="c-e-r-left-r-b-box-bd-box w-15 float-left clearfix">{rewardsAndBudgetData?.budgetDuration} Days</div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="w-30 float-left clearfix c-e-r-right">
@@ -103,11 +103,13 @@ export default function Review(props) {
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Number of days</div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">6 days</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">{rewardsAndBudgetData?.budgetDuration||0} days</div>
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Buget </div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">1,000 INR/Day</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">
+                        {rewardsAndBudgetData?.budget&&parseInt(rewardsAndBudgetData?.budget).toLocaleString()} {BUDGET_CURRENCY}
+                    </div>
                 </div>
                 {/* <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Expected number of sales projection</div>

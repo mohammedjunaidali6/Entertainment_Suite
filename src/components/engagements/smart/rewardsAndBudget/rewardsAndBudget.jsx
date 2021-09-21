@@ -99,10 +99,6 @@ export const rbData = [
 
 const arrayRewards = [
     { winnerPosition: 1, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
-    { winnerPosition: 2, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
-    { winnerPosition: 3, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
-    { winnerPosition: 4, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
-    { winnerPosition: 5, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
 ]
 
 export default function RewardsAndBudget(props) {
@@ -298,9 +294,7 @@ export default function RewardsAndBudget(props) {
                                 </div>
                                 <div className="w-24 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
-                                        <div className="r-b-ar-i-h">
-                                            {i==0&&<span className='mr-4'>Reward Name</span>}
-                                        </div>
+                                        {i==0&&<div className="r-b-ar-i-h">Reward Name</div>}
                                         <Select 
                                             options={obj.rewardType?.value==2?rewardNames:[]} 
                                             isDisabled={obj.rewardType?.value!==2} 
@@ -316,7 +310,6 @@ export default function RewardsAndBudget(props) {
                                             tooltipText={
                                                 <Fragment>
                                                     <p>{`Coupon code: ${obj.tooltip?.reward_code || ''}`}</p>
-                                                    <p>{`Description: ${obj.tooltip?.description || ''}`}</p>
                                                     <p>{`Expiry Date: ${new Date(obj.tooltip?.expiry_date).toLocaleDateString()}`}</p>
                                                 </Fragment>
                                             }

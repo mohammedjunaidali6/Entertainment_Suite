@@ -75,7 +75,7 @@
     line-height: 11px;
 }
 .c-e-r-left-r-b-box {
-    height: 365px;
+    display: inline-block;
     border-radius: 6px;
     background-color: #F2F4F5;
     margin-top: 8px;

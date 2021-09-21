@@ -50,7 +50,7 @@ export default function SetGoals(props) {
                 <div className="w-45">
                     <TextField
                         name='campaignName'
-                        label="Campaign Name"
+                        label="Engagement Name"
                         variant="outlined"
                         margin="normal"
                         required

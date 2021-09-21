@@ -1,4 +1,5 @@
 import React, { Fragment, useState,useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import 'react-input-tags-hooks/build/index.css';
 import Table from "../../common/reactTable/table";
 import SearchBar from "../../common/searchBar/searchBar";
@@ -16,13 +17,14 @@ import { RewardContextMenu } from '../../common/reactTable/menu';
 
 export default function ManageRewards(props) {
     // console.log('***',props);
+    let history=useHistory();
     const [createFlag, setCreateFlag] =useState(false);
     const [updateFlag, setUpdateFlag] =useState();
     const [error, setError] =useState({});
     const [masterRewards, setMasterRewards] = useState([]);
     const [categoryTags, setCategoryTags] = useState([]);
     const [selectedCategories,setSelectedCategories]=useState([]);
-    const [coupon,setCoupon]=useState({couponType:'Fixed'});
+    const [coupon,setCoupon]=useState({couponType:'Fixed',expiryDate:new Date()});
     
     const targetCategoryStyle= {
         boxSizing: 'border-box',
@@ -95,7 +97,7 @@ export default function ManageRewards(props) {
     
     const getMasterRewards=()=>{
         handleLoader(true);
-        getAuthAndData(`${ENGT_PROD_BASE_URI}${MASTER_REWARDS}`)
+        getAuthAndData(`${ENGT_PROD_BASE_URI}${MASTER_REWARDS}`,history)
         .then(res=>{
             if(handleResponseCode(res)){
                 let data=res.data;let arr=[];
@@ -138,7 +140,7 @@ export default function ManageRewards(props) {
         })
     }
     const getMasterCategories=()=>{
-        getAuthAndData(`${ENGT_PROD_BASE_URI}${MASTER_CATEGORIES}`)
+        getAuthAndData(`${ENGT_PROD_BASE_URI}${MASTER_CATEGORIES}`,history)
         .then(res=>{
             if(handleResponseCode(res)){
                 var cats=res.data?.map(c=>{
@@ -175,11 +177,18 @@ export default function ManageRewards(props) {
         }
         setError({...error,[key]:''})
     }
+    const verifyRewardCodeExistance=e=>{
+        let found=masterRewards.find(r=>r.RewardCode===coupon.couponCode);
+        if(found){
+            setError({...error,'couponCode':'Given Code is already exists.'});
+        }
+    }
+
     const onSaveReward=(e)=>{
-        if(coupon.couponName&&coupon.couponCode&&selectedCategories.length>0&&coupon.usagePerCustomer&&coupon.expiryDate&&coupon.couponValue&&coupon.couponType){
+        if(coupon.couponName&&(!error.couponCode&&coupon.couponCode)&&selectedCategories.length>0&&coupon.usagePerCustomer&&coupon.expiryDate&&coupon.couponValue&&coupon.couponType){
             let postObj={
                 RewardName:coupon.couponName,
-                RewardCode:coupon.couponCode.toUpperCase(),
+                RewardCode:coupon.couponCode,
                 PerPersonUsage:coupon.usagePerCustomer,
                 ExpiryDate:coupon.expiryDate,
                 DiscountValue:coupon.couponValue,
@@ -242,7 +251,7 @@ export default function ManageRewards(props) {
                 createNotification('success','Reward is succesfully saved');
                 setCreateFlag(false);
                 setSelectedCategories([]);
-                setCoupon({couponType:'Fixed'});
+                setCoupon({couponType:'Fixed',expiryDate:new Date()});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward saving is failed.');
@@ -258,7 +267,7 @@ export default function ManageRewards(props) {
                 createNotification('success','Reward is succesfully updated');
                 setUpdateFlag();
                 setSelectedCategories([]);
-                setCoupon({couponType:'Fixed'});
+                setCoupon({couponType:'Fixed',expiryDate:new Date()});
                 getMasterRewards();
             }else{
                 createNotification('error','Reward updating is failed.');
@@ -324,112 +333,113 @@ export default function ManageRewards(props) {
             <Fragment>
                 <div className='manage-coupons'>Manage Coupons</div>
                 <div className='create-new-rewards'>
-                        <div className='add-coupon'>Add new Coupon</div>
-                            <div className='display-name w-65 float-left clearfix'>
-                                <div className='display-name-text'>Display Name</div>
-                                <input 
-                                    name='couponName'
-                                    className='c-r-display-input-field w-97' 
-                                    placeholder='Enter Coupon Name'
-                                    maxLength={100}
-                                    onChange={e=>onCouponDataChange('couponName',e.target.value)}
-                                    value={coupon?.couponName}
+                    <div className='add-coupon'>Add new Coupon</div>
+                        <div className='display-name w-65 float-left clearfix'>
+                            <div className='display-name-text'>Display Name</div>
+                            <input 
+                                name='couponName'
+                                className='c-r-display-input-field w-97' 
+                                placeholder='Enter Coupon Name'
+                                maxLength={100}
+                                onChange={e=>onCouponDataChange('couponName',e.target.value)}
+                                value={coupon?.couponName}
+                            />
+                            {error.couponName&&
+                                <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponName}</p>
+                            }
+                        </div>
+                        <div className='.c-r-coupon-code w-35 float-left clearfix'>
+                            <div className='c-r-coupon-code-text'>Coupon Code</div>
+                            <input 
+                                name='couponCode'
+                                className='coupon-code-input-field w-100' 
+                                placeholder='Enter Coupon Code'
+                                maxLength={50}
+                                onChange={e=>onCouponDataChange('couponCode',(e.target.value).toUpperCase())}
+                                onBlur={verifyRewardCodeExistance}
+                                value={coupon?.couponCode}
+                                disabled={updateFlag}
+                            />
+                            {error.couponCode&&
+                                <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponCode}</p>
+                            }
+                        </div>
+                        <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
+                            <div className='target-category-text'>Target Category</div>
+                            <Select
+                                variant='outlined'
+                                label='Select Category'
+                                labelId="Select Categories"
+                                multiple
+                                value={selectedCategories}
+                                onChange={e=>{
+                                    setSelectedCategories(e.target.value);
+                                    setError({...error,'selectedCategories':''});
+                                }}
+                                input={<Input />}
+                                renderValue={selected => selected.join(", ")}
+                                style={{width:'600px'}}
+                            >{categoryTags.map(c => (
+                                <MenuItem key={c.name} value={c.name} style={{height:'34px'}}>
+                                    <Checkbox checked={selectedCategories.indexOf(c.name) > -1} />
+                                    <ListItemText primary={c.name} />
+                                </MenuItem>
+                            ))}
+                            </Select>
+                            {error.selectedCategories&&
+                                <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.selectedCategories}</p>
+                            }
+                        </div>
+                        <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
+                            <div className='usage-per-customer w-20 mr-2 float-left clearfix'>
+                                <div className='usage-per-customer-text'>Usage Per Customer</div>
+                                <input
+                                    type='number'
+                                    name='usagePerCustomer'
+                                    className='usage-per-customer-input-field w-97' 
+                                    placeholder="Usage per customer"
+                                    maxLength={2}
+                                    onChange={e=>e.target.value<=99&&onCouponDataChange('usagePerCustomer',e.target.value)}
+                                    value={coupon?.usagePerCustomer}
                                 />
-                                {error.couponName&&
-                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponName}</p>
+                                {error.usagePerCustomer&&
+                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.usagePerCustomer}</p>
                                 }
+                            </div>   
+                            <div className='reward-amount w-20 float-left clearfix'>
+                                <div className='rewarded-amount'>Coupon Type</div>
+                                <select className="prize-types w-97" name='couponType' onChange={e=>onCouponDataChange('couponType',e.target.value)}>
+                                    <option className='option-text' value="Fixed">Fixed Amount</option>
+                                    <option className='option-text' value="Percentage">Percentage</option>
+                                </select>
                             </div>
-                            <div className='.c-r-coupon-code w-35 float-left clearfix'>
-                                <div className='c-r-coupon-code-text'>Coupon Code</div>
-                                <input 
-                                    name='couponCode'
-                                    className='coupon-code-input-field w-100' 
-                                    placeholder='Enter Coupon Code'
-                                    maxLength={50}
-                                    onChange={e=>onCouponDataChange('couponCode',e.target.value)}
-                                    value={coupon?.couponCode}
-                                    disabled={updateFlag}
+                            <div className='amount-selection-box w-30 mt-3 float-left clearfix'>
+                                <input
+                                    name='couponValue'
+                                    type='number'
+                                    className="amount-input w-100 float-left clearfix" 
+                                    placeholder={coupon.couponType==='Fixed'?"Enter Coupon Amount":'Enter Coupon Percentage'}
+                                    onChange={e=>onCouponDataChange('couponValue',e.target.value)}
+                                    value={coupon?.couponValue}
                                 />
-                                {error.couponCode&&
-                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponCode}</p>
+                                {error.couponValue&&
+                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponValue}</p>
                                 }
                             </div>
-                            <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
-                                <div className='target-category-text'>Target Category</div>
-                                <Select
-                                    variant='outlined'
-                                    label='Select Category'
-                                    labelId="Select Categories"
-                                    multiple
-                                    value={selectedCategories}
-                                    onChange={e=>{
-                                        setSelectedCategories(e.target.value);
-                                        setError({...error,'selectedCategories':''});
-                                    }}
-                                    input={<Input />}
-                                    renderValue={selected => selected.join(", ")}
-                                    style={{width:'600px'}}
-                                >{categoryTags.map(c => (
-                                    <MenuItem key={c.name} value={c.name} style={{height:'34px'}}>
-                                        <Checkbox checked={selectedCategories.indexOf(c.name) > -1} />
-                                        <ListItemText primary={c.name} />
-                                    </MenuItem>
-                                ))}
-                                </Select>
-                                {error.selectedCategories&&
-                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.selectedCategories}</p>
-                                }
+                            <div className='expiry-date w-28 float-left clearfix' style={{marginRight: "0px"}}>
+                                <div className='expiry-date-text'>Expiry Date</div>
+                                <DatePicker
+                                    minDate={new Date()}
+                                    selected={coupon?.expiryDate||new Date()}
+                                    customInput={<CustomDatePickerEL fromReward={true} />} 
+                                    onChange={date=>onCouponDataChange('expiryDate',date)}
+                                />
+                                {error.expiryDate&&
+                                    <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.expiryDate}</p>
+                                }  
                             </div>
-                            <div className='w-100 float-left clearfix' style={{paddingTop: "18px"}}>
-                                <div className='usage-per-customer w-20 mr-2 float-left clearfix'>
-                                    <div className='usage-per-customer-text'>Usage Per Customer</div>
-                                    <input
-                                        type='number'
-                                        name='usagePerCustomer'
-                                        className='usage-per-customer-input-field w-97' 
-                                        placeholder="Usage per customer"
-                                        maxLength={2}
-                                        onChange={e=>e.target.value<=99&&onCouponDataChange('usagePerCustomer',e.target.value)}
-                                        value={coupon?.usagePerCustomer}
-                                    />
-                                    {error.usagePerCustomer&&
-                                        <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.usagePerCustomer}</p>
-                                    }
-                                </div>   
-                                <div className='reward-amount w-20 float-left clearfix'>
-                                    <div className='rewarded-amount'>Coupon Type</div>
-                                    <select className="prize-types w-97" name='couponType' onChange={e=>onCouponDataChange('couponType',e.target.value)}>
-                                        <option className='option-text' value="Fixed">Fixed Amount</option>
-                                        <option className='option-text' value="Percentage">Percentage</option>
-                                    </select>
-                                </div>
-                                <div className='amount-selection-box w-30 mt-3 float-left clearfix'>
-                                    <input
-                                        name='couponValue'
-                                        type='number'
-                                        className="amount-input w-100 float-left clearfix" 
-                                        placeholder={coupon.couponType==='Fixed'?"Enter Coupon Amount":'Enter Coupon Percentage'}
-                                        onChange={e=>onCouponDataChange('couponValue',e.target.value)}
-                                        value={coupon?.couponValue}
-                                    />
-                                    {error.couponValue&&
-                                        <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.couponValue}</p>
-                                    }
-                                </div>
-                                <div className='expiry-date w-28 float-left clearfix' style={{marginRight: "0px"}}>
-                                    <div className='expiry-date-text'>Expiry Date</div>
-                                    <DatePicker
-                                        minDate={new Date()}
-                                        selected={coupon?.expiryDate||new Date()}
-                                        customInput={<CustomDatePickerEL fromReward={true} />} 
-                                        onChange={date=>onCouponDataChange('expiryDate',date)}
-                                    />
-                                    {error.expiryDate&&
-                                        <p style={{fontSize:'10px',fontFamily:'Roboto',color:'red'}}>{error.expiryDate}</p>
-                                    }  
-                                </div>
-                            </div>
-                            <div className='c-r-controls'>
+                        </div>
+                        <div className='c-r-controls'>
                                 <div className='w-20 float-right'>
                                     <Button 
                                         variant="contained" 
