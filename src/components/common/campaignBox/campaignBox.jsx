@@ -13,7 +13,7 @@ import { REPT_PROD_HOST_URI,ENGAGEMENT_STATISTICS } from '../../../api/apiConsta
 import {postAuthAndData } from '../../../api/ApiHelper';
 
 export default function CampaignBox(props) {
-    console.log('***',props);
+    // console.log('***',props);
     const [anchorEl, setAnchorEl] = useState(null);
     const [openedPopoverId, setOpenedPopoverId] = useState(null);
     const open = Boolean(anchorEl);
@@ -93,38 +93,38 @@ export default function CampaignBox(props) {
                                 <div className="c-b-t-head">
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
-                                    :
-                                        obj.IsTournament?obj.StartDate.substring(0,10):(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'')
+                                        :
+                                        (statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'')
                                     }
                                 </div>
-                                <div className="c-b-t-body">{obj.IsTournament?'Start Date':'Customers Engaged'}</div>
+                                <div className="c-b-t-body">{'Customers Engaged'}</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4" style={{ alignItems: 'center' }}>
                                 <div className="c-b-t-head">
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
-                                    :
-                                        obj.IsTournament?obj.FormattedBudgetConsumed:(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'')
+                                        :
+                                        obj.IsTournament?'':(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'')
                                     }
                                 </div>
-                                <div className="c-b-t-body">{obj.IsTournament?'Budget Consumed':'Conversions'}</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'TBD':'Conversions'}</div>
                             </div>
                         </div>
                         <div className="w-100 float-left clearfix">
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.IsTournament?obj.EndDate.substring(0,10):obj.FormattedBudgetConsumed}</div>
-                                <div className="c-b-t-body">{obj.IsTournament?'End Date':'Amount Saved'}</div>
+                                <div className="c-b-t-head">{obj.IsTournament?obj.StartDate.substring(0,10):obj.FormattedBudgetConsumed}</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'Start Date':'Amount Saved'}</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.IsTournament?'':obj.FormattedBudgetRemained}</div>
-                                <div className="c-b-t-body">{obj.IsTournament?'TBD':'Budget Remained'}</div>
+                                <div className="c-b-t-head">{obj.IsTournament?obj.EndDate.substring(0,10):obj.FormattedBudgetRemained}</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'End Date':'Budget Remained'}</div>
                             </div>
                         </div>
                         <div className="c-b-dotted"></div>
                         <div className="w-100 c-b-footer pl-3 pr-3 pt-2">
-                            <BsCalendar></BsCalendar>
+                            {/* <BsCalendar></BsCalendar> */}
                             <span className="pl-2 c-b-lbl-expiry">
-                                Expire On : {new Date(obj.CompletedDate).toLocaleDateString('en-US')}
+                                 Type: {obj.IsTournament?<b>Tournament</b>:<b>Normal</b>}
                             </span>
                             <BsThreeDotsVertical onClick={(e) => campaignActionClick(e, obj.EngagementID)} className="float-right ml-2 mt-1" style={{ cursor: "pointer" }}></BsThreeDotsVertical>
 

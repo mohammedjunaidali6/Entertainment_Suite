@@ -70,7 +70,8 @@
 .c-b-lbl-expiry {
     height: 19px;
     color: #6A6976;
-    font-size: 14px;
+    font-size: 12px;
+    font-family: Roboto;
     letter-spacing: 0;
     line-height: 19px;
     text-align: center;

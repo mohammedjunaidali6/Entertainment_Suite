@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { TextField,Radio,RadioGroup, FormControlLabel,FormControl,FormLabel, Tooltip} from '@material-ui/core';
 import DatePicker from 'react-datepicker';
 import './setGoals.css';
@@ -23,9 +23,10 @@ const preDefinedGoals = [
 ];
 
 export default function SetGoals(props) {
-    // console.log('***',props);
+    console.log('***',props);
+    let goal=props?.props?.setGoals;
     const [goalBoxes, setGoalBoxes] = useState(preDefinedGoals);
-    const [engagement,setEngagement]=useState(props?.props?.setGoals||{});
+    const [engagement,setEngagement]=useState(goal||{});
     const [error, setError] = useState({});
     const [isTournament,setIsTournament]=useState(false);
 
@@ -59,6 +60,13 @@ export default function SetGoals(props) {
         
     }
 
+    useEffect(()=>{
+        if(goal){
+            setIsTournament(goal.isTournament)
+            props.getSetGoalsData(goal);
+        }
+    },[]);
+
     return (
         <div id="set-goals-container" >
             <div className='ml-5 w-95 row'>
@@ -74,6 +82,7 @@ export default function SetGoals(props) {
                         helperText={error.campaignName}
                         value={engagement.campaignName}
                         onChange={onTextChange}
+                        disabled={props?.updateEngagement}
                     />
                 </div>
                 <div className="ml-3 w-45">
@@ -91,7 +100,7 @@ export default function SetGoals(props) {
                     />
                 </div>
             </div>
-            <div className='ml-5 mt-1 w-95 row'>
+            <div className='ml-5 mt-1 w-95 row' style={{pointerEvents:props.updateEngagement?'none':'',opacity:props.updateEngagement?'0.4':''}}>
                 <div className='w-50'>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Engagement Type</FormLabel>
@@ -103,7 +112,7 @@ export default function SetGoals(props) {
                             >
                                 <img src={info} className='mt-2' style={{ height: '20px', width: '20px' }} />
                             </Tooltip>
-                            <FormControlLabel control={<Radio />} label="Tournament" onChange={onRadio} value="1"/>
+                            <FormControlLabel control={<Radio />} label="Tournament" onChange={onRadio} value="1"  checked={isTournament}/>
                             <Tooltip 
                                 title={<div className='tooltip-text'>Runs till the specified Budget or Durations, Winners are chooses based on Probability.</div>} 
                                 placement='top'

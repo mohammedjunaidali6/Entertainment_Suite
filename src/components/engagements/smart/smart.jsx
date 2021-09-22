@@ -34,6 +34,7 @@ export default function EngagementsSmart(props) {
     var history = useHistory();
     const [active, setActive] = useState('live');
     const [openEngagementWizard, setOpenEngagementWizard] = useState(false);
+    const [updateEngagement, setUpdateEngagement] = useState(false);
     const [gridFlag, setGridFlag] = useState(true);
     const [step, setStep] = useState('setGoals');
     const [goalData, setGoalData] = useState({});
@@ -94,6 +95,7 @@ export default function EngagementsSmart(props) {
 
     const createClick = () => {
         setOpenEngagementWizard(true);
+        setUpdateEngagement(false);
     }
 
     function tabClick(val) {
@@ -201,8 +203,9 @@ export default function EngagementsSmart(props) {
             const goalData = props.setGoals;
             const journeyData = props.journeyBox;
             const rewardsAndBudget = props.rewardsAndBudget;
-
+            
             let engagementObj = {};
+            debugger;
             engagementObj.EngagementID = goalData.EngagementId || 0;
             engagementObj.CampaignName = goalData.campaignName;
             engagementObj.DisplayName = goalData.displayName;
@@ -242,6 +245,7 @@ export default function EngagementsSmart(props) {
                 .then(res => {
                     if (handleResponseCode(res)) {
                         setOpenEngagementWizard(false);
+                        setUpdateEngagement(false);
                         setStep('setGoals');
                         
                         createEngagementDataClear();
@@ -342,11 +346,14 @@ export default function EngagementsSmart(props) {
             .then(res => {
                 console.log('***',res);
                 if (handleResponseCode(res)) {
-                    let engagements=res.data;
+                    let engagement=res.data;
                     let setGoals = {
-                        EngagementId: engagements.EngagementID,
-                        campaignName: engagements.CampaignName,
-                        displayName: engagements.DisplayName,
+                        EngagementId: engagement.EngagementID,
+                        campaignName: engagement.ShortName,
+                        displayName: engagement.DisplayName,
+                        isTournament:engagement.IsTournamentType,
+                        startDate:new Date(engagement.StartDate),
+                        endDate:new Date(engagement.EndDate),
                         goal: {
                             id: 1,
                             isActive: true,
@@ -356,22 +363,22 @@ export default function EngagementsSmart(props) {
                     }
                     setGoalData(setGoals);
                     let targetAudience = {
-                        targetAudience: engagements.CustomerSegmentID,
-                        purchaseRuleId: engagements.PurchaseRule?.PurchaseRuleID,
-                        purchaseValue: engagements.PurchaseRule?.PurchaseValue,
-                        durationNum: engagements.PurchaseRule?.LastNumberOfDays,
+                        targetAudience: engagement.CustomerSegmentID,
+                        purchaseRuleId: engagement.PurchaseRule?.PurchaseRuleID,
+                        purchaseValue: engagement.PurchaseRule?.PurchaseValue,
+                        durationNum: engagement.PurchaseRule?.LastNumberOfDays,
                         daysType: 'days'
                     }
                     let journeyObj = {
-                        id: engagements.JourneyID,
+                        id: engagement.JourneyID,
                         tags: [],
                         isActive: false
                     }
                     setDefineJourney(journeyObj);
 
                     let rewardArr = [];
-                    if (Array.isArray(engagements.Rewards)) {
-                        engagements.Rewards.forEach(rew => {
+                    if (Array.isArray(engagement.Rewards)) {
+                        engagement.Rewards.forEach(rew => {
                             let rewardObj = {}
                             rewardObj.engagementRewardId = rew.EngagementRewardID;
                             rewardObj.id = rew.RewardMasterID;
@@ -385,8 +392,8 @@ export default function EngagementsSmart(props) {
                     }
                     let rewardsAndBudget = {
                         rewards: rewardArr,
-                        budget: engagements.Budget,
-                        budgetDuration: engagements.BudgetDays
+                        budget: engagement.Budget,
+                        budgetDuration: engagement.BudgetDays
                     }
 
                     props.engagementsSmartActionHandler.dispatchSetGoalsData(setGoals);
@@ -394,6 +401,7 @@ export default function EngagementsSmart(props) {
                     props.engagementsSmartActionHandler.dispatchJourneyBoxData(journeyObj);
                     props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(rewardsAndBudget);
                     setOpenEngagementWizard(true);
+                    setUpdateEngagement(true);
                 }
                 handleLoader(false);
             })
@@ -521,7 +529,7 @@ export default function EngagementsSmart(props) {
 
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
-                            {step === 'setGoals' ? <SetGoals getSetGoalsData={getSetGoalsData} props={props} /> :
+                            {step === 'setGoals' ? <SetGoals getSetGoalsData={getSetGoalsData} props={props} updateEngagement={updateEngagement}/> :
                                 step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} setDefinePurchaseRule={data=>setDefinePurchaseRule(data)} handleLoader={(bool) => handleLoader(bool)} /> :
                                     step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
                                         step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :

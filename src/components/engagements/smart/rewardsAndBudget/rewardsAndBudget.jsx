@@ -110,7 +110,7 @@ export default function RewardsAndBudget(props) {
                     res.data.forEach(rewType => {
                         let option = {
                             value: rewType.reward_type_id,
-                            label: rewType.reward_type
+                            label: rewType.reward_type.trim()
                         }
                         rewardTypeOptions.push(option);
                     })
@@ -222,7 +222,6 @@ export default function RewardsAndBudget(props) {
         }
     }, []);
     useEffect(() => {
-
         props.setDefineRewards(rewardRowsData.filter(r=>r.id!==''));
 
         return () => {
@@ -245,6 +244,14 @@ export default function RewardsAndBudget(props) {
             return true;
         }
     }
+    useEffect(()=>{
+        rewardRowsData.forEach(r=>{
+            if(typeof r.rewardType==='string'&&rewardTypes.length){
+                let typeObj=rewardTypes.filter(rT=>rT.label===r.rewardType);
+                onRewardTypeSelect(typeObj[0],r);
+            }
+        })
+    },[rewardTypes]);
 
     const disableEditRewards=rewardsAndBudgetData?.rewards?.length>0
         &&rewardsAndBudgetData?.rewards.filter(r=>{if(r.engagementRewardId)return r})?.length>0;

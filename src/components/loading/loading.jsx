@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import Spinner from 'react-spinner-material';
 import LinearProgressBar from '../common/progressBar/linearProgressBar';
 import { postAuthAndData, getData, postData } from '../../api/ApiHelper';
 import {
@@ -10,6 +11,7 @@ import {
 } from '../../api/apiConstants';
 import createNotification from '../common/reactNotification';
 import NotificationContainer from 'react-notifications/lib/NotificationContainer';
+import Loader from '../common/Spinner/spinner';
 
 
 export default function Loading(props) {
@@ -51,7 +53,11 @@ export default function Loading(props) {
   return (
     <div>
       <NotificationContainer/>
-      <LinearProgressBar value={perc} />
+      <div style={{marginLeft: '6%',marginBottom: '1%'}}>
+        <Spinner radius={25} color={"#007BFF"} stroke={2} visible={true} />
+      </div>
+      <div style={{textAlign:'center'}}>Did you know?</div>
+      <p style={{textAlign:'center'}}>e-commerce management app</p>
     </div>
   )
 
