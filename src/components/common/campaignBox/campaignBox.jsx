@@ -13,7 +13,7 @@ import { REPT_PROD_HOST_URI,ENGAGEMENT_STATISTICS } from '../../../api/apiConsta
 import {postAuthAndData } from '../../../api/ApiHelper';
 
 export default function CampaignBox(props) {
-    // console.log('***',props.props);
+    console.log('***',props);
     const [anchorEl, setAnchorEl] = useState(null);
     const [openedPopoverId, setOpenedPopoverId] = useState(null);
     const open = Boolean(anchorEl);
@@ -94,30 +94,30 @@ export default function CampaignBox(props) {
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
                                     :
-                                        statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'-'
+                                        obj.IsTournament?obj.StartDate.substring(0,10):(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'')
                                     }
                                 </div>
-                                <div className="c-b-t-body">Customers Engaged</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'Start Date':'Customers Engaged'}</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4" style={{ alignItems: 'center' }}>
                                 <div className="c-b-t-head">
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
                                     :
-                                        statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'-'
+                                        obj.IsTournament?obj.FormattedBudgetConsumed:(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'')
                                     }
                                 </div>
-                                <div className="c-b-t-body">Conversions</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'Budget Consumed':'Conversions'}</div>
                             </div>
                         </div>
                         <div className="w-100 float-left clearfix">
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.FormattedBudgetConsumed}</div>
-                                <div className="c-b-t-body">Amount Saved</div>
+                                <div className="c-b-t-head">{obj.IsTournament?obj.EndDate.substring(0,10):obj.FormattedBudgetConsumed}</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'End Date':'Amount Saved'}</div>
                             </div>
                             <div className="w-50 float-left clearfix pl-3 pt-4">
-                                <div className="c-b-t-head">{obj.FormattedBudgetRemained}</div>
-                                <div className="c-b-t-body">Budget Remained</div>
+                                <div className="c-b-t-head">{obj.IsTournament?'':obj.FormattedBudgetRemained}</div>
+                                <div className="c-b-t-body">{obj.IsTournament?'TBD':'Budget Remained'}</div>
                             </div>
                         </div>
                         <div className="c-b-dotted"></div>

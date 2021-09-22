@@ -18,7 +18,7 @@
     border-radius: 4px;
     background-color: #FFFFFF;
     cursor: pointer;
-    /* margin-bottom: 30px; */
+    margin-bottom: 30px;
 }
 .r-b-add-reward-text {
     height: 15px;
@@ -38,7 +38,7 @@
     border-radius: 0 0 10px 10px;
     background-color: #F8F9F9;
     box-shadow: 0 2px 4px 0 rgba(95,100,112,0.38);
-    margin-top: 19px;
+    /* margin-top: 19px; */
 }
 .b-d-h {
     height: 21px;

@@ -123,7 +123,6 @@ export default function EngagementsSmart(props) {
     }
     const stepsNextfn = () => {
         if (step === 'setGoals') {
-            console.log('***',goalData);
             if (goalData.campaignName&&goalData.displayName) {
                 if(goalData.isTournament){
                     let today=new Date();
@@ -132,7 +131,6 @@ export default function EngagementsSmart(props) {
                     let startDT=goalData.startDate&&new Date(start.getFullYear(),start.getMonth(), start.getDate());
                     let end=new Date(goalData.endDate);
                     let endDT=goalData.endDate&&new Date(end.getFullYear(),end.getMonth(), end.getDate());
-                    console.log('*',today,startDT,endDT);
                     if(startDT&&endDT&&startDT>today&&endDT>startDT){
                         setStep('targetAudience');
                         goalData.EngagementId = props.setGoals?.EngagementId;
@@ -162,15 +160,24 @@ export default function EngagementsSmart(props) {
                 setStep('rewardsAndBudget');
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
         } else if (step === 'rewardsAndBudget') {
+            var filteredArr = defineRewards.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && (goalData.isTournament||rew.probability) && rew.displayName&&(rew.rewardType?.value == 2 || rew.rewardValue));
             if(defineRewards&&defineRewards.length){
-                var prob=0;
-                defineRewards.forEach(r=>{
-                    prob+=parseInt(r.probability);
-                })
-                if(prob==100){
-                    setStep('review');
-                } else {
-                    createNotification('warning','Total Probability should be equal to 100')
+                if(filteredArr.length!=defineRewards.length){
+                    createNotification('warning','Please enter complete details of rewards.')
+                }else{
+                    if(goalData.isTournament){
+                        setStep('review');
+                    }else{
+                        var prob=0;
+                        defineRewards.forEach(r=>{
+                            prob+=parseInt(r.probability);
+                        })
+                        if(prob==100){
+                            setStep('review');
+                        } else {
+                            createNotification('warning','Total Probability should be equal to 100')
+                        }
+                    }
                 }
             } else {
                 createNotification('warning','Please enter atleast one Reward details')
@@ -191,18 +198,20 @@ export default function EngagementsSmart(props) {
         try {
             handleLoader(true);
             const targetAudienceData = props.targetAudience;
-            const goalsData = props.setGoals;
+            const goalData = props.setGoals;
             const journeyData = props.journeyBox;
             const rewardsAndBudget = props.rewardsAndBudget;
 
             let engagementObj = {};
-            engagementObj.EngagementID = goalsData.EngagementId || 0;
-            engagementObj.CampaignName = goalsData.campaignName;
-            engagementObj.DisplayName = goalsData.displayName;
-            engagementObj.StatusID = 1;
+            engagementObj.EngagementID = goalData.EngagementId || 0;
+            engagementObj.CampaignName = goalData.campaignName;
+            engagementObj.DisplayName = goalData.displayName;
+            engagementObj.IsTournamentType=goalData?.isTournament;
+            engagementObj.StatusID = goalData?.isTournament?4:1;
             engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.customer_segment_id;
             engagementObj.JourneyID = journeyData?.id||0;
-            engagementObj.StartDate=new Date();
+            engagementObj.StartDate=goalData.isTournament?goalData.startDate:new Date();
+            engagementObj.EndDate=goalData.isTournament?goalData.endDate:new Date();
             engagementObj.PurchaseRule = {};
             if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
                 engagementObj.PurchaseRule.Value = parseInt(targetAudienceData.purchaseValue);
@@ -217,17 +226,17 @@ export default function EngagementsSmart(props) {
             rewardsAndBudget?.rewards?.forEach(rewObj => {
                 let rewardObj = {};
                 rewardObj.EngagementRewardId = rewObj.engagementRewardId || 0
-                rewardObj.WinPosition = rewObj.winnerPosition;
+                rewardObj.WinPosition = rewObj.winnerPosition||0;
                 rewardObj.DisplayName = rewObj.displayName;
                 rewardObj.RewardType = rewObj.rewardType?.label;
-                rewardObj.Probability = rewObj.probability;
+                rewardObj.Probability = rewObj.probability||0;
                 rewardObj.RewardMasterID = rewObj.id || 0;
                 rewardObj.Value = rewObj.rewardValue || null;
                 engagementObj.Rewards.push(rewardObj);
             })
 
-            engagementObj.Budget = parseInt(rewardsAndBudget.budget || '0');
-            engagementObj.BudgetDays = parseInt(rewardsAndBudget.budgetDuration || '0');
+            engagementObj.Budget = goalData.isTournament?0:parseInt(rewardsAndBudget?.budget || '0');
+            engagementObj.BudgetDays = goalData.isTournament?0:parseInt(rewardsAndBudget?.budgetDuration || '0');
 
             postAuthAndData(SAVE_ENGAGEMENT, engagementObj, history)
                 .then(res => {
@@ -237,6 +246,7 @@ export default function EngagementsSmart(props) {
                         
                         createEngagementDataClear();
                         createNotification('success', 'Engagement Saved Succesfully');
+                        tabClick('live');
                         fetchEngagementsByStatus(1);//1 is for Active Engagements
                     } else {
                         createNotification('error', 'Engagement Saving failed');
@@ -253,7 +263,7 @@ export default function EngagementsSmart(props) {
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
         props.engagementsSmartActionHandler.dispatchTargetAudienceData(null);
         props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
-        props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData();
+        props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(null);
     }
 
     const getSetGoalsData = data => {

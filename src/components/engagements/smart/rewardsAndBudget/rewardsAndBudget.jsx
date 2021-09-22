@@ -227,7 +227,7 @@ export default function RewardsAndBudget(props) {
 
         return () => {
             var filterArr = [...rewardRowsData];
-            var filteredArr = filterArr.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && rew.probability && (rew.rewardType?.value == 2 || rew.rewardValue));
+            var filteredArr = filterArr.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && (goalData.isTournament||rew.probability) && rew.displayName&&(rew.rewardType?.value == 2 || rew.rewardValue));
             let rewardsAndBudget = {
                 rewards: filteredArr || [],
                 budget: budget,
@@ -258,7 +258,7 @@ export default function RewardsAndBudget(props) {
                             <div id={i} className="r-b-addreward-top w-100 float-left clearfix row">
                                 <div className="w-10 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
-                                        {i==0&&<div className="r-b-ar-i-h">Reward Number</div>}
+                                        {i==0&&<div className="r-b-ar-i-h">Win Position</div>}
                                             <input type="number" name='winnerPosition' onChange={(e) => onRewardRowChange(e, obj)} value={obj.winnerPosition} placeholder="0" className=" r-b-ar-i" style={{ textAlign: 'center' }} />
                                     </div>
                                 </div>
@@ -352,10 +352,6 @@ export default function RewardsAndBudget(props) {
                             <img src={plus_src} alt="Plus" className="r-b-add-reward-img"/>
                             <span className="r-b-add-reward-text">Add Reward</span>
                         </div>
-                        {/* <div className="r-b-addreward-btns w-100 float-left text-right clearfix">
-                                <div className="r-b-addreward-s float-right clearfix" onClick={() => setAddReward(false)}>Add</div>
-                                <div className="r-b-addreward-c float-right clearfix" onClick={() => setAddReward(false)}>Cancel</div>
-                            </div> */}
                     </div>
                 </Fragment>
             </div>

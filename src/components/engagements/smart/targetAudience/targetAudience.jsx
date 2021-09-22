@@ -5,10 +5,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import './targetAudience.css';
 import { getAuthAndData} from '../../../../api/ApiHelper';
-import { CUSTOMERS_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
 import BasicTreeMap from '../../../common/map/treemap';
 import createNotification from '../../../common/reactNotification';
 import { BUDGET_CURRENCY } from '../../../../constants/globalConstants';
+import { 
+    CUSTOMERS_BY_FILTERS, 
+    SOMETHING_WENT_WRONG 
+} from '../../../../api/apiConstants';
 
 
 const rule1options = [
@@ -75,10 +78,10 @@ export default function TargetAudience(props) {
 const onCheckBox=e=>{
     setPurchaseRuleEnable(e.target.checked);
     let checked=e.target.checked;
+    props.setDefinePurchaseRule({enable:checked,value:''});
     if(!checked){
         setPurchaseValue();
         setDurationNum();
-        props.setDefinePurchaseRule({enable:checked,value:''});
     }
 }
 
