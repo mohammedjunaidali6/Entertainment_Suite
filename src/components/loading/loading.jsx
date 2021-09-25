@@ -16,6 +16,14 @@ import Loader from '../common/Spinner/spinner';
 
 export default function Loading(props) {
   const [perc, setPerc] = useState(1);
+  const [text, setText] = useState('');
+
+  const items=[
+    'Games can increase the time spent on the Website by 40%, can increase your conversion rates by 10%',
+    'Customers are most likely to act when they are deeply immersed in engagement',
+    'Try out Purchase specific Rules to help Increasing repeat sales.',
+    'Try out Wishlist based Journey - To Know Whats in Customers Mind for next Festive Season.',
+  ]
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,7 +46,7 @@ export default function Loading(props) {
           props.dashboardActionHandler.dispatchSummaryTotalsData(res.data);
         }
       })
-
+      setText(items[Math.floor(Math.random()*items.length)]);
   }, []);
   const handleResponseCode=(resp)=>{
     if(!resp || resp.code===-1){
@@ -57,7 +65,7 @@ export default function Loading(props) {
         <Spinner radius={25} color={"#007BFF"} stroke={2} visible={true} />
       </div>
       <div style={{textAlign:'center'}}>Did you know?</div>
-      <p style={{textAlign:'center'}}>e-commerce management app</p>
+      <p style={{textAlign:'center'}}>{text}</p>
     </div>
   )
 
