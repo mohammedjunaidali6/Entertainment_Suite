@@ -205,13 +205,12 @@ export default function EngagementsSmart(props) {
             const rewardsAndBudget = props.rewardsAndBudget;
             
             let engagementObj = {};
-            debugger;
             engagementObj.EngagementID = goalData.EngagementId || 0;
             engagementObj.CampaignName = goalData.campaignName;
             engagementObj.DisplayName = goalData.displayName;
             engagementObj.IsTournamentType=goalData?.isTournament;
             engagementObj.StatusID = goalData?.isTournament?4:1;
-            engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.customer_segment_id;
+            engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.segment_customers_id;
             engagementObj.JourneyID = journeyData?.id||0;
             engagementObj.StartDate=goalData.isTournament?goalData.startDate:new Date();
             engagementObj.EndDate=goalData.isTournament?goalData.endDate:new Date();

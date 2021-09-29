@@ -9,7 +9,7 @@ import BasicTreeMap from '../../../common/map/treemap';
 import createNotification from '../../../common/reactNotification';
 import { BUDGET_CURRENCY } from '../../../../constants/globalConstants';
 import { 
-    CUSTOMERS_BY_FILTERS, 
+    CUSTOMERS_BY_FILTERS,
     SOMETHING_WENT_WRONG 
 } from '../../../../api/apiConstants';
 
@@ -75,15 +75,16 @@ export default function TargetAudience(props) {
         setSelectedSegment(obj.data);
         props.setDefineSegment(obj.data);
     }
-const onCheckBox=e=>{
-    setPurchaseRuleEnable(e.target.checked);
-    let checked=e.target.checked;
-    props.setDefinePurchaseRule({enable:checked,value:''});
-    if(!checked){
-        setPurchaseValue();
-        setDurationNum();
+    
+    const onCheckBox=e=>{
+        setPurchaseRuleEnable(e.target.checked);
+        let checked=e.target.checked;
+        props.setDefinePurchaseRule({enable:checked,value:''});
+        if(!checked){
+            setPurchaseValue();
+            setDurationNum();
+        }
     }
-}
 
     const fetchCustomerSegments = () => {
         try {
