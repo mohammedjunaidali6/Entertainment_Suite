@@ -24,11 +24,11 @@ export default function BasicTreeMap(props) {
         <div className="App" style={{ height: '280px', width: '100%' }}>
             <ResponsiveTreeMap
                 data={props.data}
-                identity="name"
+                identity="segment_name"
                 value="percentage"
                 valueFormat=" ^0.0%"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                label={(e) => e.data.name}
+                label={(e) => e.data.segment_name}
                 labelSkipSize={12}
                 labelTextColor={{ from: 'color', modifiers: [['darker', 1.2]] }}
                 enableParentLabel={false}

@@ -97,7 +97,7 @@ const onCheckBox=e=>{
                             "children": []
                         }
                         res.data.map(c => {
-                            c.percentage = (c.customer_segment_id == 6 ? 0.45 : c.customer_segment_id == 1 ? 0.25 : c.customer_segment_id == 2 ? 0.1 : c.customer_segment_id == 4 ? 0.07 : c.customer_segment_id == 5 ? 0.08 : 0.05)
+                            c.percentage = (c.segment_customers_id == 6 ? 0.45 : c.segment_customers_id == 1 ? 0.25 : c.segment_customers_id == 2 ? 0.1 : c.segment_customers_id == 4 ? 0.07 : c.segment_customers_id == 5 ? 0.08 : 0.05)
                             data.children.push(c);
                         })
                         setCustomerSegments(data);
@@ -140,7 +140,7 @@ const onCheckBox=e=>{
             <div className="c-e-target-content w-100 float-left clearfix">
                 {customerSegments && <BasicTreeMap data={customerSegments} onSegmentSelection={obj => onSegmentSelection(obj)} />}
                 <div className="w-100 float-left clearfix pl-2 pt-1" style={{fontSize:'12px'}}>
-                    Selected Customer Segment : <b>{selectedSegment?.name || 'No Segment selected'}</b>
+                    Selected Customer Segment : <b>{selectedSegment?.segment_name || 'No Segment selected'}</b>
                 </div>
 
                 {/* <div className="w-85 float-left clearfix c-e-target-left-box-con">
