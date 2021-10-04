@@ -94,7 +94,7 @@ export default function CampaignBox(props) {
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
                                         :
-                                        (statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'')
+                                        (statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.EngagedCustomers||'0')
                                     }
                                 </div>
                                 <div className="c-b-t-body">{'Customers Engaged'}</div>
@@ -104,7 +104,7 @@ export default function CampaignBox(props) {
                                     {showLoader?
                                         <img src={dots_progress} height='40%' width='50%'/>
                                         :
-                                        obj.IsTournament?'':(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'')
+                                        obj.IsTournament?'':(statistics?.length&&statistics.find(s=>s.EngagementID==obj.EngagementID)?.CouponsRedeemed||'0')
                                     }
                                 </div>
                                 <div className="c-b-t-body">{obj.IsTournament?'TBD':'Conversions'}</div>

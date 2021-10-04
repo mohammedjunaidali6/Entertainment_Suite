@@ -70,7 +70,7 @@ export default function Header(props) {
         <div id="header-container">
             <div className="w-50 float-left clearfix">
                 <img src={logo_src} alt="Divanor" className="h-logo" onClick={() => redirectFn('/')} />
-                <Select
+                {/* <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={company}
@@ -80,15 +80,6 @@ export default function Header(props) {
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </div>
-            <div className="w-50 float-left clearfix">
-                <div className="h-logged-user-sec float-right clearfix" onClick={handleClick}>
-                    <img src={default_user_src} alt="logged user" className="h-logger-user" />
-                    <BsChevronDown style={{ color: "white" }} />
-                </div>
-                <Popover
                     id={id}
                     open={open}
                     anchorEl={anchorEl}
@@ -121,7 +112,7 @@ export default function Header(props) {
                     </Typography>
                 </Popover>
                 <BsFillBellFill className="h-icons float-right clearfix" onClick={notifyClick} ></BsFillBellFill>
-                {searchOpen === true ? (
+                {/* {searchOpen === true ? (
                     <div className="h-s-sec float-right clearfix">
                         <BsSearch className="h-icons float-left clearfix m-0 h-s-sec-img mr-2"></BsSearch>
                         <input type="text" className="h-s-sec-input" placeholder="Search" />
@@ -129,15 +120,15 @@ export default function Header(props) {
                     </div>
                 ) : (
                     <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{ marginLeft: "40px" }}></BsSearch>
-                )}
-                <div className="h-links float-right clearfix">
+                )} */}
+                {/* <div className="h-links float-right clearfix">
                     <img src={product_tour_src} className="mb-1" />
                     <span className="ml-2">Product Tour</span>
-                </div>
-                <div className="h-links float-right clearfix">
+                </div> */}
+                {/* <div className="h-links float-right clearfix">
                     <img src={support_src} className="mb-1" />
                     <span className="ml-2">Support Request</span>
-                </div>
+                </div> */}
                 <Popover
                     id={notifyId}
                     open={notifyOpen}

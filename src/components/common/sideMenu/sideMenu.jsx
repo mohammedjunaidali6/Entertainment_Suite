@@ -98,18 +98,18 @@ export default function SideMenu(props) {
                     <img src={engagements_src} className="s-m-item-img" alt="Engagements" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Engagements</span>) : null}
                 </div>
-                <div className={`s-m-item ${selectedSM === 3 ? `active` : ``}`} onClick={() => liveviewClick()}>
+                {/* <div className={`s-m-item ${selectedSM === 3 ? `active` : ``}`} onClick={() => liveviewClick()}>
                     <img src={liveview_src} className="s-m-item-img" alt="Liveview" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Live view</span>) : null}
-                </div>
-                <div className={`s-m-item ${selectedSM === 4 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')}>
+                </div> */}
+                {/* <div className={`s-m-item ${selectedSM === 4 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')}>
                     <img src={analytics_src} className="s-m-item-img" alt="Analytics" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Analytics</span>) : null}
-                </div>
-                <div className={`s-m-item ${selectedSM === 5 ? `active` : ``}`} onClick={() => segmentClick()}>
+                </div> */}
+                {/* <div className={`s-m-item ${selectedSM === 5 ? `active` : ``}`} onClick={() => segmentClick()}>
                     <img src={segment_src} className="s-m-item-img" alt="CustomerSegment" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Customer Segment</span>) : null}
-                </div>
+                </div> */}
                 <div className={`s-m-item ${selectedSM === 6 ? `active` : ``}`} onClick={() => manageClick(6, 1, 'rewards')}>
                     <img src={manage_src} className="s-m-item-img" alt="Manage" />
                     {sideLabelFlag() ? (<span className="s-m-item-lbl">Manage</span>) : null}
