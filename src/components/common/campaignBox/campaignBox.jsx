@@ -79,7 +79,7 @@ export default function CampaignBox(props) {
                             'c-b-discount-expired': obj.Status === 3,
                             'c-b-discount-upcoming': obj.Status === 4
                         })}>
-                            <span className={`c-b-offer ${obj.Status === 4 ? `c-b-offer-upcoming` : ``}`}>{obj.DisplayName}</span>
+                            <span className={`c-b-offer ${obj.Status === 4 ? `c-b-offer-upcoming` : ``}`}>{obj.DisplayName?.length>30?obj.DisplayName.substring(0,30)+'...':obj.DisplayName}</span>
                         </div>
                         <div className="w-100 float-left clearfix p-relative">
                             {obj.IsRecent ? (
