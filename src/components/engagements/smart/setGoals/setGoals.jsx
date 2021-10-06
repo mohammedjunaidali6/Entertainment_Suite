@@ -23,7 +23,7 @@ const preDefinedGoals = [
 ];
 
 export default function SetGoals(props) {
-    console.log('***',props);
+    // console.log('***',props);
     let goal=props?.props?.setGoals;
     const [goalBoxes, setGoalBoxes] = useState(preDefinedGoals);
     const [engagement,setEngagement]=useState(goal||{});

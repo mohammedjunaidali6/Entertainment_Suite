@@ -1,0 +1,12 @@
+.cost-to-play{
+    height: 32px;
+    border: 1px solid #DBDDDE;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
+    text-align: center;
+}

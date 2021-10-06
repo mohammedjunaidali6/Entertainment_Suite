@@ -14,6 +14,7 @@ import SearchBar from "../../common/searchBar/searchBar";
 import Table from "../../common/reactTable/table";
 import SetGoals from "./setGoals/setGoals";
 import TargetAudience from "./targetAudience/targetAudience";
+import PreRequisiteRules from './prerequisites/prerequisiteRules';
 import DefineJourney from "./defineJourney/defineJourney";
 import RewardsAndBudget from "./rewardsAndBudget/rewardsAndBudget";
 import EStepper from "./stepper/stepper";
@@ -40,6 +41,7 @@ export default function EngagementsSmart(props) {
     const [goalData, setGoalData] = useState({});
     const [defineSegment, setDefineSegment] = useState(null);
     const [definePurchaseRule, setDefinePurchaseRule] = useState(null);
+    const [defineCost, setDefineCost] = useState(null);
     const [defineJourney, setDefineJourney] = useState(null);
     const [defineRewards, setDefineRewards] = useState(null);
 
@@ -115,9 +117,11 @@ export default function EngagementsSmart(props) {
             setOpenEngagementWizard(false);
         } else if (step === 'targetAudience') {
             setStep('setGoals');
-        } else if (step === 'defineJourney') {
+        } else if (step === 'prerequisiteRules') {
             setStep('targetAudience');
-        } else if (step === 'rewardsAndBudget') {
+        } else if(step === 'defineJourney'){
+            setStep('prerequisiteRules');
+        }else if (step === 'rewardsAndBudget') {
             setStep('defineJourney');
         } else if (step === 'review') {
             setStep('rewardsAndBudget');
@@ -138,6 +142,7 @@ export default function EngagementsSmart(props) {
                         goalData.EngagementId = props.setGoals?.EngagementId;
                         props.engagementsSmartActionHandler.dispatchSetGoalsData(goalData);
                     }else{
+                        setStep('targetAudience');
                         createNotification('warning','Enter valid Tournament Dates')
                     }
                 }else{
@@ -148,15 +153,21 @@ export default function EngagementsSmart(props) {
             } else {
                 createNotification('warning','Please Enter Campaign Name and Select Goal');
             }
-        } else if (step === 'targetAudience') {
+        } else if(step === 'targetAudience'){
             if(defineSegment){
+                setStep('prerequisiteRules');
+            } else {
+                createNotification('warning','Please Select Customer Segment');
+            }
+        }else if (step === 'prerequisiteRules') {
+            if(!defineCost||!defineCost.enable||(defineCost.enable&&defineCost.value)){
                 if(!definePurchaseRule||!definePurchaseRule.enable||(definePurchaseRule.enable&&definePurchaseRule.value)){
                     setStep('defineJourney');
                 }else{
                     createNotification('warning','Please Enter Purchase value');
                 }
-            } else {
-                createNotification('warning','Please Select Customer Segment');
+            }else{
+                createNotification('warning','Please Enter Cost to Play value');
             }
         } else if (step === 'defineJourney') {
                 setStep('rewardsAndBudget');
@@ -200,28 +211,32 @@ export default function EngagementsSmart(props) {
         try {
             handleLoader(true);
             const targetAudienceData = props.targetAudience;
+            const preRulesData = props.preRules;
             const goalData = props.setGoals;
             const journeyData = props.journeyBox;
             const rewardsAndBudget = props.rewardsAndBudget;
-            
+
             let engagementObj = {};
             engagementObj.EngagementID = goalData.EngagementId || 0;
             engagementObj.CampaignName = goalData.campaignName;
             engagementObj.DisplayName = goalData.displayName;
             engagementObj.IsTournamentType=goalData?.isTournament;
             engagementObj.StatusID = goalData?.isTournament?4:1;
-            engagementObj.CustomerSegmentID = targetAudienceData.targetAudience.segment_customers_id;
+            engagementObj.CustomerSegmentID = targetAudienceData.segment_customers_id;
             engagementObj.JourneyID = journeyData?.id||0;
             engagementObj.StartDate=goalData.isTournament?goalData.startDate:new Date();
             engagementObj.EndDate=goalData.isTournament?goalData.endDate:new Date();
             engagementObj.PurchaseRule = {};
-            if (targetAudienceData.purchaseValue && targetAudienceData.durationNum) {
-                engagementObj.PurchaseRule.Value = parseInt(targetAudienceData.purchaseValue);
-                let daysType = targetAudienceData.daysType;
-                let durationNum = parseInt(targetAudienceData.durationNum);
+            if (preRulesData?.purchaseValue && preRulesData.durationNum) {
+                engagementObj.PurchaseRule.Value = parseInt(preRulesData.purchaseValue);
+                let daysType = preRulesData.daysType;
+                let durationNum = parseInt(preRulesData.durationNum);
                 let days = daysType === 'Week' ? durationNum * 7 : daysType === 'Month' ? durationNum * 30 : durationNum;
                 engagementObj.PurchaseRule.NumberOfDays = days;
-                engagementObj.PurchaseRule.PurchaseRuleID = targetAudienceData?.purchaseRuleId || 0
+                engagementObj.PurchaseRule.PurchaseRuleID = preRulesData?.purchaseRuleId || 0
+            }
+            if(preRulesData?.costToPlay){
+                engagementObj.CostToPlay=preRulesData.costToPlay;
             }
 
             engagementObj.Rewards = [];
@@ -239,7 +254,8 @@ export default function EngagementsSmart(props) {
 
             engagementObj.Budget = goalData.isTournament?0:parseInt(rewardsAndBudget?.budget || '0');
             engagementObj.BudgetDays = goalData.isTournament?0:parseInt(rewardsAndBudget?.budgetDuration || '0');
-
+            
+            console.log('***',engagementObj);
             postAuthAndData(SAVE_ENGAGEMENT, engagementObj, history)
                 .then(res => {
                     if (handleResponseCode(res)) {
@@ -258,13 +274,14 @@ export default function EngagementsSmart(props) {
                 });
         } catch (error) {
             handleLoader(false);
-
+            createNotification('error', 'Something went wrong!');
         }
     }
 
     const createEngagementDataClear = () => {
         props.engagementsSmartActionHandler.dispatchSetGoalsData(null);
         props.engagementsSmartActionHandler.dispatchTargetAudienceData(null);
+        props.engagementsSmartActionHandler.dispatchPreRules(null);
         props.engagementsSmartActionHandler.dispatchJourneyBoxData(null);
         props.engagementsSmartActionHandler.dispatchRewardsAndBudgetData(null);
     }
@@ -520,24 +537,36 @@ export default function EngagementsSmart(props) {
                         <div className="c-s-step-sec mt-2 content-c">
                             {step === 'setGoals' ? <EStepper stepName="Set Goals" stepCount={1} thumbHide={true} /> :
                                 step === 'targetAudience' ? <EStepper stepName="Target Audience" stepCount={2} thumbHide={true} /> :
-                                    step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={3} thumbHide={true} /> :
-                                        step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Budget" stepCount={4} thumbHide={true} /> :
-                                            step === 'review' ? <EStepper stepName="Review" stepCount={5} thumbHide={true} /> :
-                                                null
+                                    step === 'prerequisiteRules' ? <EStepper stepName="Prerequisite Rules" stepCount={3} thumbHide={true} /> :
+                                        step === 'defineJourney' ? <EStepper stepName="Define Journey" stepCount={4} thumbHide={true} /> :
+                                            step === 'rewardsAndBudget' ? <EStepper stepName="Rewards & Budget" stepCount={5} thumbHide={true} /> :
+                                                step === 'review' ? <EStepper stepName="Review" stepCount={6} thumbHide={true} /> :
+                                                    null
                             }
 
                         </div>
                         <div className="c-s-content-sec w-100 float-left clearfix">
                             {step === 'setGoals' ? <SetGoals getSetGoalsData={getSetGoalsData} props={props} updateEngagement={updateEngagement}/> :
-                                step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} setDefinePurchaseRule={data=>setDefinePurchaseRule(data)} handleLoader={(bool) => handleLoader(bool)} /> :
-                                    step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
-                                        step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
-                                            step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
-                                                null
+                                step === 'targetAudience' ? <TargetAudience props={props} setDefineSegment={(data)=>setDefineSegment(data)} handleLoader={(bool) => handleLoader(bool)} /> :
+                                    step === 'prerequisiteRules' ? <PreRequisiteRules props={props} setDefinePurchaseRule={data=>setDefinePurchaseRule(data)} setDefineCost={data=>setDefineCost(data)}  updateEngagement={updateEngagement} handleLoader={(bool) => handleLoader(bool)} /> :
+                                        step === 'defineJourney' ? <DefineJourney props={props} getDefineJourney={getDefineJourney} handleLoader={(bool) => handleLoader(bool)} /> :
+                                            step === 'rewardsAndBudget' ? <RewardsAndBudget props={props} setDefineRewards={(data)=>setDefineRewards(data)} handleLoader={(bool) => handleLoader(bool)} handleAlertDialog={(obj) => handleAlertDialog(obj)} /> :
+                                                step === 'review' ? <Review setStep={txt => setStep(txt)} /> :
+                                                    null
                             }
                         </div>
                     </div>
                     <div id="c-s-action-sec" className="w-100">
+                        <div claassName='float-left'>
+
+                        </div>
+                        <div className='float-left' style={{fontSize:'12px',fontFamily:'Roboto',marginLeft:'20%',marginBottom:'2%'}}>
+                            <div>{props.targetAudience?.segment_name||''}</div>
+                            <div>
+                                {props.preRules?.purchaseValue&&`Purchase value should be greaterthan or equal to ${props.preRules?.purchaseValue} in last ${props.preRules?.durationNum} Days`}
+                            </div>
+                            <div>{props.preRules?.costToPlay||'Free'}</div>
+                        </div>
                         <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>
                             {step === 'review' ? 'Approve' : 'Next'}
                         </button>

@@ -90,7 +90,7 @@ const arrayRewards = [
 ]
 
 export default function RewardsAndBudget(props) {
-    console.log('**',props.props);
+    // console.log('**',props.props);
     var history = useHistory();
     const goalData = props.props.setGoals;
     const rewardsAndBudgetData = props.props.rewardsAndBudget;

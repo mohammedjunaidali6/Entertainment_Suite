@@ -9,6 +9,7 @@ export default function Review(props) {
     const engagement = store.getState().EngagementsSmartReducer;
 
     const targetAudience = engagement.targetAudience;
+    const preRulesData = engagement.preRules;
     const goalData = engagement.setGoals;
     const journeyData = engagement.journeyBox;
     const rewardsAndBudgetData = engagement.rewardsAndBudget;
@@ -38,14 +39,17 @@ export default function Review(props) {
                 <div className="c-e-r-left-h">Target Audience</div>
                 <div className="c-e-r-left-t-a-box">
                     <div className="c-e-r-left-t-a-box-h">User Segment</div>
-                    <div className="c-e-r-left-t-a-box-i pl-2">{targetAudience?.targetAudience?.segment_name}</div>
-                    {/* <div className="c-e-r-left-t-a-box-i"></div> */}
+                    <div className="c-e-r-left-t-a-box-i pl-2">{targetAudience?.segment_name}</div>
+                </div>
+                <div className="c-e-r-left-h">Prerequisite Rules</div>
+                <div className="c-e-r-left-t-a-box">
+                    <div className="c-e-r-left-t-a-box-h">Cost to Play</div>
+                    <div className="c-e-r-left-t-a-box-i pl-2">{preRulesData?.costToPlay||'Free'}</div>
                     <div className="c-e-r-left-t-a-box-h">Rule</div>
                     <div className="c-e-r-left-t-a-box-i">
-                        {targetAudience?.purchaseValue&&`Purchase value should be greaterthan or equal to ${targetAudience.purchaseValue} in last ${targetAudience.durationNum} Days`}
+                        {preRulesData?.purchaseValue&&`Purchase value should be greaterthan or equal to ${preRulesData.purchaseValue} in last ${preRulesData.durationNum} Days`}
                     </div>
                 </div>
-
                 <div className="c-e-r-left-h">Define Journey
                     <div className="disp-inline-b float-right c-pointer" onClick={() => props.setStep('defineJourney')}>
                         <img src={edit_src} alt="Edit" />

@@ -223,7 +223,6 @@ export default function Team(props) {
                 //UsernameExistsException
                 createNotification('error', 'Invitation failed');
             } else {
-                createNotification('success', 'Invitation sent succesfully');
                 let postObj = {};
                 postObj.email = email;
                 postObj.user_groups = [];
@@ -236,7 +235,7 @@ export default function Team(props) {
                             setCreateClick(false);
                             setGroup();
                             setEmail();
-                            createNotification('success', 'User Data Saved succesfully');
+                            createNotification('success', 'Invitation sent and User Data Saved succesfully');
                         } else {
                             createNotification('error', 'User Data Saving failed;');
                         }

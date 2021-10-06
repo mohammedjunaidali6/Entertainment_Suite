@@ -1,7 +1,9 @@
 import {
   E_S_SET_GOALS,
   E_S_SET_TARGET_AUDIENCE,
-  E_S_DEFINE_JOURNEY, E_S_SET_JOURNEY_BOX,
+  E_S_SET_PRE_RULES,
+  E_S_DEFINE_JOURNEY, 
+  E_S_SET_JOURNEY_BOX,
   E_S_SET_REWARDS_AND_BUDGET,
   SET_ENGAGEMENTS
 } from '../../../constants/actionTypes';
@@ -31,6 +33,14 @@ export function dispatchTargetAudienceData(data) {
       payload: data,
     });
   };
+}
+export function dispatchPreRules(data){
+  return (dispatch)=>{
+    dispatch({
+      type:E_S_SET_PRE_RULES,
+      payload:data,
+    });
+  }
 }
 
 export function dispatchDefineJourneyData(data) {

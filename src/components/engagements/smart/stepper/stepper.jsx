@@ -1,5 +1,4 @@
 import React from "react";
-
 import Resizer from "../../../common/resizer/resizer";
 import './stepper.css';
 
@@ -14,13 +13,13 @@ export default function EStepper(props) {
                     <div className="w-80 float-left clearfix">
                         <Resizer 
                             minSize={0} 
-                            maxSize={5 * 20} 
+                            maxSize={6 * 20} 
                             initialSize={props.stepCount * 20} 
                             id='stepIndicationResizer'
                             fromCEStepper={true} />
                     </div>
                     <div className="w-10 float-left clearfix">
-                        <span className="c-s-stepper-sub-lbl">{props.stepCount * 20}%</span>
+                        {/* <span className="c-s-stepper-sub-lbl">{props.stepCount * 20}%</span> */}
                     </div>
                 </div>
             ) : null}

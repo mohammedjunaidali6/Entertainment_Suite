@@ -3,13 +3,15 @@ import {
   E_S_SET_GOALS,
   E_S_SET_TARGET_AUDIENCE,
   E_S_SET_JOURNEY_BOX,
-  E_S_SET_REWARDS_AND_BUDGET
+  E_S_SET_REWARDS_AND_BUDGET,
+  E_S_SET_PRE_RULES
 } from '../../../constants/actionTypes';
 
 const initialState = {
   campaignsData: null,
   setGoals: null,
   targetAudience: null,
+  preRules:null,
   defineJourney: null,
   rewardsAndBudget: null,
   review: null,
@@ -39,6 +41,11 @@ const EngagementsSmartReducer = (state = initialState, action) => {
     case E_S_SET_TARGET_AUDIENCE: {
       const newState = { ...state };
       newState.targetAudience = action.payload ? action.payload : null;
+      return newState;
+    }
+    case E_S_SET_PRE_RULES:{
+      const newState={...state};
+      newState.preRules=action.payload;
       return newState;
     }
     default: {
