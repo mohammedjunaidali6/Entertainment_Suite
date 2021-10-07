@@ -86,7 +86,7 @@ export const rbData = [
 ];
 
 const arrayRewards = [
-    { winnerPosition: 1, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
+    { winnerPosition: 0, rewardType: { label: 'Select', value: '' }, id: '', rewardName: '', rewardValue: '', probability: '', numberOfWinners: '', displayName: '',tooltip:{ reward_code: '', description: '', expiry_date: '' } },
 ]
 
 export default function RewardsAndBudget(props) {
@@ -263,8 +263,8 @@ export default function RewardsAndBudget(props) {
                     <div className="add-reward-sec w-100 float-left clearfix" style={{pointerEvents:disableEditRewards?'none':''}}>
                         {rewardRowsData.map((obj, i) =>
                             <div id={i} className="r-b-addreward-top w-100 float-left clearfix row">
-                                <div className="w-10 float-left clearfix mr-1">
-                                    <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
+                                <div className="w-8 float-left clearfix mr-1" style={{display:goalData?.isTournament?'':'none'}}>
+                                    <div className="w-100 float-left clearfix"   style={{fontSize:'12px'}}>
                                         {i==0&&<div className="r-b-ar-i-h">Win Position</div>}
                                             <input type="number" name='winnerPosition' onChange={(e) => onRewardRowChange(e, obj)} value={obj.winnerPosition} placeholder="0" className=" r-b-ar-i" style={{ textAlign: 'center' }} />
                                     </div>
@@ -281,7 +281,7 @@ export default function RewardsAndBudget(props) {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-24 float-left clearfix mr-1">
+                                <div className={`${goalData?.isTournament?'w-24':'w-30'} float-left clearfix mr-1`}>
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                         {i==0&&<div className="r-b-ar-i-h w-90">Reward Name</div>}
                                         <div className='ml-1 row'>
@@ -315,9 +315,7 @@ export default function RewardsAndBudget(props) {
                                 </div>
                                 <div className="w-8 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
-                                    {i==0&&
-                                        <div className="r-b-ar-i-h">Value</div>
-                                    }
+                                        {i==0&&<div className="r-b-ar-i-h">Value</div>}
                                         <input 
                                             type="number" 
                                             name='rewardValue' 
@@ -344,6 +342,19 @@ export default function RewardsAndBudget(props) {
                                         />
                                     </div>
                                 </div>
+                                <div className="w-8 float-left clearfix mr-1" style={{display:goalData?.isTournament?'':'none'}} >
+                                    <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
+                                    {i==0&&<div className="r-b-ar-i-h">Winners</div>}
+                                        <input 
+                                            type="number" 
+                                            name='numberOfWinners' 
+                                            onChange={(e) => onRewardRowChange(e, obj)} 
+                                            value={obj.numberOfWinners} 
+                                            className=" r-b-ar-i" 
+                                            style={{ textAlign: 'center' }} 
+                                        />
+                                    </div>
+                                </div>
                                 <div className="w-30 float-left clearfix mr-1">
                                     <div className="w-100 float-left clearfix"  style={{fontSize:'12px'}}>
                                     {i==0&&<div className="r-b-ar-i-h">Display To Customer</div>}
@@ -362,7 +373,7 @@ export default function RewardsAndBudget(props) {
                     </div>
                 </Fragment>
             </div>
-            <div className="b-d-sec w-100 float-left clearfix"  style={{display:goalData?.isTournament?'none':''}} >
+            <div className="b-d-sec w-100 float-left clearfix"  style={{display:!goalData?.isTournament?'none':''}} >
                 <div className="w-45 float-left clearfix">
                     <div className="b-d-h w-100 float-left clearfix">Budget (In {BUDGET_CURRENCY})</div>
                     <div className="b-d-content w-100 float-left clearfix">

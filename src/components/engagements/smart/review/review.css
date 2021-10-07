@@ -101,7 +101,7 @@
     border: 1px solid #DBDDDE;
     border-radius: 4px;
     background-color: #FFFFFF;
-    margin-right: 8px;
+    margin-right: 2px;
     color: #5F6165;
     font-size: 12px;
     font-weight: 500;
@@ -118,7 +118,7 @@
     letter-spacing: 0;
     line-height: 16px;
     float: left;
-    margin-right: 8px;
+    margin-right: 2px;
 }
 .c-e-r-left-r-b-box-bd-prefix {
     height: 15px;

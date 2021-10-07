@@ -244,6 +244,7 @@ export default function EngagementsSmart(props) {
                 let rewardObj = {};
                 rewardObj.EngagementRewardId = rewObj.engagementRewardId || 0
                 rewardObj.WinPosition = rewObj.winnerPosition||0;
+                rewardObj.NumberOfWinners = rewObj.numberOfWinners||0;
                 rewardObj.DisplayName = rewObj.displayName;
                 rewardObj.RewardType = rewObj.rewardType?.label;
                 rewardObj.Probability = rewObj.probability||0;

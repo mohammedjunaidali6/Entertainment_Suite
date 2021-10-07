@@ -74,12 +74,21 @@ export default function Header(props) {
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={company}
-                    onChange={handleChange} className="h-dd" style={{ marginTop: "12px", marginLeft: "40px" }} >
+                    onChange={handleChange} className="h-dd" style={{marginTop: "12px", marginLeft: "40px"}} >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                </Select> */}
+            </div>
+            <div className="w-50 float-left clearfix">
+                <div className="h-logged-user-sec float-right clearfix" onClick={handleClick}>
+                    <img src={default_user_src} alt="logged user" className="h-logger-user" />
+                    <BsChevronDown style={{color: "white"}} />
+                </div>
+                <Popover
                     id={id}
                     open={open}
                     anchorEl={anchorEl}
@@ -95,40 +104,40 @@ export default function Header(props) {
                 >
                     <Typography className={classes.typography}>
                         <div className="h-logger-user-options p-0">
-                            <div onClick={settingsRedirectFn}>
+                            <div onClick={() => settingsRedirectFn('/settings')}>
                                 <img src={settings_src} alt="Settings" />
-                                <Link className="pl-2 pt-2">Settings</Link>
+                                <span className="pl-2 pt-2">Settings</span>
                             </div>
                             <div>
                                 <img src={help_src} alt="Help" />
-                                <Link className="pl-2 pt-2">Help</Link>
+                                <span className="pl-2 pt-2">Help</span>
                             </div>
-                            <div style={{ borderBottom: "1px solid #DBDDDE" }} onClick={logOutFn}>
+                            <div style={{borderBottom: "1px solid #DBDDDE"}}>
                                 <img src={logout_src} alt="logout" />
-                                <Link className="pl-2 pt-2">Logout</Link>
+                                <span className="pl-2 pt-2">Logout</span>
                             </div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
                         </div>
                     </Typography>
                 </Popover>
                 <BsFillBellFill className="h-icons float-right clearfix" onClick={notifyClick} ></BsFillBellFill>
-                {/* {searchOpen === true ? (
+                {searchOpen === true ? (
                     <div className="h-s-sec float-right clearfix">
                         <BsSearch className="h-icons float-left clearfix m-0 h-s-sec-img mr-2"></BsSearch>
                         <input type="text" className="h-s-sec-input" placeholder="Search" />
                         <BsX className="h-icons float-right clearfix m-0 c-pointer h-s-sec-img" onClick={() => setSearchOpen(false)}></BsX>
                     </div>
                 ) : (
-                    <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{ marginLeft: "40px" }}></BsSearch>
-                )} */}
-                {/* <div className="h-links float-right clearfix">
+                    <BsSearch className="h-icons float-right clearfix" onClick={() => setSearchOpen(true)} style={{marginLeft: "40px"}}></BsSearch>
+                )}
+                <div className="h-links float-right clearfix">
                     <img src={product_tour_src} className="mb-1" />
                     <span className="ml-2">Product Tour</span>
-                </div> */}
-                {/* <div className="h-links float-right clearfix">
+                </div>
+                <div className="h-links float-right clearfix">
                     <img src={support_src} className="mb-1" />
                     <span className="ml-2">Support Request</span>
-                </div> */}
+                </div>
                 <Popover
                     id={notifyId}
                     open={notifyOpen}
@@ -154,5 +163,5 @@ export default function Header(props) {
                 </Popover>
             </div>
         </div>
-    )
+      )
 }

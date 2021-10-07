@@ -73,21 +73,27 @@ export default function Review(props) {
                 <div className="c-e-r-left-r-b-box" style={{width:'100%'}}>
                     <div className="c-e-r-left-r-b-box-table w-100 float-left clearfix mb-2">
                         {goalData?.isTournament&&
-                            <div className="c-e-r-left-r-b-box-bd-box-h w-12">Win Position</div>}
-                        <div className="c-e-r-left-r-b-box-bd-box-h w-30">Reward Name</div>
+                            <div className="c-e-r-left-r-b-box-bd-box-h w-12">Rank</div>}
+                        <div className="c-e-r-left-r-b-box-bd-box-h w-24">Reward Name</div>
                         <div className="c-e-r-left-r-b-box-bd-box-h w-10">Value</div>
-                        {!goalData?.isTournament&&
-                            <div className="c-e-r-left-r-b-box-bd-box-h w-12">Probability(%)</div>}
+                        {goalData?.isTournament?
+                            <div className="c-e-r-left-r-b-box-bd-box-h w-12">Winners</div>
+                            :
+                            <div className="c-e-r-left-r-b-box-bd-box-h w-12">Probability(%)</div>
+                        }
                         <div className="c-e-r-left-r-b-box-bd-box-h w-40">Display to Customer</div>
                     </div>
                     {rewardsAndBudgetData?.rewards?.length && rewardsAndBudgetData?.rewards?.map((rewObj) => (
                         <div className="c-e-r-left-r-b-box-bd w-100 float-left clearfix">
                             {goalData?.isTournament&&
                                 <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.winnerPosition}</div>}
-                            <div className="c-e-r-left-r-b-box-bd-box w-30 float-left clearfix">{rewObj.rewardName}</div>
+                            <div className="c-e-r-left-r-b-box-bd-box w-24 float-left clearfix">{rewObj.rewardName}</div>
                             <div className="c-e-r-left-r-b-box-bd-box w-10 float-left clearfix">{rewObj.rewardValue&&parseInt(rewObj.rewardValue).toLocaleString()}</div>
-                            {!goalData?.isTournament&&
-                                <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.probability}</div>}
+                            {goalData?.isTournament?
+                                <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.numberOfWinners}</div>
+                                :
+                                <div className="c-e-r-left-r-b-box-bd-box w-12 float-left clearfix">{rewObj.probability}</div>
+                            }
                             <div className="c-e-r-left-r-b-box-bd-box w-40 float-left clearfix">{rewObj.displayName}</div>
                         </div>
                     ))}
@@ -112,8 +118,8 @@ export default function Review(props) {
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-h">Key Summary</div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Segment & Rule</div>
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c">New  Male Customers who is from New York has purchsed goods worth Rs.1000 in last 2 days</div>
+                    {/* <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Segment & Rule</div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c">New  Male Customers who is from New York has purchsed goods worth Rs.1000 in last 2 days</div> */}
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Number of days</div>

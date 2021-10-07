@@ -340,9 +340,9 @@ export default function LiveView(props) {
                 <div className="l-v-a-c-h">Active Campaigns</div>
             </div>
             <div className="w-100 float-left clearfix l-v-a-c">
-                {campaigndata && campaigndata.length > 0 ? (
+                {/* {campaigndata && campaigndata.length > 0 ? (
                     <CampaignBox campaigndata={campaigndata}></CampaignBox>
-                ) : <div className="e-s-heading ml-4">No campaigns found!</div>}
+                ) : <div className="e-s-heading ml-4">No campaigns found!</div>} */}
             </div>
         </div>
     )
