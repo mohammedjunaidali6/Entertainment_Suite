@@ -1,10 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { getAuthAndData, getData, postData } from '../../../../api/ApiHelper';
+import { useHistory } from 'react-router-dom';
 import './defineJourney.css';
 import _ from 'lodash';
-import { JOURNEY_BY_FILTERS, SOMETHING_WENT_WRONG } from '../../../../api/apiConstants';
-import { useHistory } from 'react-router-dom';
 import createNotification from '../../../common/reactNotification';
+import { getAuthAndData } from '../../../../api/ApiHelper';
+import { 
+    JOURNEY_BY_FILTERS, 
+    SOMETHING_WENT_WRONG 
+} from '../../../../api/apiConstants';
 
 
 export default function DefineJourney(props) {
@@ -21,6 +24,7 @@ export default function DefineJourney(props) {
         getAuthAndData(JOURNEY_BY_FILTERS, history)
             .then(res => {
                 if (handleResponseCode(res)) {
+                    console.log('***',res);
                     let journeyArr = [];
                     res.data.forEach(journey => {
                         let existedJrny = _.find(journeyArr, j => j.id == journey.JourneyID);
@@ -57,7 +61,7 @@ export default function DefineJourney(props) {
             return true;
         }
     }
-console.log('***',journeyBoxes)
+
     return (
         <div id="define-journey-container" className="c-e-journey-sec w-100 float-left clearfix">
             <div className="c-e-journey-h">Choose User Journey </div>
@@ -75,7 +79,7 @@ console.log('***',journeyBoxes)
                                             <Fragment>
                                                 {obj.tags.map((tagObj) => (
                                                     <div className="c-e-journey-box-tag mt-2" key={tagObj}>
-                                                        <span className="c-e-journey-box-tag-text">{tagObj.replace('{0}','')}</span>
+                                                        <span className="c-e-journey-box-tag-text">{tagObj}</span>
                                                     </div>
                                                 ))}
                                             </Fragment>

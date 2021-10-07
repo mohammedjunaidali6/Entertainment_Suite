@@ -59,7 +59,7 @@ export default function Review(props) {
                 <div className="c-e-r-left-d-j-box">
                     <div className="c-e-r-left-t-a-box-h">{journeyData?.name}</div>
                     {journeyData?.tags && journeyData.tags.length && journeyData.tags.map(tag =>
-                        <div className="disp-inline-b c-e-r-left-d-j-tag">{tag.replace('{0}','')}</div>
+                        <div className="disp-inline-b c-e-r-left-d-j-tag">{tag}</div>
                     )}
                 </div>
 
