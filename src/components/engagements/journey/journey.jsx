@@ -14,7 +14,8 @@ import add_gray_src from '../../../assets/img/add_gray.svg';
 import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
 import { 
     ADD_JOURNEY_DETAILS, 
-    DELETE_JOURNEY_DETAILS, 
+    DELETE_JOURNEY_DETAILS,
+    ENGT_PROD_BASE_URI, 
     JOURNEYS, 
     JOURNEYS_BY_SEARCH, 
     JOURNEY_TASKS,
@@ -260,7 +261,7 @@ export default function EngagementsJourney(props) {
     }
 
     const onActionClick = (e, rowObj) => {
-        let action = e.target.outerText;
+        let action = e.target.textContent;
         if (action === 'Edit') {
             setUpdateFlag(true);
             setJourney({ ID: rowObj.JourneyID, Name: rowObj.JourneyName });
@@ -280,8 +281,9 @@ export default function EngagementsJourney(props) {
                 open: true, title: 'Delete Journey', text: 'Are you sure! Do you want to Delete Journey?', handleClose: (bool) => {
                     handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
                     if (bool) {
-                        getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
+                        getAuthAndData(`${ENGT_PROD_BASE_URI}${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
                         .then(res => {
+                            console.log(res)
                             if(handleResponseCode(res)){
                                 getAllJourneys();
                                 setUpdateFlag(false);
@@ -299,7 +301,7 @@ export default function EngagementsJourney(props) {
 
     const handleResponseCode=(resp)=>{
         if(!resp || resp.code===-1){
-            createNotification('error',SOMETHING_WENT_WRONG+ 'in Journeys');
+            createNotification('error',SOMETHING_WENT_WRONG+ ' in Journeys');
             return false;
         }else{
             return true;

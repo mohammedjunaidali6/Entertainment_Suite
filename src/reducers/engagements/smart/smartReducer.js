@@ -44,8 +44,8 @@ const EngagementsSmartReducer = (state = initialState, action) => {
       return newState;
     }
     case E_S_SET_PRE_RULES:{
-      const newState={...state};
-      newState.preRules=action.payload;
+      const newState = { ...state };
+      newState.preRules=action.payload ? action.payload : null;
       return newState;
     }
     default: {

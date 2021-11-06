@@ -114,7 +114,7 @@ export default function Header(props) {
                             </div>
                             <div style={{borderBottom: "1px solid #DBDDDE"}}>
                                 <img src={logout_src} alt="logout" />
-                                <span className="pl-2 pt-2">Logout</span>
+                                <span className="pl-2 pt-2" onClick={logOutFn} >Logout</span>
                             </div>
                             <div>Last Login 12th Jan 21, 10:30am</div>
                         </div>

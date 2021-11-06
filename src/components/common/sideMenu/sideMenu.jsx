@@ -100,7 +100,11 @@ export default function SideMenu(props) {
                 </div>
                 <div className={`s-m-item ${selectedSM === 3 ? `active` : ``}`} onClick={() => liveviewClick()}>
                     <img src={liveview_src} className="s-m-item-img" alt="Liveview" />
-                    {sideLabelFlag() ? (<span className="s-m-item-lbl">Live view</span>) : null}
+                    {sideLabelFlag() ? (<span className="s-m-item-lbl">
+                        Live View &nbsp; 
+                        <span className="pill">Coming Soon</span>
+                         {/* <img src={comingsoon_src} className="comingsoon-img" /> */}
+                    </span>) : null}
                 </div>
                 <div className={`s-m-item ${selectedSM === 4 ? `active` : ``}`} onClick={() => analyticsClick(4, 1, 'report')}>
                     <img src={analytics_src} className="s-m-item-img" alt="Analytics" />

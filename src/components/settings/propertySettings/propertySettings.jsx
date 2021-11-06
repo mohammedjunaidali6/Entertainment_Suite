@@ -87,7 +87,9 @@ export default function PropertySettings(props) {
         }else{
             arr.splice(index,1,obj);
         }
+        // console.log("i1"+identityConfig)
         setIdentityConfig({...identityConfig,config:arr});
+        // console.log("i2"+identityConfig)
     }
     const onIdentitySave=()=>{
         let postDataArr=[];
@@ -118,6 +120,7 @@ export default function PropertySettings(props) {
             arr.splice(index,1,obj);
         }
         setGmailConfig({...gmailConfig,config:arr});
+        // console.log("g2"+gmailConfig[0])
     }
     const setSmtpConfiguration=(e)=>{
         let obj={
@@ -126,13 +129,17 @@ export default function PropertySettings(props) {
             TemplateID:e.target.id
         }
         let arr=[...smtpConfig.config];
+        // console.log("arr1"+arr[0].TemplateID)
+        
         var index=arr.findIndex(i=>i.TemplateID==obj.TemplateID);
         if(index===-1){
             arr.push(obj);
         }else{
             arr.splice(index,1,obj);
         }
+        // console.log("s1"+smtpConfig)
         setSmtpConfig({...smtpConfig,config:arr});
+        // console.log("s2"+smtpConfig)
     }
     const onEmailConfigSave=()=>{
         let postDataArr=[];
@@ -180,8 +187,8 @@ export default function PropertySettings(props) {
         //     var settingsArr=[...tenantSettings];
         //     settingsArr.splice(ndx,1,found);
         //     setTenantSettings(settingsArr);
-
         // }
+
         setCommerceConfig({...commerceConfig,config:arr});
     }
     const onCommerceSave=()=>{
@@ -200,11 +207,13 @@ export default function PropertySettings(props) {
     }
 
     const saveTenantSettings=(data)=>{
-        console.log('***',data);
+        // console.log(data);
         handleLoader(true);
+        console.log(data)
         postAuthAndData(`${TENT_PROD_HOST_URI}${SAVE_TENANT_SETTINGS}`,data,history)
         .then(res=>{
             if(handleResponseCode(res)){
+                console.log(res)
                 createNotification('success','Configuration Saved Succesfully');
             }else{
                 createNotification('error','Configuration Saving failed');
@@ -227,7 +236,7 @@ export default function PropertySettings(props) {
         getAuthAndData(`${TENT_PROD_HOST_URI}${GET_TENANT_SETTINGS}`)
         .then(res=>{
             if(handleResponseCode(res)){
-                // console.log('***',res.data);
+                // console.log('{**{}**}',res.data);
                 var grouped=_.groupBy(res.data,obj=>obj.primary_group);
                 var identitySecondGroups=_.groupBy(grouped?.Identity,obj=>obj.secondary_group);
                 var emailSecondGroups=_.groupBy(grouped?.Email,obj=>obj.secondary_group);
@@ -329,11 +338,11 @@ export default function PropertySettings(props) {
                                             <TextField 
                                                 id={obj.settings_template_id}
                                                 className='settings-text-box'
-                                                name={obj.key_name} 
+                                                name={obj.key_name}
                                                 label={obj.key_name_display}
-                                                variant="outlined" 
-                                                onChange={()=>setIdentityConfiguration(obj)}
-                                                value={identityConfig?.config?.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue}
+                                                variant="outlined"
+                                                onChange={setIdentityConfiguration}
+                                                value={identityConfig?.config?.find(i=>i.TemplateID===obj.settings_template_id)?.KeyValue}
                                                 inputProps={{ maxLength: 50 }}
                                             />
                                         )}
@@ -362,9 +371,10 @@ export default function PropertySettings(props) {
                                             id={obj.settings_template_id}
                                             name={obj.key_name} 
                                             label={obj.key_name_display} 
+                                            className='settings-text-box'
                                             variant="outlined"
-                                            onChange={setGmailConfiguration}
-                                            value={gmailConfig?.config?.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue}
+                                            onChange={(e)=>{return setGmailConfiguration(e)}}
+                                            value={gmailConfig.config.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue}
                                             inputProps={{ maxLength: 50 }}
                                         />
                                     )}
@@ -376,7 +386,7 @@ export default function PropertySettings(props) {
                                             label={obj.key_name_display} 
                                             variant="outlined"
                                             onChange={setSmtpConfiguration}
-                                            value={smtpConfig?.config?.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue}
+                                            value={smtpConfig?.config?.find(i=>i.TemplateID==obj.settings_template_id)?.KeyValue||null}
                                             inputProps={{ maxLength: 50 }}
                                         />
                                         )

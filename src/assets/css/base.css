@@ -39,11 +39,14 @@ input[type="button"] {
 .w-8 {width: 8% !important}
 .w-5 {width: 5% !important}
 .f-12 {font-size: 12px !important;}
+.f-14 {font-size: 14px !important;}
 .f-16 {font-size: 16px !important;}
 .f-22 {font-size: 22px !important;}
 .f-40 {font-size: 40px !important;}
 .p-r-10 {padding-right: 10px !important;}
 .p-l-10 {padding-left: 10px !important;}
+.p-r-5p {padding-right: 5% !important;}
+.p-l-5p {padding-left: 5% !important;}
 .m-r-10 {margin-right: 10px !important;}
 .m-l-10 {margin-left: 10px !important;}
 .text-bold {font-weight: bold !important;}
@@ -66,6 +69,9 @@ input[type="button"] {
 .bg-white-box { 
     background: white !important;
     box-shadow: 0 1px 4px 0 rgb(30 36 39 / 30%);
+}
+.hidden{
+    visibility: hidden;
 }
 .mvp-link { text-decoration: underline; cursor: pointer;}
 .v-a-top {vertical-align: top !important;}
@@ -113,7 +119,6 @@ button[disabled]{
     align-items: center;
     justify-content: center;
 }
-
 .f-c-box {
     height: 21.43px;
     width: 130.31px;

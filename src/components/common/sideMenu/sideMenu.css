@@ -8,6 +8,7 @@
     height: 55px;
     cursor: pointer;
     padding: 14px 0 20px 26px;
+    position: relative;
 }
 .s-m-item-lbl {
     height: 18px;
@@ -49,4 +50,14 @@
     border-radius: 6px;
     background-color: #E0E4E6;
     margin: 10px;
+}
+.pill{
+    color: green;
+    border: 1px solid green;
+    /* position: absolute;
+    top: 0;
+    right: 0; */
+    font-size: 1px;
+    padding: 5px;
+    border-radius: 15px;
 }

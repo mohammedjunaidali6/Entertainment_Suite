@@ -21,6 +21,7 @@ import EStepper from "./stepper/stepper";
 import Review from "./review/review";
 import { getAuthAndData, postAuthAndData } from '../../../api/ApiHelper';
 import EngagementContextMenu from "../../common/reactTable/engagementMenu";
+import GaugeChart from 'react-gauge-chart'
 import { 
     SAVE_ENGAGEMENT, 
     DELETE_ENGAGEMENT, 
@@ -30,6 +31,7 @@ import {
     ENGAGEMENTS_BY_FILTERS, 
     SOMETHING_WENT_WRONG 
 } from '../../../api/apiConstants';
+import store from '../../../store/store';
 
 export default function EngagementsSmart(props) {
     var history = useHistory();
@@ -44,6 +46,17 @@ export default function EngagementsSmart(props) {
     const [defineCost, setDefineCost] = useState(null);
     const [defineJourney, setDefineJourney] = useState(null);
     const [defineRewards, setDefineRewards] = useState(null);
+    const [purchaseValue, setPurchaseValue] = useState(null);
+    const [costToPlay, setCostToPlay] = useState(null);
+    const [durationNum, setdurationNum] = useState(null);
+    const engagement = store.getState().EngagementsSmartReducer;
+    const preRulesData = engagement.preRules;
+
+    const updateFooter=()=>{
+        setPurchaseValue(preRulesData?.purchaseValue);
+        setCostToPlay(preRulesData?.costToPlay);
+        setdurationNum(preRulesData?.durationNum);
+    }
 
     const CampaignTableColumns = [
         {
@@ -160,6 +173,7 @@ export default function EngagementsSmart(props) {
                 createNotification('warning','Please Select Customer Segment');
             }
         }else if (step === 'prerequisiteRules') {
+                // updateFooter();
             if(!defineCost||!defineCost.enable||(defineCost.enable&&defineCost.value)){
                 if(!definePurchaseRule||!definePurchaseRule.enable||(definePurchaseRule.enable&&definePurchaseRule.value)){
                     setStep('defineJourney');
@@ -171,6 +185,7 @@ export default function EngagementsSmart(props) {
             }
         } else if (step === 'defineJourney') {
                 setStep('rewardsAndBudget');
+                updateFooter();
                 props.engagementsSmartActionHandler.dispatchJourneyBoxData(defineJourney);
         } else if (step === 'rewardsAndBudget') {
             var filteredArr = defineRewards.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && (goalData.isTournament||rew.probability) && rew.displayName&&(rew.rewardType?.value == 2 || rew.rewardValue));
@@ -558,20 +573,32 @@ export default function EngagementsSmart(props) {
                         </div>
                     </div>
                     <div id="c-s-action-sec" className="w-100">
-                        <div claassName='float-left'>
-
-                        </div>
-                        <div className='float-left' style={{fontSize:'12px',fontFamily:'Roboto',marginLeft:'20%',marginBottom:'2%'}}>
-                            <div>{props.targetAudience?.segment_name||''}</div>
-                            <div>
-                                {props.preRules?.purchaseValue&&`Purchase value should be greaterthan or equal to ${props.preRules?.purchaseValue} in last ${props.preRules?.durationNum} Days`}
+                            <div className='float-left w-12' >
+                                <GaugeChart 
+                                    textColor="blue"
+                                    animate={false} 
+                                    arcWidth={0.1} 
+                                    percent={1.0}
+                                    hideText={true}
+                                />
+                                <div className="f-14 text-center">Excellent</div>
                             </div>
-                            <div>{props.preRules?.costToPlay||'Free'}</div>
+                        <div className='float-right w-70' style={{fontSize:'12px',fontFamily:'Roboto',marginLeft:'10%',marginBottom:'2%'}}>
+                            <div className="float-left w-70">
+                                {props.targetAudience?.segment_name &&<div><span className="text-bold text-u f-20">Segment Name : </span>{props.targetAudience?.segment_name}</div>}
+                                {purchaseValue&& <div>
+                                    <span className="text-bold text-u f-20">Purchase Value : </span>
+                                    {purchaseValue &&`Purchase value should be greaterthan or equal to ${purchaseValue } in last ${durationNum} Days`}
+                                </div>}
+                                {costToPlay && <div><span className="text-bold text-u f-20">Cost to Play : </span> {costToPlay} </div>}
+                            </div>
+                            <div className="float-right w-30">
+                                <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>
+                                    {step === 'review' ? 'Approve' : 'Next'}
+                                </button>
+                                <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
+                            </div>
                         </div>
-                        <button type="button" className="c-s-btn-approve ml-3 float-right" onClick={stepsNextfn}>
-                            {step === 'review' ? 'Approve' : 'Next'}
-                        </button>
-                        <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
                     </div>
                 </Fragment>
             }

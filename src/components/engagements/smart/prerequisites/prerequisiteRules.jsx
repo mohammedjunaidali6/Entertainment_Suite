@@ -5,6 +5,7 @@ import './prerequisiteRules.css';
 import p_rule_src from "../../../../assets/img/Setting_option.svg";
 import { BUDGET_CURRENCY } from '../../../../constants/globalConstants';
 import createNotification from '../../../common/reactNotification';
+import { TextField } from '@material-ui/core';
 
 const rule1options = [
   { value: 'Has Purchased', label: 'Has Purchased' }
@@ -25,7 +26,7 @@ const DaysTypeOptions = [
 export default function PreRequisiteRules(props){
   console.log('***',props);
   const preRules = props.props?.preRules;
-  const [costEnable, setCostEnable] = useState(preRules?.costToPlay);
+  const [costEnable, setCostEnable] = useState(preRules?.costToPlay?true:false);
   const [purchaseRuleEnable, setPurchaseRuleEnable] = useState(preRules?.purchaseValue||preRules?.purchaseRuleId?true:false);
   const [purchaseValue, setPurchaseValue] = useState(preRules?.purchaseValue);
   const [durationNum, setDurationNum] = useState(preRules?.durationNum || "7");
@@ -33,7 +34,7 @@ export default function PreRequisiteRules(props){
   const [rule2, setRule2] = useState(rule2options[0]);
   const [rule4, setRule4] = useState(rule4options[0]);
   const [daysType, setDaysType] = useState(preRules ? { value: preRules?.daysType, label: preRules?.daysType } : DaysTypeOptions[0]);
-  const [costToPlay,setCostToPlay]=useState();
+  const [costToPlay,setCostToPlay]=useState(preRules?.costToPlay);
   
   const rule1Change = (event) => {
     setRule1(event);
@@ -65,6 +66,7 @@ const rule6Change = (event) => {
   const onCostChange=e=>{
     if(e.target.value<=999){
       setCostToPlay(e.target.value);
+      props.setDefineCost({enable:true,value:e.target.value});
     }
   }
       
@@ -79,6 +81,8 @@ const rule6Change = (event) => {
   }
   const onCostCheck=e=>{
     setCostEnable(e.target.checked);
+    let checked=e.target.checked;
+    props.setDefineCost({enable:checked,value:''});
   }
 
   useEffect(()=>{
@@ -111,7 +115,7 @@ const rule6Change = (event) => {
       <div>
         <span style={{fontSize:'14px'}}>Cost to Play</span>
         <span>
-          <input type='checkbox' value={costEnable} onChange={onCostCheck} style={{margin:'8px',opacity:props?.updateEngagement?'0.4':''}} disabled={props?.updateEngagement}/>
+          <input type='checkbox' checked={costEnable} onChange={onCostCheck} style={{margin:'8px',opacity:props?.updateEngagement?'0.4':''}} disabled={props?.updateEngagement}/>
         </span>
         <span className={`${costEnable?'':'disable-purchase-rule'}`}>
           <input 
@@ -147,7 +151,7 @@ const rule6Change = (event) => {
                   <span className="w-100 p-rule-value-txt">{BUDGET_CURRENCY}</span>
               </div>
               <div className="w-60 float-left clearfix p-rule-value-right">
-                  <input 
+                  <input
                       type="text"
                       value={purchaseValue?parseInt(purchaseValue).toLocaleString():''}
                       onChange={rule3Change}
@@ -176,8 +180,6 @@ const rule6Change = (event) => {
               className="w-10 p-r-10 float-left clearfix" 
           />
         </div>
-        
-
       </div>
   </div>
  )

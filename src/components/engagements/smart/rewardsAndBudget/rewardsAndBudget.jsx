@@ -226,7 +226,7 @@ export default function RewardsAndBudget(props) {
 
         return () => {
             var filterArr = [...rewardRowsData];
-            var filteredArr = filterArr.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && (goalData.isTournament||rew.probability) && rew.displayName&&(rew.rewardType?.value == 2 || rew.rewardValue));
+            var filteredArr = filterArr.filter(rew => rew.rewardType.value && rew.id && rew.rewardName && (goalData?.isTournament||rew.probability) && rew.displayName&&(rew.rewardType?.value == 2 || rew.rewardValue));
             let rewardsAndBudget = {
                 rewards: filteredArr || [],
                 budget: budget,
@@ -373,7 +373,7 @@ export default function RewardsAndBudget(props) {
                     </div>
                 </Fragment>
             </div>
-            <div className="b-d-sec w-100 float-left clearfix"  style={{display:!goalData?.isTournament?'none':''}} >
+            <div className="b-d-sec w-100 float-left clearfix"  style={{display:goalData?.isTournament?'none':''}} >
                 <div className="w-45 float-left clearfix">
                     <div className="b-d-h w-100 float-left clearfix">Budget (In {BUDGET_CURRENCY})</div>
                     <div className="b-d-content w-100 float-left clearfix">
