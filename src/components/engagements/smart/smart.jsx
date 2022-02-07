@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import createNotification from '../../common/reactNotification';
 import { NotificationContainer } from 'react-notifications';
+// import { Button, Modal } from 'react-bootstrap';
 import 'react-notifications/lib/notifications.css';
 import _ from 'lodash';
 import './smart.css';
@@ -33,6 +34,38 @@ import {
 } from '../../../api/apiConstants';
 import store from '../../../store/store';
 
+// function MyVerticallyCenteredModal(props) {
+
+//     // let history = useHistory();
+//     // const handleRoute=()=>{
+//     //     history.push(`/`);
+//     // }
+//     return (
+//       <Modal
+//         {...props}
+//         size="3g"
+//         aria-labelledby="contained-modal-title-vcenter"
+//         centered
+//       >
+//         <Modal.Header>
+//           <Modal.Title id="contained-modal-title-vcenter">
+//           </Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <p>
+//           You may have un saved data, do you want to cancel
+//           </p>
+//         </Modal.Body>
+//         <Modal.Footer>
+//         <Button onClick={props.onHide}>Yes</Button>
+//           <Button onClick={props.onHide}>No</Button>
+//         </Modal.Footer>
+//       </Modal>
+//     );
+//   }
+
+
+
 export default function EngagementsSmart(props) {
     var history = useHistory();
     const [active, setActive] = useState('live');
@@ -51,6 +84,7 @@ export default function EngagementsSmart(props) {
     const [durationNum, setdurationNum] = useState(null);
     const engagement = store.getState().EngagementsSmartReducer;
     const preRulesData = engagement.preRules;
+    const [modalShow, setModalShow] = React.useState(false);
 
     const updateFooter=()=>{
         setPurchaseValue(preRulesData?.purchaseValue);
@@ -486,7 +520,6 @@ export default function EngagementsSmart(props) {
         console.log('****selectedRows', selectedRows);
     }
 
-
     return (
         <div id="engagements-smart-container">
             <NotificationContainer/>
@@ -597,9 +630,18 @@ export default function EngagementsSmart(props) {
                                     {step === 'review' ? 'Approve' : 'Next'}
                                 </button>
                                 <button type="button" className="c-s-btn-back float-right" onClick={stepsBackfn}>Back</button>
+                                {/* <button type="button"  className="c-s-btn-back float-right" onClick={() => setModalShow(true)}>
+                                   Cancel
+                                </button> */}
+                                {/* <MyVerticallyCenteredModal
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                /> */}
                             </div>
                         </div>
+                        
                     </div>
+                    <button className="c-s-btn-back float-right-1" >Cancel</button>
                 </Fragment>
             }
         </div>

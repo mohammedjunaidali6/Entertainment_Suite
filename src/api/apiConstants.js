@@ -9,7 +9,7 @@ export const REPT_PROD_HOST_URI = 'https://wehmutx1th.execute-api.ap-south-1.ama
 export const TENT_PROD_HOST_URI = 'https://i5dwhd96xi.execute-api.ap-south-1.amazonaws.com/Prod/api';
 
 
-export const SOMETHING_WENT_WRONG='Something went wrong';
+export const SOMETHING_WENT_WRONG='Successfully Deleted';
 
 export const serverResponse={
      SUCCESS:1,

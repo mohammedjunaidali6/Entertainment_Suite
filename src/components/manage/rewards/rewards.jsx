@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import 'react-input-tags-hooks/build/index.css';
 import Table from "../../common/reactTable/table";
 import SearchBar from "../../common/searchBar/searchBar";
+// import { AiOutlineMenu } from "react-icons/ai";
 import DatePicker from 'react-datepicker';
 import { CustomDatePickerEL } from "../../common/global";
 import './rewards.css';
@@ -14,10 +15,13 @@ import Button from '@material-ui/core/Button';
 import { Checkbox, Input, ListItemText, MenuItem, Select } from '@material-ui/core';
 import CustomTooltip from "../../common/tooltip/tooltip"
 import { RewardContextMenu } from '../../common/reactTable/menu';
+// import { MDBDataTable } from 'mdbreact';
+// import { BsGrid3X3GapFill, BsCalendar, BsThreeDotsVertical, BsChevronLeft } from "react-icons/bs";
 
 export default function ManageRewards(props) {
     // console.log('***',props);
     let history=useHistory();
+    // const [gridFlag, setGridFlag] = useState(true);
     const [createFlag, setCreateFlag] =useState(false);
     const [updateFlag, setUpdateFlag] =useState();
     const [error, setError] =useState({});
@@ -25,7 +29,10 @@ export default function ManageRewards(props) {
     const [categoryTags, setCategoryTags] = useState([]);
     const [selectedCategories,setSelectedCategories]=useState([]);
     const [coupon,setCoupon]=useState({couponType:'Fixed',expiryDate:new Date()});
-    
+    // const [search, setSearch] = useState("");
+    const handleAlertDialog = (obj) => {
+        props.routeActionHandler.dispatchAlertDialogData(obj);
+    }
     const targetCategoryStyle= {
         boxSizing: 'border-box',
         height: '25px',
@@ -238,11 +245,69 @@ export default function ManageRewards(props) {
             setSelectedCategories(row.Categories.map(c=>c.CategoryName))
             setUpdateFlag(row.RewardMasterId);
         }else if(actionText=='Delete'){
-            getAuthAndData(`${ENGT_PROD_BASE_URI}${UPDATE_REWARD_MASTER_STATUS_BY_ID}${row.RewardMasterId}`)
+            // onDeleteClick(row);
+            handleAlertDialog({
+                open: true, title: 'Delete Reward', text: 'Are you sure! Do you want to Delete Reward?', handleClose: (bool) => {
+                    handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+                    if (bool) {
+                        handleLoader(true);
+                        getAuthAndData(`${UPDATE_REWARD_MASTER_STATUS_BY_ID}${row.RewardMasterId}`, history)
+                            .then(res => {
+                                if (handleResponseCode(res)) {
+                                    // tabClick(active);
+                                    setUpdateFlag(false);
+                                    // console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
+                                }
+                                handleLoader(false);
+                            });
+                    } else {
+    
+                    }
+                }
+            });
+            // handleAlertDialog({
+            //     open: true, title: 'Delete Reward', text: 'Are you sure! Do you want to Delete Reward?', handleClose: (bool) => {
+            //         handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+            //         if (bool) {
+            //             // getAuthAndData(`${ENGT_PROD_BASE_URI}${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
+            //             getAuthAndData(`${ENGT_PROD_BASE_URI}${UPDATE_REWARD_MASTER_STATUS_BY_ID}${row.RewardMasterId}`,history)
+            //             .then(res => {
+            //                 console.log(res)
+            //                 if(handleResponseCode(res)){
+            //                     getMasterRewards();
+            //                     setUpdateFlag(false);
+            //                     createNotification('success', `${row.RewardMasterId} Reward Deleted Succesfully`);
+            //                 }
+            //             })
+            //         }
+            //     }
+            // });
+            // getAuthAndData(`${ENGT_PROD_BASE_URI}${UPDATE_REWARD_MASTER_STATUS_BY_ID}${row.RewardMasterId}`)
         }else if(actionText=='Reports'){
 
         }
     }
+    // const onDeleteClick = (engmt) => {
+    //     handleAlertDialog({
+    //         open: true, title: 'Delete Reward', text: 'Are you sure! Do you want to Delete Reward?', handleClose: (bool) => {
+    //             handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+    //             if (bool) {
+    //                 handleLoader(true);
+    //                 getAuthAndData(`${UPDATE_REWARD_MASTER_STATUS_BY_ID}${engmt.RewardMasterId}`, history)
+    //                     .then(res => {
+    //                         if (handleResponseCode(res)) {
+    //                             // tabClick(active);
+    //                             // console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
+    //                         }
+    //                         handleLoader(false);
+    //                     });
+    //             } else {
+
+    //             }
+    //         }
+    //     });
+    // }
+
     const onCreateReward=(postData)=>{
         handleLoader(true);
         postAuthAndData(`${ENGT_PROD_BASE_URI}${CREATE_REWARD_MASTER}`,postData,props.history)
@@ -284,10 +349,9 @@ export default function ManageRewards(props) {
             }else{
                 createNotification('info',`No Rewards Found for ${searchText} search.`);
             }
-        }else{
-            if(!searchText){
-                setMasterRewards(props.masterRewards);
-            }
+        }else if(!searchText){
+            // setMasterRewards(props.masterRewards);
+            getMasterCategories();
         }
     }
 
@@ -302,10 +366,14 @@ export default function ManageRewards(props) {
     return (
         <div id="manage-rewards-container" className="w-99 float-left clearfix">
             <NotificationContainer/>
-            {(!createFlag&&!updateFlag) ? 
+            {(!createFlag&&!updateFlag) ?
             <Fragment>
                 <div className='manage-journey-block'>
                     <div className='manage-journey'>Manage Rewards</div>
+                    {/* <span className="float-right mr-3">
+                            <AiOutlineMenu className={`c-pointer ${!gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(false)} style={{ width: "22px", height: "22px" }}></AiOutlineMenu>
+                            <BsGrid3X3GapFill className={`c-pointer ml-3 ${gridFlag ? `e-s-switch` : ``}`} onClick={() => setGridFlag(true)} style={{ width: "22px", height: "22px" }}></BsGrid3X3GapFill>
+                        </span> */}
                     {/* <div className='manage-journey-text'>6/18 jouneys are part of running campaign</div> */}
                         {/* <div className='reward-options-tab'>
                             <div onClick={() => tabClick('all')} className={`r-m-tab ${active === 'all' ? `r-m-tab-active` : ``}`}>All</div>
@@ -317,8 +385,25 @@ export default function ManageRewards(props) {
                 <div className='btn-create-journey float-right text-center pt-2' onClick={()=>setCreateFlag(true)}>
                     <span className="btn-c-j-text">+ Create Rewards</span>
                 </div>
+                {/* {gridFlag ?  */}
+                 {/* <div className="w-100 float-left clearfix mt-3">
+                 {(props.masterRewards && props.masterRewards.length > 0)?
+                     <RewardContextMenu
+                         props={props}
+                         masterRewards={props.masterRewards} */}
+                        {/* //  onPauseClick={(engmt, status) => onPauseClick(engmt, status)}
+                        //  onEditClick={(engmt) => onEditClick(engmt)}
+                        //  onViewReportClick={(engmt) => onViewReportClick(engmt)} */}
+                         {/* onDeleteClick={(engmt) => onDeleteClick(engmt)}
+                     >
+                     </RewardContextMenu>
+                     :
+                     <h4 claassName=''></h4>
+                 }
+             </div>:  */}
                
                 <div className='journey-table-block'>
+                    
                     <Table columns={columns} 
                         data={masterRewards} 
                         pagination={true}
@@ -326,8 +411,13 @@ export default function ManageRewards(props) {
                             <SearchBar placeHolder="Search Reward" onSearch={text=>onRewardSearch(text)} fromRewards={true} searchFilter="All Rewards" />
                         } 
                         subHeader={true}
+                        
                     />
                 </div>
+{/* }  */}
+                {/* <MDBDataTable
+                        masterRewards={masterRewards}
+                    /> */}
             </Fragment>
             : 
             <Fragment>

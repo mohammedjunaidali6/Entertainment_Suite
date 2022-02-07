@@ -128,7 +128,7 @@ export default function Review(props) {
                     </div>
                 </div>
                 <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub">
-                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Buget </div>
+                    <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-h">Approximate Budget </div>
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">
                         {goalData?.isTournament?'-':(rewardsAndBudgetData?.budget&&parseInt(rewardsAndBudgetData?.budget).toLocaleString())} {BUDGET_CURRENCY}
                     </div>
@@ -146,6 +146,7 @@ export default function Review(props) {
                     <div className="w-100 h-100 float-left clearfix c-e-r-right-reach-sub-c-c">2,000 with a ROI of 1000%</div>
                 </div> */}
             </div>
-        </div >
+            {/* <button className="c-s-btn-back float-right-1" style={{marginTop:270}}>Cancel</button> */}
+        </div>
     )
 }

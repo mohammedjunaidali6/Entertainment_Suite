@@ -281,18 +281,37 @@ export default function EngagementsJourney(props) {
                 open: true, title: 'Delete Journey', text: 'Are you sure! Do you want to Delete Journey?', handleClose: (bool) => {
                     handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
                     if (bool) {
-                        getAuthAndData(`${ENGT_PROD_BASE_URI}${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
-                        .then(res => {
-                            console.log(res)
-                            if(handleResponseCode(res)){
-                                getAllJourneys();
-                                setUpdateFlag(false);
-                                createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
-                            }
-                        })
+                        handleLoader(true);
+                        getAuthAndData(`${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
+                            .then(res => {
+                                if (handleResponseCode(res)) {
+                                    // tabClick(active);
+                                    setUpdateFlag(false);
+                                    // console.log(`*** ${engmt.EngagementID} Engagement is deleted successfully`)
+                                }
+                                handleLoader(false);
+                            });
+                    } else {
+    
                     }
                 }
             });
+            // handleAlertDialog({
+            //     open: true, title: 'Delete Journey', text: 'Are you sure! Do you want to Delete Journey?', handleClose: (bool) => {
+            //         handleAlertDialog({ open: false, title: '', text: '', handleClose: () => { } });
+            //         if (bool) {
+            //             getAuthAndData(`${ENGT_PROD_BASE_URI}${DELETE_JOURNEY_DETAILS}${rowObj.JourneyID}`, history)
+            //             .then(res => {
+            //                 console.log(res)
+            //                 if(handleResponseCode(res)){
+            //                     getAllJourneys();
+            //                     setUpdateFlag(false);
+            //                     createNotification('success', `${rowObj.JourneyID} Journey Deleted Succesfully`);
+            //                 }
+            //             })
+            //         }
+            //     }
+            // });
            
         } else {
 
